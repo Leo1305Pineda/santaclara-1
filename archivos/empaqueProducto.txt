@@ -1,0 +1,3 @@
+id   ,id:"producto.txt",cantidad:"UnidadesProductos"  
+!00  !00               !10
+!

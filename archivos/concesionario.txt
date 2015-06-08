@@ -1,0 +1,4 @@
+id:"usuario.txt"  ,id:"camion.txt" ,id:"ruta.txt"  
+!03               !ar657t          !00            
+!04               !mfr92u          !01            
+!

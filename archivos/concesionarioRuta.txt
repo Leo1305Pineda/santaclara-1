@@ -1,0 +1,4 @@
+id:"cliente.txt" ,id:usuario.txt        ,id:"Ruta.txt" ,dia:"L=1,M=2,MI=3,J=4,V=5,S=6",
+!03              !03                     !00            !1,2,3
+!04              !04                     !01            !4,5,6
+!

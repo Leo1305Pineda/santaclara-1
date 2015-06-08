@@ -1,0 +1,4 @@
+placa:     , color:  , capacidad:"Peso" , modelo: , marca        ,anno 
+!ar756t    !Blanco   !30000             !815      !Ford Cargo    !2000  
+!po456f    !Azul     !29000             !2628e    !Ford Cargo    !2001  
+!
