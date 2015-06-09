@@ -19,7 +19,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 
 	private String ruta = "archivos/Clientes.txt";
 	
-	@Override
+	@Override 
 	public List<Cliente> getClientes() throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		// Listar Todos lo Clientes 

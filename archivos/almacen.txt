@@ -1,4 +1,4 @@
-id:    ,ubicacion:   
-!01    !Zona industrial II             
-!02    !Zona industrial III           
-!
+id:1    
+ubicacion:Zona industrial II   
+id:02 
+ubicacion:Zona industrial III

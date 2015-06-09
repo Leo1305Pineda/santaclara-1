@@ -1,8 +1,31 @@
-id    ,username:  , cedula:     ,nombres:               ,contrasena:
-!00   !Rhonal     !V-19827297   !Rhonal Chirino         !1234             
-!01   !leo        !V-19727835   !Leonardo Pineda        !12345
-!02   !jose       !V-19345675   !Jose Medinas           !12345
-!03   !Gipsis     !V-19828553   !Gipsis Marin           !12345
-!04   !Joan       !V-19323522   !Joan Puerta            !12345
-!05   !vilfer     !V-19555555   !Vilfer Alvarez         !12345
+id:0
+username:Rhonal
+cedula:V-19827297
+nombres:Rhonal Chirino
+contrasena:1234
+id:1
+username:leo
+cedula:V-19727835
+nombres:Leonardo Pineda
+contrasena:12345
+id:2
+username:Jose
+cedula:V-19345675
+nombres:Jose Medinas
+contrasena:1234
+id:3
+username:Gipsis
+cedula:V-19828553
+nombres:Gipsis Marin
+contrasena:11323
+id:4
+username:Joan
+cedula:V-19323522
+nombres:Joan Puerta
+contrasena:1234
+id:5
+username:vilfer
+cedula:V-19555555
+nombres:Vilfer Alvarez
+contrasena:12345
 !

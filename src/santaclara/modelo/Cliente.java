@@ -4,7 +4,9 @@ public class Cliente {
 
 	private Integer id;
 	private String identidad;
+	private String cedula;
 	private String nombre;
+	private String apellido;
 	private String direccion;
 	private String telefono;
 	private Ruta ruta;
@@ -12,6 +14,14 @@ public class Cliente {
 	public Cliente() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	
+	public String getCedula() {
+		return cedula;
+	}
+
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
 	}
 
 	public Integer getId() {
@@ -32,6 +42,15 @@ public class Cliente {
 
 	public String getNombre() {
 		return nombre;
+	}
+	
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
 	}
 
 	public void setNombre(String nombre) {

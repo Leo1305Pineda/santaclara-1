@@ -1,5 +1,6 @@
-id:  ,volumen:"unidad=ml"   
-!00  !355
-!01  !500            
-!02  !1000          
-!
+id:0
+volumen:355   
+id:1
+volumen:500
+id:2
+volumen:1000

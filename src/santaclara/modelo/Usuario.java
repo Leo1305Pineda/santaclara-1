@@ -5,7 +5,7 @@ public class Usuario {
 	private Integer id;
 	private String username;
 	private String cedula;
-	private String nombres;
+	private String nombre;
 	private String contrasena;
 	
 	public Usuario() {
@@ -18,7 +18,7 @@ public class Usuario {
 		this.id = id;
 		this.username = username;
 		this.cedula = cedula;
-		this.nombres = nombres;
+		this.nombre = nombres;
 		this.contrasena = contrasena;
 	}
 	
@@ -40,11 +40,11 @@ public class Usuario {
 	public void setCedula(String cedula) {
 		this.cedula = cedula;
 	}
-	public String getNombres() {
-		return nombres;
+	public String getNombre() {
+		return nombre;
 	}
-	public void setNombres(String nombres) {
-		this.nombres = nombres;
+	public void setNombre(String nombres) {
+		this.nombre = nombres;
 	}
 	public String getContrasena() {
 		return contrasena;
