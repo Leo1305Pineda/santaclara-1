@@ -1,6 +1,0 @@
-id:0
-volumen:355   
-id:1
-volumen:500
-id:2
-volumen:1000

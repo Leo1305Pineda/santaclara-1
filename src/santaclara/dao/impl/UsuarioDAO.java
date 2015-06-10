@@ -12,7 +12,8 @@ import santaclara.dao.IUsuarioDAO;
 import santaclara.modelo.Usuario;
 
 public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
-private String ruta = "archivos/usuario.txt";
+
+	private String ruta = "archivos/usuarios.txt";
 	
 	@Override
 	public List<Usuario> getUsuarios() throws FileNotFoundException {
@@ -27,12 +28,12 @@ private String ruta = "archivos/usuario.txt";
 			 usuario.setId(new Integer(scaner.skip("id:").nextLine()));
 			 usuario.setUsername(scaner.skip("username:").nextLine());
 			 usuario.setCedula(scaner.skip("cedula:").nextLine());
-			 usuario.setNombre(scaner.skip("nombres:").nextLine());
+			 usuario.setNombre(scaner.skip("nombre:").nextLine());
 			 usuario.setContrasena(scaner.skip("contrasena:").nextLine());
 			 		 
 			 usuarios.add(usuario); 
 		}
-		
+		scaner.close();
 		return usuarios;
 	}
 	@Override
@@ -89,8 +90,17 @@ private String ruta = "archivos/usuario.txt";
 	}
 
 	@Override
-	public Usuario getUsuario(String cedula) {
+	public Usuario getUsuario(String cedula) throws FileNotFoundException {
 		// TODO Auto-generated method stub
+		List<Usuario> usuarios = getUsuarios();
+		
+		for(Usuario usuario: usuarios)
+		{
+			if(usuario.getCedula().equals(cedula.trim()))
+			{
+				return usuario;
+			}
+		}
 		return null;
     }
 
@@ -111,8 +121,8 @@ private String ruta = "archivos/usuario.txt";
 		{
 			fw.append("id:"+usuario.getId().toString()+"\n");
 			fw.append("username:"+usuario.getUsername()+"\n");
-			fw.append("nombre:"+usuario.getNombre()+"\n");
 			fw.append("cedula:"+usuario.getCedula()+"\n");
+			fw.append("nombre:"+usuario.getNombre()+"\n");
 			fw.append("contrasena:"+usuario.getContrasena()+"\n");
 		}
 		fw.close();

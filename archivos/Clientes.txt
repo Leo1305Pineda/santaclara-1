@@ -1,28 +1,24 @@
 id:1
-cedula:V-19827297
-nombre:Rhonal Alfredo
-apellido:Cirinos Rodriguez
+rif:V-19827297
+razonsocial:Rhonal Alfredo
 direccion:Barrio el Jebe Sector la Estrella
 telefono:04161556613
 ruta:1
 id:2
-cedula:V-16787345
-nombre:Juan M.
-apellido:Velasque H.
+rif:V-16787345
+razonsocial:Juan M.
 direccion:Barrio el Jebe Sector la Estrella
 telefono:04266543982
 ruta:1
 id:3
-cedula:V-15765398
-nombre:Leonardo R.
-apellido:Pineda S.
+rif:V-15765398
+razonsocial:Leonardo R.
 direccion:Urbanizaciom los altos del norte
 telefono:04245042292
 ruta:1
 id:4
-cedula:V-18653422
-nombre:Briceila A.
-apellido:Camacho R.
+rif:V-18653422
+razonsocial:Briceila A.
 direccion:Urbanizacion los Crepusculos sector
 telefono:02512379265
 ruta:1

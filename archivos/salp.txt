@@ -1,4 +1,0 @@
-id:"cliente.txt"  ,id:"lista de facturas"   
-!01               !01,02            
-!02               !-           
-!

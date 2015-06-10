@@ -1,3 +1,28 @@
-id:"capacidad.txt" ,id:"presentacion" ,id:"sabor" ,nombre:    ,precio:   
-!01                !00                !02         !CocaCola   !150
-!
+id:1
+idCapacidad:1
+idPresentacion:2
+idSabor:3
+nombre:CocaCola
+precio:500
+
+id:2
+idCapacidad:3
+idPresentacion:2
+idSabor:4
+nombre:CocaCola
+precio:500
+
+id:3
+idCapacidad:2
+idPresentacion:1
+idSabor:1
+nombre:CocaCola
+precio:500
+
+id:4
+idCapacidad:1
+idPresentacion:3
+idSabor:2
+nombre:CocaCola
+precio:500
+

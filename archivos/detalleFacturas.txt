@@ -1,0 +1,12 @@
+idFactura:1
+idProducto:1
+cantidad:73500
+precio:100000
+iva:0.12
+total:7350000000
+idFactura:2
+idProducto:2
+cantidad:500
+precio:16000
+iva:0.12
+total:30000000	

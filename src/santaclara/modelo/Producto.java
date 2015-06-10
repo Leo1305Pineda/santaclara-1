@@ -1,20 +1,30 @@
 package santaclara.modelo;
 
 public class Producto {
+	private Integer id;
 	private Capacidad capacidad;
 	private Presentacion presentacion;
 	private Sabor sabor;
 	private String nombre;
 	private Double precio;
 	
-	public Producto(Capacidad capacidad, Presentacion presentacion,
+	public Producto(Integer id,Capacidad capacidad, Presentacion presentacion,
 			Sabor sabor, String nombre,Double precio) {
 		super();
+		this.id = id;
 		this.capacidad = capacidad;
 		this.presentacion = presentacion;
 		this.sabor = sabor;
 		this.nombre = nombre;
 		this.precio = precio;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Double getPrecio() {

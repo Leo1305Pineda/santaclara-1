@@ -10,8 +10,7 @@ public class Ruta {
 	private String nombre;
 	private String sector;
 	private List<Cliente> clientes = new ArrayList<Cliente>();
-	
-	
+
 	public Ruta() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -59,6 +58,4 @@ public class Ruta {
 	public void setClientes(List<Cliente> clientes) {
 		this.clientes = clientes;
 	}
-
-
 }

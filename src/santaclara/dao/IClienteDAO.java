@@ -14,7 +14,7 @@ public interface IClienteDAO extends IGenericoDAO {
 	
 	public void eliminar(Cliente cliente) throws   IOException;
 	
-	public Cliente getCliente(String cedula);
+	public Cliente getCliente(Integer id) throws FileNotFoundException;
 	
 	
 	

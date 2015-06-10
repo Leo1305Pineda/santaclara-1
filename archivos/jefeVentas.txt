@@ -1,0 +1,6 @@
+id:0
+idZona:1 
+id:1
+idZona:1 
+id:2
+idZona:1 

@@ -81,6 +81,17 @@ public class Factura {
 		this.vendedor = vendedor;
 	}
 
-	
+/*
+ * Estructura
+ * 
+ *id:0
+ *fecha:06/06/2015
+ *total:7350000000
+ *saldo:88200000
+ *iva:7261800000
+ *descuento:0
+ *idCliente:2
+ *idvendedor:2
+ **/	
 
 }

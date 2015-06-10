@@ -19,7 +19,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 
 	private String ruta = "archivos/Clientes.txt";
 	
-	@Override 
+	@Override
 	public List<Cliente> getClientes() throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		// Listar Todos lo Clientes 
@@ -30,9 +30,8 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		{
 			 Cliente cliente = new Cliente();
 			 cliente.setId(new Integer(scaner.skip("id:").nextLine()));
-			 cliente.setCedula(scaner.skip("cedula:").nextLine());
-			 cliente.setNombre(scaner.skip("nombre:").nextLine());
-			 cliente.setApellido(scaner.skip("apellido:").nextLine());
+			 cliente.setRif(scaner.skip("rif:").nextLine());
+			 cliente.setRazonsocial(scaner.skip("razonsocial:").nextLine());
 			 cliente.setDireccion(scaner.skip("direccion:").nextLine());
 			 cliente.setTelefono(scaner.skip("telefono:").nextLine());
 			 String linea =scaner.skip("ruta:").nextLine();
@@ -76,9 +75,8 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 				if(cliente1.getId().equals(cliente.getId()))
 				{
 					/// vacio 
-					cliente1.setCedula(cliente.getCedula());
-					cliente1.setNombre(cliente.getNombre());
-					cliente1.setApellido(cliente.getApellido());
+					cliente1.setRif(cliente.getRif());
+					cliente1.setRazonsocial(cliente.getRazonsocial());
 					cliente1.setDireccion(cliente.getDireccion());
 					cliente1.setTelefono(cliente.getTelefono());
 					cliente1.setRuta(cliente.getRuta());
@@ -106,8 +104,16 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 	}
 
 	@Override
-	public Cliente getCliente(String cedula) {
+	public Cliente getCliente(Integer id) throws FileNotFoundException {
 		// TODO Auto-generated method stub
+		List<Cliente> clientes = getClientes();
+		for(Cliente cliente1 :clientes)
+		{
+			if(cliente1.getId().equals(id))
+			{
+				return cliente1;
+			}
+		}
 		return null;
     }
 
@@ -127,9 +133,8 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		for(Cliente cliente :clientes)
 		{
 			fw.append("id:"+cliente.getId().toString()+"\n");
-			fw.append("cedula:"+cliente.getCedula()+"\n");
-			fw.append("nombre:"+cliente.getNombre()+"\n");
-			fw.append("apellido:"+cliente.getApellido()+"\n");
+			fw.append("rif:"+cliente.getRif()+"\n");
+			fw.append("razonsocial:"+cliente.getRazonsocial()+"\n");
 			fw.append("direccion:"+cliente.getDireccion()+"\n");
 			fw.append("telefono:"+cliente.getTelefono()+"\n");
 			fw.append("ruta:"+(cliente.getRuta() == null ? "  ":cliente.getRuta().getId())+"\n");

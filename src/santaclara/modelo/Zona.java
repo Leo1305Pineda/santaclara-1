@@ -5,10 +5,13 @@ import java.util.List;
 
 public class Zona {
 	
+	private Integer	id;
 	private JefeVenta jefeVenta; 
 	private String descripcion;
+	
 	private List<Ruta> rutas = new ArrayList<Ruta>();
 
+	
 	public Zona() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -19,9 +22,7 @@ public class Zona {
 		this.descripcion = descripcion;
 		this.rutas = rutas;
 	}
-	
-	
-	
+	 
 	public JefeVenta getJefeVenta() {
 		return jefeVenta;
 	}
@@ -40,8 +41,12 @@ public class Zona {
 	public void setRutas(List<Ruta> rutas) {
 		this.rutas = rutas;
 	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-	
-	
-
+	 
 }
