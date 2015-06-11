@@ -1,4 +1,4 @@
-package santaclara.modelo;
+package santaclara.modelo;//Cambio
 
 public class Almacen {
 	private Integer id;

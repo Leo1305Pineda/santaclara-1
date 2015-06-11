@@ -1,6 +1,0 @@
-id:  ,id:"zona"        , nombre          , sector 
-!00  !00         !El jebe          !La Estrella      
-!01  !00         !El Carmen        !La Brama
-!02  !00         !El Carmen        !Fortunato
-!03  !00         !Los Crepusculo   !1      
-!

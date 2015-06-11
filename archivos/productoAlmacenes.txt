@@ -1,0 +1,5 @@
+idProducto:0
+idAlmacen:0
+stock:100000
+stockMin:900000
+existencia: 70000

@@ -1,0 +1,15 @@
+id:0
+jefeventa: 1
+descripcion:centro
+id:1
+jefeventa: 1
+descripcion:Norte
+id:2
+jefeventa: 1
+descripcion:sur
+id:4
+jefeventa: 1
+descripcion:Este
+id:5
+jefeventa: 1
+descripcion:Oeste
