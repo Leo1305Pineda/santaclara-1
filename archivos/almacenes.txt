@@ -1,4 +1,4 @@
-id:1    
-ubicacion:Zona industrial II   
-id:02 
-ubicacion:Zona industrial III
+id:1
+ubicacion:Zoma industrial I
+id:2
+ubicacion:Zoma industrial II

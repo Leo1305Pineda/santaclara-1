@@ -13,10 +13,8 @@ import santaclara.modelo.Camion;
 
 public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 
-	
-
 	private String ruta = "archivos/camiones.txt";
-
+	
 	@Override
 	public List<Camion> getCamiones() throws FileNotFoundException {
 		// TODO Auto-generated method stub

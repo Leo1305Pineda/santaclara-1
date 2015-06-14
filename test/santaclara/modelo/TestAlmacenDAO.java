@@ -14,11 +14,10 @@ import santaclara.dao.impl.AlmacenDAO;
 public class TestAlmacenDAO {
 
 	@Test
-	public void almacenTest() throws FileNotFoundException {
+	public void almacenTest() throws FileNotFoundException{
 		IAlmacenDAO almacenDAO = new AlmacenDAO();
 		assertNotNull(almacenDAO);
-		assertEquals(3,almacenDAO.getAlmacenes().size());
-		System.out.println(almacenDAO.getAlmacenes().size());
+		assertEquals(2,almacenDAO.getAlmacenes().size());
 	}
 	
 	@Test
@@ -30,9 +29,10 @@ public class TestAlmacenDAO {
 		almacen.setUbicacion("Zoma industrial III");
 		almacenDAO.guardar(almacen);
 		assertNotNull(almacen.getId());
-		assertNotEquals(3,almacenDAO.getAlmacenes().size());
+		assertNotEquals(1,almacenDAO.getAlmacenes().size());
 		assertEquals(almacenes.size()+1,almacenDAO.getAlmacenes().size());
-
+		System.out.println(almacen.getId());
+		System.out.println(almacen.getUbicacion());
 		almacenDAO.eliminar(almacen);
 		assertEquals(almacenes.size(),almacenDAO.getAlmacenes().size());
 	}

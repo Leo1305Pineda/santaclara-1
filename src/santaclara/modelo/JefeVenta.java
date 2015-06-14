@@ -7,7 +7,7 @@ import java.util.List;
 
 public class JefeVenta  extends  Usuario {
 	
-	private List<Visita> visita = new ArrayList<Visita>();
+	private List<Visita> visitas = new ArrayList<Visita>();
 	private Zona zona;
 
 	
@@ -19,7 +19,7 @@ public class JefeVenta  extends  Usuario {
 	public JefeVenta(Zona zona,List<Visita> visita) {
 		super();
 		this.zona = zona;
-		this.visita = visita;
+		this.visitas = visita;
 	}
 	
 	
@@ -31,12 +31,12 @@ public class JefeVenta  extends  Usuario {
 		this.zona = zona;
 	}
 
-	public List<Visita> getVisita() {
-		return visita;
+	public List<Visita> getVisitas() {
+		return visitas;
 	}
 
 	public void setVisita(List<Visita> visita) {
-		this.visita = visita;
+		this.visitas = visita;
 	}
  
 

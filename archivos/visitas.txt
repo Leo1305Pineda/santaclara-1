@@ -6,6 +6,7 @@ valorVendedor:0
 valorProducto:0
 estado:hecho
 idJefeVenta:1
+idCliente:2
 id:1
 fecha:06/06/2015
 motivo:atencion a reclamo
@@ -14,6 +15,7 @@ valorVendedor:0
 valorProducto:0
 estado:pendiente
 idJefeVenta:1
+idCliente:3
 id:2
 fecha:06/06/2015
 motivo:visita sorpresa
@@ -22,6 +24,7 @@ valorVendedor:0
 valorProducto:0
 estado:hecho
 idJefeVenta:1
+idCliente:4
 id:3
 fecha:06/06/2015
 motivo:en espera
@@ -30,3 +33,4 @@ valorVendedor:0
 valorProducto:0
 estado:pendiente
 idJefeVenta:1
+idCliente:3

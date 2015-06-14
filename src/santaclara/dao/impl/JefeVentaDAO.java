@@ -10,21 +10,11 @@ import java.util.Scanner;
 
 import santaclara.dao.IJefeVentaDAO;
 import santaclara.modelo.JefeVenta;
-import santaclara.modelo.Usuario;
-import santaclara.modelo.Zona; 
+import santaclara.modelo.Usuario; 
 
 public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 
 	private String ruta = "archivos/jefeVentas.txt";
-	
-	public JefeVentaDAO(String ruta) {
-		super();
-		this.ruta = ruta;
-	}
-
-	public JefeVentaDAO( ) {
-		super();  
-	}
 	
 	@Override
 	public List<JefeVenta> getJefeVentas() throws FileNotFoundException {
@@ -35,7 +25,33 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 		while(scaner.hasNext())
 		{
 			 JefeVenta jefeVenta = new JefeVenta();
-			 jefeVenta.setId(new Integer(scaner.skip("id:").nextLine()));
+			 jefeVenta.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 ZonaDAO zonaDAO = new ZonaDAO();
+			 jefeVenta.setZona(zonaDAO.getZona(new Integer(scaner.skip("idZona:").nextLine().trim())));
+			 
+/*			 Scanner sc = new Scanner(scaner.skip("idVisitas:").nextLine()).useDelimiter(",");
+			 
+			 if (sc.hasNext())
+			 {
+				 List<Visita> visitas = new ArrayList<Visita>();
+				 while(sc.hasNext())
+				 {
+					 Visita visita = new Visita();
+					 visita.setId(sc.nextInt());
+					//guardar demas datos de la rutas
+					 VisitaDAO visitaDAO = new VisitaDAO();
+					 visita = visitaDAO.getVisita(visita.getId());
+					 visitas.add(visita);
+				 }
+				 jefeVenta.setVisita(visitas);
+			 }
+			 else
+			 {
+				jefeVenta.setVisita(null);
+			 }
+			 sc.close();
+*/
+			 
 			 jefeVentas.add(jefeVenta); 
 		}
 		scaner.close();
@@ -59,7 +75,7 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 			}
 		}
 		//guarda demas datos de la zona
-		List<Zona> zonas;
+/* 		List<Zona> zonas;
 		ZonaDAO zonaDAO = new ZonaDAO();
 		zonas = zonaDAO.getZonas();
 		for(JefeVenta jefeVenta: jefeVentas)
@@ -73,6 +89,7 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 				}
 			}
 		}
+*/
 		return jefeVentas;
 	}
 	@Override
@@ -81,14 +98,15 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 		List<JefeVenta> jefeVentas = getJefeVentas();
 		//buscar codigo el ultimo codigo Asignado 
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		List<Usuario> usuarios = usuarioDAO.getUsuarios();
 		if(jefeVenta.getId() == null )
 		{
 			int i = 0;
-			for(JefeVenta jefeVenta1 : jefeVentas)
+			for(Usuario usuario1 : usuarios)
 			{
-				if(jefeVenta1.getId()> i )
+				if(usuario1.getId()> i )
 				{
-					i = jefeVenta1.getId();
+					i = usuario1.getId();
 				}
 			}
 			jefeVenta.setId(i+1);
@@ -150,13 +168,32 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 		for(JefeVenta jefeVenta : jefeVentas)
 		{
 			fw.append("id:"+jefeVenta.getId().toString()+"\n");
+			/*	List<Visita> visitas = jefeVenta.getVisitas();
+				String linea = new String(",");
+				for(Visita visita : visitas ) {
+					linea =  linea+visita.getId()+",";
+				}
+				fw.append("idVisitas:"+linea+"\n");
+			*/
+			fw.append("idZona:"+jefeVenta.getZona().getId().toString()+"\n");
 		}
 		fw.close();
 	}
+
+	public JefeVentaDAO(String ruta) {
+		super();
+		this.ruta = ruta;
+	}
+
+	public JefeVentaDAO( ) {
+		super();  
+	}
 	
+
 } 
 /*Estructura
- * id:0
- *idZona:1 
- * */
+ id:0
+idVisitas:,1,
+idZona:1
+* */
 

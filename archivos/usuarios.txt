@@ -3,13 +3,18 @@ username:Rhonal
 cedula:V-19827297
 nombre:Rhonal Chirino
 contrasena:1234
-id:4
+id:1
 username:Joan
 cedula:V-19323522
 nombre:Joan Puerta
 contrasena:1234
-id:5
-username:vilfer
-cedula:V-19555555
-nombre:Vilfer Alvarez
-contrasena:12345
+id:2
+username:Jose
+cedula:V-19334522
+nombre:Jose Contrera
+contrasena:1234
+id:3
+username:Vgowen
+cedula:V-8796484
+nombre:Pedro Perez
+contrasena:1234

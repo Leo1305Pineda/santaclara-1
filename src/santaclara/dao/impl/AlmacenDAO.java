@@ -22,12 +22,11 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 		while(scaner.hasNext())
 		{
 			Almacen almacen = new Almacen();
-			 almacen.setId(new Integer(scaner.skip("id:").nextLine()));
-			 almacen.setUbicacion(scaner.skip("ubicacion:").nextLine());
-			 
-			 almacenes.add(almacen); 
+			almacen.setId(new Integer(scaner.skip("id:").nextLine()));
+			almacen.setUbicacion(scaner.skip("ubicacion:").nextLine());
+			almacenes.add(almacen); 
 		}
-		
+		scaner.close();
 		return almacenes;
 	}
 
@@ -56,8 +55,7 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 				if(almacen1.getId().equals(almacen.getId()))
 				{
 					/// vacio 
-					almacen1.setId(almacen.getId());
-					almacen1.setUbicacion(almacen.getUbicacion());
+					almacen1=almacen;
 				}
 			}
 		}
@@ -76,8 +74,7 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 				almacenes.remove(almacene1);
 				break;
 			}
-		}
-		///guardar Todo 
+		} 
 		guardarTodo(almacenes);
 	}
 
@@ -113,5 +110,16 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 		}
 		fw.close();
 	}
-
+	
+	public void Mostrar() throws IOException {
+		// TODO Auto-generated method stub
+		List<Almacen> almacenes = getAlmacenes();
+		for(Almacen almacen1 :almacenes)
+		{
+			System.out.println(almacen1.getId());
+			System.out.println(almacen1.getUbicacion());
+		}
+		///guardar Todo 
+		guardarTodo(almacenes);
+	}
 }

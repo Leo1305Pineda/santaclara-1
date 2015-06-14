@@ -1,7 +1,0 @@
-id:"jefeVenta.txt" ,descripcion:            ,lista id:"ruta.txt"  
-!00                !centro                  !00,01      
-!01                !Norte                   !02,03
-!02                !sur                     !04,05
-!04                !Este                    !06
-!05                !Oeste                   !06
-!

@@ -24,8 +24,12 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 		{
 			Ruta ruta = new Ruta();
 			ruta.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			
+			//guardo demas los datos de la Zona
 			Zona zona = new Zona(); 
-			zona.setId(new Integer(scaner.skip("zona:").nextLine().trim()));
+			ZonaDAO zonaDAO = new ZonaDAO();
+			zona = zonaDAO.getZona(new Integer(scaner.skip("zona:").nextLine().trim()));
+			
 			ruta.setZona(zona);
 			ruta.setNombre(scaner.skip("nombre:").nextLine());
 			rutas.add(ruta); 

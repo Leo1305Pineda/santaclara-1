@@ -24,11 +24,11 @@ public class SaborDAO extends GenericoDAO implements ISaborDAO{
 		while(scaner.hasNext())
 		{
 			 Sabor sabor = new Sabor();
-			 sabor.setId(new Integer(scaner.skip("id:").nextLine()));
-			 sabor.setSabor(scaner.skip("sabor:").nextLine());
+			 sabor.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 sabor.setSabor(scaner.skip("sabor:").nextLine().trim());
 			 sabores.add(sabor);
 		}
-		
+		scaner.close();
 		return sabores;
 	}
 

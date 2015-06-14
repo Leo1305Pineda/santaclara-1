@@ -90,13 +90,13 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 	}
 
 	@Override
-	public Usuario getUsuario(String cedula) throws FileNotFoundException {
+	public Usuario getUsuario(Integer id) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<Usuario> usuarios = getUsuarios();
 		
 		for(Usuario usuario: usuarios)
 		{
-			if(usuario.getCedula().equals(cedula.trim()))
+			if(usuario.getId().equals(id))
 			{
 				return usuario;
 			}
