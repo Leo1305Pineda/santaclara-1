@@ -134,7 +134,6 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 				break;
 			}
 		}
-		///guardar Todo 
 		usuarioDAO.eliminar(vendedor);
 		guardarTodo(vendedores);
 	}
@@ -145,12 +144,12 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 		List<Vendedor> vendedores = getVendedores();
 		for(Vendedor vendedor: vendedores)
 		{
-			if(vendedor.getCedula().equals(id))
+			if(vendedor.getId().equals(id))
 			{
 				return vendedor;
 			}
 		}
-		return null;
+		return new Vendedor();
 	}
 	
 	public void guardarTodo(List<Vendedor> vendedores) throws IOException

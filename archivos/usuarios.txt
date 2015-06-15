@@ -13,8 +13,3 @@ username:Jose
 cedula:V-19334522
 nombre:Jose Contrera
 contrasena:1234
-id:3
-username:Vgowen
-cedula:V-8796484
-nombre:Pedro Perez
-contrasena:1234

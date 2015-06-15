@@ -13,7 +13,7 @@ import santaclara.modelo.Presentacion;
 
 public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 	
-	private String ruta = "archivos/sabor.txt";
+	private String ruta = "archivos/presentaciones.txt";
 
 	@Override
 	public List<Presentacion> getPresentaciones() throws FileNotFoundException {
@@ -24,45 +24,44 @@ public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 		while(scaner.hasNext())
 		{
 			 Presentacion presentacion = new Presentacion();
-			 presentacion.setId(new Integer(scaner.skip("id:").nextLine()));
-			 presentacion.setMaterial(scaner.skip("material:").nextLine());
-			 
+			 presentacion.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 presentacion.setMaterial(scaner.skip("material:").nextLine().trim());
+			 presentaciones.add(presentacion);
 		}
-		
 		return presentaciones;
 	}
 
 	@Override
-	public void guardar(Presentacion presentasion) throws IOException {
+	public void guardar(Presentacion presentacion) throws IOException {
 		// TODO Auto-generated method stub
-		List<Presentacion> presentacion = getPresentaciones();
+		List<Presentacion> presentaciones = getPresentaciones();
 		//buscar codigo el ultimo codigo Asignado 
-		if(presentasion.getId() == null )
-		{
+		if(presentacion.getId() == null )
+		{	
 			int i = 0;
-			for(Presentacion presentacion1 : presentacion)
+			for(Presentacion presentacion1 : presentaciones)
 			{
 				if(presentacion1.getId()> i )
 				{
 					i = presentacion1.getId();
 				}
 			}
-			presentasion.setId(i+1);
-			presentacion.add(presentasion);
+			presentacion.setId(i+1);
+			
+			presentaciones.add(presentacion);
 		}
 		else
 		{
-			for(Presentacion presentacion1 :presentacion)
+			for(Presentacion presentacion1 :presentaciones)
 			{
-				if(presentacion1.getId().equals(presentasion.getId()))
-				{
-					/// vacio 
-					presentacion1.setMaterial(presentasion.getMaterial());
+				if(presentacion1.getId().equals(presentacion.getId()))
+				{ 
+					presentacion1.setMaterial(presentacion.getMaterial());
 					
 				}
 			}
 		}
-		guardarTodo(presentacion);
+		guardarTodo(presentaciones);
 	}
 
 	@Override
@@ -76,8 +75,7 @@ public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 				presentaciones.remove(presentacion1);
 				break;
 			}
-		}
-		///guardar Todo 
+		} 
 		guardarTodo(presentaciones);
 
 	}
@@ -91,5 +89,19 @@ public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 			fw.append("material:"+presentacion.getMaterial()+"\n");
 		}
 		fw.close();
+	}
+
+	@Override
+	public Presentacion getPresentacion(Integer id) throws IOException {
+		// TODO Auto-generated method stub
+		List<Presentacion> presentasiones = getPresentaciones();
+		for (Presentacion presentacion1 : presentasiones)
+		{
+			if (presentacion1.getId().equals(id))
+			{
+				return presentacion1;
+			}
+		}
+		return new Presentacion();
 	}
 }

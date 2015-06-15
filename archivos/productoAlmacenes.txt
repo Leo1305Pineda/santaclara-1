@@ -1,5 +1,15 @@
-idProducto:0
-idAlmacen:0
+idEmpaqueProducto:1
+idAlmacen:1
 stock:100000
 stockMin:900000
-existencia: 70000
+existencia:70000
+idEmpaqueProducto:2
+idAlmacen:1
+stock:100000
+stockMin:900000
+existencia:70000
+idEmpaqueProducto:3
+idAlmacen:1
+stock:100000
+stockMin:900000
+existencia:70000

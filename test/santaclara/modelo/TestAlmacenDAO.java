@@ -31,10 +31,9 @@ public class TestAlmacenDAO {
 		assertNotNull(almacen.getId());
 		assertNotEquals(1,almacenDAO.getAlmacenes().size());
 		assertEquals(almacenes.size()+1,almacenDAO.getAlmacenes().size());
-		System.out.println(almacen.getId());
-		System.out.println(almacen.getUbicacion());
 		almacenDAO.eliminar(almacen);
 		assertEquals(almacenes.size(),almacenDAO.getAlmacenes().size());
+		almacenDAO.Mostrar();
 	}
 
 }

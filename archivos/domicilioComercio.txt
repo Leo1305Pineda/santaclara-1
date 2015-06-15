@@ -1,4 +1,4 @@
 idCliente:1
 tipo:C
 idCliente:2
-tipo:D    
+tipo:D

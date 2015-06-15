@@ -1,7 +1,6 @@
 package santaclara.dao.impl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,76 +9,48 @@ import java.util.Scanner;
 
 import santaclara.dao.IProductoDAO;
 import santaclara.modelo.Producto;
-import santaclara.modelo.Capacidad;
-import santaclara.modelo.Sabor;
-import santaclara.modelo.Presentacion;
 
 public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 
 	private String ruta = "archivos/producto.txt";
 	
 	@Override
-	public List<Producto> getproductos() throws FileNotFoundException {
-		// TODO Auto-generated method stub
-		// Listar Todos lo Clientes 
+	public List<Producto> getProductos() throws NumberFormatException, IOException {
+		// TODO Auto-generated method stub 
 		List<Producto> productos = new ArrayList<Producto>();
 		File file = new File(ruta);
  		Scanner scaner = new Scanner(file);
 		while(scaner.hasNext())
 		{
 			 Producto producto = new Producto();
-			 String linea;
-			 producto.setId(new Integer(scaner.skip("id:").nextLine()));
+			 producto.setId(new Integer(scaner.skip("id:").nextLine().trim()));
 			 //Asigna Capacidad
-			 linea = scaner.skip("idCapacidad:").nextLine();
-			 if(linea.trim().length() == 0)
-			 {
-				 producto.setCapacidad(null);
-			 }
-			 else
-			 {
-				 Capacidad capacidad = new Capacidad();
-				capacidad.setId(new Integer(linea));
-				 producto.setCapacidad(capacidad);				 	 
-			 }
-			 //asigna Presentacion
-			 linea = scaner.skip("idPresentacion:").nextLine();
-			 if(linea.trim().length() == 0)
-			 {
-				 producto.setPresentacion(null);
-			 }
-			 else
-			 {
-				 Presentacion presentacion = new Presentacion();
-				 presentacion.setId(new Integer(linea));
-				 producto.setPresentacion(presentacion);				 	 
-			 }
+			 CapacidadDAO capacidadDAO = new CapacidadDAO();
+			 producto.setCapacidad(
+					 capacidadDAO.getCapacidad(
+							 new Integer(scaner.skip("idCapacidad:").nextLine().trim())));
+			//asigna Presentacion
+			 PresentacionDAO presentacionDAO = new PresentacionDAO();
+			 producto.setPresentacion(
+					 presentacionDAO.getPresentacion(
+							 new Integer(scaner.skip("idPresentacion:").nextLine().trim())));
 			 //asigna Sabor
-			 linea = scaner.skip("idPresentacion:").nextLine();
-			 if(linea.trim().length() == 0)
-			 {
-				 producto.setSabor(null);
-			 }
-			 else
-			 {
-				 Sabor sabor = new Sabor();
-				 sabor.setId(new Integer(linea));
-				 producto.setSabor(sabor);				 	 
-			 }
- 
+			 SaborDAO saborDAO = new SaborDAO();
+			 producto.setSabor(
+					 saborDAO.getSabor(
+							 new Integer(scaner.skip("idSabor:").nextLine().trim())));
 			 producto.setNombre(scaner.skip("nombre:").nextLine());
-			 producto.setPrecio(new Double(scaner.skip("precio:").nextLine()));
+			 producto.setPrecio(new Double(scaner.skip("precio:").nextLine().trim()));
 			 
-			 productos.add(producto); 
+			 productos.add(producto);
 		}
-		
 		return productos;
 	}
 
 	@Override
 	public void	guardar(Producto producto) throws IOException {
 		// TODO Auto-generated method stub
-		List<Producto> productos = getproductos();
+		List<Producto> productos = getProductos();
 		//buscar codigo el ultimo codigo Asignado 
 		if(producto.getId() == null )
 		{
@@ -116,7 +87,7 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 	@Override
 	public void eliminar(Producto producto) throws IOException {
 		// TODO Auto-generated method stub
-		List<Producto> productos = getproductos();
+		List<Producto> productos = getProductos();
 		for(Producto producto1 :productos)
 		{
 			if(producto1.getId().equals(producto.getId()))
@@ -131,9 +102,9 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 	}
 
 	@Override
-	public Producto getProducto(Integer id) throws FileNotFoundException {
+	public Producto getProducto(Integer id) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
-		List<Producto> productos = getproductos();
+		List<Producto> productos = getProductos();
 		for(Producto producto1 :productos)
 		{
 			if(producto1.getId().equals(id))
@@ -141,7 +112,7 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 				return producto1;
 			}
 		}
-		return null;
+		return new Producto();
     }
 
 	
@@ -160,9 +131,16 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 		for(Producto producto :productos)
 		{
 			fw.append("id:"+producto.getId().toString()+"\n");
-			fw.append("idCapacidad:"+producto.getCapacidad() == null ? "  ":producto.getCapacidad().getId()+"\n");
-			fw.append("idPresentacion:"+producto.getPresentacion() == null ? "  ":producto.getPresentacion().getId()+"\n");
-			fw.append("idSabor:"+producto.getSabor() == null ? "  ":producto.getSabor().getId()+"\n");
+	
+			fw.append("idCapacidad:"+(producto.getCapacidad() == null 
+					? "  ":producto.getCapacidad().getId())+"\n");
+			
+			fw.append("idPresentacion:"+(producto.getPresentacion() == null
+					? "  ":producto.getPresentacion().getId())+"\n");
+			
+			fw.append("idSabor:"+(producto.getSabor() == null 
+					? "  ":producto.getSabor().getId())+"\n");
+			
 			fw.append("nombre:"+producto.getNombre()+"\n");
 			fw.append("precio:"+producto.getPrecio()+"\n");
 		}

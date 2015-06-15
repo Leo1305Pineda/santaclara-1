@@ -14,6 +14,8 @@ public interface ICamionDAO extends IGenericoDAO {
 	
 	public void eliminar(Camion camion) throws   IOException;
 	
-	public Camion getCamiones(Integer id) throws FileNotFoundException;
+	public void Mostrar() throws   IOException;
+	
+	public Camion getCamion(Integer id) throws FileNotFoundException;
 	
 }

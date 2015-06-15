@@ -8,12 +8,12 @@ import santaclara.modelo.DetalleFactura;
 
 public interface IDetalleFacturaDAO extends IGenericoDAO {
 
-	public List<DetalleFactura>  getDetalleFacturas() throws FileNotFoundException;
+	public List<DetalleFactura>  getDetalleFacturas() throws FileNotFoundException, NumberFormatException, IOException;
 
 	public void	guardar(DetalleFactura detalleFactura) throws IOException;
 	
 	public void eliminar(DetalleFactura detalleFactura) throws   IOException;
 	
-	public DetalleFactura getDetalleFactura(Integer idFactura,Integer idProducto) throws FileNotFoundException;
+	public DetalleFactura getDetalleFactura(Integer idFactura,Integer idProducto) throws FileNotFoundException, NumberFormatException, IOException;
 
 }

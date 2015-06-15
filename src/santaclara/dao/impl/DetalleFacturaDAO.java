@@ -1,7 +1,6 @@
 package santaclara.dao.impl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import santaclara.modelo.DetalleFactura;
 public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO{
 	private String ruta = "archivos/detalleFacturas.txt";
 	@Override
-	public List<DetalleFactura> getDetalleFacturas() throws FileNotFoundException {
+	public List<DetalleFactura> getDetalleFacturas() throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();		
 		File file = new File(ruta);
@@ -59,15 +58,13 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 	@Override
 	public void guardar(DetalleFactura detalleFactura) throws IOException {
 		// TODO Auto-generated method stub
-		List<DetalleFactura> detalleFacturas = getDetalleFacturas();
-		//buscar codigo el ultimo codigo Asignado 
+		List<DetalleFactura> detalleFacturas = getDetalleFacturas(); 
 		
 			for(DetalleFactura detalleFactura1 :detalleFacturas)
 			{
 				if(detalleFactura1.getFactura().getId().equals(detalleFactura.getFactura().getId()) 
 						&& detalleFactura1.getProducto().getId().equals(detalleFactura.getProducto().getId()) )
-				{
-					/// vacio 
+				{ 
 					detalleFactura1.setCantidad(detalleFactura.getCantidad());
 					detalleFactura1.setTotal(detalleFactura.getTotal());
 					detalleFactura1.setIva(detalleFactura.getIva());
@@ -91,13 +88,12 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 				break;
 			}
 		}
-		///guardar Todo 
 		guardarTodo(detalleFacturas);
 	
 	}
 
 	@Override
-	public DetalleFactura getDetalleFactura(Integer idFactura,Integer idProducto) throws FileNotFoundException {
+	public DetalleFactura getDetalleFactura(Integer idFactura,Integer idProducto) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		List<DetalleFactura> detalleFacturas = getDetalleFacturas();
 		for(DetalleFactura detalleFactura1 :detalleFacturas)
@@ -108,7 +104,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 				return detalleFactura1;
 			}
 		}
-		return null;
+		return new DetalleFactura();
 	}
 	public void guardarTodo(List<DetalleFactura> detalleFacturas ) throws IOException
 	{

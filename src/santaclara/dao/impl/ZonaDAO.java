@@ -24,13 +24,6 @@ public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
 		{
 			Zona zona = new Zona();
 			zona.setId(new Integer(scaner.skip("id:").nextLine().trim()));
-			
-			//JefeVentaDAO jefeVentaDAO = new JefeVentaDAO();
-			//JefeVenta jefeVenta = new JefeVenta(); 
-			
-			//jefeVenta = jefeVentaDAO.getJefeVenta(new Integer(scaner.skip("jefeventa:").nextLine().trim()));
-			
-			//zona.setJefeVenta(jefeVenta);
 			zona.setDescripcion(scaner.skip("descripcion:").nextLine());
 			zonas.add(zona); 
 		}
@@ -50,7 +43,8 @@ public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
 				return zona;
 			}
 		}
-		return null;
+		
+		return new Zona();
 	}
 
 	@Override

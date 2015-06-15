@@ -15,7 +15,7 @@ public class TestUsuarioDAO {
 	public void usuariosTest() throws FileNotFoundException {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		assertNotNull(usuarioDAO);
-		assertEquals(2,usuarioDAO.getUsuarios().size());
+		assertEquals(3,usuarioDAO.getUsuarios().size());
 	} 
 	@Test
 	public void addRemoveUsuarioTest() throws IOException {

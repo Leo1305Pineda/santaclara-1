@@ -8,7 +8,7 @@ import santaclara.modelo.EmpaqueProducto;
 
 public interface IEmpaqueProductoDAO extends IGenericoDAO{
 	
-	public List<EmpaqueProducto>  getEmpaques() throws FileNotFoundException;
+	public List<EmpaqueProducto>  getEmpaques() throws FileNotFoundException, NumberFormatException, IOException;
 
 	public void	guardar(EmpaqueProducto producto) throws IOException;
 	

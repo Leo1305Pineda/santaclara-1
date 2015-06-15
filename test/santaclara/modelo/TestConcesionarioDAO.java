@@ -10,7 +10,9 @@ import java.util.List;
 import org.junit.Test;
 
 import santaclara.dao.IConcesionarioDAO;
+import santaclara.dao.impl.CamionDAO;
 import santaclara.dao.impl.ConcesionarioDAO;
+import santaclara.dao.impl.RutaDAO;
 import santaclara.modelo.Concesionario;
 public class TestConcesionarioDAO {
 
@@ -18,7 +20,7 @@ public class TestConcesionarioDAO {
 	public void concesionariosTest() throws FileNotFoundException {
 		IConcesionarioDAO concesionarioDAO = new ConcesionarioDAO();
 		assertNotNull(concesionarioDAO);
-		assertEquals(1,concesionarioDAO.getConcecionarios().size());
+		assertEquals(3,concesionarioDAO.getConcecionarios().size());
 	}
 
 	@Test
@@ -31,18 +33,18 @@ public class TestConcesionarioDAO {
 		concesionario.setContrasena("1234");
 		concesionario.setNombre("Pedro Perez");
 		concesionario.setUsername("Vgowen");
-		Ruta ruta = new Ruta();
-		ruta.setId(1);
-		Camion camion = new Camion();
-		camion.setId(1);
-		concesionario.setRuta(ruta);
-		concesionario.setCamion(camion);
+		
+		RutaDAO rutaDAO = new RutaDAO();
+		concesionario.setRuta(rutaDAO.getRuta(2));
+		
+		CamionDAO camionDAO = new CamionDAO();
+		concesionario.setCamion(camionDAO.getCamion(2));
+		
 		
 		concesionarioDAO.guardar(concesionario);
 		assertNotNull(concesionario.getId());
-		assertNotEquals(4,concesionarioDAO.getConcecionarios().size());
+		assertNotEquals(2,concesionarioDAO.getConcecionarios().size());
 		assertEquals(concesionarios .size()+1,concesionarioDAO.getConcecionarios().size());
-
 		concesionarioDAO.eliminar(concesionario);
 		assertEquals(concesionarios .size(),concesionarioDAO.getConcecionarios().size());
 	}

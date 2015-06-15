@@ -14,4 +14,6 @@ public interface IPresentacionDAO extends IGenericoDAO{
 	
 	public void eliminar(Presentacion Presentacion) throws   IOException;
 	
+	public Presentacion getPresentacion(Integer id) throws IOException;
+	
 }

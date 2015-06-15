@@ -1,6 +1,0 @@
-id: 0
-material: Plastico    
-id: 1
-material: Aluminio
-id: 2
-material: Vidrio

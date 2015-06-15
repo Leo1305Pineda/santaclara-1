@@ -14,4 +14,6 @@ public interface ISaborDAO extends IGenericoDAO{
 	
 	public void eliminar(Sabor sabor) throws   IOException;
 	
+	public Sabor getSabor(Integer id) throws IOException;
+	
 }

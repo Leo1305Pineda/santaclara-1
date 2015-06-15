@@ -117,9 +117,7 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 			for(JefeVenta jefeVenta1 :jefeVentas)
 			{
 				if(jefeVenta1.getId().equals(jefeVenta.getId()))
-				{
-					/// vacio 
-					jefeVenta1.setId(jefeVenta.getId());
+				{ 
 					jefeVenta1.setUsername(jefeVenta.getUsername());
 					jefeVenta1.setCedula(jefeVenta.getCedula());
 					jefeVenta1.setNombre(jefeVenta.getNombre());
@@ -143,7 +141,6 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 				break;
 			}
 		}
-		///guardar Todo 
 		usuarioDAO.eliminar(jefeVenta);
 		guardarTodo(jefeVentas);
 	}
@@ -159,7 +156,7 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 				return jefeVenta;
 			}
 		}
-		return null;
+		return new JefeVenta();
 	}
 	
 	public void guardarTodo(List<JefeVenta> jefeVentas) throws IOException
@@ -175,7 +172,8 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 				}
 				fw.append("idVisitas:"+linea+"\n");
 			*/
-			fw.append("idZona:"+jefeVenta.getZona().getId().toString()+"\n");
+			fw.append("idZona:"+(jefeVenta.getZona() == null 
+					?"  ": jefeVenta.getZona().getId().toString())+"\n");
 		}
 		fw.close();
 	}

@@ -6,14 +6,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
- 
-
-
 import java.util.Scanner;
 
 import santaclara.dao.IClienteDAO;
 import santaclara.modelo.Cliente;
-import santaclara.modelo.Ruta;
 
 public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 
@@ -29,21 +25,20 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		while(scaner.hasNext())
 		{
 			 Cliente cliente = new Cliente();
-			 cliente.setId(new Integer(scaner.skip("id:").nextLine()));
-			 cliente.setRif(scaner.skip("rif:").nextLine());
-			 cliente.setRazonsocial(scaner.skip("razonsocial:").nextLine());
+			 cliente.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 cliente.setRif(scaner.skip("rif:").nextLine().trim());
+			 cliente.setRazonsocial(scaner.skip("razonsocial:").nextLine().trim());
 			 cliente.setDireccion(scaner.skip("direccion:").nextLine());
-			 cliente.setTelefono(scaner.skip("telefono:").nextLine());
-			 String linea =scaner.skip("ruta:").nextLine();
+			 cliente.setTelefono(scaner.skip("telefono:").nextLine().trim());
+			 String linea =scaner.skip("ruta:").nextLine().trim();
 			 if(linea.trim().length() == 0)
 			 {
 				 cliente.setRuta(null);
 			 }
 			 else
 			 {
-				 Ruta ruta = new Ruta();
-				 ruta.setId(new Integer(linea));
-				 cliente.setRuta(ruta);				 	 
+				 RutaDAO rutaDAO = new RutaDAO();
+				 cliente.setRuta(rutaDAO.getRuta(new Integer(linea)));				 	 
 			 }
 			 clientes.add(cliente); 
 		}
@@ -73,8 +68,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 			for(Cliente cliente1 :clientes)
 			{
 				if(cliente1.getId().equals(cliente.getId()))
-				{
-					/// vacio 
+				{ 
 					cliente1.setRif(cliente.getRif());
 					cliente1.setRazonsocial(cliente.getRazonsocial());
 					cliente1.setDireccion(cliente.getDireccion());
@@ -98,7 +92,6 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 				break;
 			}
 		}
-		///guardar Todo 
 		guardarTodo(clientes);
 		
 	}
@@ -112,9 +105,10 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 			if(cliente1.getId().equals(id))
 			{
 				return cliente1;
+				
 			}
 		}
-		return null;
+		return new Cliente();
     }
 
 	
@@ -142,16 +136,36 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		fw.close();
 	}
 
-	
+
+	public void Mostrar() throws IOException{
+		List<Cliente> clientes = getClientes();
+		System.out.println("Listar Todos los Clientes");
+		for(Cliente cliente1 :clientes)
+		{
+			System.out.println("id: "+cliente1.getId());
+			System.out.println("rif: "+cliente1.getRif());
+			System.out.println("razonSocial: "+cliente1.getRazonsocial());
+			System.out.println("direccion: "+cliente1.getDireccion());
+			System.out.println("telefono: "+cliente1.getTelefono()+"\n");
+			
+			System.out.println("Informacion de la Ruta del Cliente: ");
+			System.out.println("id: "+cliente1.getRuta().getId());
+			System.out.println("nombre: "+cliente1.getRuta().getNombre()+"\n");
+			
+			System.out.println("Informacion de la Ruta-Zona del Cliente: ");
+			System.out.println("id: "+cliente1.getRuta().getZona().getId());
+			System.out.println("descripcion: "+cliente1.getRuta().getZona().getDescripcion()+"\n");
+			
+		}
+	}
 	/*
  	La Estructura de los Archivos sera la Siguiente 
-  	id: 00
-	ced: V-19827297
-	nom: Rhonal Alfredo
-	ape: Cirinos Rodriguez
-	dir: Barrio el Jebe Sector la Estrella 
-	tel: 0416155-6613
-	ru:  null
+  	id:1
+	rif:V-19827297
+	razonsocial:Rhonal Alfredo
+	direccion:Barrio el Jebe Sector la Estrella
+	telefono:04161556613
+	ruta:1
   * */
 	
 } 

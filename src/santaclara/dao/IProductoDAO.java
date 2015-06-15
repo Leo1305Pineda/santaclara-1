@@ -8,12 +8,12 @@ import santaclara.modelo.Producto;
 
 public interface IProductoDAO extends IGenericoDAO{
 	
-	public List<Producto>  getproductos() throws FileNotFoundException;
+	public List<Producto>  getProductos() throws FileNotFoundException, NumberFormatException, IOException;
 
 	public void	guardar(Producto producto) throws IOException;
 	
 	public void eliminar(Producto producto) throws   IOException;
 	
-	public Producto getProducto(Integer id) throws FileNotFoundException;
+	public Producto getProducto(Integer id) throws FileNotFoundException, NumberFormatException, IOException;
 
 }

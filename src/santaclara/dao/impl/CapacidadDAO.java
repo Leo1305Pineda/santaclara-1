@@ -24,8 +24,8 @@ public class CapacidadDAO extends GenericoDAO implements ICapacidadDAO{
 		while(scaner.hasNext())
 		{
 			 Capacidad capacidad = new Capacidad();
-			 capacidad.setId(new Integer(scaner.skip("id:").nextLine()));
-			 capacidad.setVolumen(new Double(scaner.skip("volumen:").nextLine()));
+			 capacidad.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 capacidad.setVolumen(new Double(scaner.skip("volumen:").nextLine().trim()));
 			 capacidades.add(capacidad);
 		}
 		return capacidades;
@@ -54,8 +54,7 @@ public class CapacidadDAO extends GenericoDAO implements ICapacidadDAO{
 			for(Capacidad capacidad1 :capacidades)
 			{
 				if(capacidad1.getId().equals(capacidad.getId()))
-				{
-					/// vacio 
+				{ 
 					capacidad1.setVolumen(capacidad.getVolumen());
 					
 				}
@@ -76,7 +75,6 @@ public class CapacidadDAO extends GenericoDAO implements ICapacidadDAO{
 				break;
 			}
 		}
-		///guardar Todo 
 		guardarTodo(capacidades);
 
 	}
@@ -87,8 +85,25 @@ public class CapacidadDAO extends GenericoDAO implements ICapacidadDAO{
 		for(Capacidad capacidad : capacidades)
 		{
 			fw.append("id:"+capacidad.getId().toString()+"\n");
-			fw.append("cedula:"+capacidad+"\n");
+			fw.append("volumen:"+capacidad.getVolumen().toString()+"\n");
 		}
 		fw.close();
 	}
+	@Override
+	public Capacidad getCapacidad(Integer id) throws IOException {
+		// TODO Auto-generated method stub
+		List<Capacidad> capacidades = getCapacidades();
+		for(Capacidad capacidad1 : capacidades)
+		{
+			if (capacidad1.getId().equals(id))
+			{
+				return capacidad1;
+			}
+		}
+		return new Capacidad();
+	}
+	/*Estructura
+	 * id:0
+	 * volumen:355   
+	 */
 }

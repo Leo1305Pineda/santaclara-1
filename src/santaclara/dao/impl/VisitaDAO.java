@@ -146,7 +146,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 				return visita1;
 			}
 		}
-		return null;
+		return new Visita();
 	}
 	
 	public void guardarTodo(List<Visita> visitas) throws IOException
@@ -161,8 +161,12 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 			fw.append("valorVendedor:"+visita.getValorVendedor().toString()+"\n");
 			fw.append("valorProducto:"+visita.getValorProducto().toString()+"\n");
 			fw.append("estado:"+visita.getEstado().toString()+"\n");
-			fw.append("idJefeVenta:"+visita.getJefeVenta().getId().toString()+"\n");
-			fw.append("idCliente:"+visita.getCliente().getId().toString()+"\n");
+			
+			fw.append("idJefeVenta:"+(visita.getJefeVenta()== null
+					? "  ":visita.getJefeVenta().getId().toString())+"\n");
+			
+			fw.append("idCliente:"+(visita.getCliente() == null 
+					?" ":visita.getCliente().getId().toString())+"\n");
 		}
 		fw.close();
 	}
