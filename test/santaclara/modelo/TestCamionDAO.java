@@ -32,6 +32,7 @@ public class TestCamionDAO {
 		camion.setColor("verde");
 		camion.setAno("2015");
 		camion.setPlaca("koej22");
+		
 		camionDAO.guardar(camion);
 		assertNotNull(camion.getId());
 		assertNotEquals(3,camionDAO.getCamiones().size());
@@ -39,6 +40,7 @@ public class TestCamionDAO {
 
 		camionDAO.eliminar(camion);
 		assertEquals(camiones.size(),camionDAO.getCamiones().size());
+		camionDAO.Mostrar();
 	}
 
 }

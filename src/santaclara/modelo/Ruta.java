@@ -1,15 +1,10 @@
 package santaclara.modelo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Ruta {
 	
 	private Integer id;
 	private Zona zona;
 	private String nombre;
-	private String sector;
-	private List<Cliente> clientes = new ArrayList<Cliente>();
 
 	public Ruta() {
 		super();
@@ -20,7 +15,6 @@ public class Ruta {
 		this.id = id;
 		this.zona = zona;
 		this.nombre = nombre;
-		this.sector = sector;
 	}
 	public Ruta(Integer id ) {
 		super();
@@ -46,16 +40,5 @@ public class Ruta {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getSector() {
-		return sector;
-	}
-	public void setSector(String sector) {
-		this.sector = sector;
-	}
-	public List<Cliente> getClientes() {
-		return clientes;
-	}
-	public void setClientes(List<Cliente> clientes) {
-		this.clientes = clientes;
-	}
+	
 }

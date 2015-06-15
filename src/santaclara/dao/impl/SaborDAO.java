@@ -24,11 +24,11 @@ public class SaborDAO extends GenericoDAO implements ISaborDAO{
 		while(scaner.hasNext())
 		{
 			 Sabor sabor = new Sabor();
-			 sabor.setId(new Integer(scaner.skip("id:").nextLine()));
-			 sabor.setSabor(scaner.skip("sabor:").nextLine());
+			 sabor.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 sabor.setSabor(scaner.skip("sabor:").nextLine().trim());
 			 sabores.add(sabor);
 		}
-		
+		scaner.close();
 		return sabores;
 	}
 
@@ -55,8 +55,7 @@ public class SaborDAO extends GenericoDAO implements ISaborDAO{
 			for(Sabor sabor1 :sabores)
 			{
 				if(sabor1.getId().equals(sabor.getId()))
-				{
-					/// vacio 
+				{ 
 					sabor1.setSabor(sabor.getSabor());
 					
 				}
@@ -77,9 +76,21 @@ public class SaborDAO extends GenericoDAO implements ISaborDAO{
 				break;
 			}
 		}
-		///guardar Todo 
 		guardarTodo(sabores);
 
+	}
+	@Override
+	public Sabor getSabor(Integer id) throws IOException {
+		// TODO Auto-generated method stub
+		List<Sabor> sabores = getSabores();
+		for(Sabor sabor1 : sabores)
+		{
+			if (sabor1.getId().equals(id))
+			{
+				return sabor1;
+			}
+		}
+		return new Sabor();
 	}
 	
 	public void guardarTodo(List<Sabor> sabores ) throws IOException
@@ -88,8 +99,14 @@ public class SaborDAO extends GenericoDAO implements ISaborDAO{
 		for(Sabor sabor :sabores)
 		{
 			fw.append("id:"+sabor.getId().toString()+"\n");
-			fw.append("cedula:"+sabor.getSabor()+"\n");
+			fw.append("sabor:"+sabor.getSabor()+"\n");
 		}
 		fw.close();
 	}
+	/*Estructura
+ 	id:  0  
+	sabor: AguaUva 
+
+	 * */
+
 }

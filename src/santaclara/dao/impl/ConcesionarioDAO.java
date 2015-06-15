@@ -8,11 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import santaclara.dao.IConcesionarioDAO;
-import santaclara.modelo.Camion;
 import santaclara.modelo.Concesionario;
-import santaclara.modelo.Ruta;
 import santaclara.modelo.Usuario;
 
 public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
@@ -34,8 +31,10 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 		for(Concesionario concesionario : concesionarios)
 		{
 			fw.append("id:"+concesionario.getId().toString()+"\n");
-			fw.append("camion:"+concesionario.getCamion().getId().toString()+"\n");
-			fw.append("ruta:"+concesionario.getRuta().getId().toString()+"\n");
+			fw.append("camion:"+(concesionario.getCamion() == null
+					? "  ":concesionario.getCamion().getId())+"\n");
+			fw.append("ruta:"+(concesionario.getRuta() == null
+					? "  ":concesionario.getCamion().getId())+"\n");
 
 		}
 		fw.close();
@@ -52,13 +51,18 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 		while(scaner.hasNext())
 		{
 			 Concesionario concesionario = new Concesionario();
-			 concesionario.setId(new Integer(scaner.skip("id:").nextLine()));
-			 Camion camion = new Camion();
-			 camion.setId(new Integer(scaner.skip("camion:").nextLine()));
-			 Ruta ruta = new Ruta();
-			 ruta.setId(new Integer(scaner.skip("ruta:").nextLine()));
-			 concesionario.setRuta(ruta);
-			 concesionario.setCamion(camion);
+			 concesionario.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 
+			 CamionDAO camionDAO = new CamionDAO();
+			 		concesionario.setCamion(
+			 			camionDAO.getCamion(
+			 					new Integer(scaner.skip("camion:").nextLine().trim())));
+			 
+			 RutaDAO rutaDAO = new RutaDAO();
+			 concesionario.setRuta(
+					 rutaDAO.getRuta(
+							 new Integer(scaner.skip("ruta:").nextLine().trim())));
+			 
 			 concesionarios.add(concesionario); 
 		}
 		scaner.close();
@@ -106,8 +110,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 			for(Concesionario concesionario1 : concesionarios)
 			{
 				if(concesionario1.getId().equals(concesionario.getId()))
-				{
-					/// vacio 
+				{ 
 					concesionario1.setId(concesionario.getId());
 					concesionario1.setUsername(concesionario.getUsername());
 					concesionario1.setCedula(concesionario.getCedula());
@@ -133,7 +136,6 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 				break;
 			}
 		}
-		///guardar Todo 
 		usuarioDAO.eliminar(concesionario);
 		guardarTodo(concecionarios);
 		
@@ -151,7 +153,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 				return concecionario;
 			}
 		}
-		return null;
+		return new Concesionario();
 	}
 
 	

@@ -1,21 +1,18 @@
 package santaclara.dao.impl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import santaclara.dao.IEmpaqueProductoDAO;
-import santaclara.modelo.Producto;
 import santaclara.modelo.EmpaqueProducto;
 
 public  class EmpaqueProductoDAO extends GenericoDAO implements IEmpaqueProductoDAO{
 	
 private String ruta = "archivos/empaqueProducto.txt";	
-public List<EmpaqueProducto> getEmpaques() throws FileNotFoundException {
+public List<EmpaqueProducto> getEmpaques() throws NumberFormatException, IOException {
 	// TODO Auto-generated method stub
 	List<EmpaqueProducto> empaques = new ArrayList<EmpaqueProducto>();
 	File file = new File(ruta);
@@ -23,23 +20,13 @@ public List<EmpaqueProducto> getEmpaques() throws FileNotFoundException {
 	while(scaner.hasNext())
 	{
 		 EmpaqueProducto empaque = new EmpaqueProducto();
-		 String linea;
-		 empaque.setId(new Integer(scaner.skip("id:").nextLine()));
+		 empaque.setId(new Integer(scaner.skip("id:").nextLine().trim()));
 		 //Asigna Producto
-		 linea = scaner.skip("idProducto:").nextLine();
-		 if(linea.trim().length() == 0)
-		 {
-			 empaque.setProducto(null);
-		 }
-		 else
-		 {
-			 Producto capacidad = new Producto();
-			 capacidad.setId(new Integer(linea));
-			 empaque.setProducto(capacidad);				 	 
-		 }
-		 //asigna Presentacion
-		  
-		 empaque.setCantidad(new Integer(scaner.skip("cantidad:").nextLine()));
+		 ProductoDAO productoDAO = new ProductoDAO();
+		 empaque.setProducto(
+				 productoDAO.getProducto(
+						 new Integer(scaner.skip("idProducto:").nextLine().trim())));
+		 empaque.setCantidad(new Integer(scaner.skip("cantidad:").nextLine().trim()));
 		 
 		 empaques.add(empaque); 
 	}
@@ -71,7 +58,7 @@ public List<EmpaqueProducto> getEmpaques() throws FileNotFoundException {
 			{
 				if(empaque1.getId().equals(EmpaqueProducto.getId()))
 				{
-					/// vacio 
+		 
 					empaque1.setId(EmpaqueProducto.getId());
 					empaque1.setProducto(EmpaqueProducto.getProducto());
 					empaque1.setCantidad(EmpaqueProducto.getCantidad());
@@ -92,8 +79,7 @@ public List<EmpaqueProducto> getEmpaques() throws FileNotFoundException {
 				empaques.remove(empaque1);
 				break;
 			}
-		}
-		///guardar Todo 
+		} 
 		guardarTodo(empaques);
 		
 	}
@@ -114,8 +100,9 @@ public List<EmpaqueProducto> getEmpaques() throws FileNotFoundException {
 		for(EmpaqueProducto producto :productos)
 		{
 			fw.append("id:"+producto.getId().toString()+"\n");
-			fw.append("idProducto:"+producto.getProducto() == null ? "  ":producto.getProducto().getId()+"\n");
-			fw.append("cantida:"+producto.getCantidad()+"\n");
+			fw.append("idProducto:"+(producto.getProducto() == null 
+					? "  ":producto.getProducto().getId())+"\n");
+			fw.append("cantidad:"+producto.getCantidad()+"\n");
 		}
 		fw.close();
 	}
@@ -131,7 +118,7 @@ public List<EmpaqueProducto> getEmpaques() throws FileNotFoundException {
 				return Empaqueproducto1;
 			}
 		}
-		return null;
+		return new EmpaqueProducto();
 	}
 	
 /* 	La Estructura de los Archivos sera la Siguiente 

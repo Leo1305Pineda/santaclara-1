@@ -17,27 +17,30 @@ public class TestVendedorDAO {
 	public void vendedoresTest() throws FileNotFoundException {
 		VendedorDAO vendedorDAO = new VendedorDAO();
 		assertNotNull(vendedorDAO);
-		assertEquals(4,vendedorDAO.getVendedores().size());
+		assertEquals(3,vendedorDAO.getVendedores().size());
 	}
 
 	@Test
 	public void addRemoveVendedorTest() throws IOException {
 		VendedorDAO vendedorDAO = new VendedorDAO();
 		List<Vendedor> vendedores= vendedorDAO.getVendedores();
+		Vendedor vendedor1 = new Vendedor();
+		vendedor1.setCedula("V-81233484");
+		vendedor1.setContrasena("1234");
+		vendedor1.setNombre("Mario Torres");
+		vendedor1.setUsername("Vgowen");
+		vendedor1.setRutas(null);
 		
-		Vendedor vendedores1 = new Vendedor();
-		vendedores1.setCedula("V-8796484");
-		vendedores1.setContrasena("1234");
-		vendedores1.setNombre("Pedro Perez");
-		vendedores1.setUsername("Vgowen");
-		
-		vendedorDAO.guardar(vendedores1);
-		assertNotNull(vendedores1.getId());
-		assertNotEquals(3,vendedorDAO.getVendedores().size());
+		vendedorDAO.guardar(vendedor1);
+		assertNotNull(vendedor1.getId());
+		assertNotEquals(2,vendedorDAO.getVendedores().size());
 		assertEquals(vendedores.size()+1,vendedorDAO.getVendedores().size());
 
-		vendedorDAO.eliminar(vendedores1);
+		vendedorDAO.eliminar(vendedor1);
 		assertEquals(vendedores.size(),vendedorDAO.getVendedores().size());
+	
+				
+		
 	}
 	
 }

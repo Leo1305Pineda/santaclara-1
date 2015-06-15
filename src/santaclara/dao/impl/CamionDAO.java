@@ -13,10 +13,8 @@ import santaclara.modelo.Camion;
 
 public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 
-	
-
 	private String ruta = "archivos/camiones.txt";
-
+	
 	@Override
 	public List<Camion> getCamiones() throws FileNotFoundException {
 		// TODO Auto-generated method stub
@@ -26,13 +24,13 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 		while(scaner.hasNext())
 		{
 			 Camion camion = new Camion();
-			 camion.setId(new Integer(scaner.skip("id:").nextLine()));
-			 camion.setPlaca(scaner.skip("placa:").nextLine());
-			 camion.setColor(scaner.skip("color:").nextLine());
-			 camion.setCapacidad( new Double(scaner.skip("capacidad:").nextLine()));
-			 camion.setModelo(scaner.skip("modelo:").nextLine());
-			 camion.setMarca(scaner.skip("marca:").nextLine());
-			 camion.setAno(scaner.skip("ano:").nextLine());
+			 camion.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 camion.setPlaca(scaner.skip("placa:").nextLine().trim());
+			 camion.setColor(scaner.skip("color:").nextLine().trim());
+			 camion.setCapacidad( new Double(scaner.skip("capacidad:").nextLine().trim()));
+			 camion.setModelo(scaner.skip("modelo:").nextLine().trim());
+			 camion.setMarca(scaner.skip("marca:").nextLine().trim());
+			 camion.setAno(scaner.skip("ano:").nextLine().trim());
 			 camiones.add(camion); 
 		}
 		scaner.close();
@@ -62,8 +60,7 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 			for(Camion camion1 :camiones)
 			{
 				if(camion1.getId().equals(camion.getId()))
-				{
-					/// vacio 
+				{ 
 					camion1.setId(camion.getId());
 				}
 			}
@@ -77,18 +74,17 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 		List<Camion> camiones = getCamiones();
 		for(Camion camion1 :camiones)
 		{
-			if(camion1.getId().equals(camion1.getId()))
+			if(camion1.getId().equals(camion.getId()))
 			{
 				camiones.remove(camion1);
 				break;
 			}
 		}
-		///guardar Todo 
 		guardarTodo(camiones);
 	}
 
 	@Override
-	public Camion getCamiones(Integer id) throws FileNotFoundException {
+	public Camion getCamion(Integer id) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<Camion> camiones = getCamiones();
 		
@@ -99,7 +95,7 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 				return camion;
 			}
 		}
-		return null;
+		return new Camion();
     	}
 
 	
@@ -115,8 +111,34 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 			fw.append("capacidad:"+camion.getCapacidad().toString()+"\n");
 			fw.append("modelo:"+camion.getModelo()+"\n");
 			fw.append("marca:"+camion.getMarca()+"\n");
-			fw.append("ano:"+camion.getAno()+"\n");
+			fw.append("ano:"+camion.getAno().toString()+"\n");
 		}
 		fw.close();
 	}
+	
+	public void Mostrar() throws IOException {
+		// TODO Auto-generated method stub
+		List<Camion> camiones = getCamiones();
+		System.out.println("Listar Todos los Camiones");
+		for(Camion camion1 :camiones)
+		{
+			System.out.println("id: "+camion1.getId());
+			System.out.println("placa: "+camion1.getPlaca());
+			System.out.println("color: "+camion1.getColor());
+			System.out.println("capacidad: "+camion1.getCapacidad());
+			System.out.println("modelo: "+camion1.getModelo());
+			System.out.println("marca: "+camion1.getMarca());
+			System.out.println("ano: "+camion1.getAno()+"\n");
+		}
+	}
+/*
+ *Estructura
+id:11
+placa:koej22
+color:verde
+capacidad:4500.0
+modelo:350
+marca:ford
+ano:2015
+*/
 }

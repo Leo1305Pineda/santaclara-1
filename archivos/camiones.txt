@@ -1,10 +1,17 @@
+id:1
+placa:koej22
+color:verde
+capacidad:4500.0
+modelo:350
+marca:ford
+ano:2015
 id:2
-placa:po456f
-color:Azul
-capacidad:29000.0
-modelo:2628e
-marca:Ford Cargo
-ano:2001
+placa:koej22
+color:verde
+capacidad:4500.0
+modelo:350
+marca:ford
+ano:2015
 id:3
 placa:koej22
 color:verde
@@ -13,13 +20,6 @@ modelo:350
 marca:ford
 ano:2015
 id:4
-placa:koej22
-color:verde
-capacidad:4500.0
-modelo:350
-marca:ford
-ano:2015
-id:5
 placa:koej22
 color:verde
 capacidad:4500.0

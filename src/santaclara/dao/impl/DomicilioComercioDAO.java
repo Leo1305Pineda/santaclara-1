@@ -29,8 +29,8 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 		{
 			 DomicilioComercio domicilioComercio = new DomicilioComercio();
 			 
-			 domicilioComercio.setId(new Integer(scaner.skip("id:").nextLine()));
-			 domicilioComercio.setTipo(scaner.skip("tipo:").nextLine());
+			 domicilioComercio.setId(new Integer(scaner.skip("idCliente:").nextLine().trim()));
+			 domicilioComercio.setTipo(scaner.skip("tipo:").nextLine().trim());
 			 
 			 domicilioComercios.add(domicilioComercio); 
 		}
@@ -62,8 +62,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 			for(DomicilioComercio domicilioComercio1 :DomicilioComercios)
 			{
 				if(domicilioComercio1.getId().equals(domicilioComercio.getId()))
-				{
-					/// vacio 
+				{ 
 					domicilioComercio1.setRif(domicilioComercio.getRif());
 					domicilioComercio1.setRazonsocial(domicilioComercio.getRazonsocial());
 					domicilioComercio1.setDireccion(domicilioComercio.getDireccion());
@@ -89,7 +88,6 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 				break;
 			}
 		}
-		///guardar Todo 
 		guardarTodo(domicilioComercios);
 	}
 
@@ -104,7 +102,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 				return domicilioComercio1;
 			}
 		}
-		return null;
+		return new DomicilioComercio();
 
 	}
 
@@ -113,8 +111,10 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 		FileWriter fw = new FileWriter(ruta);
 		for(DomicilioComercio domicilioComercio :domicilioComercios)
 		{
-			fw.append("id:"+domicilioComercio.getId().toString()+"\n");
-			fw.append("id:"+domicilioComercio.getTipo().toString()+"\n");
+			fw.append("idCliente:"+(domicilioComercio == null 
+					? "  ":domicilioComercio.getId().toString())+"\n");
+			
+			fw.append("tipo:"+domicilioComercio.getTipo().toString()+"\n");
 			
 		}
 		fw.close();
@@ -125,9 +125,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 	/*
  	La Estructura de los Archivos sera la Siguiente 
 idCliente:1
-tipoDomicilio:C
-idCliente:2
-tipo:D      
+tipo:C
 * */
 	
 } 

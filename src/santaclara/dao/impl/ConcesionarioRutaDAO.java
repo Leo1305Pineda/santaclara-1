@@ -9,10 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import santaclara.dao.IConcesionarioRutaDAO;
-import santaclara.modelo.Cliente;
 import santaclara.modelo.ConcesionarioRuta;
-import santaclara.modelo.Concesionario;
-import santaclara.modelo.Ruta;
 
 public class ConcesionarioRutaDAO extends GenericoDAO implements IConcesionarioRutaDAO{
 	private String ruta = "archivos/concesionarioRutas.txt";
@@ -21,55 +18,39 @@ public class ConcesionarioRutaDAO extends GenericoDAO implements IConcesionarioR
 		// TODO Auto-generated method stub
 		List<ConcesionarioRuta> concesionarioRutas = new ArrayList<ConcesionarioRuta>();
 		File file = new File(ruta);
-		String linea;
  		Scanner scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		
+ 		while(scaner.hasNext())
 		{
-			 ConcesionarioRuta concesionarioRuta = new ConcesionarioRuta();
+			ConcesionarioRuta concesionarioRuta = new ConcesionarioRuta();
 			 
-			 linea =scaner.skip("idCliente:").nextLine();
-			 if(linea.trim().length() == 0)
-			 {
-				 concesionarioRuta.setCliente(null);
-			 }
-			 else
-			 {
-				 Cliente cliente = new Cliente();
-				 concesionarioRuta.setCliente(cliente);				 	 
-			 }
-			 //asigna Ruta
-			 linea =scaner.skip("idConcesionario").nextLine();
-			 if(linea.trim().length() == 0)
-			 {
-				 concesionarioRuta.setConcesionario(null);
-			 }
-			 else
-			 {
-				 Concesionario concesionario = new Concesionario();
-				 concesionarioRuta.setConcesionario(concesionario);				 	 
-			 }
-			 linea =scaner.skip("idRuta").nextLine();
-			 if(linea.trim().length() == 0)
-			 {
-				 concesionarioRuta.setRuta(null);
-			 }
-			 else
-			 {
-				 Ruta ruta = new Ruta();
-				 concesionarioRuta.setRuta(ruta);				 	 
-			 }
+			ClienteDAO clienteDAO = new ClienteDAO();
+			concesionarioRuta.setCliente(
+					clienteDAO.getCliente(
+						new Integer(scaner.skip("idCliente:").nextLine().trim())));
+			 
+			ConcesionarioDAO concesionarioDAO = new ConcesionarioDAO();
+			concesionarioRuta.setConcesionario(
+					concesionarioDAO.getConcesionario(
+							new Integer(scaner.skip("idConcesionario:").nextLine().trim())));				 	 
+			 
+			RutaDAO rutaDAO = new RutaDAO();
+			 concesionarioRuta.setRuta(
+					 rutaDAO.getRuta(
+							 new Integer(scaner.skip("idRuta:").nextLine().trim())));				 	 
+			 
+			 concesionarioRuta.setDias(scaner.skip("dias:").nextLine().trim());
 			 
 			 concesionarioRutas.add(concesionarioRuta); 
 		}
-		
+		scaner.close();
 		return concesionarioRutas;
 	}
 
 	@Override
 	public void guardar(ConcesionarioRuta concesionarioRuta) throws IOException {
 		// TODO Auto-generated method stub
-		List<ConcesionarioRuta> consecionarioRutas = getConcesionarioRutas();
-		// 
+		List<ConcesionarioRuta> consecionarioRutas = getConcesionarioRutas(); 
 		Boolean enc= new Boolean(false);
 		for(ConcesionarioRuta concesionarioRuta1 :consecionarioRutas)
 		{
@@ -104,7 +85,6 @@ public class ConcesionarioRutaDAO extends GenericoDAO implements IConcesionarioR
 				break;
 			}
 		}
-		//guardar Todo 
 		guardarTodo(consecionarioRutas);
 	}
 
@@ -121,7 +101,7 @@ public class ConcesionarioRutaDAO extends GenericoDAO implements IConcesionarioR
 				return concesionarioRuta1;
 			}
 		}
-		return null;
+		return new ConcesionarioRuta();
 	}
 	public ConcesionarioRutaDAO(String ruta) {
 		super();
@@ -136,10 +116,13 @@ public class ConcesionarioRutaDAO extends GenericoDAO implements IConcesionarioR
 		FileWriter fw = new FileWriter(ruta);
 		for(ConcesionarioRuta concesionarioRuta :concesionarioRutas)
 		{
-			fw.append("idCliente:"+concesionarioRuta.getCliente().toString()+"\n");
-			fw.append("idConcesionario:"+concesionarioRuta.getConcesionario()+"\n");
-			fw.append("idRuta:"+concesionarioRuta.getRuta()+"\n");
-			fw.append("dia:"+concesionarioRuta.getDias()+"\n");
+			fw.append("idCliente:"+(concesionarioRuta.getCliente() == null 
+					? " ":concesionarioRuta.getCliente().getId().toString())+"\n");
+			fw.append("idConcesionario:"+(concesionarioRuta.getConcesionario() == null 
+					? "  ":concesionarioRuta.getConcesionario().getId())+"\n");
+			fw.append("idRuta:"+(concesionarioRuta.getRuta() == null 
+					? "  ":concesionarioRuta.getRuta().getId())+"\n");
+			fw.append("dias:"+concesionarioRuta.getDias()+"\n");
 	}
 	fw.close();
 	}
@@ -149,9 +132,9 @@ public class ConcesionarioRutaDAO extends GenericoDAO implements IConcesionarioR
 idCliente:03
 idConcesionario:03
 idRuta:00
-dia:123
+dias:123
 idCliente:04
 id:usuario:04
 idRuta:01
-dia:456
+dias:456
 * */

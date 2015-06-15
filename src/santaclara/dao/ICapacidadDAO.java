@@ -14,4 +14,5 @@ public interface ICapacidadDAO extends IGenericoDAO{
 	
 	public void eliminar(Capacidad capacidad) throws   IOException;
 	
+	public Capacidad getCapacidad(Integer id) throws IOException;
 }

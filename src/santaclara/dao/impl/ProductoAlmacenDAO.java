@@ -18,35 +18,23 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 		File file = new File(ruta);
  		Scanner scaner = new Scanner(file);
 		while(scaner.hasNext())
-		{
-			//asigna Producto
+		{			
 			 ProductoAlmacen productoAlmacen = new ProductoAlmacen();
-			 String linea;
-			 linea = scaner.skip("idCliente:").nextLine();
-			 if(linea.trim().length() == 0)
-			 {
-				 productoAlmacen.setProducto(null);
-			 }
-			 else
-			 {
-				 EmpaqueProductoDAO empaqueProductoDAO = new EmpaqueProductoDAO();
-				 productoAlmacen.setProducto(empaqueProductoDAO.getEmpaqueProducto(new Integer(linea)));
-			 }
-			 
+			 //asigna Producto
+			 EmpaqueProductoDAO productoEmpaqueDAO = new EmpaqueProductoDAO();
+			 System.out.println("Paso Por Aca");
+			 productoAlmacen.setProducto(
+					 productoEmpaqueDAO.getEmpaqueProducto(
+							 new Integer(scaner.skip("idEmpaqueProducto:").nextLine().trim())));
 			 //asigna Almacen
-			 linea = scaner.skip("idAlmacen:").nextLine();
-			 if(linea.trim().length() == 0)
-			 {
-				 productoAlmacen.setAlmacen(null);
-			 }
-			 else
-			 {
-				 AlmacenDAO almacenDAO = new AlmacenDAO(); 
-				 productoAlmacen.setAlmacen(almacenDAO.getAlmacen(new Integer(linea)));			 	 
-			 }
-			 productoAlmacen.setStock(new Integer(scaner.skip("stock:").nextLine()));
-			 productoAlmacen.setStockMin(new Integer(scaner.skip("stockMin:").nextLine()));
-			 productoAlmacen.setExistencia(new Integer(scaner.skip("existencia:").nextLine()));
+			 AlmacenDAO almacenDAO = new AlmacenDAO();
+			 productoAlmacen.setAlmacen(
+					 almacenDAO.getAlmacen(
+							 new Integer(scaner.skip("idAlmacen:").nextLine().trim())));
+			 
+			 productoAlmacen.setStock(new Integer(scaner.skip("stock:").nextLine().trim()));
+			 productoAlmacen.setStockMin(new Integer(scaner.skip("stockMin:").nextLine().trim()));
+			 productoAlmacen.setExistencia(new Integer(scaner.skip("existencia:").nextLine().trim()));
 			 
 			 productoAlmacenes.add(productoAlmacen); 
 		}
@@ -58,14 +46,12 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	@Override
 	public void guardar(ProductoAlmacen productoAlmacen) throws IOException {
 		// TODO Auto-generated method stub
-		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes();
-		//buscar codigo el ultimo codigo Asignado 
+		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes(); 
 			for(ProductoAlmacen productoAlmacen1 :productoAlmacenes)
 			{
 				if(productoAlmacen.getProducto().getId() == null && 
 						productoAlmacen.getAlmacen().getId() == null)
-				{
-					/// vacio 
+				{ 
 					productoAlmacen1.setExistencia(productoAlmacen.getExistencia());
 					productoAlmacen1.setStock(productoAlmacen.getStock());
 					productoAlmacen1.setStockMin(productoAlmacen.getStockMin());
@@ -88,8 +74,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 				ProductoAlmacenes.remove(productoAlmacen1);
 				break;
 			}
-		}
-		///guardar Todo 
+		} 
 		guardarTodo(ProductoAlmacenes);
 	}
 
@@ -115,7 +100,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 				return productoAlmacen1;
 			}
 		}
-		return null;
+		return new ProductoAlmacen();
 	}
 	
 	public void guardarTodo(List<ProductoAlmacen> productoAlmacenes ) throws IOException
@@ -123,8 +108,10 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 		FileWriter fw = new FileWriter(ruta);
 		for(ProductoAlmacen productoAlmacen :productoAlmacenes)
 		{
-			fw.append("idProducto:"+productoAlmacen.getProducto() == null ? "  ":productoAlmacen.getProducto().getId()+"\n");
-			fw.append("idAlmacen:"+productoAlmacen.getAlmacen() == null ? "  ":productoAlmacen.getAlmacen().getId()+"\n");
+			fw.append("idEmpaqueProducto:"+(productoAlmacen.getProducto() == null 
+					? "  ":productoAlmacen.getProducto().getId().toString())+"\n");
+			fw.append("idAlmacen:"+(productoAlmacen.getAlmacen() == null 
+					? "  ":productoAlmacen.getAlmacen().getId().toString())+"\n");
 			fw.append("stock:"+productoAlmacen.getStock()+"\n");
 			fw.append("stockMin:"+productoAlmacen.getStockMin()+"\n");
 			fw.append("existencia:"+productoAlmacen.getExistencia()+"\n");
@@ -133,7 +120,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	}
 
 /*
- * idProducto:0
+ * idEmpaqueProducto::0
 idAlmacen:0
 stock:100000
 stockMin:900000

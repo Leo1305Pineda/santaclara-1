@@ -158,7 +158,7 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 				return salp1;
 			}
 		}
-		return null;
+		return new Salp();
 
 	}
 
@@ -167,14 +167,26 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 		FileWriter fw = new FileWriter(ruta);
 		for(Salp domicilioComercio :domicilioComercios)
 		{
-			fw.append("id:"+domicilioComercio.getId().toString()+"\n");
-			fw.append("id:"+domicilioComercio.getFacturas().toString()+"\n");
+			fw.append("idCliente:"+(domicilioComercio == null
+					? "  ":domicilioComercio.getId().toString())+"\n");
 			
+			List<Factura> facturas = domicilioComercio.getFacturas();
+			String linea = new String(",");
+			if (domicilioComercio.getFacturas()==null)
+			{
+			linea = "";	
+			}
+			else
+			{
+				for(Factura factura : facturas ) 
+				{
+					linea =  linea+factura.getId()+",";
+				}
+			}
+			fw.append("idFacturas:"+linea+"\n");
 		}
 		fw.close();
 	}
-	
-	
 	
 	/*
  	La Estructura de los Archivos sera la Siguiente 

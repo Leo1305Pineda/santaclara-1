@@ -38,6 +38,8 @@ public class TestClienteDAO {
 
 		clienteDAO.eliminar(cliente1);
 		assertEquals(clientes.size(),clienteDAO.getClientes().size());
+		clienteDAO.Mostrar();
 	}
-    
+
+	
 }

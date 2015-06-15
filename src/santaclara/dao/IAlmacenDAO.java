@@ -14,6 +14,8 @@ public interface IAlmacenDAO extends IGenericoDAO{
 	
 	public void eliminar(Almacen almacen) throws   IOException;
 	
+	public void Mostrar() throws   IOException;
+	
 	public Almacen getAlmacen(Integer id) throws FileNotFoundException;
 
 }

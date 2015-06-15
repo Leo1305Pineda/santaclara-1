@@ -11,9 +11,11 @@ public class Visita {
 	private Integer ValorProducto;
 	private Boolean estado;
 	private JefeVenta jefeVenta;
+	private Cliente cliente;
+	
 	public Visita(Integer id, Date fecha, String motivo, String descripcion,
 			Integer valorVendedor, Integer valorProducto, Boolean estado,
-			JefeVenta jefeVenta) {
+			JefeVenta jefeVenta,Cliente cliente) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -23,6 +25,7 @@ public class Visita {
 		ValorProducto = valorProducto;
 		this.estado = estado;
 		this.jefeVenta = jefeVenta;
+		this.cliente = cliente;
 	}
 	public Visita() {
 		super();
@@ -75,6 +78,12 @@ public class Visita {
 	}
 	public void setJefeVenta(JefeVenta jefeVenta) {
 		this.jefeVenta = jefeVenta;
+	}
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 	
 	

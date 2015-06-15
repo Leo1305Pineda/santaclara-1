@@ -1,2 +1,8 @@
+id:0
+idRutas:,1,2,
 id:1
-idRutas:2,1,4
+idRutas:,1,3,
+id:2
+idRutas:,1,
+id:3
+idRutas:
