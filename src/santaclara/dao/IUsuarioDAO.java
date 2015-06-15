@@ -13,6 +13,6 @@ public interface IUsuarioDAO extends IGenericoDAO{
 	
 	public void eliminar(Usuario usuario) throws   IOException;
 	
-	public Usuario getUsuario(Integer id) throws FileNotFoundException;
+	public Usuario getUsuario(String username) throws FileNotFoundException;
 
 }

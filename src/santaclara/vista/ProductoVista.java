@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.SpringLayout;
 import javax.swing.JTable;
 import java.awt.Color;
+import java.awt.Font;
 
 public class ProductoVista extends JFrame {
 
@@ -37,6 +38,9 @@ public class ProductoVista extends JFrame {
 	 * Create the frame.
 	 */
 	public ProductoVista() {
+		setFont(new Font("Dialog", Font.BOLD, 13));
+		setForeground(Color.WHITE);
+		setTitle("Gestion de Productos");
 		setBackground(Color.GRAY);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 579, 510);
