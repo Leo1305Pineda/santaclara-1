@@ -22,6 +22,11 @@ public class Capacidad {
 		return volumen;
 	}
 
+	
+	public String getVolumenStr() {
+		return volumen.toString()+" ml.";
+	}
+
 	public void setVolumen(Double volumen) {
 		this.volumen = volumen;
 	}

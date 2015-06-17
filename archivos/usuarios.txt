@@ -1,0 +1,15 @@
+id:0
+username:Rhonal
+cedula:V-19827297
+nombre:Rhonal Chirino
+contrasena:1234
+id:1
+username:Joan
+cedula:V-19323522
+nombre:Joan Puerta
+contrasena:1234
+id:2
+username:Jose
+cedula:V-19334522
+nombre:Jose Contrera
+contrasena:1234

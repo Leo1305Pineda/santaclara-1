@@ -5,29 +5,22 @@ import java.util.List;
 
 public class Zona {
 	
-	private JefeVenta jefeVenta; 
+	private Integer	id; 
 	private String descripcion;
+	
 	private List<Ruta> rutas = new ArrayList<Ruta>();
 
+	
 	public Zona() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Zona(JefeVenta jefeVenta, String descripcion, List<Ruta> rutas) {
+	public Zona(String descripcion, List<Ruta> rutas) {
 		super();
-		this.jefeVenta = jefeVenta;
 		this.descripcion = descripcion;
 		this.rutas = rutas;
 	}
-	
-	
-	
-	public JefeVenta getJefeVenta() {
-		return jefeVenta;
-	}
-	public void setJefeVenta(JefeVenta jefeVenta) {
-		this.jefeVenta = jefeVenta;
-	}
+	 
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -40,8 +33,12 @@ public class Zona {
 	public void setRutas(List<Ruta> rutas) {
 		this.rutas = rutas;
 	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-	
-	
-
+	 
 }

@@ -1,4 +1,0 @@
-id:"cliente.txt"  ,tipo:"Domicilio = D o Comercial = C"  
-!01               !D            
-!02               !C           
-!

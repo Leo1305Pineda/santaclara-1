@@ -1,6 +1,0 @@
-id:       ,cedula:     ,nombre:          ,apellido:             ,direccion:                              ,telefono:    ,id:"ruta.txt"
-!0         !V-19827297 !Rhonal Alfredo   !Cirinos Rodriguez     !Barrio el Jebe Sector la Estrella       !04161556613  !01                         
-!1         !V-19727835 !Leonardo R.      !Pineda S.             !Barrio el Carmen Sector la Brama        !04245042292  !02
-!2         !V-16787345 !Briceila A.      !Pineda S.             !Barrio el Carmen Sector la Brama        !0426654398   !2
-!3         !V-16787345 !Brillit B.       !Pineda S.             !Barrio el Carmen Sector la Brama        !04147313767  !2
-!

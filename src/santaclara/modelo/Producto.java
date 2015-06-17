@@ -1,15 +1,19 @@
 package santaclara.modelo;
 
+import java.util.logging.SimpleFormatter;
+
 public class Producto {
+	private Integer id;
 	private Capacidad capacidad;
 	private Presentacion presentacion;
 	private Sabor sabor;
 	private String nombre;
 	private Double precio;
 	
-	public Producto(Capacidad capacidad, Presentacion presentacion,
+	public Producto(Integer id,Capacidad capacidad, Presentacion presentacion,
 			Sabor sabor, String nombre,Double precio) {
 		super();
+		this.id = id;
 		this.capacidad = capacidad;
 		this.presentacion = presentacion;
 		this.sabor = sabor;
@@ -17,10 +21,23 @@ public class Producto {
 		this.precio = precio;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public Double getPrecio() {
 		return precio;
 	}
 
+	public String getPrecioStr() {
+		return precio.toString()+" Bsf.";
+	}
+
+	
 	public void setPrecio(Double precio) {
 		this.precio = precio;
 	}

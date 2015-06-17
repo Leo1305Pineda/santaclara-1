@@ -1,5 +1,0 @@
-id:  ,Material:"Plastico,Vidrio,Aluminio"   
-!00  !Aluminio            
-!01  !Plastico
-!02  !Vidrio          
-!

@@ -1,9 +1,15 @@
 package santaclara.modelo;
 
-public class Almacen {
+public class Almacen{
 	private Integer id;
 	private String ubicacion;
 	
+	
+	public Almacen() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Almacen(Integer id, String ubicacion) {
 		super();
 		this.id = id;
@@ -25,9 +31,5 @@ public class Almacen {
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
 	}
-
-	public Almacen() {
-		// TODO Auto-generated constructor stub
-	}
-
+	
 }

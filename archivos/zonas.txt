@@ -1,0 +1,10 @@
+id:0
+descripcion:centro
+id:1
+descripcion:Norte
+id:2
+descripcion:sur
+id:3
+descripcion:Este
+id:4
+descripcion:Oeste

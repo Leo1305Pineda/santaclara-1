@@ -1,4 +1,0 @@
-id:enpaqueProducto ,almacen: ,stock: ,stockMin:,existencia:   
-!01    			   !00       !10000  !100      !90000		
-!02                !00       !10000  !100      !70000
-!

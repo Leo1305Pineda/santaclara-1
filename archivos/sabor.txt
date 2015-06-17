@@ -1,6 +1,0 @@
-id:  ,sabor:  
-!00  !AguaUva
-!01  !Coca            
-!02  !uva
-!03  !manzana          
-!
