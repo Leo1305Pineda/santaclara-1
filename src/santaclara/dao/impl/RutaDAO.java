@@ -50,7 +50,7 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 				return ruta;
 			}
 		}
-		return new Ruta();
+		return null;
 	}
 
 	@Override

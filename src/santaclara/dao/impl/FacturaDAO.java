@@ -121,7 +121,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 				return factura1;
 			}
 		}
-		return new Factura();
+		return null;
 
 	}
 	
@@ -131,7 +131,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		for(Factura factura :facturas)
 		{
 			fw.append("id:"+factura.getId().toString()+"\n");
-			fw.append("fecha:"+(factura.getFecha().getYear()+"/"+factura.getFecha().getMonth()+"/"+factura.getFecha().getDay())+"\n");
+//			fw.append("fecha:"+(factura.getFecha().getYear()+"/"+factura.getFecha().getMonth()+"/"+factura.getFecha().getDay())+"\n");
 			fw.append("total:"+factura.getTotal().toString()+"\n");
 			fw.append("saldo:"+factura.getSaldo().toString()+"\n");
 			fw.append("iva:"+factura.getIva().toString()+"\n");

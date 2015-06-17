@@ -44,7 +44,7 @@ public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
 			}
 		}
 		
-		return new Zona();
+		return null;
 	}
 
 	@Override

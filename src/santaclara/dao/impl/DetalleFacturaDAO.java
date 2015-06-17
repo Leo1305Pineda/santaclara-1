@@ -104,7 +104,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 				return detalleFactura1;
 			}
 		}
-		return new DetalleFactura();
+		return null;
 	}
 	public void guardarTodo(List<DetalleFactura> detalleFacturas ) throws IOException
 	{

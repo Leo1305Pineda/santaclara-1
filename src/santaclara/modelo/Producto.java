@@ -1,5 +1,6 @@
 package santaclara.modelo;
 
+
 public class Producto {
 	private Integer id;
 	private Capacidad capacidad;
@@ -31,6 +32,11 @@ public class Producto {
 		return precio;
 	}
 
+	public String getPrecioStr() {
+		return precio.toString()+" Bsf.";
+	}
+
+	
 	public void setPrecio(Double precio) {
 		this.precio = precio;
 	}

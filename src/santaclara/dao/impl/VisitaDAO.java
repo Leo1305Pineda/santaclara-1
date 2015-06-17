@@ -14,6 +14,7 @@ import santaclara.modelo.Visita;
 public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 
 	private String ruta = "archivos/visitas.txt";
+	private Scanner scaner;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -21,7 +22,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		// TODO Auto-generated method stub
 		List<Visita> visitas = new ArrayList<Visita>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
+ 		scaner = new Scanner(file);
  		String linea;
 		while(scaner.hasNext())
 		{
@@ -146,7 +147,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 				return visita1;
 			}
 		}
-		return new Visita();
+		return null;
 	}
 	
 	public void guardarTodo(List<Visita> visitas) throws IOException

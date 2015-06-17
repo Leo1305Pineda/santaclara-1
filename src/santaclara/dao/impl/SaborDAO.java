@@ -90,7 +90,7 @@ public class SaborDAO extends GenericoDAO implements ISaborDAO{
 				return sabor1;
 			}
 		}
-		return new Sabor();
+		return null;
 	}
 	
 	public void guardarTodo(List<Sabor> sabores ) throws IOException

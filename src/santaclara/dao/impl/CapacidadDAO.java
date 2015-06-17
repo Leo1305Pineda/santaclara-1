@@ -14,13 +14,14 @@ import santaclara.modelo.Capacidad;
 public class CapacidadDAO extends GenericoDAO implements ICapacidadDAO{
 	
 	private String ruta = "archivos/capacidades.txt";
+	private Scanner scaner;
 
 	@Override
 	public List<Capacidad> getCapacidades() throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<Capacidad> capacidades = new ArrayList<Capacidad>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
+ 		scaner = new Scanner(file);
 		while(scaner.hasNext())
 		{
 			 Capacidad capacidad = new Capacidad();
@@ -100,7 +101,7 @@ public class CapacidadDAO extends GenericoDAO implements ICapacidadDAO{
 				return capacidad1;
 			}
 		}
-		return new Capacidad();
+		return null;
 	}
 	/*Estructura
 	 * id:0

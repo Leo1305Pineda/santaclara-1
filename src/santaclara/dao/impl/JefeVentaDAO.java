@@ -156,7 +156,7 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 				return jefeVenta;
 			}
 		}
-		return new JefeVenta();
+		return null;
 	}
 	
 	public void guardarTodo(List<JefeVenta> jefeVentas) throws IOException

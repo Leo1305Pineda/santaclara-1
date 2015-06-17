@@ -149,7 +149,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 				return vendedor;
 			}
 		}
-		return new Vendedor();
+		return null;
 	}
 	
 	public void guardarTodo(List<Vendedor> vendedores) throws IOException

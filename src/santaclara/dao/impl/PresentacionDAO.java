@@ -14,13 +14,14 @@ import santaclara.modelo.Presentacion;
 public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 	
 	private String ruta = "archivos/presentaciones.txt";
+	private Scanner scaner;
 
 	@Override
 	public List<Presentacion> getPresentaciones() throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<Presentacion> presentaciones = new ArrayList<Presentacion>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
+ 		scaner = new Scanner(file);
 		while(scaner.hasNext())
 		{
 			 Presentacion presentacion = new Presentacion();
@@ -102,6 +103,6 @@ public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 				return presentacion1;
 			}
 		}
-		return new Presentacion();
+		return null;
 	}
 }

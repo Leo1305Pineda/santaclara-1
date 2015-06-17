@@ -11,12 +11,13 @@ import santaclara.modelo.EmpaqueProducto;
 
 public  class EmpaqueProductoDAO extends GenericoDAO implements IEmpaqueProductoDAO{
 	
-private String ruta = "archivos/empaqueProducto.txt";	
+private String ruta = "archivos/empaqueProducto.txt";
+private Scanner scaner;	
 public List<EmpaqueProducto> getEmpaques() throws NumberFormatException, IOException {
 	// TODO Auto-generated method stub
 	List<EmpaqueProducto> empaques = new ArrayList<EmpaqueProducto>();
 	File file = new File(ruta);
-		Scanner scaner = new Scanner(file);
+		scaner = new Scanner(file);
 	while(scaner.hasNext())
 	{
 		 EmpaqueProducto empaque = new EmpaqueProducto();
@@ -118,7 +119,7 @@ public List<EmpaqueProducto> getEmpaques() throws NumberFormatException, IOExcep
 				return Empaqueproducto1;
 			}
 		}
-		return new EmpaqueProducto();
+		return null;
 	}
 	
 /* 	La Estructura de los Archivos sera la Siguiente 

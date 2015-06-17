@@ -95,7 +95,7 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 				return camion;
 			}
 		}
-		return new Camion();
+		return null;
     	}
 
 	

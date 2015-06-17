@@ -11,12 +11,13 @@ import santaclara.modelo.ProductoAlmacen;
 
 public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenDAO {
 	private String ruta = "archivos/productoAlmacenes.txt";
+	private Scanner scaner;
 	@Override
 	public List<ProductoAlmacen> getProductoAlmacenes() throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		List<ProductoAlmacen> productoAlmacenes = new ArrayList<ProductoAlmacen>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
+ 		scaner = new Scanner(file);
 		while(scaner.hasNext())
 		{			
 			 ProductoAlmacen productoAlmacen = new ProductoAlmacen();
@@ -100,7 +101,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 				return productoAlmacen1;
 			}
 		}
-		return new ProductoAlmacen();
+		return null;
 	}
 	
 	public void guardarTodo(List<ProductoAlmacen> productoAlmacenes ) throws IOException

@@ -153,7 +153,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 				return concecionario;
 			}
 		}
-		return new Concesionario();
+		return null;
 	}
 
 	

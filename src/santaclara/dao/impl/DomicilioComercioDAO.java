@@ -18,13 +18,14 @@ import santaclara.modelo.DomicilioComercio;
 public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioComercioDAO{
 
 	private String ruta = "archivos/domicilioComercio.txt";
+	private Scanner scaner;
 
 	@Override
 	public List<DomicilioComercio> getDomicilioComercios() throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<DomicilioComercio> domicilioComercios = new ArrayList<DomicilioComercio>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
+ 		scaner = new Scanner(file);
 		while(scaner.hasNext())
 		{
 			 DomicilioComercio domicilioComercio = new DomicilioComercio();
@@ -102,7 +103,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 				return domicilioComercio1;
 			}
 		}
-		return new DomicilioComercio();
+		return null;
 
 	}
 

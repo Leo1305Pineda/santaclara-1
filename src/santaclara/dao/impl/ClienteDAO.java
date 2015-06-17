@@ -14,6 +14,7 @@ import santaclara.modelo.Cliente;
 public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 
 	private String ruta = "archivos/Clientes.txt";
+	private Scanner scaner;
 	
 	@Override
 	public List<Cliente> getClientes() throws FileNotFoundException {
@@ -21,7 +22,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		// Listar Todos lo Clientes 
 		List<Cliente> clientes = new ArrayList<Cliente>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
+ 		scaner = new Scanner(file);
 		while(scaner.hasNext())
 		{
 			 Cliente cliente = new Cliente();
@@ -108,7 +109,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 				
 			}
 		}
-		return new Cliente();
+		return null;
     }
 
 	

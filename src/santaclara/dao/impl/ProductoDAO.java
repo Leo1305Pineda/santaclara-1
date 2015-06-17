@@ -13,13 +13,14 @@ import santaclara.modelo.Producto;
 public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 
 	private String ruta = "archivos/producto.txt";
+	private Scanner scaner;
 	
 	@Override
 	public List<Producto> getProductos() throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub 
 		List<Producto> productos = new ArrayList<Producto>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
+ 		scaner = new Scanner(file);
 		while(scaner.hasNext())
 		{
 			 Producto producto = new Producto();
@@ -112,7 +113,7 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 				return producto1;
 			}
 		}
-		return new Producto();
+		return null;
     }
 
 	

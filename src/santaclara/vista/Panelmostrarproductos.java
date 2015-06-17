@@ -62,7 +62,11 @@ public class Panelmostrarproductos extends JPanel {
 		table.getColumnModel().getColumn(4).setPreferredWidth(112);
 		table.getColumnModel().getColumn(5).setPreferredWidth(110);
 		table.setBackground(SystemColor.text);
+		
+		
 		table.setBounds(12, 33, 447, 160);
+		
+ 		
 		add(table);
 
 	}

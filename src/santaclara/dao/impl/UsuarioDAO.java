@@ -60,6 +60,7 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 			{
 				if(usuario1.getId().equals(usuario.getId()))
 				{
+					/// vacio 
 					usuario1.setId(usuario.getId());
 					usuario1.setUsername(usuario.getUsername());
 					usuario1.setCedula(usuario.getCedula());
@@ -82,24 +83,25 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 				usuarios.remove(usuario1);
 				break;
 			}
-		} 
+		}
+		///guardar Todo 
 		guardarTodo(usuarios);
 		
 	}
 
 	@Override
-	public Usuario getUsuario(Integer id) throws FileNotFoundException {
+	public Usuario getUsuario(String username) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<Usuario> usuarios = getUsuarios();
 		
 		for(Usuario usuario: usuarios)
 		{
-			if(usuario.getId().equals(id))
+			if(usuario.getUsername().equals(username.trim()))
 			{
 				return usuario;
 			}
 		}
-		return new Usuario();
+		return null;
     }
 
 	

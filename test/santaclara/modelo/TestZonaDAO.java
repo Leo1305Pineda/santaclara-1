@@ -1,6 +1,5 @@
 package santaclara.modelo;
 
-import java.math.*;
 import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
@@ -11,6 +10,8 @@ import org.junit.Test;
 import santaclara.dao.impl.ZonaDAO;
 
 public class TestZonaDAO {
+
+	private Scanner s;
 
 	@Test
 	public void saboresTest() throws FileNotFoundException {
@@ -23,7 +24,7 @@ public class TestZonaDAO {
 	{
 		int t;
     	Long n;
-    	Scanner s = new Scanner(System.in);
+    	s = new Scanner(System.in);
     	t = s.nextInt();
     	
     	for(int i = t; i>0 ; ++i)
