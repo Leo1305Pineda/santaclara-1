@@ -85,11 +85,9 @@ public class PrincipalUI {
 		
 		JMenuItem mntClientes = new JMenuItem("Clientes");
 		mnCatalogo.add(mntClientes);
-		
 	    mntVendedores = new JMenuItem("Vendedores");
 		mnCatalogo.add(mntVendedores);
 		mntVendedores.addActionListener(controlador.activarMenu());
-		
 		
 		JMenuItem mntConcesionario = new JMenuItem("Consesionarios");
 		mnCatalogo.add(mntConcesionario);
@@ -162,7 +160,4 @@ public class PrincipalUI {
 		this.mntVendedores = mntVendedores;
 	}
 
-	
-	
-	
 }
