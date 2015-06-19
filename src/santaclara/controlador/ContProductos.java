@@ -72,8 +72,11 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 					servicioProducto.guardar(producto);
 					// agregarlo a la lista
 					vista.getProductos().add(producto);
-					vista.getBinProductos();
-				
+					vista.getBinProductos().unbind();
+					vista.getBinProductos().bind();
+					vista.getTable().repaint();
+					
+					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showConfirmDialog(null,e1.getMessage());

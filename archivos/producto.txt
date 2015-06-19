@@ -40,3 +40,21 @@ idPresentacion:0
 idSabor:0
 nombre:koko
 precio:123.0
+id:8
+idCapacidad:0
+idPresentacion:0
+idSabor:0
+nombre:pepe
+precio:1234.0
+id:9
+idCapacidad:0
+idPresentacion:0
+idSabor:0
+nombre:pwpe
+precio:23.0
+id:10
+idCapacidad:0
+idPresentacion:0
+idSabor:0
+nombre:hay q desatarlo y atarlo 
+precio:23.0
