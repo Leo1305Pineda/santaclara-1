@@ -8,7 +8,7 @@ public class ContClientes {
 	private ServicioCliente servicioCliente = new ServicioCliente();
 	private ClienteUI vista;
 	
-	public ContClientes(ContPrincipal contPrincipal) throws Exception {
+/*	public ContClientes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		servicioCliente = new ServicioProducto();
@@ -17,5 +17,5 @@ public class ContClientes {
 		dibujar(vista);
 	
 	}
-
+*/
 }
