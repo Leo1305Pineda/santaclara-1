@@ -51,7 +51,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
-
+  // evento Guardar Prodcuto 
 	public ActionListener guardar() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {

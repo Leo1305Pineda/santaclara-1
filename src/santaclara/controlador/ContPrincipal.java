@@ -109,23 +109,26 @@ public  class ContPrincipal implements IContGeneral {
 				{
 					try {
 						controlador = new ContProductos(ContPrincipal.this);
-					} catch (NumberFormatException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (Exception e1) {
+					}
+					catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}				
 				}
+				else if(e.getSource().equals(vista.getMntVendedores()))
+				{
+					try {
+						controlador = new ContVendedores(ContPrincipal.this);
+					}
+					catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}
 		};
 	}
-	
-	///Eventos para l 
-  
+	 
 }
 
 

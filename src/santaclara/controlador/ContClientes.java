@@ -10,6 +10,8 @@ public class ContClientes {
 	
 	public ContClientes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
+		contPrincipal.getUsuario().getClass();
+		
 	/*	setContPrincipal(contPrincipal);
 		servicioCliente = new ServicioProducto();
 		vista = new ClientesUI(this.servicioCliente.getClientes());

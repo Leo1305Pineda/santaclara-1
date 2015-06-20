@@ -157,13 +157,6 @@ public class ClienteUI extends JPanel {
 			
 		table.getTableHeader().add(new JLabel("hola soy una prueba"));
 		    
-		    /*private Integer id;
-			private String rif;
-			private String razonsocial;
-			private String direccion;
-			private String telefono;
-			private Ruta ruta;
-			*/
 		    BeanProperty idCliente = BeanProperty.create("id");
 		    BeanProperty rifCliente = BeanProperty.create("rif");
 		    BeanProperty razonSocialCliente = BeanProperty.create("razonSocial");
@@ -182,6 +175,5 @@ public class ClienteUI extends JPanel {
 		    
 		}
 
-		
 	
 }
