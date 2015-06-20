@@ -2,25 +2,32 @@ package santaclara.vista;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Label;
+import java.awt.Panel;
 import java.awt.SystemColor;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.ListCellRenderer;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import javax.swing.text.NumberFormatter;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
@@ -43,6 +50,7 @@ import santaclara.modelo.Sabor;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -50,6 +58,24 @@ import java.util.Vector;
 import javax.swing.JTextField;
 import javax.swing.AbstractListModel;
 import javax.swing.JScrollBar;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.LineBorder;
+
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+
+import javax.swing.BoxLayout;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JMenuBar;
+import javax.swing.JPopupMenu;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.JSeparator;
+import javax.swing.JDesktopPane;
+import javax.swing.JToolBar;
 
 public class ProductosUI extends JPanel {
 
@@ -68,25 +94,10 @@ public class ProductosUI extends JPanel {
     private JComboBox cmbCapacidad;
     private JButton btnGuardar;
 
-    private JTextField txtNombre;
-	private JTextField txtPrecio;
-
-	
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the frame.
-	 * @param contProductos 
-	 * @param list 
-	empresas = serEvento.listaEmpresas();
-		JComboBoxBinding<Empresa, List<Empresa>, JComboBox> b =  SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,empresas,jComboBox_empresa);
-		b.bind();
-		
-	 *
-	 */
-	
+    private JTextField 			txtNombre;
+	private JSpinner			 txtPrecio; 
+	private JPanel 	  			 panelProducto;
+	private JButton    			btnNuevo;
 	
 	public ProductosUI(ContProductos contProductos, List<Producto> productos,List<Capacidad> capacidades, 
 		List<Sabor> sabores,List<Presentacion> presentaciones) {
@@ -99,84 +110,79 @@ public class ProductosUI extends JPanel {
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
 		setBackground(Color.GRAY);
-		setBounds(100, 100, 725, 510);
-		setLayout(null);
+		setSize(800,600);
+		setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
 		
-		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.setBounds(24, 208, 82, 25);
-		btnBuscar.setForeground(Color.WHITE);
-		btnBuscar.setBackground(Color.DARK_GRAY);
-		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		add(btnBuscar);
+		JPanel pnProductos = new JPanel();
+		pnProductos.setSize(800,300);
+		pnProductos.setBackground(Color.GRAY);
+		pnProductos.setBorder(new TitledBorder(null, "Listado de Productos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		add(pnProductos);
+
+		JPanel botones = new JPanel();
+		botones.setBackground(Color.GRAY);
+		botones.setLocation(708, 39);
+		botones.setBorder(new TitledBorder(null, "opciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		botones.setSize(131,223);
+		botones.setLayout(null);
 		
-		btnGuardar = new JButton("Guardar");
-		btnGuardar.setBounds(118, 208, 92, 25);
-		btnGuardar.setBackground(Color.DARK_GRAY);
-		btnGuardar.setForeground(Color.WHITE);
-		btnGuardar.addActionListener(contProductos.guardar());
-		add(btnGuardar);
-		
+
+		btnNuevo = new JButton("Nuevo");
+		btnNuevo.setForeground(Color.WHITE);
+		btnNuevo.setBackground(Color.DARK_GRAY);
+		btnNuevo.setBounds(22,50, 100, 25);
+		btnNuevo.addActionListener(contProductos.nuevo());
+		botones.add(btnNuevo);
+
 		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(222, 208, 99, 25);
+		btnModificar.setBounds(22,80,100, 25);
 		btnModificar.setForeground(Color.WHITE);
 		btnModificar.setBackground(Color.DARK_GRAY);
-		add(btnModificar);
-		
+		botones.add(btnModificar);
+
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(346, 208, 90, 25);
+		btnEliminar.setBounds(22,105, 100, 25);
 		btnEliminar.setForeground(Color.WHITE);
 		btnEliminar.setBackground(Color.DARK_GRAY);
-		add(btnEliminar);
-		
-		JButton btnSalir = new JButton("Salir");
-		btnSalir.setBounds(460, 208, 66, 25);
-		btnSalir.setForeground(Color.WHITE);
-		btnSalir.setBackground(Color.DARK_GRAY);
-		add(btnSalir);
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.GRAY);
-		panel.setBounds(24, 245, 676, 237);
-		add(panel);
-		panel.setLayout(null);
+		botones.add(btnEliminar);
 
-		JScrollPane scrollBar = new JScrollPane();
-		scrollBar.setBounds(1, 1, 520, 225);
+		
+		JScrollPane scrollPanel = new JScrollPane();
+		scrollPanel.setBounds(23, 38, 673, 224);
 		table = new JTable();
-		table.setBounds(1, 1, 500, 220);
-
-		scrollBar.setViewportView(table);
-		panel.add(scrollBar,BorderLayout.CENTER);
-
-		txtBuscar = new JTextField();
-		txtBuscar.setBounds(543, 211, 157, 19);
-		add(txtBuscar);
-		txtBuscar.setColumns(10);
+		table.setBackground(Color.WHITE);
+		scrollPanel.setViewportView(table);
+		pnProductos.setLayout(null);
+		pnProductos.add(botones);
+		pnProductos.add(scrollPanel);
 		
-		JPanel panelProducto = new JPanel();
+		panelProducto = new JPanel();
+		panelProducto.setSize(800,300);
+		panelProducto.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Editar Producto", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelProducto.setBackground(Color.GRAY);
-		panelProducto.setBounds(24, 23, 676, 173);
-		panelProducto.setLayout(new GridLayout(6, 2, 5, 5));
-		add(panelProducto);
-				
-		JLabel lblCodigo = new JLabel("Codigo:");
-		lblCodigo.setForeground(Color.WHITE);
-		lblCodigo.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		panelProducto.add(lblCodigo);
+		panelProducto.getSize(new Dimension(800, 150));
+		panelProducto.setLayout(null);
+		panelProducto.setVisible(false);
 		
+		JLabel lblNombre = new JLabel("Nombre :");
+		lblNombre.setBounds(5, 15, 150, 25);
+		lblNombre.setForeground(Color.WHITE);
+		lblNombre.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+		panelProducto.add(lblNombre);
+
 		txtNombre = new JTextField();
+		txtNombre.setBounds(155, 15, 150, 25);
 		panelProducto.add(txtNombre);
 		txtNombre.setColumns(10);
 		
-		JLabel lblPresentacion = new JLabel("Presentacion:");
+		JLabel lblPresentacion = new JLabel("Presentacion ");
 		lblPresentacion.setForeground(Color.WHITE);
-		lblPresentacion.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+		lblPresentacion.setBounds(349, 15, 150, 25);
 		panelProducto.add(lblPresentacion);
 		
+		
 		cmbPresentacion = new JComboBox();
+		cmbPresentacion.setBounds(523, 15, 150,25);
 		cmbPresentacion.setBackground(SystemColor.controlHighlight);
 		cmbPresentacion.setForeground(Color.BLACK);
 		cmbPresentacion.setRenderer(new ListCellRenderer() {
@@ -189,56 +195,73 @@ public class ProductosUI extends JPanel {
 				return new JLabel(presentacion.getMaterial());
 			}
 		});
-
 		panelProducto.add(cmbPresentacion);
-		
+		 
 		JLabel lblCapacidad = new JLabel("Capacidad:");
+		lblCapacidad.setBounds(5, 65, 150,25);
 		lblCapacidad.setForeground(Color.WHITE);
-		lblCapacidad.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
 		panelProducto.add(lblCapacidad);
+
 		cmbCapacidad = new JComboBox();
+		cmbCapacidad.setBounds(155, 65, 150,25);
 		cmbCapacidad.setBackground(SystemColor.controlHighlight);
 		cmbCapacidad.setRenderer(new ListCellRenderer() {
-			
 			@Override
 			public Component getListCellRendererComponent(JList list, Object value,
-					int index, boolean isSelected, boolean cellHasFocus) {
-				// TODO Auto-generated method stub
-				Capacidad capacidad = (Capacidad) value;
-				return new JLabel(capacidad.getVolumenStr());
+				int index, boolean isSelected, boolean cellHasFocus) {
+			// TODO Auto-generated method stub
+			Capacidad capacidad = (Capacidad) value;
+			return new JLabel(capacidad.getVolumenStr());
 			}
 		});
+
 		panelProducto.add(cmbCapacidad);
+
 		JLabel lblSabor = new JLabel("Sabor:");
+		lblSabor.setBounds(349, 65, 150,25);
 		lblSabor.setForeground(Color.WHITE);
 		lblSabor.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
 		panelProducto.add(lblSabor);
-		
+				
 		cmbSabor = new JComboBox();
+		cmbSabor.setBounds(523, 65, 150,25);
 		cmbSabor.setBackground(SystemColor.controlHighlight);
 		cmbSabor.setRenderer(new ListCellRenderer() {
-			
 			@Override
 			public Component getListCellRendererComponent(JList list, Object value,
-					int index, boolean isSelected, boolean cellHasFocus) {
+				int index, boolean isSelected, boolean cellHasFocus) {
 				// TODO Auto-generated method stub
 				Sabor sabor = (Sabor) value;
 				return new JLabel(sabor.getSabor());
 			}
 		});
 		panelProducto.add(cmbSabor);
-		
+				
 		JLabel lblPrecio = new JLabel("Precio");
+		lblPrecio.setBounds(5, 115,  150,25);
 		lblPrecio.setBackground(SystemColor.controlHighlight);
 		lblPrecio.setForeground(Color.WHITE);
 		panelProducto.add(lblPrecio);
-		
-		txtPrecio = new JTextField();
+				
+		txtPrecio = new JSpinner(new SpinnerNumberModel(0.0,0.00,Double.MAX_VALUE,0.1));
+		txtPrecio.setBounds(155, 115, 150,25);
+		((JSpinner.NumberEditor)txtPrecio.getEditor()).getFormat().setMinimumFractionDigits(2);
 		panelProducto.add(txtPrecio);
-		txtPrecio.setColumns(10);
-
-		txtBuscar.addActionListener(contProductos.buscar());
+				
+		btnGuardar = new JButton("Guardar");
+		btnGuardar.setBounds(455, 160, 150,25);
+		btnGuardar.setBackground(Color.DARK_GRAY);
+		btnGuardar.setForeground(Color.WHITE);
+		btnGuardar.addActionListener(contProductos.guardar());
+		panelProducto.add(btnGuardar);
 		
+		add(panelProducto);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(5, 152, 844, 12);
+		panelProducto.add(separator);
+		  
+		 
 	}
 
 	public void activarBinding() {
@@ -253,15 +276,14 @@ public class ProductosUI extends JPanel {
 	    BeanProperty saborProducto = BeanProperty.create("sabor.sabor");
 	    BeanProperty precioProducto = BeanProperty.create("precioStr");
 
-	    binProductos.addColumnBinding(nombreProducto).setColumnClass(String.class).setColumnName("Capacidad");
-	    binProductos.addColumnBinding(idProducto).setColumnClass(Integer.class).setColumnName("Capacidad");;
+	    binProductos.addColumnBinding(idProducto).setColumnClass(Integer.class).setColumnName("id");;
+	    binProductos.addColumnBinding(nombreProducto).setColumnClass(String.class).setColumnName("Nombre");
 	    binProductos.addColumnBinding(capacidadProducto).setColumnClass(String.class).setColumnName("Capacidad");
-	    binProductos.addColumnBinding(presentacionProducto).setColumnClass(String.class).setColumnName("Capacidad");;
-	    binProductos.addColumnBinding(saborProducto).setColumnClass(String.class).setColumnName("Capacidad");;
-	    binProductos.addColumnBinding(precioProducto).setColumnClass(String.class).setColumnName("Capacidad");;
+	    binProductos.addColumnBinding(presentacionProducto).setColumnClass(String.class).setColumnName("Presentacion");;
+	    binProductos.addColumnBinding(saborProducto).setColumnClass(String.class).setColumnName("Sabor");;
+	    binProductos.addColumnBinding(precioProducto).setColumnClass(String.class).setColumnName("Precio");;
 
 	    binProductos.bind();
-	    table.getTableHeader().add(new JLabel("dddd"));
 
 	    JComboBoxBinding jcomboSabor = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,sabores,cmbSabor);
 	    JComboBoxBinding jcomboCapacidad = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,capacidades,cmbCapacidad);
@@ -330,11 +352,11 @@ public class ProductosUI extends JPanel {
 		this.txtNombre = txtNombre;
 	}
 
-	public JTextField getTxtPrecio() {
+	public JSpinner getTxtPrecio() {
 		return txtPrecio;
 	}
 
-	public void setTxtPrecio(JTextField txtPrecio) {
+	public void setTxtPrecio(JSpinner txtPrecio) {
 		this.txtPrecio = txtPrecio;
 	}
 
@@ -352,6 +374,21 @@ public class ProductosUI extends JPanel {
 
 	public void setBinProductos(JTableBinding binProductos) {
 		this.binProductos = binProductos;
+	}
+
+	public void activarNuevoProducto() {
+		// TODO Auto-generated method stub
+		panelProducto.setVisible(true);
+		txtNombre.setText("");
+		txtPrecio.setValue(0);
+ 
+		
+	}
+
+	public void quitarNuevo() {
+		// TODO Auto-generated method stub
+
+		panelProducto.setVisible(false);
 	}
 }
 
