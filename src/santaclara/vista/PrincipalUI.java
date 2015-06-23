@@ -15,6 +15,11 @@ import santaclara.modelo.JefeVenta;
 import santaclara.modelo.Usuario;
 import santaclara.modelo.Vendedor;
 
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.Toolkit;
+
 
 public class PrincipalUI {
 
@@ -70,26 +75,29 @@ public class PrincipalUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 800, 600);
+		frame = new JFrame("Embotelladora Santa Clara");
+		 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        
+        frame.setSize(1200,800);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       
+        frame.setVisible(true);
+		frame.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 10));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		menuBar.setToolTipText("Manu");
-		menuBar.setBounds(12, 0, 492, 21);
 		frame.setJMenuBar(menuBar);
 		JMenu mnCatalogo = new JMenu("Catalogo");
 		menuBar.add(mnCatalogo);
 		
-		JMenuItem mntProductos = new JMenuItem("Productos ");
+	    mntProductos = new JMenuItem("Productos ");
 		mnCatalogo.add(mntProductos);
+		mntProductos.addActionListener(controlador.activarMenu());
 		
 		JMenuItem mntClientes = new JMenuItem("Clientes");
 		mnCatalogo.add(mntClientes);
-		
 	    mntVendedores = new JMenuItem("Vendedores");
 		mnCatalogo.add(mntVendedores);
 		mntVendedores.addActionListener(controlador.activarMenu());
-		
 		
 		JMenuItem mntConcesionario = new JMenuItem("Consesionarios");
 		mnCatalogo.add(mntConcesionario);
@@ -110,9 +118,10 @@ public class PrincipalUI {
 		mnSalir.add(mntCerrar);  
 		mntCerrar.addActionListener(controlador.salirSesion());
 		menuBar.add(mnSalir);
+
 		menuBar.setVisible(false);;
 
-		
+		frame.setVisible(true); 
 	}
 	
 	public void dibujarMenu(Usuario usuario )
@@ -162,7 +171,78 @@ public class PrincipalUI {
 		this.mntVendedores = mntVendedores;
 	}
 
-	
+	public JMenu getMnCatalogo() {
+		return mnCatalogo;
+	}
+
+	public void setMnCatalogo(JMenu mnCatalogo) {
+		this.mnCatalogo = mnCatalogo;
+	}
+
+	public JMenuItem getMntProductos() {
+		return mntProductos;
+	}
+
+	public void setMntProductos(JMenuItem mntProductos) {
+		this.mntProductos = mntProductos;
+	}
+
+	public JMenuItem getMntClientes() {
+		return mntClientes;
+	}
+
+	public void setMntClientes(JMenuItem mntClientes) {
+		this.mntClientes = mntClientes;
+	}
+
+	public JMenuItem getMntConcesionario() {
+		return mntConcesionario;
+	}
+
+	public void setMntConcesionario(JMenuItem mntConcesionario) {
+		this.mntConcesionario = mntConcesionario;
+	}
+
+	public JMenu getMnFacturacion() {
+		return mnFacturacion;
+	}
+
+	public void setMnFacturacion(JMenu mnFacturacion) {
+		this.mnFacturacion = mnFacturacion;
+	}
+
+	public JMenu getMnReportes() {
+		return mnReportes;
+	}
+
+	public void setMnReportes(JMenu mnReportes) {
+		this.mnReportes = mnReportes;
+	}
+
+	public JMenu getMnConsulta() {
+		return mnConsulta;
+	}
+
+	public void setMnConsulta(JMenu mnConsulta) {
+		this.mnConsulta = mnConsulta;
+	}
+
+	public JMenu getMnSalir() {
+		return mnSalir;
+	}
+
+	public void setMnSalir(JMenu mnSalir) {
+		this.mnSalir = mnSalir;
+	}
+
+	public JMenuItem getMntCerrar() {
+		return mntCerrar;
+	}
+
+	public void setMntCerrar(JMenuItem mntCerrar) {
+		this.mntCerrar = mntCerrar;
+	}
+
 	
 	
 }

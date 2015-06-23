@@ -11,7 +11,6 @@ import santaclara.modelo.Cliente;
 public class ServicioCliente {
 	
 	private ClienteDAO clienteDAO = new ClienteDAO();  
-	
 
 	private RutaDAO rutaDAO = new  RutaDAO();
 	

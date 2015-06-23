@@ -28,14 +28,11 @@ public  class ContPrincipal implements IContGeneral {
 	private void ejecutar() {
 		// TODO Auto-generated method stub
 		vista = new PrincipalUI(this);
-		vista.getFrame().setSize(new Dimension(800,600));
-		vista.getFrame().isMaximumSizeSet();
-		vista.getFrame().setVisible(true); 
 		// iniciar session
 	//	
 		try {
-			//setControlador(new ContIniciarSesion(this));
-			setControlador(new ContProductos(ContPrincipal.this));
+			setControlador(new ContIniciarSesion(this));
+			//setControlador(new ContProductos(ContPrincipal.this));
 		}
 		catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -48,7 +45,7 @@ public  class ContPrincipal implements IContGeneral {
 	{
 		vista.getFrame().getContentPane().removeAll();
 		vista.getFrame().getContentPane().add(panel);
-		vista.getFrame().getContentPane().repaint();
+		vista.getFrame().repaint();
 	
 	}
 
@@ -108,27 +105,30 @@ public  class ContPrincipal implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(e.getSource().equals(vista.getMntVendedores()))
+				if(e.getSource().equals(vista.getMntProductos()))
 				{
 					try {
 						controlador = new ContProductos(ContPrincipal.this);
-					} catch (NumberFormatException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (Exception e1) {
+					}
+					catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}				
 				}
+				else if(e.getSource().equals(vista.getMntVendedores()))
+				{
+					try {
+						controlador = new ContVendedores(ContPrincipal.this);
+					}
+					catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}
 		};
 	}
-	
-	///Eventos para l 
-  
+	 
 }
 
 

@@ -29,7 +29,7 @@ public class IniciarSesionUI extends JPanel {
 	public IniciarSesionUI(ContIniciarSesion controlador) {
 		setBackground(Color.WHITE);
 		setLayout(null);
-		
+		setSize(800,600);;
 		btnEntrar = new JButton("Iniciar Sesion");
 		btnEntrar.setBounds(363, 280, 161, 44);
 		btnEntrar.addActionListener(controlador.iniciarsesion());

@@ -51,7 +51,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
-
+  // evento Guardar Prodcuto 
 	public ActionListener guardar() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -63,7 +63,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 
 				Producto producto = new Producto();
 				producto.setNombre(vista.getTxtNombre().getText());
-				producto.setPrecio(new Double(vista.getTxtPrecio().getText()));
+				producto.setPrecio(new Double((double) vista.getTxtPrecio().getValue()));
 				producto.setCapacidad((Capacidad) vista.getCmbCapacidad().getSelectedItem());
 				producto.setPresentacion((Presentacion)vista.getCmbPresentacion().getSelectedItem());
 				producto.setSabor((Sabor)vista.getCmbSabor().getSelectedItem());
@@ -75,7 +75,8 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 					vista.getBinProductos().unbind();
 					vista.getBinProductos().bind();
 					vista.getTable().repaint();
-					
+					JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+					vista.quitarNuevo();
 					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -87,6 +88,16 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
-	
-	
+
+	public ActionListener nuevo() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				vista.activarNuevoProducto();
+			}
+		};
+	}
 }
