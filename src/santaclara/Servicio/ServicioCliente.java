@@ -11,15 +11,17 @@ import santaclara.modelo.Cliente;
 public class ServicioCliente {
 	
 	private ClienteDAO clienteDAO = new ClienteDAO();  
-
 	private RutaDAO rutaDAO = new  RutaDAO();
-	
 	
 	public List<Ruta>  getRutas() throws NumberFormatException, IOException
 	{	
 		return rutaDAO.getRutas();
 	}
-		
+	
+	public List<Cliente> getClientes() throws IOException
+	{
+		return clienteDAO.getClientes();
+	}
 	
 	public void guardar(Cliente cliente) throws IOException {
 		// TODO Auto-generated method stub

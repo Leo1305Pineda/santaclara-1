@@ -2,8 +2,6 @@ package santaclara.controlador;
 
 import javax.swing.JPanel;
 
-import santaclara.modelo.Usuario;
-
 public abstract class ContGeneral implements IContGeneral {
 
 	

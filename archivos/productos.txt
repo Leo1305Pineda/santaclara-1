@@ -88,3 +88,9 @@ idPresentacion:0
 idSabor:0
 nombre:
 precio:0.0
+id:16
+idCapacidad:0
+idPresentacion:2
+idSabor:1
+nombre:nuevo
+precio:0.2

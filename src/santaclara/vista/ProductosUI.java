@@ -1,19 +1,10 @@
 package santaclara.vista;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.GridLayout;
-import java.awt.Label;
-import java.awt.Panel;
 import java.awt.SystemColor;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -21,19 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
-import javax.swing.text.NumberFormatter;
 import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import javax.swing.SpringLayout;
 import javax.swing.JTable;
 
 import org.jdesktop.beansbinding.AutoBinding;
@@ -50,32 +29,15 @@ import santaclara.modelo.Sabor;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.text.NumberFormat;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JTextField;
-import javax.swing.AbstractListModel;
-import javax.swing.JScrollBar;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
 import javax.swing.BoxLayout;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JMenuBar;
-import javax.swing.JPopupMenu;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.JSeparator;
-import javax.swing.JDesktopPane;
-import javax.swing.JToolBar;
 
 public class ProductosUI extends JPanel {
 

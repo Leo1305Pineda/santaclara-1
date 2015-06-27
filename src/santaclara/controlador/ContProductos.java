@@ -3,16 +3,13 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import santaclara.Servicio.ServicioProducto;
 import santaclara.modelo.Capacidad;
 import santaclara.modelo.Presentacion;
 import santaclara.modelo.Producto;
 import santaclara.modelo.Sabor;
-import santaclara.vista.IniciarSesionUI;
 import santaclara.vista.ProductosUI;
 
 public class ContProductos extends ContGeneral implements IContGeneral {
@@ -30,7 +27,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 					servicioProducto.getSabores(),servicioProducto.getPresentaciones());
 		vista.activarBinding();
 		dibujar(vista);
-	
+
 	}
 
 	@Override

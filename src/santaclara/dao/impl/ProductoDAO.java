@@ -12,7 +12,7 @@ import santaclara.modelo.Producto;
 
 public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 
-	private String ruta = "archivos/producto.txt";
+	private String ruta = "archivos/productos.txt";
 	private Scanner scaner;
 	
 	@Override
