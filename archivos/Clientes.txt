@@ -12,13 +12,7 @@ telefono:04266543982
 ruta:1
 id:3
 rif:V-15765398
-razonsocial:Leonardo R.
+razonsocial:Leonardo R. Pineda S.
 direccion:Urbanizaciom los altos del norte
 telefono:04245042292
-ruta:1
-id:4
-rif:V-18653422
-razonsocial:Briceila A.
-direccion:Urbanizacion los Crepusculos sector
-telefono:02512379265
-ruta:1
+ruta:0

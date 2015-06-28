@@ -134,6 +134,10 @@ public  class ContPrincipal implements IContGeneral {
 			}
 		};
 	}
+
+	public void setVista(PrincipalUI vista) {
+		this.vista = vista;
+	}
 	 
 }
 

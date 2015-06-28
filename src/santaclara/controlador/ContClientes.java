@@ -6,13 +6,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.print.attribute.standard.Severity;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import santaclara.Servicio.ServicioCliente;
 import santaclara.modelo.Cliente;
 import santaclara.modelo.Ruta;
 import santaclara.vista.ClientesUI;
+import sun.awt.SunHints.Value;
 
 public class ContClientes extends ContGeneral implements IContGeneral{
 	
@@ -27,7 +31,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		vista.activarBinding();
 		dibujar(vista);
 	}
-
+	
 	@Override
 	public JPanel getVista() {
 		// TODO Auto-generated method stub
@@ -41,10 +45,81 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-				
+				JTable tabla1 = new JTable();
+				tabla1 = vista.getTabla();
+				Boolean enc = true;
+				for(int i = 0;i<tabla1.getRowCount();i++)
+				{
+					if (tabla1.getValueAt(i, 0).equals(vista.getTxtABuscar().getText())||
+						tabla1.getValueAt(i, 1).equals(vista.getTxtABuscar().getText())||
+						tabla1.getValueAt(i, 2).equals(vista.getTxtABuscar().getText())||
+						tabla1.getValueAt(i, 3).equals(vista.getTxtABuscar().getText())||
+						tabla1.getValueAt(i, 4).equals(vista.getTxtABuscar().getText())||
+						tabla1.getValueAt(i, 5).equals(vista.getTxtABuscar().getText()))
+					{
+						tabla1.setRowSelectionInterval(i,i);;
+						enc = false;
+						break;
+					}
+				}
+				if (enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
+				vista.setTabla(tabla1);
+				vista.setTxtABuscar("");
 			}
 		};
+	}
+	
+	public ActionListener eliminar() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (vista.getTabla().getSelectedRow()>=0)
+				{
+				try {
+					
+					servicioCliente.eliminar(vista.getTabla().getValueAt(vista.getTabla().getSelectedRow(),0).toString());
+vista.activarBinding();
+					JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				}	
+			}
+		};
+	}
+	
+	public ActionListener modificar(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Cliente cliente1 = new Cliente();
+				try {		if (vista.getTabla().getSelectedRow()>=0)
+							{
+							Cliente cliente = new Cliente();
+							cliente = servicioCliente.buscar(new Integer(vista.getTabla().getValueAt(vista.getTabla().getSelectedRow(),0).toString()));
+							if (cliente != null)
+							{
+								vista.activarNuevoCliente();
+								vista.getTxtId().setText(cliente.getId().toString());
+								vista.getTxtRif().setText(cliente.getRif());
+								vista.getTxtRazonSocial().setText(cliente.getRazonsocial());
+								vista.getTxtDireccion().setText(cliente.getDireccion());
+								vista.getTxtTelefono().setText(cliente.getTelefono());
+								vista.getCmbRuta().setSelectedItem(cliente.getRuta());
+							}
+							}
+				vista.activarBinding();
+							
+				}catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}; 
 	}
 	
 	public ActionListener guardar() {
@@ -57,6 +132,16 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 				// se va hacer las validaciones del controlador 
 
 				Cliente cliente = new Cliente();
+				
+				if (vista.getTxtId().getText().equals("")) 
+				{
+					cliente.setId(null); 
+				}
+				else
+				{
+					cliente.setId(new Integer(vista.getTxtId().getText().toString()));
+				}
+				
 				cliente.setRazonsocial(vista.getTxtRazonSocial().getText());
 				cliente.setRif(vista.getTxtRif().getText());
 				cliente.setDireccion(vista.getTxtDireccion().getText());
@@ -69,7 +154,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 					vista.getClientes().add(cliente);
 					vista.getBinClientes().unbind();
 					vista.getBinClientes().bind();
-					vista.getTable().repaint();
+					vista.repaint();
 					JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 					vista.quitarNuevo();
 					

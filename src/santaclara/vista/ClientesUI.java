@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -29,6 +30,11 @@ import org.jdesktop.swingbinding.SwingBindings;
 
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+
+import net.miginfocom.swing.MigLayout;
+
+import java.awt.event.ActionEvent;
 
 public class ClientesUI extends JPanel {
 	
@@ -45,13 +51,17 @@ public class ClientesUI extends JPanel {
 	private JButton btnNuevo;
 	private JButton btnModificar;
 	private JButton btnEliminar;
+	private JButton btnGuardar;
+	private JButton btnBuscar;
 	private JTextField txtRif;
 	private JTextField txtRazonSocial;
 	private JTextField txtTelefono;
 	private JTextField txtDireccion;
+	private JTextField txtABuscar; 
 	private JComboBox cmbRuta;
 	private JLabel label;
 	private JLabel label_5;
+	private JTextField txtId;
 	
 	public ClientesUI(ContClientes contCliente,List<Ruta> rutas,List<Cliente> clientes) {
 		this.clientes = clientes;
@@ -60,23 +70,23 @@ public class ClientesUI extends JPanel {
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
 		setBackground(Color.GRAY);
-		setSize(800,800);
+		setSize(864,513);
 		setLayout(null);
 		
 		pnClientes = new JPanel();
 		pnClientes.setLayout(null);
 		pnClientes.setBorder(new TitledBorder(null, "Listado de Clientes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnClientes.setBackground(Color.GRAY);
-		pnClientes.setBounds(22, 12, 710, 300);
+		pnClientes.setBounds(22, 12, 817, 300);
 		add(pnClientes);
 		
 		pnBotones = new JPanel();
 		pnBotones.setBorder(new TitledBorder(null, "opciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnBotones.setBackground(Color.GRAY);
-		pnBotones.setBounds(555, 38, 131, 223);
+		pnBotones.setBounds(674, 38, 131, 223);
 		
 		btnNuevo = new JButton("Nuevo");
-		btnNuevo.setBounds(5, 17, 121, 40);
+		btnNuevo.setBounds(5, 57, 121, 40);
 		btnNuevo.setForeground(Color.WHITE);
 		btnNuevo.setBackground(Color.DARK_GRAY);
 		btnNuevo.addActionListener(contCliente.nuevo());
@@ -91,22 +101,24 @@ public class ClientesUI extends JPanel {
 		btnModificar.setBounds(5, 97, 121, 40);
 		btnModificar.setForeground(Color.WHITE);
 		btnModificar.setBackground(Color.DARK_GRAY);
-		//btnNuevo.addActionListener(contCliente.modificar());
+		btnModificar.addActionListener(contCliente.modificar());
 		pnBotones.add(btnModificar);
 		
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setBounds(5, 137, 121, 40);
-		btnEliminar.setForeground(Color.WHITE);
+		btnEliminar.setForeground(new Color(255, 255, 255));
 		btnEliminar.setBackground(Color.DARK_GRAY);
-		//btnNuevo.addActionListener(contCliente.eliminar());
+		btnEliminar.addActionListener(contCliente.eliminar());
 		pnBotones.add(btnEliminar);
 		
 		JButton btnNewButton = new JButton("Salir");
+		btnNewButton.setForeground(Color.WHITE);
+		btnNewButton.setBackground(Color.DARK_GRAY);
 		btnNewButton.setBounds(5, 177, 121, 40);
 		pnBotones.add(btnNewButton);
 		
 		scrollPanel = new JScrollPane();
-		scrollPanel.setBounds(27, 37, 514, 224);
+		scrollPanel.setBounds(25, 50, 635, 224);
 		pnClientes.add(scrollPanel);
 		
 		tabla = new JTable();
@@ -116,8 +128,9 @@ public class ClientesUI extends JPanel {
 		pnCliente.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true),
 							"Editar Cliente",TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnCliente.setBackground(Color.GRAY);
-		pnCliente.setBounds(22, 329, 700, 275);
-		pnCliente.setVisible(false);
+		pnCliente.setBounds(22, 329, 817, 167);
+		quitarNuevo();
+	
 		add(pnCliente);
 		
 		label = new JLabel("Rif:");
@@ -136,33 +149,33 @@ public class ClientesUI extends JPanel {
 		label_3.setBackground(Color.WHITE);
 		
 		JLabel label_2 = new JLabel("Direccion:");
-		label_2.setBounds(28, 186, 70, 15);
+		label_2.setBounds(408, 39, 70, 15);
 		label_2.setForeground(Color.WHITE);
 		label_2.setBackground(Color.WHITE);
 		
 		JLabel label_4 = new JLabel("Ruta:");
-		label_4.setBounds(28, 221, 38, 15);
+		label_4.setBounds(408, 74, 38, 15);
 		label_4.setForeground(Color.WHITE);
 		label_4.setBackground(Color.WHITE);
 		
 		txtRif = new JTextField();
-		txtRif.setBounds(212, 40, 258, 19);
+		txtRif.setBounds(128, 38, 258, 19);
 		txtRif.setColumns(10);
 		
 		txtRazonSocial = new JTextField();
-		txtRazonSocial.setBounds(212, 87, 258, 19);
+		txtRazonSocial.setBounds(128, 85, 258, 19);
 		txtRazonSocial.setColumns(10);
 		
 		txtTelefono = new JTextField();
-		txtTelefono.setBounds(212, 136, 258, 19);
+		txtTelefono.setBounds(128, 134, 258, 19);
 		txtTelefono.setColumns(10);
 		
 		txtDireccion = new JTextField();
-		txtDireccion.setBounds(212, 184, 258, 19);
+		txtDireccion.setBounds(496, 38, 258, 19);
 		txtDireccion.setColumns(10);
 		
 		cmbRuta = new JComboBox();
-		cmbRuta.setBounds(212, 221, 258, 24);
+		cmbRuta.setBounds(496, 75, 258, 24);
 		cmbRuta.setRenderer(new ListCellRenderer() {
 
 			@Override
@@ -187,30 +200,54 @@ public class ClientesUI extends JPanel {
 		pnCliente.add(label_1);
 		pnCliente.add(label);
 		
+		btnGuardar = new JButton("Guardar");  
+		btnGuardar.setForeground(Color.WHITE);
+		btnGuardar.setBackground(Color.DARK_GRAY);
+		btnGuardar.addActionListener(contCliente.guardar());
+		btnGuardar.setBounds(605, 112, 150, 25);
+		pnCliente.add(btnGuardar);
+		
+		txtId = new JTextField();
+		txtId.setBounds(27, 12, 114, 19);
+		pnCliente.add(txtId);
+		txtId.setColumns(10);
+		//txtId.setVisible(false);
+		
 		pnClientes.add(pnBotones);
 		
+		JPanel pnBuscar = new JPanel();
+		pnBuscar.setBackground(Color.GRAY);
+		pnBuscar.setForeground(Color.GRAY);
+		pnBuscar.setBounds(25, 12, 635, 36);
+		pnClientes.add(pnBuscar);
+		pnBuscar.setLayout(new MigLayout("", "[82px,grow][][][][][][][][][][][][][][][][][][][]", "[][][][25px]"));
 		
+		txtABuscar = new JTextField();
+		txtABuscar.setBackground(Color.LIGHT_GRAY);
+		pnBuscar.add(txtABuscar, "cell 0 0 19 1,growx");
+		txtABuscar.setColumns(10);
 		
-		/*pnClientes = new JPanel();
-		pnClientes.setBounds(0, 0, 800, 723);
-		pnClientes.setBackground(Color.GRAY);
-		pnClientes.setBorder(new TitledBorder(null, "Listado de Clientes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(pnClientes);
-*/
+		btnBuscar = new JButton("b");
+		btnBuscar.addActionListener(contCliente.buscar());
+		btnBuscar.setBackground(Color.GRAY);
 		
+		pnBuscar.add(btnBuscar, "cell 19 0,alignx right,aligny top");
 	}
+	    
 	public void activarBinding() {
 		// TODO Auto-generated method stub
-	binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
-    			clientes,table);
+		tabla = new JTable();
+		scrollPanel.setViewportView(tabla);
+		binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
+    			clientes,tabla);
 				    
 	    BeanProperty idCliente = BeanProperty.create("id");
 	    BeanProperty rifCliente = BeanProperty.create("rif");
-	    BeanProperty razonSocialCliente = BeanProperty.create("razonSocial");
+	    BeanProperty razonSocialCliente = BeanProperty.create("razonsocial");
 	    BeanProperty direccionCliente = BeanProperty.create("direccion");
 	    BeanProperty telefonoCliente = BeanProperty.create("telefono");
-	    BeanProperty rutaCliente = BeanProperty.create("Ruta.nombre");
-
+	    BeanProperty rutaCliente = BeanProperty.create("ruta.nombre");
+	    
 	    binClientes.addColumnBinding(idCliente).setColumnClass(String.class).setColumnClass(String.class).setColumnName("id");
 	    binClientes.addColumnBinding(rifCliente).setColumnClass(String.class).setColumnClass(String.class).setColumnName("rif");
 	    binClientes.addColumnBinding(razonSocialCliente).setColumnClass(String.class).setColumnClass(String.class).setColumnName("razonSocial");
@@ -223,6 +260,7 @@ public class ClientesUI extends JPanel {
 	    JComboBoxBinding jcomboRuta = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,rutas,cmbRuta);
 	    
 	    jcomboRuta.bind();
+		
 	}
 	
 	public JTableBinding getBinProductos() {
@@ -241,6 +279,7 @@ public class ClientesUI extends JPanel {
 		txtDireccion.setText("");
 		txtTelefono.setText("");
 		txtRif.setText("");
+		txtId.setText("");
  	
 	}
 	
@@ -332,10 +371,69 @@ public class ClientesUI extends JPanel {
 	public void setTxtDireccion(JTextField txtDireccion) {
 		this.txtDireccion = txtDireccion;
 	}
+	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbRuta() {
 		return cmbRuta;
 	}
+	@SuppressWarnings("rawtypes")
 	public void setCmbRuta(JComboBox cmbRuta) {
 		this.cmbRuta = cmbRuta;
 	}
+	public JPanel getPnCliente() {
+		return pnCliente;
+	}
+	public void setPnCliente(JPanel pnCliente) {
+		this.pnCliente = pnCliente;
+	}
+	public JPanel getPnBotones() {
+		return pnBotones;
+	}
+	public void setPnBotones(JPanel pnBotones) {
+		this.pnBotones = pnBotones;
+	}
+	public JButton getBtnGuardar() {
+		return btnGuardar;
+	}
+	public void setBtnGuardar(JButton btnGuardar) {
+		this.btnGuardar = btnGuardar;
+	}
+	public JLabel getLabel() {
+		return label;
+	}
+	public void setLabel(JLabel label) {
+		this.label = label;
+	}
+	public JLabel getLabel_5() {
+		return label_5;
+	}
+	public void setLabel_5(JLabel label_5) {
+		this.label_5 = label_5;
+	}
+	public JTextField getTxtABuscar() {
+		return txtABuscar;
+	}
+	public void setTxtABuscar(String txtABuscar) {
+		this.txtABuscar.setText(txtABuscar);
+	}
+
+	public JButton getBtnBuscar() {
+		return btnBuscar;
+	}
+
+	public void setBtnBuscar(JButton btnBuscar) {
+		this.btnBuscar = btnBuscar;
+	}
+
+	public void setTxtABuscar(JTextField txtABuscar) {
+		this.txtABuscar = txtABuscar;
+	}
+
+	public JTextField getTxtId() {
+		return txtId;
+	}
+
+	public void setTxtId(JTextField txtId) {
+		this.txtId = txtId;
+	}
+	
 }

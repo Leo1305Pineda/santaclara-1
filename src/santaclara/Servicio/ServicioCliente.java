@@ -26,8 +26,16 @@ public class ServicioCliente {
 	public void guardar(Cliente cliente) throws IOException {
 		// TODO Auto-generated method stub
 		// if el es nuevo que no este otro con el mismo nombre
-		clienteDAO.guardar(cliente);
-		
+		clienteDAO.guardar(cliente);	
 	}
-	
+	public Cliente buscar(int id) throws IOException{
+		
+		return clienteDAO.getCliente(id);
+	}
+	public void eliminar (String id)throws IOException{
+		clienteDAO.eliminar(clienteDAO.getCliente(new Integer(id)));
+	}
+	public void modificar (Cliente cliente) throws IOException{
+		clienteDAO.guardar(cliente);
+	}
 }

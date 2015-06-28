@@ -84,17 +84,19 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 	@Override
 	public void eliminar(Cliente cliente) throws IOException {
 		// TODO Auto-generated method stub
-		List<Cliente> clientes = getClientes();
-		for(Cliente cliente1 :clientes)
+		if (cliente != null)
 		{
-			if(cliente1.getId().equals(cliente.getId()))
+			List<Cliente> clientes = getClientes();
+			for(Cliente cliente1 :clientes)
 			{
-				clientes.remove(cliente1);
-				break;
+				if(cliente1.getId().equals(cliente.getId()))
+				{
+					clientes.remove(cliente1);
+					break;
+				}
 			}
+			guardarTodo(clientes);
 		}
-		guardarTodo(clientes);
-		
 	}
 
 	@Override
@@ -106,7 +108,6 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 			if(cliente1.getId().equals(id))
 			{
 				return cliente1;
-				
 			}
 		}
 		return null;
