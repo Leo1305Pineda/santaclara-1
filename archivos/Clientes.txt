@@ -15,4 +15,4 @@ rif:V-15765398
 razonsocial:Leonardo R. Pineda S.
 direccion:Urbanizaciom los altos del norte
 telefono:04245042292
-ruta:0
+ruta:2

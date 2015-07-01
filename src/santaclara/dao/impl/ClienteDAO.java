@@ -112,7 +112,17 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		}
 		return null;
     }
-
+	
+	public Boolean getCliente(String nombre) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		List<Cliente> clientes = getClientes();
+		for(Cliente cliente1 :clientes)
+		{
+			if(cliente1.getRazonsocial().equals(nombre))
+				return true;
+		}
+		return false;
+    }
 	
 	public ClienteDAO(String ruta) {
 		super();

@@ -30,6 +30,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		vista = new ClientesUI(this,servicioCliente.getRutas(),servicioCliente.getClientes());
 		vista.activarBinding();
 		dibujar(vista);
+		vista.quitarNuevo();
 	}
 	
 	@Override
@@ -76,18 +77,24 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent e) {
 				if (vista.getTabla().getSelectedRow()>=0)
 				{
-				try {
-					
-					servicioCliente.eliminar(vista.getTabla().getValueAt(vista.getTabla().getSelectedRow(),0).toString());
-vista.activarBinding();
-					JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-				} catch (IOException e1) {
+					try {
+						Cliente cliente;
+						cliente=servicioCliente.buscar(new Integer(vista.getTabla().getValueAt(vista.getTabla().getSelectedRow(),0).toString()));
+						servicioCliente.eliminar(cliente);
+						
+						vista.getClientes().remove(cliente);
+						vista.getBinClientes().unbind();
+						vista.getBinClientes().bind();
+						vista.repaint();
+						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+						vista.activarBinding();
+					} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				}	
-			}
-		};
+			}	
+		}
+	};
 	}
 	
 	public ActionListener modificar(){
@@ -129,42 +136,48 @@ vista.activarBinding();
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				
 				// se va hacer las validaciones del controlador 
 
 				Cliente cliente = new Cliente();
+				String msg="";
 				
-				if (vista.getTxtId().getText().equals("")) 
-				{
-					cliente.setId(null); 
-				}
-				else
-				{
-					cliente.setId(new Integer(vista.getTxtId().getText().toString()));
-				}
+				if (vista.getTxtId().getText().equals("")) cliente.setId(null); 
+					else cliente.setId(new Integer(vista.getTxtId().getText().toString()));
 				
-				cliente.setRazonsocial(vista.getTxtRazonSocial().getText());
-				cliente.setRif(vista.getTxtRif().getText());
-				cliente.setDireccion(vista.getTxtDireccion().getText());
-				cliente.setTelefono(vista.getTxtTelefono().getText());
+				if (vista.getTxtRazonSocial().getText().equals("")) msg=" Razon Social, ";
+				else cliente.setRazonsocial(vista.getTxtRazonSocial().getText());
+				
+				if (vista.getTxtRif().getText().equals("")) msg=msg+" Rif, ";
+				else cliente.setRif(vista.getTxtRif().getText());
+				
+				if (vista.getTxtDireccion().getText().equals("")) msg=msg+" Direccion, ";
+				else cliente.setDireccion(vista.getTxtDireccion().getText());
+				
+				if (vista.getTxtTelefono().getText().equals("")) msg=msg+" Telefono, ";
+				else cliente.setTelefono(vista.getTxtTelefono().getText());
+				
 				cliente.setRuta((Ruta)vista.getCmbRuta().getSelectedItem());
 				
-				try {
-					servicioCliente.guardar(cliente);
-					// agregarlo a la lista
-					vista.getClientes().add(cliente);
-					vista.getBinClientes().unbind();
-					vista.getBinClientes().bind();
-					vista.repaint();
-					JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-					vista.quitarNuevo();
+				if (msg!="") JOptionPane.showMessageDialog(vista,"Campos Vacios: "+msg);
+				else
+				{
+					try {
+						servicioCliente.guardar(cliente);
+						// agregarlo a la lista
+						vista.getClientes().add(cliente);
+						vista.getBinClientes().unbind();
+						vista.getBinClientes().bind();
+						vista.repaint();
+						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+						vista.quitarNuevo();
 					
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					JOptionPane.showConfirmDialog(null,e1.getMessage());
-					e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						JOptionPane.showConfirmDialog(null,e1.getMessage());
+						e1.printStackTrace();
+					}
 				}
-				
-				
 			}
 		};
 	}
@@ -177,6 +190,17 @@ vista.activarBinding();
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				vista.activarNuevoCliente();
+			}
+		};
+	}
+	
+	public ActionListener salir(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				vista.setVisible(false);
 			}
 		};
 	}

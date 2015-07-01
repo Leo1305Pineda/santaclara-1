@@ -53,6 +53,7 @@ public class ClientesUI extends JPanel {
 	private JButton btnEliminar;
 	private JButton btnGuardar;
 	private JButton btnBuscar;
+	private JButton btnSalir;
 	private JTextField txtRif;
 	private JTextField txtRazonSocial;
 	private JTextField txtTelefono;
@@ -69,8 +70,8 @@ public class ClientesUI extends JPanel {
 		
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
-		setBackground(Color.GRAY);
-		setSize(864,513);
+		setBackground(Color.DARK_GRAY);
+		setSize(864,537);
 		setLayout(null);
 		
 		pnClientes = new JPanel();
@@ -111,11 +112,32 @@ public class ClientesUI extends JPanel {
 		btnEliminar.addActionListener(contCliente.eliminar());
 		pnBotones.add(btnEliminar);
 		
-		JButton btnNewButton = new JButton("Salir");
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.setBackground(Color.DARK_GRAY);
-		btnNewButton.setBounds(5, 177, 121, 40);
-		pnBotones.add(btnNewButton);
+		btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(contCliente.salir());
+		btnSalir.setForeground(Color.WHITE);
+		btnSalir.setBackground(Color.DARK_GRAY);
+		btnSalir.setBounds(5, 177, 121, 40);
+		pnBotones.add(btnSalir);
+		
+		JPanel pnBuscar = new JPanel();
+		pnBuscar.setBackground(Color.GRAY);
+		pnBuscar.setForeground(Color.GRAY);
+		pnBuscar.setBounds(25, 12, 635, 36);
+		
+		pnBuscar.setLayout(new MigLayout("", "[82px,grow][][][][][][][][][][][][][][][][][][][]", "[][][][25px]"));
+		
+		txtABuscar = new JTextField();
+		txtABuscar.setBackground(Color.LIGHT_GRAY);
+		pnBuscar.add(txtABuscar, "cell 0 0 19 1,growx");
+		txtABuscar.setColumns(10);
+		
+		btnBuscar = new JButton("b");
+		btnBuscar.addActionListener(contCliente.buscar());
+		btnBuscar.setBackground(Color.GRAY);
+		
+		pnBuscar.add(btnBuscar, "cell 19 0,alignx right,aligny top");
+		
+		pnClientes.add(pnBuscar);
 		
 		scrollPanel = new JScrollPane();
 		scrollPanel.setBounds(25, 50, 635, 224);
@@ -129,7 +151,7 @@ public class ClientesUI extends JPanel {
 							"Editar Cliente",TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnCliente.setBackground(Color.GRAY);
 		pnCliente.setBounds(22, 329, 817, 167);
-		quitarNuevo();
+		//quitarNuevo();
 	
 		add(pnCliente);
 		
@@ -154,7 +176,7 @@ public class ClientesUI extends JPanel {
 		label_2.setBackground(Color.WHITE);
 		
 		JLabel label_4 = new JLabel("Ruta:");
-		label_4.setBounds(408, 74, 38, 15);
+		label_4.setBounds(411, 87, 38, 15);
 		label_4.setForeground(Color.WHITE);
 		label_4.setBackground(Color.WHITE);
 		
@@ -175,7 +197,7 @@ public class ClientesUI extends JPanel {
 		txtDireccion.setColumns(10);
 		
 		cmbRuta = new JComboBox();
-		cmbRuta.setBounds(496, 75, 258, 24);
+		cmbRuta.setBounds(496, 82, 258, 24);
 		cmbRuta.setRenderer(new ListCellRenderer() {
 
 			@Override
@@ -204,34 +226,29 @@ public class ClientesUI extends JPanel {
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		btnGuardar.addActionListener(contCliente.guardar());
-		btnGuardar.setBounds(605, 112, 150, 25);
+		btnGuardar.setBounds(598, 131, 156, 25);
 		pnCliente.add(btnGuardar);
 		
 		txtId = new JTextField();
 		txtId.setBounds(27, 12, 114, 19);
 		pnCliente.add(txtId);
 		txtId.setColumns(10);
-		//txtId.setVisible(false);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				quitarNuevo();
+			}
+		});
+		
+		btnCancelar.setForeground(Color.WHITE);
+		btnCancelar.setBackground(Color.DARK_GRAY);
+		btnCancelar.setBounds(418, 131, 168, 25);
+		pnCliente.add(btnCancelar);
+		txtId.setVisible(false);
 		
 		pnClientes.add(pnBotones);
 		
-		JPanel pnBuscar = new JPanel();
-		pnBuscar.setBackground(Color.GRAY);
-		pnBuscar.setForeground(Color.GRAY);
-		pnBuscar.setBounds(25, 12, 635, 36);
-		pnClientes.add(pnBuscar);
-		pnBuscar.setLayout(new MigLayout("", "[82px,grow][][][][][][][][][][][][][][][][][][][]", "[][][][25px]"));
-		
-		txtABuscar = new JTextField();
-		txtABuscar.setBackground(Color.LIGHT_GRAY);
-		pnBuscar.add(txtABuscar, "cell 0 0 19 1,growx");
-		txtABuscar.setColumns(10);
-		
-		btnBuscar = new JButton("b");
-		btnBuscar.addActionListener(contCliente.buscar());
-		btnBuscar.setBackground(Color.GRAY);
-		
-		pnBuscar.add(btnBuscar, "cell 19 0,alignx right,aligny top");
 	}
 	    
 	public void activarBinding() {
@@ -435,5 +452,4 @@ public class ClientesUI extends JPanel {
 	public void setTxtId(JTextField txtId) {
 		this.txtId = txtId;
 	}
-	
 }
