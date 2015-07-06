@@ -8,6 +8,7 @@ public class Cliente {
 	private String direccion;
 	private String telefono;
 	private Ruta ruta;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -40,6 +41,9 @@ public class Cliente {
 	}
 	public Ruta getRuta() {
 		return ruta;
+	}
+	public String getRutaNombre() {
+		return ruta.getNombre();
 	}
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;

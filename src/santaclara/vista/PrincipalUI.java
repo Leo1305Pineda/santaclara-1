@@ -93,9 +93,11 @@ public class PrincipalUI {
 		mnCatalogo.add(mntProductos);
 		mntProductos.addActionListener(controlador.activarMenu());
 		
-		JMenuItem mntClientes = new JMenuItem("Clientes");
+		mntClientes = new JMenuItem("Clientes");
 		mnCatalogo.add(mntClientes);
-	    mntVendedores = new JMenuItem("Vendedores");
+		mntClientes.addActionListener(controlador.activarMenu());
+	    
+		mntVendedores = new JMenuItem("Vendedores");
 		mnCatalogo.add(mntVendedores);
 		mntVendedores.addActionListener(controlador.activarMenu());
 		

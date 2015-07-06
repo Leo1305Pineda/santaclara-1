@@ -1,6 +1,5 @@
 package santaclara.Servicio;
 
-import java.io.FileNotFoundException;
 import santaclara.dao.impl.ConcesionarioDAO;
 import santaclara.dao.impl.JefeVentaDAO;
 import santaclara.dao.impl.UsuarioDAO;

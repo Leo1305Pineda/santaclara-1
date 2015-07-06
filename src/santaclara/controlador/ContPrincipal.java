@@ -1,11 +1,7 @@
 package santaclara.controlador;
 
-
-import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.JPanel;
 
@@ -125,8 +121,22 @@ public  class ContPrincipal implements IContGeneral {
 						e1.printStackTrace();
 					}
 				}
+				else if(e.getSource().equals(vista.getMntClientes()))
+				{
+					try {
+						controlador = new ContClientes(ContPrincipal.this);
+					}
+					catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}
 		};
+	}
+
+	public void setVista(PrincipalUI vista) {
+		this.vista = vista;
 	}
 	 
 }
