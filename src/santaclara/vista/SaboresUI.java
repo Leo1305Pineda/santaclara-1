@@ -347,7 +347,7 @@ public class SaboresUI extends JPanel {
 
 	public void quitarNuevo() {
 		// TODO Auto-generated method stub
-		pnSabores.setVisible(false);
+		pnSabor.setVisible(false);
 		
 		pnTabla.setVisible(true);
 		scrollPanel.setVisible(true);
@@ -405,8 +405,8 @@ public class SaboresUI extends JPanel {
 	public void activarNuevoSabor() {
 		// TODO Auto-generated method stub
 		txtId.setVisible(false);
-		pnSabores.setBounds(12, 81, 520, 30);
-		pnSabores.setVisible(true);
+		pnSabor.setBounds(12, 81, 520, 30);
+		pnSabor.setVisible(true);
 		setTxtSabor("");
 		pnTabla.setVisible(false);
 	}

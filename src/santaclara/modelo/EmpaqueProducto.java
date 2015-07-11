@@ -39,5 +39,9 @@ public class EmpaqueProducto {
 	public EmpaqueProducto() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public String getCantidadStr() {
+		return cantidad.toString();
+	}
 
 }

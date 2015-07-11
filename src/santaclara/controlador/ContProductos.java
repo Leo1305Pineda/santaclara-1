@@ -21,7 +21,6 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 
 	private ProductosUI vista;
 	private ServicioProducto servicioProducto = new ServicioProducto();;
-	private ContPrincipal contPrincipal;
 	private ContPresentaciones contPresentaciones;
 	private ContCapacidades contCapacidades;
 	private ContSabores contSabores; 
@@ -29,7 +28,6 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 	
 	public ContProductos(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
-		this.contPrincipal = contPrincipal;
 		setContPrincipal(contPrincipal);
 		vista = new ProductosUI(this,servicioProducto.getProductos(),
 					servicioProducto.getCapacidades(),
@@ -256,7 +254,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-						contPresentaciones = new ContPresentaciones(contPrincipal);
+						contPresentaciones = new ContPresentaciones(getContPrincipal());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -273,7 +271,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					contCapacidades = new ContCapacidades(contPrincipal);
+					contCapacidades = new ContCapacidades(getContPrincipal());
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -290,11 +288,23 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					contSabores = new ContSabores(contPrincipal);
+					contSabores = new ContSabores(getContPrincipal());
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			}
+		};
+	}
+
+	public ActionListener Atras() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ActivarAtras();
 			}
 		};
 	}	

@@ -11,28 +11,28 @@ import santaclara.modelo.EmpaqueProducto;
 
 public  class EmpaqueProductoDAO extends GenericoDAO implements IEmpaqueProductoDAO{
 	
-private String ruta = "archivos/empaqueProducto.txt";
+private String ruta = "archivos/empaqueProductos.txt";
 private Scanner scaner;	
 public List<EmpaqueProducto> getEmpaques() throws NumberFormatException, IOException {
 	// TODO Auto-generated method stub
-	List<EmpaqueProducto> empaques = new ArrayList<EmpaqueProducto>();
+	List<EmpaqueProducto> empaqueProductos = new ArrayList<EmpaqueProducto>();
 	File file = new File(ruta);
 		scaner = new Scanner(file);
 	while(scaner.hasNext())
 	{
-		 EmpaqueProducto empaque = new EmpaqueProducto();
-		 empaque.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+		 EmpaqueProducto empaqueProducto = new EmpaqueProducto();
+		 empaqueProducto.setId(new Integer(scaner.skip("id:").nextLine().toString().trim()));
 		 //Asigna Producto
 		 ProductoDAO productoDAO = new ProductoDAO();
-		 empaque.setProducto(
+		 empaqueProducto.setProducto(
 				 productoDAO.getProducto(
 						 new Integer(scaner.skip("idProducto:").nextLine().trim())));
-		 empaque.setCantidad(new Integer(scaner.skip("cantidad:").nextLine().trim()));
+		 empaqueProducto.setCantidad(new Integer(scaner.skip("cantidad:").nextLine().trim()));
 		 
-		 empaques.add(empaque); 
+		 empaqueProductos.add(empaqueProducto); 
 	}
 	
-	return empaques;
+	return empaqueProductos;
 
 }
 

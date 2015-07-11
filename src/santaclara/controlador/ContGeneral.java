@@ -13,13 +13,23 @@ public abstract class ContGeneral implements IContGeneral {
 	{
 		contPrincipal.agregarPanel(vista);
 		this.contPrincipal.getCache().push(vista.getClass().getName());
-		
 	}
 	
-	public void qutarVista(){
+	public void qutarVista(){//btnSalir
 		contPrincipal.quitarPanel();
-		if (!this.contPrincipal.getCache().empty()) this.contPrincipal.getCache().pop();
+		if (!this.contPrincipal.getCache().empty())
+		{
+			this.contPrincipal.getCache().clear();
+			this.contPrincipal.getCache().push("santaclara.IniciarSesionUI");
+		}
 	}
+	
+	public void ActivarAtras() {//btnAtras
+		
+		if(this.contPrincipal.getCache().size()>1)	this.contPrincipal.ActivarAtras();
+		else qutarVista(); 
+	}
+
 
 	public ContPrincipal getContPrincipal() {
 		return contPrincipal;
@@ -29,11 +39,6 @@ public abstract class ContGeneral implements IContGeneral {
 		this.contPrincipal = contPrincipal;
 	}	
 	
-	public void ActivarAtras() {
-		
-		this.contPrincipal.ActivarAtras();
-	}
-
 	public Stack<String> getCache() {
 		return this.contPrincipal.getCache();
 	}

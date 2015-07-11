@@ -28,7 +28,7 @@ public class PrincipalUI {
 	private ContPrincipal controlador;
 
 	private 	JMenu mnCatalogo;
-	private 	JMenuItem mntProductos;
+	private 	JMenuItem mntEmpaqueProductos;
 	private 	JMenuItem mntClientes;
 	private 	JMenuItem mntVendedores;
 	private 	JMenuItem mntConcesionario;
@@ -91,9 +91,9 @@ public class PrincipalUI {
 		JMenu mnCatalogo = new JMenu("Catalogo");
 		menuBar.add(mnCatalogo);
 		
-	    mntProductos = new JMenuItem("Productos ");
-		mnCatalogo.add(mntProductos);
-		mntProductos.addActionListener(controlador.activarMenu());
+	    mntEmpaqueProductos = new JMenuItem("Empaque Productos");
+		mnCatalogo.add(mntEmpaqueProductos);
+		mntEmpaqueProductos.addActionListener(controlador.activarMenu());
 		
 		mntClientes = new JMenuItem("Clientes");
 		mnCatalogo.add(mntClientes);
@@ -191,12 +191,12 @@ public class PrincipalUI {
 		this.mnCatalogo = mnCatalogo;
 	}
 
-	public JMenuItem getMntProductos() {
-		return mntProductos;
+	public JMenuItem getMntEmpaqueProductos() {
+		return mntEmpaqueProductos;
 	}
 
-	public void setMntProductos(JMenuItem mntProductos) {
-		this.mntProductos = mntProductos;
+	public void setMntEmpaqueProductos(JMenuItem mntProductos) {
+		this.mntEmpaqueProductos = mntProductos;
 	}
 
 	public JMenuItem getMntClientes() {

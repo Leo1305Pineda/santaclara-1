@@ -128,7 +128,7 @@ public class ContSabores extends ContGeneral implements IContGeneral{
 				for(int i = 0;i<tabla1.getRowCount();i++)
 				{
 					if (tabla1.getValueAt(i, 0).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
-						tabla1.getValueAt(i, 1).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim()))
+						tabla1.getValueAt(i, 1).toString().equals(vista.getTxtABuscar().getText().toString()))
 					{
 						tabla1.setRowSelectionInterval(i,i);
 						enc = true;

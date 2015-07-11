@@ -143,6 +143,7 @@ public class ProductosUI extends JPanel {
 										botones.setLayout(null);
 										
 										JButton btnAtras = new JButton("Atras");
+										btnAtras.addActionListener(contProductos.Atras());
 										btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
 										btnAtras.setBounds(12, 17, 92, 16);
 										botones.add(btnAtras);
@@ -176,11 +177,11 @@ public class ProductosUI extends JPanel {
 										botones.add(button_3);
 										
 										btnSabor = new JButton("Sabor");
-										btnSabor.addActionListener(contProductos.AbrirSabor());
 										btnSabor.setIcon(new ImageIcon("img/gestion/Sabor.png"));
 										btnSabor.setBounds(750, 17, 100, 16);
 										btnSabor.setForeground(Color.WHITE);
 										btnSabor.setBackground(Color.DARK_GRAY);
+										btnSabor.addActionListener(contProductos.AbrirSabor());
 										botones.add(btnSabor);
 										
 										JButton button = new JButton("Salir");

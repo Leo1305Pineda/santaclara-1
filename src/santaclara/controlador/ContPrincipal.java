@@ -107,9 +107,9 @@ public  class ContPrincipal implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(e.getSource().equals(vista.getMntProductos()))
+				if(e.getSource().equals(vista.getMntEmpaqueProductos()))
 					{
-						ActivarProductos();
+						ActivarEmpaqueProductos();
 					}
 				else if(e.getSource().equals(vista.getMntVendedores()))
 				{
@@ -212,12 +212,23 @@ public  class ContPrincipal implements IContGeneral {
 			e1.printStackTrace();
 		}
 	}
+	public void ActivarEmpaqueProductos() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContEmpaqueProductos(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	
 	public void ActivarAtras(){
 		// TODO Auto-generated method stub
 		if (!cache.empty())
 		{
 			cache.pop();
+			
 			switch (cache.pop()) {
 			case "santaclara.IniciarSesionUI": cache.push("santaclara.IniciarSesionUI");
 			break;
@@ -233,7 +244,9 @@ public  class ContPrincipal implements IContGeneral {
 			break;
 			case "santaclara.vista.CapacidadesUI":		ActivarCapacidades();
 			break;
-			case "santaclara.vista.SaboresUI":		ActivarSabores();
+			case "santaclara.vista.SaboresUI":			ActivarSabores();
+			break;
+			case "santaclara.vista.EmpaqueProductosUI":	ActivarEmpaqueProductos();
 			break;
 
 			default:
