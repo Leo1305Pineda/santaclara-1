@@ -222,6 +222,16 @@ public  class ContPrincipal implements IContGeneral {
 			e1.printStackTrace();
 		}
 	}
+	public void ActivarAlmacenes() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContAlmacenes(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	
 	public void ActivarAtras(){
 		// TODO Auto-generated method stub
@@ -247,6 +257,8 @@ public  class ContPrincipal implements IContGeneral {
 			case "santaclara.vista.SaboresUI":			ActivarSabores();
 			break;
 			case "santaclara.vista.EmpaqueProductosUI":	ActivarEmpaqueProductos();
+			break;
+			case "santaclara.vista.AlmacenesUI":	ActivarAlmacenes();
 			break;
 
 			default:
