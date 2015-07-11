@@ -27,6 +27,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 	private ServicioProducto servicioProducto = new ServicioProducto();;
 	private ContPrincipal contPrincipal;
 	private ContPresentaciones contPresentaciones;
+	private ContCapacidades contCapacidades;
 	private PresentacionDAO presentacionDAO = new PresentacionDAO();	
 	
 	public ContProductos(ContPrincipal contPrincipal) throws Exception {
@@ -263,6 +264,23 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+			}
+		};
+	}
+
+	public ActionListener AbrirCapacidades() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					contCapacidades = new ContCapacidades(contPrincipal);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			}
 		};
 	}	

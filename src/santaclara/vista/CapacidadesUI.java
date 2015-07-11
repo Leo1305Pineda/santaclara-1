@@ -20,9 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.miginfocom.swing.MigLayout;
-import santaclara.controlador.ContPresentaciones;
-import santaclara.dao.impl.PresentacionDAO;
-import santaclara.modelo.Presentacion;
+import santaclara.controlador.ContCapacidades;
+import santaclara.modelo.Capacidad;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -31,11 +30,11 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 
-public class PresentacionesUI extends JPanel {
+public class CapacidadesUI extends JPanel {
 	
 	private JPanel pnOpciones;
 	private JPanel panel;
-	private JPanel pnPresentaciones;
+	private JPanel pnCapacidades;
 	private JPanel panel_1;
 	private JPanel pnTabla;
 	
@@ -44,39 +43,40 @@ public class PresentacionesUI extends JPanel {
 	private JButton btnAtras;
 	private JButton btnSalir;
 	private JButton btnABuscar;
+	private JButton btnEliminar; 
 	
 	private JTable table;
-	private JTableBinding binPresentaciones; 
+	private JTableBinding binCapacidades; 
 	
 	private JScrollPane scrollPanel;
 	
 	private JTextField txtABuscar;
 		
-	private List<Presentacion> presentaciones = new ArrayList<Presentacion>();
-	private JPanel pnPresentacion;
+	private List<Capacidad> capacidades = new ArrayList<Capacidad>();
+	private JPanel pnCapacidad;
 	private JButton btnGuardar;
 	private JButton btnCancelar;
 	private JLabel label;
-	private JTextField txtNombre;
+	private JTextField txtVolumen;
 	private JTextField txtId;
 	
-	public PresentacionesUI(ContPresentaciones contPresentaciones,List<Presentacion> presentaciones) {
-		this.presentaciones = presentaciones;
+	public CapacidadesUI(ContCapacidades contCapacidades,List<Capacidad> capacidades) {
+		this.capacidades = capacidades;
 		setBackground(Color.DARK_GRAY);
 		setLayout(null);
 		
-		pnPresentaciones = new JPanel();
-		pnPresentaciones.setBackground(Color.DARK_GRAY);
-		pnPresentaciones.setForeground(Color.DARK_GRAY);
-		pnPresentaciones.setBounds(12, 12, 546, 315);
-		pnPresentaciones.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Presentacion", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		add(pnPresentaciones);
-		pnPresentaciones.setLayout(null);
+		pnCapacidades = new JPanel();
+		pnCapacidades.setBackground(Color.DARK_GRAY);
+		pnCapacidades.setForeground(Color.DARK_GRAY);
+		pnCapacidades.setBounds(12, 12, 546, 315);
+		pnCapacidades.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Capacidad", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		add(pnCapacidades);
+		pnCapacidades.setLayout(null);
 		
 		panel = new JPanel();
 		panel.setBackground(Color.GRAY);
 		panel.setBounds(12, 45, 522, 42);
-		pnPresentaciones.add(panel);
+		pnCapacidades.add(panel);
 		panel.setLayout(null);
 		
 		pnOpciones = new JPanel();
@@ -87,7 +87,7 @@ public class PresentacionesUI extends JPanel {
 		pnOpciones.setLayout(null);
 		
 		btnNuevo = new JButton("Nuevo");
-		btnNuevo.addActionListener(contPresentaciones.nuevo());
+		btnNuevo.addActionListener(contCapacidades.nuevo());
 		btnNuevo.setBounds(100, 15, 103, 16);
 		btnNuevo.setForeground(Color.WHITE);
 		btnNuevo.setBackground(Color.DARK_GRAY);
@@ -95,7 +95,7 @@ public class PresentacionesUI extends JPanel {
 		pnOpciones.add(btnNuevo);
 		
 		btnEditar = new JButton("Editar");
-		btnEditar.addActionListener(contPresentaciones.modificar());
+		btnEditar.addActionListener(contCapacidades.modificar());
 		btnEditar.setBounds(207, 15, 102, 16);
 		btnEditar.setForeground(Color.WHITE);
 		btnEditar.setBackground(Color.DARK_GRAY);
@@ -103,7 +103,7 @@ public class PresentacionesUI extends JPanel {
 		pnOpciones.add(btnEditar);
 		
 		btnAtras = new JButton("Atras");
-		btnAtras.addActionListener(contPresentaciones.atras());
+		btnAtras.addActionListener(contCapacidades.atras());
 		btnAtras.setBounds(5, 15, 92, 16);
 		btnAtras.setForeground(Color.WHITE);
 		btnAtras.setBackground(Color.DARK_GRAY);
@@ -111,24 +111,24 @@ public class PresentacionesUI extends JPanel {
 		pnOpciones.add(btnAtras);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.addActionListener(contPresentaciones.salir());
+		btnSalir.addActionListener(contCapacidades.salir());
 		btnSalir.setBounds(425, 15, 90, 16);
 		btnSalir.setForeground(Color.WHITE);
 		btnSalir.setBackground(Color.DARK_GRAY);
 		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
 		pnOpciones.add(btnSalir);
 		
-		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setForeground(Color.WHITE);
 		btnEliminar.setBackground(Color.DARK_GRAY);
 		btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-		btnEliminar.addActionListener(contPresentaciones.eliminar());
+		btnEliminar.addActionListener(contCapacidades.eliminar());
 		btnEliminar.setBounds(312, 15, 110, 16);
 		pnOpciones.add(btnEliminar);
 		
 		pnTabla = new JPanel();
 		pnTabla.setBounds(12, 85, 520, 181);
-		pnPresentaciones.add(pnTabla);
+		pnCapacidades.add(pnTabla);
 		pnTabla.setLayout(null);
 		
 		scrollPanel = new JScrollPane();
@@ -143,7 +143,7 @@ public class PresentacionesUI extends JPanel {
 		panel_1.setForeground(Color.GRAY);
 		panel_1.setBackground(Color.DARK_GRAY);
 		panel_1.setBounds(12, 13, 522, 30);
-		pnPresentaciones.add(panel_1);
+		pnCapacidades.add(panel_1);
 		panel_1.setLayout(new MigLayout("", "[grow]", "[]"));
 		
 		txtABuscar = new JTextField();
@@ -153,26 +153,26 @@ public class PresentacionesUI extends JPanel {
 		txtABuscar.setColumns(10);
 		
 		btnABuscar = new JButton("");
-		btnABuscar.addActionListener(contPresentaciones.buscar());
+		btnABuscar.addActionListener(contCapacidades.buscar());
 		btnABuscar.setVerticalAlignment(SwingConstants.TOP);
 		btnABuscar.setBackground(Color.DARK_GRAY);
 		btnABuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
 		panel_1.add(btnABuscar, "cell 0 0");
 		
-		pnPresentacion = new JPanel();
-		pnPresentacion.setBackground(Color.DARK_GRAY);
-		pnPresentacion.setBounds(12, 270, 520, 30);
-		pnPresentacion.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		pnPresentaciones.add(pnPresentacion);
-		pnPresentacion.setLayout(null);
+		pnCapacidad = new JPanel();
+		pnCapacidad.setBackground(Color.DARK_GRAY);
+		pnCapacidad.setBounds(12, 270, 520, 30);
+		pnCapacidad.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		pnCapacidades.add(pnCapacidad);
+		pnCapacidad.setLayout(null);
 		
 		btnGuardar = new JButton("Guardar");
-		btnGuardar.addActionListener(contPresentaciones.guardar());
+		btnGuardar.addActionListener(contCapacidades.guardar());
 		btnGuardar.setBounds(395, 10, 115, 16);
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
-		pnPresentacion.add(btnGuardar);
+		pnCapacidad.add(btnGuardar);
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
@@ -184,41 +184,41 @@ public class PresentacionesUI extends JPanel {
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setBackground(Color.DARK_GRAY);
 		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-		pnPresentacion.add(btnCancelar);
+		pnCapacidad.add(btnCancelar);
 		
 		label = new JLabel("Nombre:");
 		label.setForeground(Color.WHITE);
 		label.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
 		label.setBounds(130, 5, 69, 25);
-		pnPresentacion.add(label);
+		pnCapacidad.add(label);
 		
-		txtNombre = new JTextField();
-		txtNombre.setColumns(10);
-		txtNombre.setBounds(200, 10, 188, 16);
-		pnPresentacion.add(txtNombre);
+		txtVolumen = new JTextField();
+		txtVolumen.setColumns(10);
+		txtVolumen.setBounds(200, 10, 188, 16);
+		pnCapacidad.add(txtVolumen);
 		
 		txtId = new JTextField();
 		txtId.setBounds(254, 12, 54, 19);
-		pnPresentacion.add(txtId);
+		pnCapacidad.add(txtId);
 		txtId.setColumns(10);
 	}
 	
-	public void activarBinding(List<Presentacion> presentaciones) {
+	public void activarBinding(List<Capacidad> capacidades) {
 		// TODO Auto-generated method stub
 		pnTabla.setVisible(true);
 		table = new JTable();
 		scrollPanel.setViewportView(table);
-		binPresentaciones = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
-    			presentaciones,table);
+		binCapacidades = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
+    			capacidades,table);
 		
-		BeanProperty idPresentacion  = BeanProperty.create("id");
-		BeanProperty materialPresentacion = BeanProperty.create("material");
+		BeanProperty idCapacidad  = BeanProperty.create("id");
+		BeanProperty volumenCapacidad = BeanProperty.create("volumen");
 	    
 	    
-	    binPresentaciones.addColumnBinding(idPresentacion).setColumnClass(Integer.class).setColumnName("id");;
-	    binPresentaciones.addColumnBinding(materialPresentacion).setColumnClass(String.class).setColumnName("Material");
+	    binCapacidades.addColumnBinding(idCapacidad).setColumnClass(Integer.class).setColumnName("id");;
+	    binCapacidades.addColumnBinding(volumenCapacidad).setColumnClass(String.class).setColumnName("Volumen");
 	    
-	    binPresentaciones.bind();
+	    binCapacidades.bind();
 
 	}
 
@@ -239,12 +239,12 @@ public class PresentacionesUI extends JPanel {
 		this.panel = panel;
 	}
 
-	public JPanel getPnPresentacion() {
-		return pnPresentaciones;
+	public JPanel getPnCapacidad() {
+		return pnCapacidades;
 	}
 
-	public void setPnPresentacion(JPanel pnPresentacion) {
-		this.pnPresentaciones = pnPresentacion;
+	public void setPnCapacidad(JPanel pnPresentacion) {
+		this.pnCapacidades = pnPresentacion;
 	}
 
 	public JPanel getPanel_1() {
@@ -335,29 +335,29 @@ public class PresentacionesUI extends JPanel {
 		this.scrollPanel = scrollPanel;
 	}
 
-	public List<Presentacion> getPresentaciones() {
-		return presentaciones;
+	public List<Capacidad> getCapacidades() {
+		return capacidades;
 	}
 
-	public void setPresentaciones(List<Presentacion> presentaciones) {
-		this.presentaciones = presentaciones;
+	public void setCapacidades(List<Capacidad> presentaciones) {
+		this.capacidades = presentaciones;
 	}
 
 	public void quitarNuevo() {
 		// TODO Auto-generated method stub
-		pnPresentacion.setVisible(false);
+		pnCapacidad.setVisible(false);
 		
 		pnTabla.setVisible(true);
 		scrollPanel.setVisible(true);
 		
 	}
 
-	public JPanel getPnPresentaciones() {
-		return pnPresentaciones;
+	public JPanel getPnCapacidades() {
+		return pnCapacidades;
 	}
 
-	public void setPnPresentaciones(JPanel pnPresentaciones) {
-		this.pnPresentaciones = pnPresentaciones;
+	public void setPnCapacidades(JPanel pnPresentaciones) {
+		this.pnCapacidades = pnPresentaciones;
 	}
 
 	public JTextField getTxtABuscar() {
@@ -393,19 +393,19 @@ public class PresentacionesUI extends JPanel {
 	}
 
 	public JTextField getTextField_1() {
-		return txtNombre;
+		return txtVolumen;
 	}
 
-	public void setTxtNombre(String Nombre) {
-		this.txtNombre.setText(Nombre);
+	public void setTxtVolumen(String Nombre) {
+		this.txtVolumen.setText(Nombre);
 	}
 
-	public void activarNuevoPresentacion() {
+	public void activarNuevoCapacidad() {
 		// TODO Auto-generated method stub
 		txtId.setVisible(false);
-		pnPresentacion.setBounds(12, 81, 520, 30);
-		pnPresentacion.setVisible(true);
-		setTxtNombre("");
+		pnCapacidad.setBounds(12, 81, 520, 30);
+		pnCapacidad.setVisible(true);
+		setTxtVolumen("");
 		pnTabla.setVisible(false);
 	}
 
@@ -413,12 +413,12 @@ public class PresentacionesUI extends JPanel {
 		this.txtABuscar = txtABuscar;
 	}
 
-	public JTextField getTxtNombre() {
-		return txtNombre;
+	public JTextField getTxtVolumen() {
+		return txtVolumen;
 	}
 
-	public void setTxtNombre(JTextField txtNombre) {
-		this.txtNombre = txtNombre;
+	public void setTxtVolumen(JTextField txtNombre) {
+		this.txtVolumen = txtNombre;
 	}
 
 	public JTextField getTxtId() {
@@ -429,11 +429,11 @@ public class PresentacionesUI extends JPanel {
 		this.txtId = txtId;
 	}
 
-	public JTableBinding getBinPresentaciones() {
-		return binPresentaciones;
+	public JTableBinding getBinCapacidades() {
+		return binCapacidades;
 	}
 
-	public void setBinPresentaciones(JTableBinding binPresentaciones) {
-		this.binPresentaciones = binPresentaciones;
+	public void setBinCapacidades(JTableBinding binPresentaciones) {
+		this.binCapacidades = binPresentaciones;
 	}
 }

@@ -8,21 +8,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import santaclara.Servicio.ServicioPresentacion;
-import santaclara.modelo.Presentacion;
-import santaclara.vista.PresentacionesUI;
+import santaclara.Servicio.ServicioCapacidad;
+import santaclara.modelo.Capacidad;
+import santaclara.vista.CapacidadesUI;
 
-public class ContPresentaciones extends ContGeneral implements IContGeneral{
+public class ContCapacidades extends ContGeneral implements IContGeneral{
 	
-	private ServicioPresentacion servicioPresentacion;
-	private PresentacionesUI vista;
+	private ServicioCapacidad servicioCapacidad;
+	private CapacidadesUI vista;
 	
-	public ContPresentaciones(ContPrincipal contPrincipal) throws Exception {
+	public ContCapacidades(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
-		servicioPresentacion = new ServicioPresentacion();
-		vista = new PresentacionesUI(this,servicioPresentacion.getPresentaciones());
-		vista.activarBinding(servicioPresentacion.getPresentaciones());
+		servicioCapacidad = new ServicioCapacidad();
+		vista = new CapacidadesUI(this,servicioCapacidad.getCapacidades());
+		vista.activarBinding(servicioCapacidad.getCapacidades());
 		dibujar(vista);
 		vista.quitarNuevo();
 	}
@@ -39,7 +39,7 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.activarNuevoPresentacion();
+				vista.activarNuevoCapacidad();
 				vista.getPnTabla().setVisible(false);
 			}
 		};
@@ -53,25 +53,25 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent e) {
 				if (vista.getTable().getSelectedRow()>=0)
 				{
-					Presentacion presentacion  = new Presentacion();
+					Capacidad capacidad  = new Capacidad();
 					try {
-						presentacion = servicioPresentacion.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						capacidad = servicioCapacidad.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
 					} catch (NumberFormatException | IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					if (presentacion != null)
+					if (capacidad != null)
 					{
-						vista.activarNuevoPresentacion();
+						vista.activarNuevoCapacidad();
 						vista.getScrollPanel().setVisible(false);
 						
-						vista.getTxtId().setText(presentacion.getId().toString());
-						vista.getTxtNombre().setText(presentacion.getMaterial());
+						vista.getTxtId().setText(capacidad.getId().toString());
+						vista.getTxtVolumen().setText(capacidad.getVolumenStr());
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(vista,"Seleccione el Producto");
+					JOptionPane.showMessageDialog(vista,"Seleccione la Capacidad");
 				}
 		}
 		};
@@ -84,24 +84,24 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				Presentacion presentacion = new Presentacion();
+				Capacidad capacidad = new Capacidad();
 				
-				if (vista.getTxtId().getText().equals("")) presentacion.setId(null);
-					else presentacion.setId(new Integer(vista.getTxtId().getText().toString())); 
+				if (vista.getTxtId().getText().equals("")) capacidad.setId(null);
+					else capacidad.setId(new Integer(vista.getTxtId().getText().toString())); 
 				
-				if (vista.getTxtNombre().getText().equals("")) JOptionPane.showMessageDialog(vista,"Campos Vacios: Nombre Material");
+				if (vista.getTxtVolumen().getText().equals("")) JOptionPane.showMessageDialog(vista,"Campos Vacios: Volumen");
 					else
 						{
 							try {
-									presentacion.setMaterial(vista.getTxtNombre().getText().toString());
+									capacidad.setVolumen(new Double(vista.getTxtVolumen().getText().toString()));
 									
-									JOptionPane.showMessageDialog(vista,servicioPresentacion.guardar(presentacion));
+									JOptionPane.showMessageDialog(vista,servicioCapacidad.guardar(capacidad));
 									// agregarlo a la lista
-									vista.getPresentaciones().add(presentacion);
+									vista.getCapacidades().add(capacidad);
 									
-									vista.getBinPresentaciones().unbind();
-									vista.getBinPresentaciones().bind();
-									vista.activarBinding(servicioPresentacion.getPresentaciones());
+									vista.getBinCapacidades().unbind();
+									vista.getBinCapacidades().bind();
+									vista.activarBinding(servicioCapacidad.getCapacidades());
 									vista.quitarNuevo();
 									vista.getScrollPanel().setVisible(true);
 									
@@ -143,17 +143,17 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 		};
 	}
 
-	public ServicioPresentacion getServicioPresentaciones() {
-		return servicioPresentacion;
+	public ServicioCapacidad getServicioPresentaciones() {
+		return servicioCapacidad;
 	}
 
-	public void setServicioPresentaciones(
-			ServicioPresentacion servicioPresentaciones) {
-		this.servicioPresentacion = servicioPresentaciones;
+	public void setServicioCapacidad(
+			ServicioCapacidad servicioCapacidad) {
+		this.servicioCapacidad = servicioCapacidad;
 	}
 
 	
-	public void setVista(PresentacionesUI vista) {
+	public void setVista(CapacidadesUI vista) {
 		this.vista = vista;
 	}
 
@@ -189,14 +189,14 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-						Presentacion presentacion;
-						presentacion = servicioPresentacion.getPresentacion(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
+						Capacidad presentacion;
+						presentacion = servicioCapacidad.getCapacidad(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
 				
-						servicioPresentacion.eliminar(presentacion);
+						servicioCapacidad.eliminar(presentacion);
 						
-						vista.getBinPresentaciones().unbind();
-						vista.getBinPresentaciones().bind();				
-						vista.activarBinding(servicioPresentacion.getPresentaciones());
+						vista.getBinCapacidades().unbind();
+						vista.getBinCapacidades().bind();				
+						vista.activarBinding(servicioCapacidad.getCapacidades());
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 						vista.quitarNuevo();
 						

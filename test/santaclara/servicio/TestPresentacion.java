@@ -4,9 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.sun.org.omg.CORBA.ExceptionDescription;
-
-import santaclara.Servicio.ServicioPresentaciones;
+import santaclara.Servicio.ServicioPresentacion;
 import santaclara.dao.impl.PresentacionDAO;
 
 public class TestPresentacion {
@@ -14,7 +12,7 @@ public class TestPresentacion {
 	@Test
 	public void test() throws Exception {
 
-      ServicioPresentaciones presentaciones = new ServicioPresentaciones();
+      ServicioPresentacion presentaciones = new ServicioPresentacion();
       PresentacionDAO presentacionDAO = new PresentacionDAO();
       
       assertNull(presentacionDAO);      

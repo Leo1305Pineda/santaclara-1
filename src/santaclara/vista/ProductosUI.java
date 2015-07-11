@@ -123,7 +123,7 @@ public class ProductosUI extends JPanel {
 						
 						btnModificar = new JButton("Editar");
 						btnModificar.setBounds(228, 17, 100, 16);
-						btnModificar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/Modificara.png"));
+						btnModificar.setIcon(new ImageIcon("img/gestion/Modificara.png"));
 						
 										btnModificar.setToolTipText("Modificar");
 										
@@ -134,14 +134,14 @@ public class ProductosUI extends JPanel {
 
 										btnNuevo = new JButton("Nuevo");
 										btnNuevo.setBounds(124, 17, 100, 16);
-										btnNuevo.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/add.png"));
+										btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
 										btnNuevo.setForeground(Color.WHITE);
 										btnNuevo.setBackground(Color.DARK_GRAY);
 										btnNuevo.addActionListener(contProductos.nuevo());
 										botones.setLayout(null);
 										
 										JButton btnAtras = new JButton("Atras");
-										btnAtras.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/AtrasCurva.png"));
+										btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
 										btnAtras.setBounds(12, 17, 92, 16);
 										botones.add(btnAtras);
 										btnAtras.setForeground(Color.WHITE);
@@ -151,14 +151,14 @@ public class ProductosUI extends JPanel {
 										
 										btnEliminar = new JButton("Eliminar");
 										btnEliminar.setBounds(331, 17, 110, 16);
-										btnEliminar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/cancel.png"));
+										btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
 										btnEliminar.setForeground(Color.WHITE);
 										btnEliminar.setBackground(Color.DARK_GRAY);
 										btnEliminar.addActionListener(contProductos.eliminar());
 										botones.add(btnEliminar);
 										
 										JButton button_2 = new JButton("Presentacion");
-										button_2.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/Presentacion.png"));
+										button_2.setIcon(new ImageIcon("img/gestion/Presentacion.png"));
 										button_2.setBounds(460, 17, 150, 16);
 										button_2.setForeground(Color.WHITE);
 										button_2.setBackground(Color.DARK_GRAY);
@@ -166,14 +166,15 @@ public class ProductosUI extends JPanel {
 										botones.add(button_2);
 										
 										JButton button_3 = new JButton("Capacidad");
-										button_3.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/Capacidad.png"));
+										button_3.addActionListener(contProductos.AbrirCapacidades());
+										button_3.setIcon(new ImageIcon("img/gestion/Capacidad.png"));
 										button_3.setBounds(615, 17, 130, 16);
 										button_3.setForeground(Color.WHITE);
 										button_3.setBackground(Color.DARK_GRAY);
 										botones.add(button_3);
 										
 										JButton button_1 = new JButton("Sabor");
-										button_1.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/Sabor.png"));
+										button_1.setIcon(new ImageIcon("img/gestion/Sabor.png"));
 										button_1.setBounds(750, 17, 100, 16);
 										button_1.setForeground(Color.WHITE);
 										button_1.setBackground(Color.DARK_GRAY);
@@ -181,7 +182,7 @@ public class ProductosUI extends JPanel {
 										
 										JButton button = new JButton("Salir");
 										button.addActionListener(contProductos.salir());
-										button.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/SalirCurva.png"));
+										button.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
 										button.setBounds(854, 17, 86, 16);
 										button.setForeground(Color.WHITE);
 										button.setBackground(Color.DARK_GRAY);
@@ -270,14 +271,14 @@ public class ProductosUI extends JPanel {
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.setBounds(855, 15, 93, 16);
 		panelProducto.add(btnGuardar);
-		btnGuardar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/bien.png"));
+		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		btnGuardar.setForeground(Color.WHITE);
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(5, 15, 85, 16);
 		panelProducto.add(btnCancelar);
-		btnCancelar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/cancel.png"));
+		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				quitarNuevo();
@@ -310,7 +311,7 @@ public class ProductosUI extends JPanel {
 		JButton btnBuscar = new JButton("");
 		btnBuscar.addActionListener(contProductos.buscar());
 		btnBuscar.setVerticalAlignment(SwingConstants.TOP);
-		btnBuscar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/buscar.png"));
+		btnBuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
 		btnBuscar.setBackground(Color.DARK_GRAY);
 		panel.add(btnBuscar, "cell 0 0");
 		 

@@ -8,7 +8,7 @@ import santaclara.modelo.Presentacion;
 import santaclara.modelo.Producto;
 import santaclara.dao.impl.PresentacionDAO;
 
-public class ServicioPresentaciones {
+public class ServicioPresentacion {
 	
 	private PresentacionDAO presentacionDAO = new PresentacionDAO();
 	private List<Presentacion> presentaciones = new ArrayList<Presentacion>();
@@ -51,6 +51,14 @@ public class ServicioPresentaciones {
 		return "Operacion Exitosa";
 				
 		
+	}
+	
+	public Presentacion getPresentacion(Integer id) throws IOException{
+		return presentacionDAO.getPresentacion(id);
+	}
+	
+	public void eliminar(Presentacion presentacion) throws IOException{
+		presentacionDAO.eliminar(presentacion);
 	}
 	
 }
