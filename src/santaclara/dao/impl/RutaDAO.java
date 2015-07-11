@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 import santaclara.dao.IRutaDAO;
+import santaclara.modelo.Cliente;
 import santaclara.modelo.Ruta;
 
 public class RutaDAO extends GenericoDAO implements IRutaDAO  {
@@ -106,7 +108,7 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 		{
 			fw.append("id:"+ruta1.getId().toString()+"\n");
 			fw.append("zona:"+(ruta1.getZona() == null 
-					? " ": ruta1.getId().toString())+"\n");
+					? " ": ruta1.getZona().getId().toString())+"\n");
 			fw.append("nombre:"+ruta1.getNombre().toString()+"\n");
 			
 		}
@@ -126,6 +128,19 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 		}
 	}
 	
+	public Boolean getRuta(Ruta ruta) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		List<Ruta> rutas = getRutas();
+		for(Ruta ruta1 :rutas)
+		{
+				if(ruta1.getNombre().equals(ruta.getNombre())&&
+						!ruta1.getId().equals(ruta.getId()))
+				{ 
+					return true;
+				}
+		}
+		return false;
+    }
 	
 /*Estructura
 id:0

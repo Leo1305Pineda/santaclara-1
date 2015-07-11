@@ -1,6 +1,7 @@
 package santaclara.dao.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 
 import santaclara.dao.IProductoDAO;
 import santaclara.modelo.Producto;
+import santaclara.modelo.Ruta;
 
 public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 
@@ -147,7 +149,6 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 		}
 		fw.close();
 	}
-
 	
 	/*
  	La Estructura de los Archivos sera la Siguiente 

@@ -32,6 +32,8 @@ public class PrincipalUI {
 	private 	JMenuItem mntClientes;
 	private 	JMenuItem mntVendedores;
 	private 	JMenuItem mntConcesionario;
+	private 	JMenuItem mntRutas;
+	private     JMenuItem mntPresentaciones;
 	private 	JMenu mnFacturacion;
 	private 	JMenu mnReportes;
 	private 	JMenu mnConsulta;
@@ -101,20 +103,28 @@ public class PrincipalUI {
 		mnCatalogo.add(mntVendedores);
 		mntVendedores.addActionListener(controlador.activarMenu());
 		
-		JMenuItem mntConcesionario = new JMenuItem("Consesionarios");
+		mntConcesionario = new JMenuItem("Consesionarios");
 		mnCatalogo.add(mntConcesionario);
 		
-		JMenu mnFacturacion = new JMenu("Facturacion");
+		mntRutas = new JMenuItem("Ruta");
+		mnCatalogo.add(mntRutas);
+		mntRutas.addActionListener(controlador.activarMenu());
+		
+		mntPresentaciones = new JMenuItem("Presentaciones");
+		mnCatalogo.add(mntPresentaciones);
+		mntPresentaciones.addActionListener(controlador.activarMenu());
+		
+		mnFacturacion = new JMenu("Facturacion");
 		menuBar.add(mnFacturacion);
 		
-		JMenu mnReportes = new JMenu("Reportes");
+		mnReportes = new JMenu("Reportes");
 		menuBar.add(mnReportes);
 		
-		JMenu mnConsulta = new JMenu("Consulta");
+		mnConsulta = new JMenu("Consulta");
 		menuBar.add(mnConsulta);
 		
-		JMenu mnSalir = new JMenu("Salir");
-		JMenuItem mntCerrar = new JMenuItem("cerrar sesión ");
+		mnSalir = new JMenu("Salir");
+		mntCerrar = new JMenuItem("cerrar sesión ");
  
 	 
 		mnSalir.add(mntCerrar);  
@@ -245,6 +255,38 @@ public class PrincipalUI {
 		this.mntCerrar = mntCerrar;
 	}
 
+	public JMenuItem getMntRuta() {
+		return mntRutas;
+	}
+
+	public void setMntRuta(JMenuItem mntRuta) {
+		this.mntRutas = mntRuta;
+	}
+
+	public ContPrincipal getControlador() {
+		return controlador;
+	}
+
+	public void setControlador(ContPrincipal controlador) {
+		this.controlador = controlador;
+	}
+
+	public JMenuItem getMntRutas() {
+		return mntRutas;
+	}
+
+	public void setMntRutas(JMenuItem mntRutas) {
+		this.mntRutas = mntRutas;
+	}
+
+	public JMenuItem getMntPresentaciones() {
+		return mntPresentaciones;
+	}
+
+	public void setMntPresentaciones(JMenuItem mntPresentaciones) {
+		this.mntPresentaciones = mntPresentaciones;
+	}
 	
 	
+
 }

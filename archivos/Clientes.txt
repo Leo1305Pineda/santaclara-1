@@ -16,3 +16,9 @@ razonsocial:Leonardo R. Pineda S.
 direccion:Urbanizaciom los altos del norte
 telefono:04245042292
 ruta:2
+id:4
+rif:V-19727835
+razonsocial:BTR.CA
+direccion:El Carmen
+telefono:0251-6543765
+ruta:2

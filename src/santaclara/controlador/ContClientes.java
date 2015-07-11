@@ -3,32 +3,30 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.print.attribute.standard.Severity;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 
 import santaclara.Servicio.ServicioCliente;
 import santaclara.modelo.Cliente;
 import santaclara.modelo.Ruta;
 import santaclara.vista.ClientesUI;
-import sun.awt.SunHints.Value;
 
 public class ContClientes extends ContGeneral implements IContGeneral{
 	
 	private ClientesUI vista;
 	private ServicioCliente servicioCliente;
+	private ContPrincipal contPrincipal;
+	private ContRutas contRutas;
 	
 	public ContClientes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
+		this.contPrincipal = contPrincipal;
 		setContPrincipal(contPrincipal);
 		servicioCliente = new ServicioCliente();
 		vista = new ClientesUI(this,servicioCliente.getRutas(),servicioCliente.getClientes());
-		vista.activarBinding();
+		vista.activarBinding(servicioCliente.getClientes());
 		dibujar(vista);
 		vista.quitarNuevo();
 	}
@@ -80,21 +78,25 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 					try {
 						Cliente cliente;
 						cliente=servicioCliente.buscar(new Integer(vista.getTabla().getValueAt(vista.getTabla().getSelectedRow(),0).toString()));
+												
 						servicioCliente.eliminar(cliente);
-						
-						vista.getClientes().remove(cliente);
+				
 						vista.getBinClientes().unbind();
-						vista.getBinClientes().bind();
-						vista.repaint();
+						vista.getBinClientes().bind();				
+						vista.activarBinding(servicioCliente.getClientes());
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-						vista.activarBinding();
+		
 					} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					}
 				}
-			}	
-		}
-	};
+				else
+				{
+					JOptionPane.showMessageDialog(vista,"Seleccione Cliente ");
+				}
+			}
+		};
 	}
 	
 	public ActionListener modificar(){
@@ -103,9 +105,9 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Cliente cliente1 = new Cliente();
-				try {		if (vista.getTabla().getSelectedRow()>=0)
-							{
+				try {
+						if (vista.getTabla().getSelectedRow()>=0)
+						{
 							Cliente cliente = new Cliente();
 							cliente = servicioCliente.buscar(new Integer(vista.getTabla().getValueAt(vista.getTabla().getSelectedRow(),0).toString()));
 							if (cliente != null)
@@ -118,9 +120,11 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 								vista.getTxtTelefono().setText(cliente.getTelefono());
 								vista.getCmbRuta().setSelectedItem(cliente.getRuta());
 							}
-							}
-				vista.activarBinding();
-							
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(vista,"Seleccione Cliente ");
+						}	
 				}catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -163,13 +167,17 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 				else
 				{
 					try {
-						servicioCliente.guardar(cliente);
-						// agregarlo a la lista
-						vista.getClientes().add(cliente);
-						vista.getBinClientes().unbind();
-						vista.getBinClientes().bind();
-						vista.repaint();
-						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+						if (!servicioCliente.guardar(cliente)){
+							JOptionPane.showMessageDialog(vista,"Razon Social Existente");
+						}
+						else
+						{
+						// agregarlo a la lista;
+							vista.getBinClientes().unbind();
+							vista.getBinClientes().bind();
+							vista.activarBinding(servicioCliente.getClientes());   
+							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+						}
 						vista.quitarNuevo();
 					
 					} catch (IOException e1) {
@@ -200,9 +208,28 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.setVisible(false);
+				qutarVista();
 			}
 		};
 	}
+	
+	public ActionListener ruta(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+							try {
+								contRutas= new ContRutas(contPrincipal);
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+			}
+		};
+	}
+
+	
 }
+
 

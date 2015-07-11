@@ -25,6 +25,4 @@ public class Vendedor extends Usuario  {
 		this.rutas = rutas;
 	}
 
-
-
 }

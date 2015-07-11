@@ -104,6 +104,19 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 		return null;
     }
 
+	public Usuario getUsuario(Integer id) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		List<Usuario> usuarios = getUsuarios();
+		
+		for(Usuario usuario: usuarios)
+		{
+			if(usuario.getId().equals(id))
+			{
+				return usuario;
+			}
+		}
+		return null;
+    }
 	
 	public UsuarioDAO(String ruta) {
 		super();

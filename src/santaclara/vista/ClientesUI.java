@@ -42,18 +42,20 @@ public class ClientesUI extends JPanel {
 	private JPanel pnClientes;
 	private JPanel pnBotones;
 	private JTable table;
-	private JTableBinding  binProductos;
 	private List<Ruta> rutas = new ArrayList<Ruta>();
 	private List<Cliente> clientes = new ArrayList<Cliente>();
 	private JTableBinding  binClientes;
 	private JScrollPane scrollPanel;
 	private JTable tabla;
+	
 	private JButton btnNuevo;
 	private JButton btnModificar;
 	private JButton btnEliminar;
 	private JButton btnGuardar;
 	private JButton btnBuscar;
 	private JButton btnSalir;
+	private JButton btnRuta;
+	
 	private JTextField txtRif;
 	private JTextField txtRazonSocial;
 	private JTextField txtTelefono;
@@ -76,13 +78,13 @@ public class ClientesUI extends JPanel {
 		
 		pnClientes = new JPanel();
 		pnClientes.setLayout(null);
-		pnClientes.setBorder(new TitledBorder(null, "Listado de Clientes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnClientes.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Listado de Clientes", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnClientes.setBackground(Color.GRAY);
 		pnClientes.setBounds(22, 12, 817, 300);
 		add(pnClientes);
 		
 		pnBotones = new JPanel();
-		pnBotones.setBorder(new TitledBorder(null, "opciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnBotones.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "opciones", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnBotones.setBackground(Color.GRAY);
 		pnBotones.setBounds(674, 38, 131, 223);
 		
@@ -147,11 +149,9 @@ public class ClientesUI extends JPanel {
 		scrollPanel.setViewportView(tabla);
 		
 		pnCliente = new JPanel();
-		pnCliente.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true),
-							"Editar Cliente",TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnCliente.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Editar Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnCliente.setBackground(Color.GRAY);
-		pnCliente.setBounds(22, 329, 817, 167);
-		//quitarNuevo();
+		pnCliente.setBounds(22, 324, 817, 167);
 	
 		add(pnCliente);
 		
@@ -193,11 +193,11 @@ public class ClientesUI extends JPanel {
 		txtTelefono.setColumns(10);
 		
 		txtDireccion = new JTextField();
-		txtDireccion.setBounds(496, 38, 258, 19);
+		txtDireccion.setBounds(484, 38, 245, 19);
 		txtDireccion.setColumns(10);
 		
 		cmbRuta = new JComboBox();
-		cmbRuta.setBounds(496, 82, 258, 24);
+		cmbRuta.setBounds(484, 82, 245, 24);
 		cmbRuta.setRenderer(new ListCellRenderer() {
 
 			@Override
@@ -226,7 +226,7 @@ public class ClientesUI extends JPanel {
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		btnGuardar.addActionListener(contCliente.guardar());
-		btnGuardar.setBounds(598, 131, 156, 25);
+		btnGuardar.setBounds(586, 131, 156, 25);
 		pnCliente.add(btnGuardar);
 		
 		txtId = new JTextField();
@@ -243,20 +243,29 @@ public class ClientesUI extends JPanel {
 		
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(418, 131, 168, 25);
+		btnCancelar.setBounds(411, 131, 168, 25);
 		pnCliente.add(btnCancelar);
+		
+		btnRuta = new JButton("Ruta");
+		btnRuta.setForeground(Color.WHITE);
+		btnRuta.setBackground(Color.DARK_GRAY);
+		btnRuta.setBounds(733, 82, 72, 25);
+		btnRuta.addActionListener(contCliente.ruta());
+		
+		pnCliente.add(btnRuta);
+		
 		txtId.setVisible(false);
 		
 		pnClientes.add(pnBotones);
 		
 	}
 	    
-	public void activarBinding() {
+	public void activarBinding(List<Cliente> lstClientes) {
 		// TODO Auto-generated method stub
 		tabla = new JTable();
 		scrollPanel.setViewportView(tabla);
 		binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
-    			clientes,tabla);
+    			lstClientes,tabla);
 				    
 	    BeanProperty idCliente = BeanProperty.create("id");
 	    BeanProperty rifCliente = BeanProperty.create("rif");
@@ -280,12 +289,12 @@ public class ClientesUI extends JPanel {
 		
 	}
 	
-	public JTableBinding getBinProductos() {
-		return binProductos;
+	public JTableBinding getBinCliente() {
+		return binClientes;
 	}
 
-	public void setBinProductos(JTableBinding binProductos) {
-		this.binProductos = binProductos;
+	public void setBinClientes(JTableBinding binClientes) {
+		this.binClientes = binClientes;
 	}
 
 	public void activarNuevoCliente() {
@@ -328,12 +337,11 @@ public class ClientesUI extends JPanel {
 	public void setClientes(List<Cliente> clientes) {
 		this.clientes = clientes;
 	}
+	
 	public JTableBinding getBinClientes() {
 		return binClientes;
 	}
-	public void setBinClientes(JTableBinding binClientes) {
-		this.binClientes = binClientes;
-	}
+
 	public JScrollPane getScrollPanel() {
 		return scrollPanel;
 	}
@@ -452,4 +460,22 @@ public class ClientesUI extends JPanel {
 	public void setTxtId(JTextField txtId) {
 		this.txtId = txtId;
 	}
+
+	public JButton getBtnSalir() {
+		return btnSalir;
+	}
+
+	public void setBtnSalir(JButton btnSalir) {
+		this.btnSalir = btnSalir;
+	}
+
+	public JButton getBtnRuta() {
+		return btnRuta;
+	}
+
+	public void setBtnRuta(JButton btnRuta) {
+		this.btnRuta = btnRuta;
+	}
+	
+	
 }

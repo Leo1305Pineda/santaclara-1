@@ -90,6 +90,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 		UsuarioDAO usuarioDAO = new UsuarioDAO(); 
 		List<Usuario> usuarios = usuarioDAO.getUsuarios();
 		List<Vendedor> vendedores = getVendedores();
+		List<Ruta> rutas;
 		//buscar codigo el ultimo codigo Asignado 
 		if(vendedor.getId() == null )
 		{ 
@@ -102,7 +103,9 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 				}
 			}
 			usuarioDAO.guardar(vendedor);
-			vendedor.setId(i+1);
+			rutas = vendedor.getRutas();
+			vendedor = getVendedor(usuarioDAO.getUsuario(i+1));
+			vendedor.setRutas(rutas);
 			vendedores.add(vendedor);
 		}
 		else
@@ -110,7 +113,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 			for(Vendedor vendedor1 :vendedores)
 			{
 				if(vendedor1.getId().equals(vendedor.getId()))
-				{ 
+				{
 					vendedor1.setUsername(vendedor.getUsername());
 					vendedor1.setCedula(vendedor.getCedula());
 					vendedor1.setNombre(vendedor.getNombre());
@@ -120,6 +123,17 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 			}
 		}
 		guardarTodo(vendedores);
+	}
+	
+	private Vendedor getVendedor(Usuario usuario) throws FileNotFoundException{
+				Vendedor vendedor = new Vendedor();
+				vendedor.setId(usuario.getId());
+				vendedor.setCedula(usuario.getCedula());
+				vendedor.setContrasena(usuario.getContrasena());
+				vendedor.setNombre(usuario.getNombre());
+				vendedor.setUsername(usuario.getUsername());
+				
+				return vendedor; 
 	}
 	@Override
 	public void eliminar(Vendedor vendedor) throws IOException {
@@ -161,21 +175,33 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 			fw.append("id:"+vendedor.getId().toString()+"\n");
 			List<Ruta> rutas = vendedor.getRutas();
 			String linea = new String(",");
-			if (vendedor.getRutas()==null)
-			{
-			linea = "";	
-			}
+		
+			if (rutas==null) linea = "";	
 			else
 			{
 				for(Ruta ruta : rutas ) 
 				{
-					linea =  linea+ruta.getId()+",";
+					linea =  linea+ruta.getId().toString()+",";
 				}
 			}
 			fw.append("idRutas:"+linea+"\n");
 		}
 		fw.close();
 	}
+	
+	public Boolean getVendedor(Vendedor vendedor) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		List<Vendedor> vendedores = getVendedores();
+		for(Vendedor vendedor1 :vendedores)
+		{
+				if(vendedor1.getUsername().equals(vendedor.getUsername())&&
+						!vendedor1.getId().equals(vendedor.getId()))
+				{ 
+					return true;
+				}
+		}
+		return false;
+    }
 	/*Estructura 
 	 * id:1
 	 * idRutas:,1,2,

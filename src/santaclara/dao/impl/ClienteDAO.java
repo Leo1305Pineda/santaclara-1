@@ -113,13 +113,16 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		return null;
     }
 	
-	public Boolean getCliente(String nombre) throws FileNotFoundException {
+	public Boolean getCliente(Cliente cliente) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<Cliente> clientes = getClientes();
 		for(Cliente cliente1 :clientes)
 		{
-			if(cliente1.getRazonsocial().equals(nombre))
-				return true;
+				if(cliente1.getRazonsocial().equals(cliente.getRazonsocial())&&
+						!cliente1.getId().equals(cliente.getId()))
+				{ 
+					return true;
+				}
 		}
 		return false;
     }

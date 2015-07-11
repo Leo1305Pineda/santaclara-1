@@ -2,6 +2,7 @@ package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Stack;
 
 import javax.swing.JPanel;
 
@@ -13,7 +14,7 @@ public  class ContPrincipal implements IContGeneral {
 	private PrincipalUI  vista ;
 	private IContGeneral controlador;
 	private Usuario		 usuario;
-	
+	private Stack<String> cache = new Stack<String>();
 	
 	public static void main(String[] args) {
 	   ContPrincipal controlador = new  ContPrincipal();
@@ -43,6 +44,11 @@ public  class ContPrincipal implements IContGeneral {
 		vista.getFrame().getContentPane().add(panel);
 		vista.getFrame().repaint();
 	
+	}
+	
+	void quitarPanel(){
+		vista.getFrame().getContentPane().removeAll();
+		vista.getFrame().repaint();
 	}
 
 	public Usuario getUsuario() {
@@ -102,43 +108,121 @@ public  class ContPrincipal implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if(e.getSource().equals(vista.getMntProductos()))
-				{
-					try {
-						controlador = new ContProductos(ContPrincipal.this);
+					{
+						ActivarProductos();
 					}
-					catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}				
-				}
 				else if(e.getSource().equals(vista.getMntVendedores()))
 				{
-					try {
-						controlador = new ContVendedores(ContPrincipal.this);
-					}
-					catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					ActivarVendedores();
 				}
 				else if(e.getSource().equals(vista.getMntClientes()))
 				{
-					try {
-						controlador = new ContClientes(ContPrincipal.this);
-					}
-					catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					ActivarClientes();
+				}
+				else if(e.getSource().equals(vista.getMntRuta()))
+				{
+					ActivarRutas();
+				}
+				else if(e.getSource().equals(vista.getMntPresentaciones()))
+				{
+					ActivarPresentaciones();
 				}
 			}
 		};
+	}
+	public void ActivarRutas(){
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContRutas(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	public void ActivarClientes() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContClientes(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	public void ActivarVendedores() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContVendedores(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	public void setVista(PrincipalUI vista) {
 		this.vista = vista;
 	}
-	 
+
+	public void ActivarProductos() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContProductos(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		
+
+	}
+	
+	public void ActivarPresentaciones() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContPresentaciones(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		
+
+	}
+	public void ActivarAtras(){
+		// TODO Auto-generated method stub
+		if (!cache.empty())
+		{
+			cache.pop();
+			switch (cache.pop()) {
+			case "santaclara.IniciarSesionUI": cache.push("santaclara.IniciarSesionUI");
+			break;
+			case "santaclara.vista.ProductosUI": 		ActivarProductos();
+				break;
+			case "santaclara.vista.PresentacionesUI": 	ActivarPresentaciones();
+			break;
+			case "santaclara.vista.VendedoresUI":		ActivarVendedores();
+			break;
+			case "santaclara.vista.ClientesUI":			ActivarClientes();
+			break;
+			case "santaclara.vista.RutaUI":				ActivarRutas();
+			break;
+
+			default:
+				break;
+			}
+		}
+	}
+	
+	public Stack<String> getCache() {
+		return cache;
+	}
+
+	public void setCache(Stack<String> cache) {
+		this.cache = cache;
+	}
+
 }
 
 
