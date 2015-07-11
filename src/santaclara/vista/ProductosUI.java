@@ -74,6 +74,8 @@ public class ProductosUI extends JPanel {
 	private JButton btnNuevo;
 	private JButton	btnModificar;
 	private JButton btnEliminar;
+	private JButton btnSabor; 
+	
 	private JTextField txtABuscar;
 	
 	public ProductosUI(ContProductos contProductos, List<Producto> productos,List<Capacidad> capacidades, 
@@ -173,12 +175,13 @@ public class ProductosUI extends JPanel {
 										button_3.setBackground(Color.DARK_GRAY);
 										botones.add(button_3);
 										
-										JButton button_1 = new JButton("Sabor");
-										button_1.setIcon(new ImageIcon("img/gestion/Sabor.png"));
-										button_1.setBounds(750, 17, 100, 16);
-										button_1.setForeground(Color.WHITE);
-										button_1.setBackground(Color.DARK_GRAY);
-										botones.add(button_1);
+										btnSabor = new JButton("Sabor");
+										btnSabor.addActionListener(contProductos.AbrirSabor());
+										btnSabor.setIcon(new ImageIcon("img/gestion/Sabor.png"));
+										btnSabor.setBounds(750, 17, 100, 16);
+										btnSabor.setForeground(Color.WHITE);
+										btnSabor.setBackground(Color.DARK_GRAY);
+										botones.add(btnSabor);
 										
 										JButton button = new JButton("Salir");
 										button.addActionListener(contProductos.salir());

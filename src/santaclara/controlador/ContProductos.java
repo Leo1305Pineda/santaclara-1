@@ -3,7 +3,6 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Collection;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -11,12 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import santaclara.Servicio.ServicioProducto;
-import santaclara.dao.IGenericoDAO;
-import santaclara.dao.IProductoDAO;
 import santaclara.dao.impl.PresentacionDAO;
 import santaclara.modelo.Capacidad;
 import santaclara.modelo.Presentacion;
-import santaclara.modelo.Producto;
 import santaclara.modelo.Producto;
 import santaclara.modelo.Sabor;
 import santaclara.vista.ProductosUI;
@@ -28,6 +24,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 	private ContPrincipal contPrincipal;
 	private ContPresentaciones contPresentaciones;
 	private ContCapacidades contCapacidades;
+	private ContSabores contSabores; 
 	private PresentacionDAO presentacionDAO = new PresentacionDAO();	
 	
 	public ContProductos(ContPrincipal contPrincipal) throws Exception {
@@ -277,6 +274,23 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 				// TODO Auto-generated method stub
 				try {
 					contCapacidades = new ContCapacidades(contPrincipal);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			}
+		};
+	}
+
+	public ActionListener AbrirSabor() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					contSabores = new ContSabores(contPrincipal);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

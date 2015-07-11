@@ -43,7 +43,7 @@ public class ServicioCapacidad {
 			if(capacidad1.getVolumen().equals(capacidad.getVolumen())&&
 					!capacidad1.getId().equals(capacidad.getId())) 
 			{
-				return "Producto Existente";
+				return "Volumen Existente";
 			}
 		}
 		

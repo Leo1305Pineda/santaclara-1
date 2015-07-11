@@ -187,9 +187,32 @@ public  class ContPrincipal implements IContGeneral {
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}		
+		}
 
 	}
+	
+	public void ActivarCapacidades() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContCapacidades(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	public void ActivarSabores() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContSabores(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
 	public void ActivarAtras(){
 		// TODO Auto-generated method stub
 		if (!cache.empty())
@@ -207,6 +230,10 @@ public  class ContPrincipal implements IContGeneral {
 			case "santaclara.vista.ClientesUI":			ActivarClientes();
 			break;
 			case "santaclara.vista.RutaUI":				ActivarRutas();
+			break;
+			case "santaclara.vista.CapacidadesUI":		ActivarCapacidades();
+			break;
+			case "santaclara.vista.SaboresUI":		ActivarSabores();
 			break;
 
 			default:
