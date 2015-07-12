@@ -16,3 +16,6 @@ cantidad:12
 id:6
 idProducto:1
 cantidad:12
+id:7
+idProducto:22
+cantidad:45

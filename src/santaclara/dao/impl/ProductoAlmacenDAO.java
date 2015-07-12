@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 import santaclara.dao.IProductoAlmacenDAO;
 import santaclara.modelo.ProductoAlmacen;
 
@@ -23,19 +24,20 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 			 ProductoAlmacen productoAlmacen = new ProductoAlmacen();
 			 //asigna Producto
 			 EmpaqueProductoDAO productoEmpaqueDAO = new EmpaqueProductoDAO();
-			 System.out.println("Paso Por Aca");
-			 productoAlmacen.setProducto(
+			 
+			 productoAlmacen.setEmpaqueProducto(
 					 productoEmpaqueDAO.getEmpaqueProducto(
-							 new Integer(scaner.skip("idEmpaqueProducto:").nextLine().trim())));
+							 new Integer(scaner.skip("idEmpaqueProducto:").nextLine().toString().trim())));
+			 
 			 //asigna Almacen
 			 AlmacenDAO almacenDAO = new AlmacenDAO();
 			 productoAlmacen.setAlmacen(
 					 almacenDAO.getAlmacen(
-							 new Integer(scaner.skip("idAlmacen:").nextLine().trim())));
+							 new Integer(scaner.skip("idAlmacen:").nextLine().toString().trim())));
 			 
-			 productoAlmacen.setStock(new Integer(scaner.skip("stock:").nextLine().trim()));
-			 productoAlmacen.setStockMin(new Integer(scaner.skip("stockMin:").nextLine().trim()));
-			 productoAlmacen.setExistencia(new Integer(scaner.skip("existencia:").nextLine().trim()));
+			 productoAlmacen.setStock(new Integer(scaner.skip("stock:").nextLine().toString().trim()));
+			 productoAlmacen.setStockMin(new Integer(scaner.skip("stockMin:").nextLine().toString().trim()));
+			 productoAlmacen.setExistencia(new Integer(scaner.skip("existencia:").nextLine().toString().trim()));
 			 
 			 productoAlmacenes.add(productoAlmacen); 
 		}
@@ -47,17 +49,9 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	@Override
 	public void guardar(ProductoAlmacen productoAlmacen) throws IOException {
 		// TODO Auto-generated method stub
+		
 		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes(); 
-			for(ProductoAlmacen productoAlmacen1 :productoAlmacenes)
-			{
-				if(productoAlmacen.getProducto().getId() == null && 
-						productoAlmacen.getAlmacen().getId() == null)
-				{ 
-					productoAlmacen1.setExistencia(productoAlmacen.getExistencia());
-					productoAlmacen1.setStock(productoAlmacen.getStock());
-					productoAlmacen1.setStockMin(productoAlmacen.getStockMin());
-				}
-			}
+		productoAlmacenes.add(productoAlmacen);
 		
 		guardarTodo(productoAlmacenes);
 
@@ -66,17 +60,11 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	@Override
 	public void eliminar(ProductoAlmacen productoAlmacen) throws IOException {
 		// TODO Auto-generated method stub
-		List<ProductoAlmacen> ProductoAlmacenes = getProductoAlmacenes();
-		for(ProductoAlmacen productoAlmacen1 :ProductoAlmacenes)
-		{
-			if(productoAlmacen1.getProducto().getId().equals(productoAlmacen.getProducto().getId())
-					&& productoAlmacen1.getAlmacen().getId().equals(productoAlmacen.getAlmacen().getId()) )
-			{
-				ProductoAlmacenes.remove(productoAlmacen1);
-				break;
-			}
-		} 
-		guardarTodo(ProductoAlmacenes);
+		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes();
+		System.out.println(productoAlmacenes.size());
+		productoAlmacenes.remove(productoAlmacen);
+		System.out.println(productoAlmacenes.size());
+		guardarTodo( productoAlmacenes);
 	}
 
 	public ProductoAlmacenDAO(String ruta) {
@@ -90,13 +78,13 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	}
 
 	@Override
-	public ProductoAlmacen getProductoAlmacen(Integer idProducto,Integer id) throws NumberFormatException, IOException {
+	public ProductoAlmacen getProductoAlmacen(Integer idProducto,Integer idAlmacen) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes();
 		for(ProductoAlmacen productoAlmacen1 : productoAlmacenes)
 		{
-			if(productoAlmacen1.getAlmacen().getId().equals(id) 
-					&& productoAlmacen1.getProducto().getId().equals(idProducto))
+			if(productoAlmacen1.getAlmacen().getId().equals(idAlmacen) 
+					&& productoAlmacen1.getEmpaqueProducto().getId().equals(idProducto))
 			{
 				return productoAlmacen1;
 			}
@@ -109,8 +97,8 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 		FileWriter fw = new FileWriter(ruta);
 		for(ProductoAlmacen productoAlmacen :productoAlmacenes)
 		{
-			fw.append("idEmpaqueProducto:"+(productoAlmacen.getProducto() == null 
-					? "  ":productoAlmacen.getProducto().getId().toString())+"\n");
+			fw.append("idEmpaqueProducto:"+(productoAlmacen.getEmpaqueProducto() == null 
+					? "  ":productoAlmacen.getEmpaqueProducto().getId().toString())+"\n");
 			fw.append("idAlmacen:"+(productoAlmacen.getAlmacen() == null 
 					? "  ":productoAlmacen.getAlmacen().getId().toString())+"\n");
 			fw.append("stock:"+productoAlmacen.getStock()+"\n");

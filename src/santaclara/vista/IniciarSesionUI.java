@@ -42,6 +42,7 @@ public class IniciarSesionUI extends JPanel {
 		add(lblUsuario);
 		
 		txtUsuario = new JTextField();
+		txtUsuario.setText("Rhonal");
 		txtUsuario.setFont(new Font("Dialog", Font.BOLD, 16));
 		txtUsuario.setBounds(483, 243, 250, 31);
 		add(txtUsuario);
@@ -53,6 +54,7 @@ public class IniciarSesionUI extends JPanel {
 		add(lblcontrasena);
 		
 		password = new JPasswordField();
+		password.setText("1234");
 		password.setBounds(483, 300, 250, 31);
 		add(password);
 		password.setColumns(10);

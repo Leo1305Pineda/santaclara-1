@@ -70,3 +70,9 @@ idPresentacion:3
 idSabor:1
 nombre:fertil
 precio:1000.0
+id:22
+idCapacidad:0
+idPresentacion:3
+idSabor:0
+nombre:CocaCola
+precio:10.0

@@ -273,11 +273,21 @@ public class EmpaqueProductosUI extends JPanel {
 		binEmpaqueProductos = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
     			EmpaqueProductos,table);
 		BeanProperty idEmpaqueProducto  = BeanProperty.create("id");
-	    BeanProperty nombreProducto = BeanProperty.create("producto.nombre");
+	    
+		BeanProperty nombreProducto = BeanProperty.create("producto.nombre");
+	    BeanProperty presentacionProducto = BeanProperty.create("producto.presentacion.material");
+	    BeanProperty capacidadProducto = BeanProperty.create("producto.capacidad.volumen");
+	    BeanProperty saborProducto = BeanProperty.create("producto.sabor.sabor");
+	    
 	    BeanProperty cantidadProducto = BeanProperty.create("cantidadStr");
 
 	    binEmpaqueProductos.addColumnBinding(idEmpaqueProducto).setColumnClass(Integer.class).setColumnName("id Empaque");;
-	    binEmpaqueProductos.addColumnBinding(nombreProducto).setColumnClass(String.class).setColumnName("Nombre Producto");
+	    
+	    binEmpaqueProductos.addColumnBinding(nombreProducto).setColumnClass(String.class).setColumnName("Producto");
+	    binEmpaqueProductos.addColumnBinding(presentacionProducto).setColumnClass(String.class).setColumnName("Presentacion");
+	    binEmpaqueProductos.addColumnBinding(capacidadProducto).setColumnClass(String.class).setColumnName("Capacidad");
+	    binEmpaqueProductos.addColumnBinding(saborProducto).setColumnClass(String.class).setColumnName("Sabor");
+	    
 	    binEmpaqueProductos.addColumnBinding(cantidadProducto).setColumnClass(String.class).setColumnName("Cantidad Producto");
 
 	    binEmpaqueProductos.bind();

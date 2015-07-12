@@ -25,8 +25,8 @@ public class TestProductoAlmacenDAO {
 		AlmacenDAO almacenDAO = new AlmacenDAO();
 		
 		ProductoAlmacen productoAlmacen1 = new ProductoAlmacen(
-				productoEmpaqueDAO.getEmpaqueProducto(1),
-				almacenDAO.getAlmacen(0),
+				productoEmpaqueDAO.getEmpaqueProducto(4),
+				almacenDAO.getAlmacen(2),
 				500,70,500);
 		
 		productoAlmacenDAO.guardar(productoAlmacen1);
@@ -34,7 +34,7 @@ public class TestProductoAlmacenDAO {
 		assertNotNull(productoAlmacen1);
 		
 		assertNotEquals(2,productoAlmacenDAO.getProductoAlmacenes().size());
-		assertEquals(empaqueProductos.size()+1,productoAlmacenDAO.getProductoAlmacenes().size());
+		assertEquals(empaqueProductos.size(),productoAlmacenDAO.getProductoAlmacenes().size());
 
 		productoAlmacenDAO.eliminar(productoAlmacen1);
 		assertEquals(empaqueProductos.size(),productoAlmacenDAO.getProductoAlmacenes().size());

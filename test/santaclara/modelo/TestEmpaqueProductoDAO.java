@@ -19,7 +19,7 @@ public class TestEmpaqueProductoDAO {
 	public void EmpaqueProductoTest() throws NumberFormatException, IOException {
 		EmpaqueProductoDAO empaqueProductoDAO = new EmpaqueProductoDAO();
 		assertNotNull(empaqueProductoDAO);
-		assertEquals(4,empaqueProductoDAO.getEmpaques().size());
+		assertEquals(6,empaqueProductoDAO.getEmpaques().size());
 	}
 	@Test
 	public void addRemoveSaborTest() throws IOException {

@@ -121,7 +121,7 @@ public  class ContPrincipal implements IContGeneral {
 				}
 				else if(e.getSource().equals(vista.getMntRuta()))
 				{
-					ActivarRutas();
+					ActivarProductoAlmacenes();
 				}
 				else if(e.getSource().equals(vista.getMntPresentaciones()))
 				{
@@ -232,6 +232,16 @@ public  class ContPrincipal implements IContGeneral {
 			e1.printStackTrace();
 		}
 	}
+	public void ActivarProductoAlmacenes() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContProductoAlmacenes(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	
 	public void ActivarAtras(){
 		// TODO Auto-generated method stub
@@ -260,6 +270,9 @@ public  class ContPrincipal implements IContGeneral {
 			break;
 			case "santaclara.vista.AlmacenesUI":	ActivarAlmacenes();
 			break;
+			case "santaclara.vista.ProductoAlmacenesUI":	ActivarProductoAlmacenes();
+			break;
+
 
 			default:
 				break;
