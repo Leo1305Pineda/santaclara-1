@@ -108,25 +108,77 @@ public  class ContPrincipal implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(e.getSource().equals(vista.getMntEmpaqueProductos()))
+				if(e.getSource().equals(vista.getMntAlmacen()))
 					{
-						ActivarEmpaqueProductos();
+						ActivarAlmacenes();
 					}
-				else if(e.getSource().equals(vista.getMntVendedores()))
+				else if(e.getSource().equals(vista.getMntCamiones()))
 				{
-					ActivarVendedores();
+					ActivarCamiones();
+				}
+				else if(e.getSource().equals(vista.getMntCapacidades()))
+				{
+					ActivarCapacidades();
 				}
 				else if(e.getSource().equals(vista.getMntClientes()))
 				{
 					ActivarClientes();
 				}
-				else if(e.getSource().equals(vista.getMntRuta()))
+				else if(e.getSource().equals(vista.getMntConcesionario()))
 				{
-					ActivarProductoAlmacenes();
+					//ActivarConcesionarios();
+				}
+				else if(e.getSource().equals(vista.getMntConcesionarioRutas()))
+				{
+					//ActivarConcesionarioRutas();
+				}
+				else if(e.getSource().equals(vista.getMntEmpaqueProductos()))
+				{
+					ActivarEmpaqueProductos();
+				}
+				else if(e.getSource().equals(vista.getMntJefeVenta()))
+				{
+					//ActivarJefeVentas();
 				}
 				else if(e.getSource().equals(vista.getMntPresentaciones()))
 				{
 					ActivarPresentaciones();
+				}
+				else if(e.getSource().equals(vista.getMntProductos()))
+				{
+					ActivarProductos();;
+				}
+				else if(e.getSource().equals(vista.getMntProductoAlmacenes()))
+				{
+					ActivarProductoAlmacenes();
+				}
+				else if(e.getSource().equals(vista.getMntRuta()))
+				{
+					ActivarRutas();
+				}
+				else if(e.getSource().equals(vista.getMntSabores()))
+				{
+					//ActivarSabores();
+				}
+				else if(e.getSource().equals(vista.getMntSalps()))
+				{
+					//ActivarSalps();
+				}
+				else if(e.getSource().equals(vista.getMntUsuarios()))
+				{
+					//ActivarUsuarios();
+				}
+				else if(e.getSource().equals(vista.getMntVendedores()))
+				{
+					//ActivarVendedores();
+				}
+				else if(e.getSource().equals(vista.getMntVisitas()))
+				{
+					//ActivarVisitas();
+				}
+				else if(e.getSource().equals(vista.getMntZonas()))
+				{
+					//ActivarZonas();
 				}
 			}
 		};
@@ -243,6 +295,16 @@ public  class ContPrincipal implements IContGeneral {
 			e1.printStackTrace();
 		}
 	}
+	public void ActivarCamiones() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContCamiones(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	
 	public void ActivarAtras(){
 		// TODO Auto-generated method stub
@@ -272,6 +334,8 @@ public  class ContPrincipal implements IContGeneral {
 			case "santaclara.vista.AlmacenesUI":	ActivarAlmacenes();
 			break;
 			case "santaclara.vista.ProductoAlmacenesUI":	ActivarProductoAlmacenes();
+			break;
+			case "santaclara.vista.CamionesUI":	ActivarCamiones();
 			break;
 
 
