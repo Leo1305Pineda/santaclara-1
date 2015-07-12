@@ -50,8 +50,21 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	public void guardar(ProductoAlmacen productoAlmacen) throws IOException {
 		// TODO Auto-generated method stub
 		
-		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes(); 
-		productoAlmacenes.add(productoAlmacen);
+		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes();
+		Boolean enc = false;//true = Modifica , false = Guarda
+		for(ProductoAlmacen productoAlmacen1: productoAlmacenes)
+		{
+			if(productoAlmacen1.getAlmacen().getId().equals(productoAlmacen.getAlmacen().getId())&&
+					productoAlmacen1.getEmpaqueProducto().getId().equals(productoAlmacen.getEmpaqueProducto().getId()))
+			{
+				productoAlmacen1.setStock(productoAlmacen.getStock());
+				productoAlmacen1.setStockMin(productoAlmacen.getStockMin());
+				productoAlmacen1.setExistencia(productoAlmacen.getExistencia());
+				enc = true;
+				break;
+			}
+		}
+		if(enc == false )productoAlmacenes.add(productoAlmacen);
 		
 		guardarTodo(productoAlmacenes);
 
@@ -61,9 +74,15 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	public void eliminar(ProductoAlmacen productoAlmacen) throws IOException {
 		// TODO Auto-generated method stub
 		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes();
-		System.out.println(productoAlmacenes.size());
-		productoAlmacenes.remove(productoAlmacen);
-		System.out.println(productoAlmacenes.size());
+		for(ProductoAlmacen productoAlmacen1: productoAlmacenes)
+		{
+			if(productoAlmacen1.getEmpaqueProducto().getId().equals(productoAlmacen.getEmpaqueProducto().getId())&&
+					productoAlmacen1.getAlmacen().getId().equals(productoAlmacen.getAlmacen().getId()))
+			{
+				productoAlmacenes.remove(productoAlmacen1);
+				break;
+			}
+		}
 		guardarTodo( productoAlmacenes);
 	}
 

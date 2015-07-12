@@ -3,7 +3,9 @@ package santaclara.vista;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.LayoutManager;
 import java.awt.SystemColor;
 
 import javax.swing.JComboBox;
@@ -38,7 +40,13 @@ import santaclara.controlador.ContProductos;
 import santaclara.modelo.Producto;
 import santaclara.modelo.EmpaqueProducto;
 import net.miginfocom.swing.MigLayout;
+
 import java.awt.GridLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class EmpaqueProductosUI extends JPanel {
 
@@ -75,6 +83,7 @@ public class EmpaqueProductosUI extends JPanel {
 	
 	private List<EmpaqueProducto> empaqueProductos = new ArrayList<EmpaqueProducto>();
 	private List<Producto> 		productos = new ArrayList<Producto>();
+	private JLabel lblEmpaque;
 	
 	public EmpaqueProductosUI(ContEmpaqueProductos contEmpaqueProductos, List<EmpaqueProducto> empaqueProductos,List<Producto> productos) {
 		
@@ -208,7 +217,21 @@ public class EmpaqueProductosUI extends JPanel {
 		panelProducto.setLayout(null);
 		
 		cmbProducto = new JComboBox<Producto>();
-		cmbProducto.setBounds(450, 15, 140,16);
+		cmbProducto.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseExited(MouseEvent e) {
+				cmbProducto.setBounds(383, 11, 207, 22);
+				txtCantidad.setVisible(true);
+			}
+		});
+		cmbProducto.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				cmbProducto.setBounds(1, 11, 712, 22);
+				txtCantidad.setVisible(false);
+			}
+		});
+		cmbProducto.setBounds(383, 11, 207,22);
 		cmbProducto.setBackground(SystemColor.controlHighlight);
 		cmbProducto.setForeground(Color.BLACK);
 		cmbProducto.setRenderer(new ListCellRenderer() {
@@ -218,19 +241,28 @@ public class EmpaqueProductosUI extends JPanel {
 					int index, boolean isSelected, boolean cellHasFocus) {
 				// TODO Auto-generated method stub
 				Producto producto = (Producto) value;
-				return new JLabel(producto.getNombre());
+				
+				JPanel pnProducto = new JPanel();
+				pnProducto.add(new JTextField(producto.getNombre()));
+				pnProducto.add(new JTextField(producto.getPresentacion().getMaterial()));
+				pnProducto.add(new JTextField(producto.getCapacidad().getVolumenStr()));
+				pnProducto.add(new JTextField(producto.getSabor().getSabor()));
+				pnProducto.add(new JTextField(producto.getPrecioStr()));
+				pnProducto.setLayout(new GridLayout(1, 0, 0, 0));
+				
+				return pnProducto;//new JPanel().add(new JTextField("dd"));
 			}
 		});
 		panelProducto.add(cmbProducto);
 		
 		JLabel lblCantidad = new JLabel("Cantidad:");
-		lblCantidad.setBounds(160, 12,  75,25);
+		lblCantidad.setBounds(130, 12,  75,25);
 		lblCantidad.setBackground(SystemColor.controlHighlight);
 		lblCantidad.setForeground(Color.WHITE);
 		panelProducto.add(lblCantidad);
 		
 		txtCantidad = new JSpinner(new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1));
-		txtCantidad.setBounds(250, 15, 177,16);
+		txtCantidad.setBounds(200, 15, 100,16);
 		((JSpinner.NumberEditor)txtCantidad.getEditor()).getFormat().setMinimumFractionDigits(0);
 		panelProducto.add(txtCantidad);
 		
@@ -244,7 +276,7 @@ public class EmpaqueProductosUI extends JPanel {
 		panelProducto.add(btnGuardar);
 		
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(10, 15, 135, 16);
+		btnCancelar.setBounds(10, 15, 120, 16);
 		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -259,6 +291,12 @@ public class EmpaqueProductosUI extends JPanel {
 		txtId.setBounds(460, 12, 44, 19);
 		panelProducto.add(txtId);
 		txtId.setColumns(10);
+		
+		lblEmpaque = new JLabel("Empaque:");
+		lblEmpaque.setForeground(Color.WHITE);
+		lblEmpaque.setBackground(SystemColor.controlHighlight);
+		lblEmpaque.setBounds(308, 12, 75, 25);
+		panelProducto.add(lblEmpaque);
 	
 		txtId.setVisible(false);
 		 
@@ -288,7 +326,7 @@ public class EmpaqueProductosUI extends JPanel {
 	    binEmpaqueProductos.addColumnBinding(capacidadProducto).setColumnClass(String.class).setColumnName("Capacidad");
 	    binEmpaqueProductos.addColumnBinding(saborProducto).setColumnClass(String.class).setColumnName("Sabor");
 	    
-	    binEmpaqueProductos.addColumnBinding(cantidadProducto).setColumnClass(String.class).setColumnName("Cantidad Producto");
+	    binEmpaqueProductos.addColumnBinding(cantidadProducto).setColumnClass(String.class).setColumnName("Unidades por Empaque");
 
 	    binEmpaqueProductos.bind();
 
@@ -525,7 +563,22 @@ public class EmpaqueProductosUI extends JPanel {
 	public void setPnTabla(JPanel pnTabla) {
 		this.pnTabla = pnTabla;
 	}
-	
+
+	public JPanel getPnEmpaqueProductos() {
+		return pnEmpaqueProductos;
+	}
+
+	public void setPnEmpaqueProductos(JPanel pnEmpaqueProductos) {
+		this.pnEmpaqueProductos = pnEmpaqueProductos;
+	}
+
+	public JLabel getLblEmpaque() {
+		return lblEmpaque;
+	}
+
+	public void setLblEmpaque(JLabel lblEmpaque) {
+		this.lblEmpaque = lblEmpaque;
+	}
 	
 }
 

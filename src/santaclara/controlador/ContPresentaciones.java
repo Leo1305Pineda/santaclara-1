@@ -3,13 +3,18 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import santaclara.Servicio.ServicioEmpaqueProducto;
 import santaclara.Servicio.ServicioPresentacion;
+import santaclara.Servicio.ServicioProducto;
+import santaclara.modelo.EmpaqueProducto;
 import santaclara.modelo.Presentacion;
+import santaclara.modelo.Producto;
 import santaclara.vista.PresentacionesUI;
 
 public class ContPresentaciones extends ContGeneral implements IContGeneral{
@@ -191,14 +196,31 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 				try {
 						Presentacion presentacion;
 						presentacion = servicioPresentacion.getPresentacion(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
-				
-						servicioPresentacion.eliminar(presentacion);
 						
-						vista.getBinPresentaciones().unbind();
-						vista.getBinPresentaciones().bind();				
-						vista.activarBinding(servicioPresentacion.getPresentaciones());
-						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-						vista.quitarNuevo();
+						ServicioProducto servicioProducto = new ServicioProducto();
+						
+						List<Producto> productos = servicioProducto.getProductos();
+						Boolean enc = new Boolean(false);
+						for(Producto producto: productos)
+						{
+							if(producto.getPresentacion().getId().equals(presentacion.getId()))
+								{
+									enc=true;
+									break;
+								}
+						}
+						if(enc==false)
+						{
+							servicioPresentacion.eliminar(presentacion);
+						
+							vista.getBinPresentaciones().unbind();
+							vista.getBinPresentaciones().bind();				
+							vista.activarBinding(servicioPresentacion.getPresentaciones());
+							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+							vista.quitarNuevo();
+						}
+						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
+								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: Producto");
 						
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

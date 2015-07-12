@@ -9,6 +9,7 @@ import santaclara.dao.impl.PresentacionDAO;
 import santaclara.dao.impl.ProductoDAO;
 import santaclara.dao.impl.SaborDAO;
 import santaclara.modelo.Capacidad;
+import santaclara.modelo.EmpaqueProducto;
 import santaclara.modelo.Presentacion;
 import santaclara.modelo.Producto;
 import santaclara.modelo.Sabor;
@@ -80,6 +81,7 @@ public class ServicioProducto {
 	}
 	
 	public void eliminar(Producto producto) throws IOException{
+		
 		productoDAO.eliminar(producto);
 	}
 	

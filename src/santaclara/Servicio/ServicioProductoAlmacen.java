@@ -40,8 +40,16 @@ public class ServicioProductoAlmacen {
 			{
 					if(productoAlmacen1.getEmpaqueProducto().getId().equals(productAlmacen.getEmpaqueProducto().getId())&&
 							productoAlmacen1.getAlmacen().getId().equals(productAlmacen.getAlmacen().getId()))
-					{ 
-						return "El Producto  Existente en el Almacen";
+					{
+						if(productoAlmacen1.getStock().equals(productAlmacen.getStock())&&
+								productoAlmacen1.getStockMin().equals(productAlmacen.getStockMin())&&
+								productoAlmacen1.getExistencia().equals(productAlmacen.getExistencia()))
+							return "El Producto  Existente en el Almacen: "+
+								productoAlmacen1.getStock()   + " = " + productAlmacen.getStock()   + " || " +
+								productoAlmacen1.getStockMin()+ " = " + productAlmacen.getStockMin()+ " || " +
+								productoAlmacen1.getExistencia()+" = "+productAlmacen.getExistencia()+" fin";
+						
+						else break;//Rompe el for para poder modificarlo	
 					}
 			}
 			if(productAlmacen.getStock()<=productAlmacen.getStockMin())return "El Stock no puede ser menor igual Al StockMin";
@@ -63,7 +71,7 @@ public class ServicioProductoAlmacen {
 		productoAlmacenDAO.guardar(productoAlmacen);
 	}
 	
-	public ProductoAlmacen buscar(Integer idProducto,Integer idAlmacen)throws IOException{
-		return productoAlmacenDAO.getProductoAlmacen(idProducto, idAlmacen);
+	public ProductoAlmacen getProductoAlmacen(Integer idEmpaqueProducto,Integer idAlmacen)throws IOException{
+		return productoAlmacenDAO.getProductoAlmacen(idEmpaqueProducto, idAlmacen);
 	}
 }

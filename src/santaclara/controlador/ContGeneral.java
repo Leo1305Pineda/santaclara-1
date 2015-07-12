@@ -22,12 +22,13 @@ public abstract class ContGeneral implements IContGeneral {
 			this.contPrincipal.getCache().clear();
 			this.contPrincipal.getCache().push("santaclara.IniciarSesionUI");
 		}
+		
 	}
 	
 	public void ActivarAtras() {//btnAtras
 		
 		if(this.contPrincipal.getCache().size()>1)	this.contPrincipal.ActivarAtras();
-		else qutarVista(); 
+		else qutarVista();
 	}
 
 

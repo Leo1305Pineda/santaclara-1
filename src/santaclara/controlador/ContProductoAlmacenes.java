@@ -120,9 +120,9 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 				{
 					try {
 						ProductoAlmacen productoAlmacen;
-						productoAlmacen=servicioProductoAlmacen.buscar(
-								new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()),
-								new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),2).toString()));
+						productoAlmacen=servicioProductoAlmacen.getProductoAlmacen(
+								new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),2).toString()),
+								new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
 						if (productoAlmacen!=null)
 						{	
 							servicioProductoAlmacen.eliminar(productoAlmacen);
@@ -159,6 +159,9 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				vista.activarNuevoProductoAlmacen();
+				vista.getTxtStock().setValue(1);
+				vista.getTxtStockMin().setValue(1);
+				vista.getTxtExistencia().setValue(1);
 				vista.getPnTabla().setVisible(false);
 			}
 		};
@@ -186,23 +189,19 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 						if (vista.getTable().getSelectedRow()>=0)
 						{
 							ProductoAlmacen productoAlmacen = new ProductoAlmacen();
-							productoAlmacen = servicioProductoAlmacen.buscar(
-									new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()),
-									new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),2).toString()));
+							productoAlmacen = servicioProductoAlmacen.getProductoAlmacen(
+									new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),2).toString()),
+									new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
 							if (productoAlmacen != null)
-							{
-								vista.activarNuevoProductoAlmacen();
-								
+							{	
 								setSelectedValue(vista.getCmbEmpaqueProducto(),productoAlmacen.getEmpaqueProducto().getId());
 								setSelectedValue(vista.getCmbAlmacenes(),productoAlmacen.getAlmacen().getId());
 								vista.getTxtStock().setValue(productoAlmacen.getStock());
 								vista.getTxtStockMin().setValue(productoAlmacen.getStockMin());
 								vista.getTxtExistencia().setValue(productoAlmacen.getExistencia());
-						
+								vista.activarNuevoProductoAlmacen();
 							}
-							else JOptionPane.showMessageDialog(vista,"No Encontrado\n"+"Almacen "+
-									vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()+"\n Producto"+
-									vista.getTable().getValueAt(vista.getTable().getSelectedRow(),2).toString());
+							else JOptionPane.showMessageDialog(vista,"No Encontrado\n"+"Almacen ");
 						}
 						else
 						{
@@ -224,8 +223,11 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
         	comboBox.setSelectedIndex(i);
         	Boolean enc=false;
         	switch (comboBox.getSelectedItem().getClass().getName().toString()) {
-			case "santaclara.modelo.Producto":
-				enc = (((Producto)comboBox.getSelectedItem()).getId().equals(id)); 
+			case "santaclara.modelo.EmpaqueProducto":
+				enc = (((EmpaqueProducto)comboBox.getSelectedItem()).getId().equals(id)); 
+					break;
+			case "santaclara.modelo.Almacen":
+				enc = (((Almacen)comboBox.getSelectedItem()).getId().equals(id)); 
 					break;
 			default:
 				break;

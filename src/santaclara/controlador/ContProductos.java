@@ -3,15 +3,18 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import santaclara.Servicio.ServicioEmpaqueProducto;
 import santaclara.Servicio.ServicioProducto;
 import santaclara.dao.impl.PresentacionDAO;
 import santaclara.modelo.Capacidad;
+import santaclara.modelo.EmpaqueProducto;
 import santaclara.modelo.Presentacion;
 import santaclara.modelo.Producto;
 import santaclara.modelo.Sabor;
@@ -135,14 +138,30 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 					try {
 						Producto producto;
 						producto=servicioProducto.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
-												
-						servicioProducto.eliminar(producto);
-				
-						vista.getBinProductos().unbind();
-						vista.getBinProductos().bind();				
-						vista.activarBinding(servicioProducto.getProductos());
-						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-						vista.quitarNuevo();
+						
+						ServicioEmpaqueProducto servicioEmpaque = new ServicioEmpaqueProducto();
+						
+						List<EmpaqueProducto> empaqueProductos = servicioEmpaque.getEmpaqueProductos();
+						Boolean enc = new Boolean(false);
+						for(EmpaqueProducto empaqueProducto: empaqueProductos)
+						{
+							if(empaqueProducto.getProducto().getId().equals(producto.getId()))
+								{
+									enc=true;
+									break;
+								}
+						}
+						if(enc==false)
+						{
+							servicioProducto.eliminar(producto);
+							vista.getBinProductos().unbind();
+							vista.getBinProductos().bind();				
+							vista.activarBinding(servicioProducto.getProductos());
+							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+							vista.quitarNuevo();
+						}
+						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
+								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: EmpaqueProducto");
 		
 					} catch (IOException e1) {
 					// TODO Auto-generated catch block

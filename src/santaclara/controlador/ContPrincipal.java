@@ -15,11 +15,12 @@ public  class ContPrincipal implements IContGeneral {
 	private IContGeneral controlador;
 	private Usuario		 usuario;
 	private Stack<String> cache = new Stack<String>();
+	private Boolean editorActivo = new Boolean(false);
 	
 	public static void main(String[] args) {
 	   ContPrincipal controlador = new  ContPrincipal();
 	   controlador.ejecutar();   
-	   	   
+	   
 	}
 
 	private void ejecutar() {
@@ -288,6 +289,15 @@ public  class ContPrincipal implements IContGeneral {
 		this.cache = cache;
 	}
 
+	public Boolean getEditorActivo() {
+		return editorActivo;
+	}
+
+	public void setEditorActivo(Boolean editorActivo) {
+		this.editorActivo = editorActivo;
+	}
+
+	
 }
 
 

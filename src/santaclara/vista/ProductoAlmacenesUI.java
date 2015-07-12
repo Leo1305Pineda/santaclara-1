@@ -24,6 +24,9 @@ import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.Color;
 import java.awt.Font;
 
@@ -58,6 +61,10 @@ public class ProductoAlmacenesUI extends JPanel {
 	
 	private JTextField 			txtBuscar;
 	private JTextField 			txtABuscar;
+	
+	private JLabel              lblStock;
+	private JLabel              lblStockmin;
+	private JLabel              lblExistencia;
 	
 	private JSpinner			txtStock;
 	private JSpinner 			txtStockMin;
@@ -230,23 +237,82 @@ public class ProductoAlmacenesUI extends JPanel {
 		cmbAlmacenes = new JComboBox();
 		cmbAlmacenes.setForeground(Color.BLACK);
 		cmbAlmacenes.setBackground(SystemColor.controlHighlight);
-		cmbAlmacenes.setBounds(690, 2, 140, 16);
+		cmbAlmacenes.setBounds(690, 2, 140, 22);
+		cmbAlmacenes.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				cmbAlmacenes.setBounds(690,2, 140, 29);
+				txtStock.setVisible(true);
+				txtStockMin.setVisible(true);
+				txtExistencia.setVisible(true);
+				lblStock.setVisible(true);
+				lblStockmin.setVisible(true);
+				lblExistencia.setText("Empaque Producto");
+				cmbEmpaqueProducto.setVisible(true);
+			}
+		});
+		cmbAlmacenes.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				cmbAlmacenes.setBounds(1, 2, 950, 29);
+				txtStock.setVisible(false);
+				txtStockMin.setVisible(false);
+				txtExistencia.setVisible(false);
+				lblStock.setVisible(false);
+				lblStockmin.setVisible(false);
+				lblExistencia.setText("Existencia");;
+				cmbEmpaqueProducto.setVisible(false);
+			}
+		});
+	
 		cmbAlmacenes.setRenderer(new ListCellRenderer() {
 			
 			@Override
 			public Component getListCellRendererComponent(JList list, Object value,
 					int index, boolean isSelected, boolean cellHasFocus) {
 				// TODO Auto-generated method stub
-				Almacen almacen = (Almacen) value;
-				return new JLabel(almacen.getUbicacion());
+				Almacen almacen = (Almacen) value;			
+				
+				JPanel pnalmacen = new JPanel();
+				pnalmacen.add(new JTextField(almacen.getUbicacion()));
+				pnalmacen.setLayout(new GridLayout(1, 0, 0, 0));
+				return pnalmacen;
 			}
 		});
 		panelProductoAlmacen.add(cmbAlmacenes);
 		
 		cmbEmpaqueProducto = new JComboBox();
-		cmbEmpaqueProducto.setBounds(525, 2, 160,16);
+		cmbEmpaqueProducto.setBounds(525, 2, 160,22);
 		cmbEmpaqueProducto.setBackground(SystemColor.controlHighlight);
 		cmbEmpaqueProducto.setForeground(Color.BLACK);
+		cmbEmpaqueProducto.addMouseListener(new MouseAdapter() {
+	
+			@Override
+			public void mouseExited(MouseEvent e) {
+				cmbEmpaqueProducto.setBounds(525, 2, 160, 29);
+				txtStock.setVisible(true);
+				txtStockMin.setVisible(true);
+				txtExistencia.setVisible(true);
+				lblStock.setVisible(true);
+				lblStockmin.setVisible(true);
+				lblExistencia.setVisible(true);
+				cmbAlmacenes.setVisible(true);
+			}
+		});
+		cmbEmpaqueProducto.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				cmbEmpaqueProducto.setBounds(1, 2,950, 29);
+				txtStock.setVisible(false);
+				txtStockMin.setVisible(false);
+				txtExistencia.setVisible(false);
+				lblStock.setVisible(false);
+				lblStockmin.setVisible(false);
+				lblExistencia.setVisible(false);
+				cmbAlmacenes.setVisible(false);
+			}
+		});
 		cmbEmpaqueProducto.setRenderer(new ListCellRenderer() {
 			
 			@Override
@@ -254,16 +320,26 @@ public class ProductoAlmacenesUI extends JPanel {
 					int index, boolean isSelected, boolean cellHasFocus) {
 				// TODO Auto-generated method stub
 				EmpaqueProducto empaqueProducto = (EmpaqueProducto) value;
-				return new JLabel(empaqueProducto.getProducto().getNombre());
+		
+				JPanel pnEmpaqueProducto = new JPanel();
+				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getNombre()));
+				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getPresentacion().getMaterial()));
+				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getCapacidad().getVolumenStr()));
+				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getSabor().getSabor()));
+				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getPrecioStr()));
+				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getCantidadStr()));
+				pnEmpaqueProducto.setLayout(new GridLayout(1, 0, 0, 0));
+				
+				return pnEmpaqueProducto;
 			}
 		});
 		panelProductoAlmacen.add(cmbEmpaqueProducto);
 		
-		JLabel lblCantidad = new JLabel("Stock");
-		lblCantidad.setBounds(125, 0,  56,25);
-		lblCantidad.setBackground(SystemColor.controlHighlight);
-		lblCantidad.setForeground(Color.WHITE);
-		panelProductoAlmacen.add(lblCantidad);
+		lblStock = new JLabel("Stock");
+		lblStock.setBounds(125, 0,  56,25);
+		lblStock.setBackground(SystemColor.controlHighlight);
+		lblStock.setForeground(Color.WHITE);
+		panelProductoAlmacen.add(lblStock);
 		
 		txtStock = new JSpinner(new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1));
 		txtStock.setBounds(165, 2, 70,16);
@@ -301,13 +377,13 @@ public class ProductoAlmacenesUI extends JPanel {
 		btnCancelar.setBackground(Color.DARK_GRAY);
 		panelProductoAlmacen.add(btnCancelar);
 		
-		JLabel lblStockmin = new JLabel("StockMin");
+		lblStockmin = new JLabel("StockMin");
 		lblStockmin.setForeground(Color.WHITE);
 		lblStockmin.setBackground(SystemColor.controlHighlight);
 		lblStockmin.setBounds(235, 0, 75, 25);
 		panelProductoAlmacen.add(lblStockmin);
 		
-		JLabel lblExistencia = new JLabel("Existencia");
+		lblExistencia = new JLabel("Existencia");
 		lblExistencia.setForeground(Color.WHITE);
 		lblExistencia.setBackground(SystemColor.controlHighlight);
 		lblExistencia.setBounds(375, -2, 82, 25);
@@ -445,12 +521,12 @@ public class ProductoAlmacenesUI extends JPanel {
 
 	public void activarNuevoProductoAlmacen() {
 		// TODO Auto-generated method stub
+	
 		panelProductoAlmacen.setVisible(true);
-		panelProductoAlmacen.setBounds(12, 95, 950, 40);
+		panelProductoAlmacen.setBounds(12, 95, 950, 29);
 		
 		pnTabla.setVisible(false);
 		scrollPanel.setVisible(false);
-		txtStock.setValue(0);
 	}
 
 	public void quitarNuevo() {

@@ -3,13 +3,16 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import santaclara.Servicio.ServicioCapacidad;
+import santaclara.Servicio.ServicioProducto;
 import santaclara.modelo.Capacidad;
+import santaclara.modelo.Producto;
 import santaclara.vista.CapacidadesUI;
 
 public class ContCapacidades extends ContGeneral implements IContGeneral{
@@ -189,16 +192,33 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-						Capacidad presentacion;
-						presentacion = servicioCapacidad.getCapacidad(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
-				
-						servicioCapacidad.eliminar(presentacion);
+						Capacidad capacidad;
+						capacidad = servicioCapacidad.getCapacidad(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
 						
-						vista.getBinCapacidades().unbind();
-						vista.getBinCapacidades().bind();				
-						vista.activarBinding(servicioCapacidad.getCapacidades());
-						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-						vista.quitarNuevo();
+						ServicioProducto servicioProducto = new ServicioProducto();
+						
+						List<Producto> productos = servicioProducto.getProductos();
+						Boolean enc = new Boolean(false);
+						for(Producto producto1: productos)
+						{
+							if(producto1.getCapacidad().getId().equals(capacidad.getId()))
+								{
+									enc=true;
+									break;
+								}
+						}
+						if(enc==false)
+						{
+							servicioCapacidad.eliminar(capacidad);
+							
+							vista.getBinCapacidades().unbind();
+							vista.getBinCapacidades().bind();				
+							vista.activarBinding(servicioCapacidad.getCapacidades());
+							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+							vista.quitarNuevo();
+						}
+						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
+								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: Producto");
 						
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
