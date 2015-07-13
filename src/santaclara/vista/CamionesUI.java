@@ -471,9 +471,14 @@ public class CamionesUI extends JPanel {
 	public void activarNuevoCamion() {
 		// TODO Auto-generated method stub
 		txtId.setVisible(false);
-		pnCamion.setBounds(12, 81, 520, 30);
+		pnCamion.setBounds(12, 81, 520, 133);
 		pnCamion.setVisible(true);
-		setTxtPlaca("");
+		getTxtPlaca().setText("");;
+		getTxtMarca().setText("");;
+		getTxtModelo().setText("");;
+		getTxtColor().setText("");;
+		getTxtCapacidad().setValue(0);;
+		getTxtYear().setText("");;
 		pnTabla.setVisible(false);
 	}
 

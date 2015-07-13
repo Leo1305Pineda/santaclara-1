@@ -8,8 +8,6 @@ import java.util.List;
 import santaclara.dao.impl.RutaDAO;
 import santaclara.dao.impl.ZonaDAO;
 import santaclara.modelo.Ruta;
-import santaclara.modelo.Ruta;
-import santaclara.modelo.Ruta;
 import santaclara.modelo.Zona;
 
 public class ServicioRuta {

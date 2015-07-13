@@ -14,14 +14,7 @@ marca:ford
 ano:2015
 id:3
 placa:koej22
-color:verde
-capacidad:4500.0
-modelo:350
-marca:ford
-ano:2015
-id:4
-placa:koej22
-color:verde
+color:Azul
 capacidad:4500.0
 modelo:350
 marca:ford

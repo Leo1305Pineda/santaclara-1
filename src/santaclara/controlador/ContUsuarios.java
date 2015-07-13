@@ -9,23 +9,23 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import santaclara.Servicio.ServicioCamion;
-import santaclara.Servicio.ServicioConcesionario;
-import santaclara.modelo.Concesionario;
-import santaclara.modelo.Camion;
-import santaclara.vista.CamionesUI;
+import santaclara.Servicio.ServicioConcesionarioRuta;
+import santaclara.Servicio.ServicioUsuario;
+import santaclara.modelo.ConcesionarioRuta;
+import santaclara.modelo.Usuario;
+import santaclara.vista.UsuariosUI;
 
-public class ContCamiones extends ContGeneral implements IContGeneral{
+public class ContUsuarios extends ContGeneral implements IContGeneral{
 	
-	private ServicioCamion servicioCamion;
-	private CamionesUI vista;
+	private ServicioUsuario servicioUsuario;
+	private UsuariosUI vista;
 	
-	public ContCamiones(ContPrincipal contPrincipal) throws Exception {
+	public ContUsuarios(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
-		servicioCamion = new ServicioCamion();
-		vista = new CamionesUI(this, servicioCamion.getCamiones());
-		vista.activarBinding(servicioCamion.getCamiones());
+		servicioUsuario = new ServicioUsuario();
+		vista = new UsuariosUI(this, servicioUsuario.getUsuarios());
+		vista.activarBinding(servicioUsuario.getUsuarios());
 		dibujar(vista);
 		vista.quitarNuevo();
 	}
@@ -56,25 +56,24 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent e) {
 				if (vista.getTable().getSelectedRow()>=0)
 				{
-					Camion camion  = new Camion();
+					Usuario usuario  = new Usuario();
 					try {
-						camion = servicioCamion.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						usuario = servicioUsuario.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
 					} catch (NumberFormatException | IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					if (camion != null)
+					if (usuario != null)
 					{
 						vista.activarNuevoCamion();
 						vista.getScrollPanel().setVisible(false);
 						
-						vista.getTxtId().setText(camion.getId().toString());
-						vista.getTxtPlaca().setText(camion.getPlaca());
-						vista.getTxtMarca().setText(camion.getMarca());
-						vista.getTxtModelo().setText(camion.getModelo());
-						vista.getTxtYear().setText(camion.getAno());
-						vista.getTxtColor().setText(camion.getColor());
-						vista.getTxtCapacidad().setValue(camion.getCapacidad());
+						vista.getTxtId().setText(usuario.getId().toString());
+						vista.getTxtNombre().setText(usuario.getNombre());
+						vista.getTxtCedula().setText(usuario.getCedula());
+						vista.getTxtContrasena().setText(usuario.getContrasena());
+						vista.getTxtUserName().setText(usuario.getUsername());
+						vista.getTxtReContrasena().setText(usuario.getContrasena());//Temporal 
 						
 					}
 				}
@@ -86,12 +85,11 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 		};
 	}
 	public String ValidarTxt(){
-		if (vista.getTxtPlaca().getText().equals("")) return "Campos Vacios:Placa";
-		if (vista.getTxtMarca().getText().equals("")) return "Campos Vacios:Marca";
-		if (vista.getTxtModelo().getText().equals("")) return "Campos Vacios:Modelo";
-		if (vista.getTxtYear().getText().equals("")) return "Campos Vacios:Año";
-		if (vista.getTxtColor().getText().equals("")) return "Campos Vacios:Color";
-		if (vista.getTxtCapacidad().getValue().equals(0)) return "Campos Vacios:Capacidad";
+		if (vista.getTxtCedula().getText().equals("")) return "Campos Vacios:Cedula";
+		if (vista.getTxtNombre().getText().equals("")) return "Campos Vacios:Nombre";
+		if (vista.getTxtUserName().getText().equals("")) return "Campos Vacios:UserName";
+		if (vista.getTxtContrasena().getText().equals("")) return "Campos Vacios:Contraseña";
+		if (vista.getTxtReContrasena().getText().equals(vista.getTxtContrasena())) return "Campos Vacios:Contraseña invalida";
 		
 		return "";
 	}
@@ -103,28 +101,27 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				Camion camiones = new Camion();
+				Usuario usuarios = new Usuario();
 				
-				if (vista.getTxtId().getText().equals("")) camiones.setId(null);
-					else camiones.setId(new Integer(vista.getTxtId().getText().toString())); 
+				if (vista.getTxtId().getText().equals("")) usuarios.setId(null);
+					else usuarios.setId(new Integer(vista.getTxtId().getText().toString())); 
 				
 				if (ValidarTxt()=="")
 				{
 							try {
-									camiones.setPlaca(vista.getTxtPlaca().getText().toString());
-									camiones.setMarca(vista.getTxtMarca().getText().toString());
-									camiones.setModelo(vista.getTxtModelo().getText().toString());
-									camiones.setAno(vista.getTxtYear().getText().toString());
-									camiones.setCapacidad((Double)vista.getTxtCapacidad().getValue());
-									camiones.setColor(vista.getTxtColor().getText().toString());
+									usuarios.setCedula(vista.getTxtCedula().getText().toString());
+									usuarios.setNombre(vista.getTxtNombre().getText().toString());
+									usuarios.setUsername(vista.getTxtUserName().getText().toString());
+									usuarios.setContrasena(vista.getTxtContrasena().getText().toString());
+								
 									
-									JOptionPane.showMessageDialog(vista,servicioCamion.guardar(camiones));
+									JOptionPane.showMessageDialog(vista,servicioUsuario.guardar(usuarios));
 									// agregarlo a la lista
-									vista.getCamiones().add(camiones);
+									vista.getCamiones().add(usuarios);
 									
-									vista.getBinCamiones().unbind();
-									vista.getBinCamiones().bind();
-									vista.activarBinding(servicioCamion.getCamiones());
+									vista.getBinUsuarios().unbind();
+									vista.getBinUsuarios().bind();
+									vista.activarBinding(servicioUsuario.getUsuarios());
 									vista.quitarNuevo();
 									vista.getScrollPanel().setVisible(true);
 									
@@ -162,13 +159,13 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 				}
 				if (!enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
 				vista.setTable(tabla1);
-				vista.setTxtABuscar("");;
+				vista.getTxtABuscar().setText("");
 				
 			}
 		};
 	}
 	
-	public void setVista(CamionesUI vista) {
+	public void setVista(UsuariosUI vista) {
 		this.vista = vista;
 	}
 
@@ -204,16 +201,16 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-						Camion camion;
-						camion = servicioCamion.getCamion(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
+						Usuario usuario;
+						usuario = servicioUsuario.getUsuario(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
 						
-						ServicioConcesionario servicioConcesionario = new ServicioConcesionario();
+						ServicioConcesionarioRuta servicioConcesionarioRuta = new ServicioConcesionarioRuta();
 						
-						List<Concesionario> concesionarios = servicioConcesionario.getConcecionarios();
+						List<ConcesionarioRuta> concesionarioRutas = servicioConcesionarioRuta.getConcecionarioRutas();
 						Boolean enc = new Boolean(false);
-						for(Concesionario concesionario: concesionarios)
+						for(ConcesionarioRuta concesionarioRuta: concesionarioRutas)
 						{
-							if(concesionario.getCamion().getId().equals(camion.getId()))
+							if(concesionarioRuta.getConcesionario().getId().equals(usuario.getId()))
 								{
 									enc=true;
 									break;
@@ -221,11 +218,11 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 						}
 						if(enc==false)
 						{
-							servicioCamion.eliminar(camion);
+							servicioUsuario.eliminar(usuario);
 						
-							vista.getBinCamiones().unbind();
-							vista.getBinCamiones().bind();				
-							vista.activarBinding(servicioCamion.getCamiones());
+							vista.getBinUsuarios().unbind();
+							vista.getBinUsuarios().bind();				
+							vista.activarBinding(servicioUsuario.getUsuarios());
 							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 							vista.quitarNuevo();
 						}

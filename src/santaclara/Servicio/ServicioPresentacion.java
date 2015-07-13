@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.modelo.Presentacion;
-import santaclara.modelo.Producto;
 import santaclara.dao.impl.PresentacionDAO;
 
 public class ServicioPresentacion {

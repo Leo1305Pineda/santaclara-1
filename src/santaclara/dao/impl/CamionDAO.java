@@ -61,7 +61,11 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 			{
 				if(camion1.getId().equals(camion.getId()))
 				{ 
-					camion1.setId(camion.getId());
+					camion1.setMarca(camion.getMarca());
+					camion1.setModelo(camion.getModelo());
+					camion1.setAno(camion.getAno());
+					camion1.setColor(camion.getColor());
+					camion1.setCapacidad(camion.getCapacidad());
 				}
 			}
 		}

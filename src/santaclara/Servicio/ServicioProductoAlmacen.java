@@ -44,12 +44,9 @@ public class ServicioProductoAlmacen {
 						if(productoAlmacen1.getStock().equals(productAlmacen.getStock())&&
 								productoAlmacen1.getStockMin().equals(productAlmacen.getStockMin())&&
 								productoAlmacen1.getExistencia().equals(productAlmacen.getExistencia()))
-							return "El Producto  Existente en el Almacen: "+
-								productoAlmacen1.getStock()   + " = " + productAlmacen.getStock()   + " || " +
-								productoAlmacen1.getStockMin()+ " = " + productAlmacen.getStockMin()+ " || " +
-								productoAlmacen1.getExistencia()+" = "+productAlmacen.getExistencia()+" fin";
+							return "El Producto  Existente en el Almacen: ";
 						
-						else break;//Rompe el for para poder modificarlo	
+						else break;//rompe el for para modifacar
 					}
 			}
 			if(productAlmacen.getStock()<=productAlmacen.getStockMin())return "El Stock no puede ser menor igual Al StockMin";

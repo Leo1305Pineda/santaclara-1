@@ -1,18 +1,11 @@
 package santaclara.Servicio;
 
-
 import java.io.IOException;
 import java.util.List;
-
-import santaclara.dao.impl.CapacidadDAO;
 import santaclara.dao.impl.ProductoDAO;
 import santaclara.dao.impl.EmpaqueProductoDAO;
-import santaclara.dao.impl.SaborDAO;
-import santaclara.modelo.Capacidad;
 import santaclara.modelo.Producto;
 import santaclara.modelo.EmpaqueProducto;
-import santaclara.modelo.Sabor;
-import sun.reflect.generics.tree.ReturnType;
 
 public class ServicioEmpaqueProducto {
 

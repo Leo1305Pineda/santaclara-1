@@ -166,11 +166,11 @@ public  class ContPrincipal implements IContGeneral {
 				}
 				else if(e.getSource().equals(vista.getMntUsuarios()))
 				{
-					//ActivarUsuarios();
+					ActivarUsuarios();
 				}
 				else if(e.getSource().equals(vista.getMntVendedores()))
 				{
-					//ActivarVendedores();
+					ActivarVendedores();
 				}
 				else if(e.getSource().equals(vista.getMntVisitas()))
 				{
@@ -306,6 +306,18 @@ public  class ContPrincipal implements IContGeneral {
 		}
 	}
 	
+	public void ActivarUsuarios() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContUsuarios(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	
 	public void ActivarAtras(){
 		// TODO Auto-generated method stub
 		if (!cache.empty())
@@ -336,6 +348,8 @@ public  class ContPrincipal implements IContGeneral {
 			case "santaclara.vista.ProductoAlmacenesUI":	ActivarProductoAlmacenes();
 			break;
 			case "santaclara.vista.CamionesUI":	ActivarCamiones();
+			break;
+			case "santaclara.vista.UsuariosUI":	ActivarUsuarios();
 			break;
 
 

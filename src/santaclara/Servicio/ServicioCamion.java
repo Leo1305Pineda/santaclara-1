@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.modelo.Camion;
-import santaclara.modelo.Producto;
 import santaclara.dao.impl.CamionDAO;
 
 public class ServicioCamion {
@@ -38,12 +37,18 @@ public class ServicioCamion {
 		
 		camiones = camionDAO.getCamiones();
 		
-		for(Camion Camion1 :camiones)
+		for(Camion camion1 :camiones)
 		{
-			if(Camion1.getPlaca().equals(camion.getPlaca())&&
-					!Camion1.getId().equals(camion.getId())) 
+			if(camion1.getPlaca().equals(camion.getPlaca())&&
+					camion1.getId().equals(camion.getId())) 
 			{
-				return "Producto Existente";
+				if(camion1.getMarca().equals(camion.getMarca())&&
+						camion1.getModelo().equals(camion.getModelo())&&
+						camion1.getAno().equals(camion.getAno())&&
+						camion1.getCapacidad().equals(camion.getCapacidad())&&
+						camion1.getColor().equals(camion.getColor()))
+				return "Camion Existente";
+				break;//rompe el for para modificar
 			}
 		}
 		
@@ -57,8 +62,8 @@ public class ServicioCamion {
 		return camionDAO.getCamion(id);
 	}
 	
-	public void eliminar(Camion Camion) throws IOException{
-		camionDAO.eliminar(Camion);
+	public void eliminar(Camion camion) throws IOException{
+		camionDAO.eliminar(camion);
 	}
 	
 }

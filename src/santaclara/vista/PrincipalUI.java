@@ -150,7 +150,7 @@ public class PrincipalUI {
 		mnCatalogo.add(mntProductos);
 		mntProductos.addActionListener(controlador.activarMenu());
 		
-		mntProductoAlmacenes = new JMenuItem("Almacenes");
+		mntProductoAlmacenes = new JMenuItem("Producto por Almacenes");
 		mnCatalogo.add(mntProductoAlmacenes);
 		mntProductoAlmacenes.addActionListener(controlador.activarMenu());
 		

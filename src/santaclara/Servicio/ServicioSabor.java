@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.modelo.Sabor;
-import santaclara.modelo.Producto;
 import santaclara.dao.impl.SaborDAO;
 
 public class ServicioSabor {
