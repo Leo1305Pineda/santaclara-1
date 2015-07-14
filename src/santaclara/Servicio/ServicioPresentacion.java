@@ -42,7 +42,7 @@ public class ServicioPresentacion {
 			if(presentacion1.getMaterial().equals(presentacion.getMaterial())&&
 					!presentacion1.getId().equals(presentacion.getId())) 
 			{
-				return "Producto Existente";
+				return "Presentacion Existente";
 			}
 		}
 		

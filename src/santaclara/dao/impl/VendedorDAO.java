@@ -26,6 +26,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 		super();  
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
 	public List<Vendedor> getVendedores() throws FileNotFoundException {
 		// TODO Auto-generated method stub

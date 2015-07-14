@@ -1,6 +1,0 @@
-id:"jefeVenta.txt" ,id:"visita.txt"  
-!02                !00      
-!02                !01
-!03                !02
-!03                !03    
-!

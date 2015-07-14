@@ -43,9 +43,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
-
 import net.miginfocom.swing.MigLayout;
 
+@SuppressWarnings("serial")
 public class ProductosUI extends JPanel {
 
 	private JTable table;
@@ -53,6 +53,7 @@ public class ProductosUI extends JPanel {
 	private JScrollPane scrollPanel; 
 	
 	private List<Producto> productos = new ArrayList<Producto>();
+	@SuppressWarnings("rawtypes")
 	private JTableBinding  binProductos;
 
 	private JTextField txtBuscar;
@@ -78,6 +79,7 @@ public class ProductosUI extends JPanel {
 	
 	private JTextField txtABuscar;
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ProductosUI(ContProductos contProductos, List<Producto> productos,List<Capacidad> capacidades, 
 		List<Sabor> sabores,List<Presentacion> presentaciones) {
 		
@@ -218,6 +220,7 @@ public class ProductosUI extends JPanel {
 		cmbPresentacion.setForeground(Color.BLACK);
 		cmbPresentacion.setRenderer(new ListCellRenderer() {
 			
+		
 			@Override
 			public Component getListCellRendererComponent(JList list, Object value,
 					int index, boolean isSelected, boolean cellHasFocus) {
@@ -321,6 +324,7 @@ public class ProductosUI extends JPanel {
 		 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Producto> lsProductos) {
 		// TODO Auto-generated method stub
 		table = new JTable();
@@ -371,26 +375,32 @@ public class ProductosUI extends JPanel {
 		this.txtBuscar = txtBuscar;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbSabor() {
 		return cmbSabor;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setCmbSabor(JComboBox cmbSabor) {
 		this.cmbSabor = cmbSabor;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbPresentacion() {
 		return cmbPresentacion;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setCmbPresentacion(JComboBox cmbPresentacion) {
 		this.cmbPresentacion = cmbPresentacion;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbCapacidad() {
 		return cmbCapacidad;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setCmbCapacidad(JComboBox cmbCapacidad) {
 		this.cmbCapacidad = cmbCapacidad;
 	}
@@ -427,10 +437,12 @@ public class ProductosUI extends JPanel {
 		this.productos = productos;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinProductos() {
 		return binProductos;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinProductos(JTableBinding binProductos) {
 		this.binProductos = binProductos;
 	}

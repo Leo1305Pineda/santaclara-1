@@ -1,28 +1,28 @@
 package santaclara.modelo;
 
-import java.util.ArrayList;
 import java.util.List;
-
-
 
 public class JefeVenta  extends  Usuario {
 	
-	private List<Visita> visitas = new ArrayList<Visita>();
 	private Zona zona;
 
 	
-	public JefeVenta() {
-		super();
+	public JefeVenta(Integer id, String username, String cedula, String nombres,
+			String contrasena,Zona zona) {
+		super( id,  username,  cedula,  nombres,
+				 contrasena);
 		// TODO Auto-generated constructor stub
+		this.zona=zona;
 	}
 
 	public JefeVenta(Zona zona,List<Visita> visita) {
 		super();
 		this.zona = zona;
-		this.visitas = visita;
 	}
-	
-	
+	public JefeVenta(){
+		// TODO Auto-generated constructor stub
+		super();
+	}
 	public Zona getZona() {
 		return zona;
 	}
@@ -30,14 +30,5 @@ public class JefeVenta  extends  Usuario {
 	public void setZona(Zona zona) {
 		this.zona = zona;
 	}
-
-	public List<Visita> getVisitas() {
-		return visitas;
-	}
-
-	public void setVisita(List<Visita> visita) {
-		this.visitas = visita;
-	}
- 
 
 }

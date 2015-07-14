@@ -3,16 +3,12 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import santaclara.Servicio.ServicioVendedor;
 import santaclara.modelo.Vendedor;
-import santaclara.modelo.Vendedor;
-import santaclara.modelo.Ruta;
 import santaclara.vista.VendedoresUI;
 
 public class ContVendedores extends ContGeneral implements IContGeneral {
@@ -40,6 +36,7 @@ public class ContVendedores extends ContGeneral implements IContGeneral {
 		return vista;
 	}
 
+	@SuppressWarnings("deprecation")
 	public String ValidarTxt(){
 		
 	if (vista.getTxtNombre().getText().equals("")) return " Nombre ";
@@ -55,6 +52,7 @@ public class ContVendedores extends ContGeneral implements IContGeneral {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
 			
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub

@@ -3,9 +3,7 @@ package santaclara.vista;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.LayoutManager;
 import java.awt.SystemColor;
 
 import javax.swing.JComboBox;
@@ -36,18 +34,16 @@ import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
 import santaclara.controlador.ContEmpaqueProductos;
-import santaclara.controlador.ContProductos;
 import santaclara.modelo.Producto;
 import santaclara.modelo.EmpaqueProducto;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.GridLayout;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+@SuppressWarnings("serial")
 public class EmpaqueProductosUI extends JPanel {
 
 	private JPanel 	  			panelProducto;
@@ -79,12 +75,14 @@ public class EmpaqueProductosUI extends JPanel {
 	
 	private JScrollPane 		scrollPanel;
 	
+	@SuppressWarnings("rawtypes")
 	private JTableBinding 		binEmpaqueProductos;
 	
 	private List<EmpaqueProducto> empaqueProductos = new ArrayList<EmpaqueProducto>();
 	private List<Producto> 		productos = new ArrayList<Producto>();
 	private JLabel lblEmpaque;
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EmpaqueProductosUI(ContEmpaqueProductos contEmpaqueProductos, List<EmpaqueProducto> empaqueProductos,List<Producto> productos) {
 		
 		this.empaqueProductos = empaqueProductos;
@@ -302,6 +300,7 @@ public class EmpaqueProductosUI extends JPanel {
 		 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void activarBinding(List<EmpaqueProducto> EmpaqueProductos) {
 		// TODO Auto-generated method stub
 		pnTabla.setVisible(true);
@@ -352,10 +351,12 @@ public class EmpaqueProductosUI extends JPanel {
 		this.txtBuscar = txtBuscar;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbProducto() {
 		return cmbProducto;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setCmbPresentacion(JComboBox cmbPresentacion) {
 		this.cmbProducto = cmbPresentacion;
 	}
@@ -380,10 +381,12 @@ public class EmpaqueProductosUI extends JPanel {
 		this.productos = productos;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinEmpaqueProductos() {
 		return binEmpaqueProductos;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinProductos(JTableBinding binProductos) {
 		this.binEmpaqueProductos = binProductos;
 	}
@@ -548,6 +551,7 @@ public class EmpaqueProductosUI extends JPanel {
 		this.cmbProducto = cmbProducto;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinEmpaqueProductos(JTableBinding binEmpaqueProductos) {
 		this.binEmpaqueProductos = binEmpaqueProductos;
 	}

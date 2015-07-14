@@ -48,11 +48,10 @@ public class ServicioConcesionario {
 						comcesionario1.getUsername().equals(concesionario.getUsername())&&
 						comcesionario1.getContrasena().equals(concesionario.getContrasena()))
 					
-				return "Camion Existente";
+				return "Concesionario Existente";
 				break;//rompe el for para modificar
 			}
 		}
-		
 		concesionarioDAO.guardar(concesionario);
 		return "Operacion Exitosa";
 				

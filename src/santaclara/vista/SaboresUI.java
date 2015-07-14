@@ -20,9 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.miginfocom.swing.MigLayout;
-import santaclara.controlador.ContPresentaciones;
 import santaclara.controlador.ContSabores;
-import santaclara.dao.impl.PresentacionDAO;
 import santaclara.modelo.Sabor;
 
 import java.awt.event.ActionListener;
@@ -32,6 +30,7 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 
+@SuppressWarnings("serial")
 public class SaboresUI extends JPanel {
 	
 	private JPanel pnOpciones;
@@ -48,6 +47,7 @@ public class SaboresUI extends JPanel {
 	private JButton btnEliminar;
 	
 	private JTable table;
+	@SuppressWarnings("rawtypes")
 	private JTableBinding binSabores; 
 	
 	private JScrollPane scrollPanel;
@@ -205,6 +205,7 @@ public class SaboresUI extends JPanel {
 		txtId.setColumns(10);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Sabor> sabores) {
 		// TODO Auto-generated method stub
 		pnTabla.setVisible(true);
@@ -427,10 +428,12 @@ public class SaboresUI extends JPanel {
 		this.txtId = txtId;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinPresentaciones() {
 		return binSabores;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinPresentaciones(JTableBinding binPresentaciones) {
 		this.binSabores = binPresentaciones;
 	}

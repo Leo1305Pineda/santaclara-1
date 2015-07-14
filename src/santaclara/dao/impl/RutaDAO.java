@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import santaclara.dao.IRutaDAO;
-import santaclara.modelo.Cliente;
 import santaclara.modelo.Ruta;
 
 public class RutaDAO extends GenericoDAO implements IRutaDAO  {
@@ -25,7 +24,7 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 		while(scaner.hasNext())
 		{
 			Ruta ruta = new Ruta();
-			ruta.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			ruta.setId(new Integer(scaner.skip("id:").nextLine().toString().trim()));
 			
 			//guardo demas los datos de la Zona 
 			ZonaDAO zonaDAO = new ZonaDAO();

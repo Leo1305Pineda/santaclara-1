@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 
+@SuppressWarnings("serial")
 public class CapacidadesUI extends JPanel {
 	
 	private JPanel pnOpciones;
@@ -46,6 +47,7 @@ public class CapacidadesUI extends JPanel {
 	private JButton btnEliminar; 
 	
 	private JTable table;
+	@SuppressWarnings("rawtypes")
 	private JTableBinding binCapacidades; 
 	
 	private JScrollPane scrollPanel;
@@ -203,6 +205,7 @@ public class CapacidadesUI extends JPanel {
 		txtId.setColumns(10);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Capacidad> capacidades) {
 		// TODO Auto-generated method stub
 		pnTabla.setVisible(true);
@@ -429,10 +432,12 @@ public class CapacidadesUI extends JPanel {
 		this.txtId = txtId;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinCapacidades() {
 		return binCapacidades;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinCapacidades(JTableBinding binPresentaciones) {
 		this.binCapacidades = binPresentaciones;
 	}

@@ -4,12 +4,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import santaclara.modelo.Concesionario;
+import santaclara.modelo.JefeVenta;
 import santaclara.modelo.Usuario;
+import santaclara.modelo.Vendedor;
+import santaclara.dao.impl.ConcesionarioDAO;
+import santaclara.dao.impl.JefeVentaDAO;
 import santaclara.dao.impl.UsuarioDAO;
+import santaclara.dao.impl.VendedorDAO;
 
 public class ServicioUsuario {
 	
 	private UsuarioDAO usuarioDAO = new UsuarioDAO();
+	private VendedorDAO vendedorDAO = new VendedorDAO();
+	private JefeVentaDAO jefeVentaDAO = new JefeVentaDAO();
+	private ConcesionarioDAO concesionarioDAO = new ConcesionarioDAO();
+	
 	private List<Usuario> usuarios = new ArrayList<Usuario>();
 		
 	public List<Usuario> getUsuarios() throws NumberFormatException, IOException{
@@ -18,6 +28,24 @@ public class ServicioUsuario {
 		return usuarioDAO.getUsuarios();
 	}
 
+	public List<JefeVenta> getJefeVentas() throws NumberFormatException, IOException{
+		// TODO Auto-generated method stub
+		
+		return jefeVentaDAO.getJefeVentas();
+	}
+	
+	public List<Vendedor> getVendedores() throws NumberFormatException, IOException{
+		// TODO Auto-generated method stub
+		
+		return vendedorDAO.getVendedores();
+	}
+	
+	public List<Concesionario> getConcesionarios() throws NumberFormatException, IOException{
+		// TODO Auto-generated method stub
+		
+		return concesionarioDAO.getConcecionarios();
+	}
+	
 	public UsuarioDAO getUsuarioDAO() {
 		 
 		return usuarioDAO;

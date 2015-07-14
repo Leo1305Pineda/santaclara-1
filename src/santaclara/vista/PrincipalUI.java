@@ -17,7 +17,6 @@ import santaclara.modelo.Vendedor;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.BorderLayout;
 import java.awt.Toolkit;
 
 
@@ -91,6 +90,7 @@ public class PrincipalUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("unused")
 	private void initialize() {
 		frame = new JFrame("Embotelladora Santa Clara");
 		 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

@@ -3,28 +3,49 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import santaclara.Servicio.ServicioConcesionario;
 import santaclara.Servicio.ServicioConcesionarioRuta;
+import santaclara.Servicio.ServicioJefeVenta;
+import santaclara.Servicio.ServicioRuta;
 import santaclara.Servicio.ServicioUsuario;
+import santaclara.Servicio.ServicioVendedor;
+import santaclara.Servicio.ServicioZona;
+import santaclara.modelo.Camion;
+import santaclara.modelo.Concesionario;
 import santaclara.modelo.ConcesionarioRuta;
+import santaclara.modelo.JefeVenta;
+import santaclara.modelo.Ruta;
 import santaclara.modelo.Usuario;
+import santaclara.modelo.Vendedor;
+import santaclara.modelo.Zona;
 import santaclara.vista.UsuariosUI;
 
 public class ContUsuarios extends ContGeneral implements IContGeneral{
 	
-	private ServicioUsuario servicioUsuario;
-	private UsuariosUI vista;
+	private ServicioUsuario servicioUsuario = new ServicioUsuario();
+	private ServicioConcesionario servicioConcesionario = new ServicioConcesionario();
+	private ServicioVendedor servicioVendedor = new ServicioVendedor();
+	private ServicioJefeVenta servicioJefeVenta = new ServicioJefeVenta();
+	private ServicioRuta servicioRuta = new ServicioRuta();
+	private ServicioZona servicioZona = new ServicioZona();
+	private UsuariosUI vista ;
 	
 	public ContUsuarios(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
+		
 		servicioUsuario = new ServicioUsuario();
-		vista = new UsuariosUI(this, servicioUsuario.getUsuarios());
+		servicioRuta = new ServicioRuta();
+		servicioZona = new ServicioZona();
+		
+		vista = new UsuariosUI(this, servicioUsuario.getUsuarios(),servicioRuta.getRutas(),servicioZona.getZonas());
 		vista.activarBinding(servicioUsuario.getUsuarios());
 		dibujar(vista);
 		vista.quitarNuevo();
@@ -42,7 +63,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.activarNuevoCamion();
+				vista.activarNuevo();
 				vista.getPnTabla().setVisible(false);
 			}
 		};
@@ -65,7 +86,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 					}
 					if (usuario != null)
 					{
-						vista.activarNuevoCamion();
+						vista.activarNuevo();
 						vista.getScrollPanel().setVisible(false);
 						
 						vista.getTxtId().setText(usuario.getId().toString());
@@ -79,7 +100,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(vista,"Seleccione el Producto");
+					JOptionPane.showMessageDialog(vista,"Seleccione la fila");
 				}
 		}
 		};
@@ -89,7 +110,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 		if (vista.getTxtNombre().getText().equals("")) return "Campos Vacios:Nombre";
 		if (vista.getTxtUserName().getText().equals("")) return "Campos Vacios:UserName";
 		if (vista.getTxtContrasena().getText().equals("")) return "Campos Vacios:Contraseña";
-		if (vista.getTxtReContrasena().getText().equals(vista.getTxtContrasena())) return "Campos Vacios:Contraseña invalida";
+		if (!vista.getTxtReContrasena().getText().equals(vista.getTxtContrasena().getText())) return "Contraseña invalida";
 		
 		return "";
 	}
@@ -101,29 +122,72 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				Usuario usuarios = new Usuario();
-				
-				if (vista.getTxtId().getText().equals("")) usuarios.setId(null);
-					else usuarios.setId(new Integer(vista.getTxtId().getText().toString())); 
+				JefeVenta jefeVenta = new JefeVenta();
+				Usuario usuario = new Usuario();
+				List<Ruta> rutas = new ArrayList<Ruta>(); 
 				
 				if (ValidarTxt()=="")
 				{
 							try {
-									usuarios.setCedula(vista.getTxtCedula().getText().toString());
-									usuarios.setNombre(vista.getTxtNombre().getText().toString());
-									usuarios.setUsername(vista.getTxtUserName().getText().toString());
-									usuarios.setContrasena(vista.getTxtContrasena().getText().toString());
-								
+									usuario.setCedula(vista.getTxtCedula().getText().toString());
+									usuario.setNombre(vista.getTxtNombre().getText().toString());
+									usuario.setUsername(vista.getTxtUserName().getText().toString());
+									usuario.setContrasena(vista.getTxtContrasena().getText().toString());
 									
-									JOptionPane.showMessageDialog(vista,servicioUsuario.guardar(usuarios));
-									// agregarlo a la lista
-									vista.getCamiones().add(usuarios);
+									if(vista.getCmbTipoUsuario().getSelectedItem().equals("JefeVenta"))
+									{
+										if (vista.getTxtId().getText().equals("")) jefeVenta.setId(null);
+										else jefeVenta.setId(new Integer(vista.getTxtId().getText().toString().trim()));
+										
+										jefeVenta.setUsername(vista.getTxtUserName().getText().toString());
+										jefeVenta.setCedula(vista.getTxtCedula().getText().toString().trim());  
+										jefeVenta.setNombre(vista.getTxtNombre().getText().toString());
+										jefeVenta.setContrasena(vista.getTxtContrasena().getText().toString().trim());
+										jefeVenta.setZona((Zona) vista.getCmbZona().getSelectedItem());	
+											
+										JOptionPane.showMessageDialog(vista,servicioJefeVenta.guardar(jefeVenta));
+										vista.getBinUsuarios().unbind();
+										vista.getBinUsuarios().bind();
+										vista.activarBindingJefeVentas(servicioJefeVenta.getJefeVentas());
+										vista.quitarNuevo();
+									}
+									else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
+									{
 									
-									vista.getBinUsuarios().unbind();
-									vista.getBinUsuarios().bind();
-									vista.activarBinding(servicioUsuario.getUsuarios());
-									vista.quitarNuevo();
-									vista.getScrollPanel().setVisible(true);
+										
+										
+										Vendedor vendedor = new Vendedor( usuario.getId(),
+																		  usuario.getUsername(),
+																		  usuario.getCedula(),
+																		  usuario.getNombre(),
+																		  usuario.getContrasena(),
+																		  rutas);
+										
+										JOptionPane.showMessageDialog(vista,servicioVendedor.guardar(vendedor));
+										vista.getBinUsuarios().unbind();
+										vista.getBinUsuarios().bind();
+										vista.activarBindingVendedores(servicioVendedor.getVendedores());
+										vista.quitarNuevo();
+									}
+									else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Concesionario"))
+									{
+										Camion camion = new Camion();
+										Ruta ruta = new Ruta();
+										
+										Concesionario concesionario = new Concesionario( usuario.getId(),
+												  										 usuario.getUsername(),
+												  										 usuario.getCedula(),
+												  										 usuario.getNombre(),
+												  										 usuario.getContrasena(),	
+												  										 camion,
+												  										 ruta);
+										
+										JOptionPane.showMessageDialog(vista,servicioConcesionario.guardar(concesionario));
+										vista.getBinUsuarios().unbind();
+										vista.getBinUsuarios().bind();
+										vista.activarBindingConcesionarios(servicioConcesionario.getConcecionarios());
+										vista.quitarNuevo();
+									}
 									
 									} catch (IOException e1) {
 										// TODO Auto-generated catch block
@@ -233,6 +297,63 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+		};
+	}
+
+	public ActionListener ActivarTipoUsuario() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				if(vista.getCmbTipoUsuario().getSelectedItem().equals("Todos")){
+					try {
+						vista.activarBinding(servicioUsuario.getUsuarios());
+						vista.getBtnNuevo().setEnabled(false);
+					} catch (NumberFormatException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else if(vista.getCmbTipoUsuario().getSelectedItem().equals("JefeVenta")){
+					try {
+						vista.activarBindingJefeVentas(servicioUsuario.getJefeVentas());
+						vista.getBtnNuevo().setEnabled(true);
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor")){
+					try {
+						vista.activarBindingVendedores(servicioUsuario.getVendedores());
+						vista.getBtnNuevo().setEnabled(true);
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Concesionario")){
+					try {
+						vista.activarBindingConcesionarios(servicioUsuario.getConcesionarios());
+						vista.getBtnNuevo().setEnabled(true);
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				vista.quitarNuevo();
 			}
 		};
 	}

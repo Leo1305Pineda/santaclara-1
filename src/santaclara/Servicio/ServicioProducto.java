@@ -61,8 +61,6 @@ public class ServicioProducto {
 			
 			for(Producto producto1 :productos)
 			{
-				/*&&
-						*/
 					if(producto1.getNombre().equals(producto.getNombre())&&
 							producto1.getCapacidad().getId().equals(producto.getCapacidad().getId())&&
 							producto1.getPresentacion().getId().equals(producto.getPresentacion().getId())&&

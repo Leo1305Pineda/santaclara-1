@@ -15,8 +15,6 @@ import santaclara.Servicio.ServicioProductoAlmacen;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.EmpaqueProducto;
 import santaclara.modelo.ProductoAlmacen;
-import santaclara.modelo.Producto;
-import santaclara.vista.EmpaqueProductosUI;
 import santaclara.vista.ProductoAlmacenesUI;
 
 public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
@@ -25,8 +23,6 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 	private ServicioProductoAlmacen servicioProductoAlmacen = new ServicioProductoAlmacen();
 	private ServicioEmpaqueProducto servicioEmpaqueProducto = new ServicioEmpaqueProducto();
 	private ServicioAlmacen servicioAlmacen = new ServicioAlmacen();
-	private ContAlmacenes contAlmacenes;
-	private ContEmpaqueProductos contEmpaqueProducto;
 	
 	public ContProductoAlmacenes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -216,6 +212,7 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void setSelectedValue(JComboBox comboBox,Integer id)
     {	
         for (int i = 0; i < comboBox.getItemCount(); i++)
@@ -256,7 +253,7 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					contEmpaqueProducto = new ContEmpaqueProductos(getContPrincipal());
+					new ContEmpaqueProductos(getContPrincipal());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -273,7 +270,7 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					contAlmacenes = new ContAlmacenes(getContPrincipal());
+					new ContAlmacenes(getContPrincipal());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

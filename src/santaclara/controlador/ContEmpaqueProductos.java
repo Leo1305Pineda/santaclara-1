@@ -19,7 +19,6 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 	private EmpaqueProductosUI vista;
 	private ServicioEmpaqueProducto servicioEmpaqueProducto = new ServicioEmpaqueProducto();;
 	private ContPrincipal contPrincipal;	
-	private ContProductos contProductos;
 	
 	public ContEmpaqueProductos(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -204,6 +203,7 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void setSelectedValue(JComboBox comboBox,Integer id)
     {	
         for (int i = 0; i < comboBox.getItemCount(); i++)
@@ -229,7 +229,7 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-						contProductos = new ContProductos(contPrincipal);
+						new ContProductos(contPrincipal);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

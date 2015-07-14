@@ -36,20 +36,15 @@ import org.jdesktop.swingbinding.JComboBoxBinding;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
-import santaclara.controlador.ContEmpaqueProductos;
 import santaclara.controlador.ContProductoAlmacenes;
-import santaclara.controlador.ContProductos;
-import santaclara.modelo.Almacen;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.EmpaqueProducto;
-import santaclara.modelo.ProductoAlmacen;
 import santaclara.modelo.ProductoAlmacen;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.GridLayout;
 
-import javax.swing.SpinnerModel;
-
+@SuppressWarnings("serial")
 public class ProductoAlmacenesUI extends JPanel {
 
 	private JPanel 	  			panelProductoAlmacen;
@@ -70,8 +65,10 @@ public class ProductoAlmacenesUI extends JPanel {
 	private JSpinner 			txtStockMin;
 	private JSpinner 			txtExistencia;
 
-    private JComboBox cmbEmpaqueProducto;
-    private JComboBox cmbAlmacenes;
+    @SuppressWarnings("rawtypes")
+	private JComboBox cmbEmpaqueProducto;
+    @SuppressWarnings("rawtypes")
+	private JComboBox cmbAlmacenes;
     
 	private JButton 			btnNuevo;
 	private JButton				btnModificar;
@@ -88,12 +85,14 @@ public class ProductoAlmacenesUI extends JPanel {
 	
 	private JScrollPane 		scrollPanel;
 	
+	@SuppressWarnings("rawtypes")
 	private JTableBinding 		binProductoAlmacenes;
 	
 	private List<ProductoAlmacen> productoAlmacenes = new ArrayList<ProductoAlmacen>();
 	private List<Almacen> 		almacenes = new ArrayList<Almacen>();
 	private List<EmpaqueProducto> empaqueProductos = new ArrayList<EmpaqueProducto>();
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ProductoAlmacenesUI(ContProductoAlmacenes contProductoAlmacenes,List<ProductoAlmacen> productoAlmacenes,List<EmpaqueProducto> empaqueProductos,List<Almacen> almacenes) {
 		
 		this.productoAlmacenes = productoAlmacenes;
@@ -391,6 +390,7 @@ public class ProductoAlmacenesUI extends JPanel {
 		 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void activarBinding(List<ProductoAlmacen> productoAlmacenes) {
 		// TODO Auto-generated method stub
 		pnTabla.setVisible(true);
@@ -474,10 +474,12 @@ public class ProductoAlmacenesUI extends JPanel {
 		this.almacenes = almacenes;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinProductoAlmacenes() {
 		return binProductoAlmacenes;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinProductoAlmacenes(JTableBinding binProductoAlmacenes) {
 		this.binProductoAlmacenes = binProductoAlmacenes;
 	}
@@ -632,6 +634,7 @@ public class ProductoAlmacenesUI extends JPanel {
 		this.pnPreoductoAlmacenes = pnPreoductoAlmacenes;
 	}
 
+	@SuppressWarnings("unchecked")
 	public JComboBox<Almacen> getCmbAlmacenes() {
 		return cmbAlmacenes;
 	}
@@ -684,10 +687,12 @@ public class ProductoAlmacenesUI extends JPanel {
 		this.txtStock = txtStock;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbEmpaqueProducto() {
 		return cmbEmpaqueProducto;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setCmbEmpaqueProducto(JComboBox cmbEmpaqueProducto) {
 		this.cmbEmpaqueProducto = cmbEmpaqueProducto;
 	}

@@ -9,6 +9,7 @@ import santaclara.dao.impl.PresentacionDAO;
 
 public class TestPresentacion {
 
+	@SuppressWarnings("unused")
 	@Test
 	public void test() throws Exception {
 

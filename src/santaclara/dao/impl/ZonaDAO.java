@@ -23,8 +23,8 @@ public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
 		while(scaner.hasNext())
 		{
 			Zona zona = new Zona();
-			zona.setId(new Integer(scaner.skip("id:").nextLine().trim()));
-			zona.setDescripcion(scaner.skip("descripcion:").nextLine());
+			zona.setId(new Integer(scaner.skip("id:").nextLine().toString().trim()));
+			zona.setDescripcion(scaner.skip("descripcion:").nextLine().toString());
 			zonas.add(zona); 
 		}
 		scaner.close();

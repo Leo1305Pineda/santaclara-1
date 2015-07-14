@@ -22,7 +22,6 @@ import java.util.List;
 
 import net.miginfocom.swing.MigLayout;
 import santaclara.controlador.ContCamiones;
-import santaclara.dao.impl.PresentacionDAO;
 import santaclara.modelo.Camion;
 
 import java.awt.event.ActionListener;
@@ -33,8 +32,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 
 import javax.swing.JSpinner;
-import javax.swing.SpinnerModel;
 
+@SuppressWarnings("serial")
 public class CamionesUI extends JPanel {
 	
 	private JPanel pnOpciones;
@@ -51,6 +50,7 @@ public class CamionesUI extends JPanel {
 	private JButton btnEliminar;
 	
 	private JTable table;
+	@SuppressWarnings("rawtypes")
 	private JTableBinding binCamioness; 
 	
 	private JScrollPane scrollPanel;
@@ -275,6 +275,7 @@ public class CamionesUI extends JPanel {
 		
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Camion> camiones) {
 		// TODO Auto-generated method stub
 		pnTabla.setVisible(true);
@@ -498,10 +499,12 @@ public class CamionesUI extends JPanel {
 		this.txtId = txtId;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinCamiones() {
 		return binCamioness;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinCamiones(JTableBinding binCamiones) {
 		this.binCamioness = binCamiones;
 	}
@@ -514,10 +517,12 @@ public class CamionesUI extends JPanel {
 		this.btnEliminar = btnEliminar;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinCamioness() {
 		return binCamioness;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinCamioness(JTableBinding binCamioness) {
 		this.binCamioness = binCamioness;
 	}

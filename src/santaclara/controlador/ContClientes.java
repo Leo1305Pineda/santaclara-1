@@ -18,7 +18,6 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	private ClientesUI vista;
 	private ServicioCliente servicioCliente;
 	private ContPrincipal contPrincipal;
-	private ContRutas contRutas;
 	
 	public ContClientes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -220,7 +219,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 							try {
-								contRutas= new ContRutas(contPrincipal);
+								new ContRutas(contPrincipal);
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();

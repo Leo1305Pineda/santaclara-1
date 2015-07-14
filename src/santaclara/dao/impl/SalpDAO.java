@@ -19,6 +19,7 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 	private String ruta = "archivos/salps.txt";
 	private Scanner scaner;
 
+	@SuppressWarnings("resource")
 	@Override
 	public List<Salp> getSalps() throws FileNotFoundException {
 		// TODO Auto-generated method stub

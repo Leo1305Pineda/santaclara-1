@@ -9,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -29,13 +28,13 @@ import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
 import java.awt.Component;
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class ClientesUI extends JPanel {
 	
 	private JPanel pnCliente;
@@ -44,6 +43,7 @@ public class ClientesUI extends JPanel {
 	private JTable table;
 	private List<Ruta> rutas = new ArrayList<Ruta>();
 	private List<Cliente> clientes = new ArrayList<Cliente>();
+	@SuppressWarnings("rawtypes")
 	private JTableBinding  binClientes;
 	private JScrollPane scrollPanel;
 	private JTable tabla;
@@ -61,11 +61,13 @@ public class ClientesUI extends JPanel {
 	private JTextField txtTelefono;
 	private JTextField txtDireccion;
 	private JTextField txtABuscar; 
+	@SuppressWarnings("rawtypes")
 	private JComboBox cmbRuta;
 	private JLabel label;
 	private JLabel label_5;
 	private JTextField txtId;
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ClientesUI(ContClientes contCliente,List<Ruta> rutas,List<Cliente> clientes) {
 		this.clientes = clientes;
 		this.rutas = rutas;
@@ -260,6 +262,7 @@ public class ClientesUI extends JPanel {
 		
 	}
 	    
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Cliente> lstClientes) {
 		// TODO Auto-generated method stub
 		tabla = new JTable();
@@ -289,10 +292,12 @@ public class ClientesUI extends JPanel {
 		
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinCliente() {
 		return binClientes;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinClientes(JTableBinding binClientes) {
 		this.binClientes = binClientes;
 	}
@@ -338,6 +343,7 @@ public class ClientesUI extends JPanel {
 		this.clientes = clientes;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinClientes() {
 		return binClientes;
 	}

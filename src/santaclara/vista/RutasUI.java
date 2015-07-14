@@ -30,8 +30,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.ImageIcon;
 
+@SuppressWarnings("serial")
 public class RutasUI extends JPanel {
 
 	private JPanel pnRutas;
@@ -60,11 +62,13 @@ public class RutasUI extends JPanel {
 	
 	private JTable tabla;
 	
+	@SuppressWarnings("rawtypes")
 	private JTableBinding binRutas;
 	
 	private List<Zona> zonas = new ArrayList<Zona>();
 	private List<Ruta> rutas = new ArrayList<Ruta>();
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public RutasUI(ContRutas conRutas,List<Zona> zonas,List<Ruta> rutas) {
 		this.rutas = rutas;
 		this.zonas = zonas;
@@ -215,6 +219,7 @@ public class RutasUI extends JPanel {
 		pnRutas.add(pnBotones);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void activarBinding(List<Ruta> lstRutas) {
 		// TODO Auto-generated method stub
 		tabla = new JTable();
@@ -404,10 +409,12 @@ public class RutasUI extends JPanel {
 		this.tabla = tabla;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinRutas() {
 		return binRutas;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinRutas(JTableBinding binRutas) {
 		this.binRutas = binRutas;
 	}

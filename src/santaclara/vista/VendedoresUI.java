@@ -36,6 +36,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JComboBox;
 
+@SuppressWarnings("serial")
 public class VendedoresUI extends JPanel {
 
 	private JPanel 	panelVendedor;
@@ -49,6 +50,7 @@ public class VendedoresUI extends JPanel {
 	private JButton btnGuardar;
 	private JButton btnCancelar;
 	
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboRutas;
 	
 	private JTextField txtUsername;
@@ -59,7 +61,9 @@ public class VendedoresUI extends JPanel {
 	private JPasswordField txtContrasena;
 	private JPasswordField txtContrasenaRepetir;
 	
+	@SuppressWarnings("rawtypes")
 	private JTableBinding  binVendedores;
+	@SuppressWarnings("rawtypes")
 	private JTableBinding  binRutas;
 	
 	private JTable table;
@@ -71,6 +75,7 @@ public class VendedoresUI extends JPanel {
 	 * @param contVendedores 
 	 */
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public VendedoresUI(ContVendedores contVendedores, List<Vendedor> vendedores, List<Ruta> rutas) {
 		this.vendedores = vendedores;
 		this.rutas = rutas;
@@ -289,6 +294,7 @@ public class VendedoresUI extends JPanel {
 
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Vendedor> lsvendedores) {
 		// TODO Auto-generated method stubactivarBinding
 
@@ -310,11 +316,13 @@ public class VendedoresUI extends JPanel {
 	    
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void activarJComboBoxBinding(){
 		JComboBoxBinding jcomboRutas = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,rutas,comboRutas);
 	    jcomboRutas.bind();
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBindingRutas(List<Ruta> rutas) {
 		// TODO Auto-generated method stubactivarBinding
 
@@ -381,10 +389,12 @@ public class VendedoresUI extends JPanel {
 		this.vendedores = vendedores;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinVendedores() {
 		return binVendedores;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinVendedores(JTableBinding binVendedores) {
 		this.binVendedores = binVendedores;
 	}
@@ -477,18 +487,22 @@ public class VendedoresUI extends JPanel {
 		this.btnCancelar = btnCancelar;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getComboRutas() {
 		return comboRutas;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setComboRutas(JComboBox comboRutas) {
 		this.comboRutas = comboRutas;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinRutas() {
 		return binRutas;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinRutas(JTableBinding binRutas) {
 		this.binRutas = binRutas;
 	}

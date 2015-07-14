@@ -24,9 +24,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 
 	private ProductosUI vista;
 	private ServicioProducto servicioProducto = new ServicioProducto();;
-	private ContPresentaciones contPresentaciones;
-	private ContCapacidades contCapacidades;
-	private ContSabores contSabores; 
+	
 	private PresentacionDAO presentacionDAO = new PresentacionDAO();	
 	
 	public ContProductos(ContPrincipal contPrincipal) throws Exception {
@@ -242,6 +240,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void setSelectedValue(JComboBox comboBox,Integer id)
     {	
         for (int i = 0; i < comboBox.getItemCount(); i++)
@@ -273,7 +272,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-						contPresentaciones = new ContPresentaciones(getContPrincipal());
+						new ContPresentaciones(getContPrincipal());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -290,7 +289,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					contCapacidades = new ContCapacidades(getContPrincipal());
+						new ContCapacidades(getContPrincipal());
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -307,7 +306,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					contSabores = new ContSabores(getContPrincipal());
+						new ContSabores(getContPrincipal());
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

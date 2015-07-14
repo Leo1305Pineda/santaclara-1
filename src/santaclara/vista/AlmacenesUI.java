@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 
+@SuppressWarnings("serial")
 public class AlmacenesUI extends JPanel {
 	
 	private JPanel pnOpciones;
@@ -46,6 +47,7 @@ public class AlmacenesUI extends JPanel {
 	private JButton btnEliminar;
 	
 	private JTable table;
+	@SuppressWarnings("rawtypes")
 	private JTableBinding binAlmacenes; 
 	
 	private JScrollPane scrollPanel;
@@ -203,6 +205,7 @@ public class AlmacenesUI extends JPanel {
 		txtId.setColumns(10);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Almacen> almacenes) {
 		// TODO Auto-generated method stub
 		pnTabla.setVisible(true);
@@ -429,10 +432,12 @@ public class AlmacenesUI extends JPanel {
 		this.txtId = txtId;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinAlmacenes() {
 		return binAlmacenes;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinAlmacenes(JTableBinding binAlmacenes) {
 		this.binAlmacenes = binAlmacenes;
 	}

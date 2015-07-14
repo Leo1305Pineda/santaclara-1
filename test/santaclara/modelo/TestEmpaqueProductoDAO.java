@@ -9,9 +9,7 @@ import org.junit.Test;
 
 import santaclara.dao.impl.ProductoDAO;
 import santaclara.dao.impl.EmpaqueProductoDAO;
-import santaclara.dao.impl.PresentacionDAO;
-import santaclara.dao.impl.EmpaqueProductoDAO;
-import santaclara.dao.impl.SaborDAO;
+
 
 public class TestEmpaqueProductoDAO {
 

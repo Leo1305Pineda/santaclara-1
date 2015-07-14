@@ -10,12 +10,13 @@ import santaclara.controlador.ContIniciarSesion;
 import java.awt.Color;
 
 import javax.swing.JLabel;
-import javax.swing.Box;
 
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 
+@SuppressWarnings("serial")
 public class IniciarSesionUI extends JPanel {
 	
 	

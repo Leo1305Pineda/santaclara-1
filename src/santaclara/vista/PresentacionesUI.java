@@ -21,7 +21,6 @@ import java.util.List;
 
 import net.miginfocom.swing.MigLayout;
 import santaclara.controlador.ContPresentaciones;
-import santaclara.dao.impl.PresentacionDAO;
 import santaclara.modelo.Presentacion;
 
 import java.awt.event.ActionListener;
@@ -31,6 +30,7 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 
+@SuppressWarnings("serial")
 public class PresentacionesUI extends JPanel {
 	
 	private JPanel pnOpciones;
@@ -46,6 +46,7 @@ public class PresentacionesUI extends JPanel {
 	private JButton btnABuscar;
 	
 	private JTable table;
+	@SuppressWarnings("rawtypes")
 	private JTableBinding binPresentaciones; 
 	
 	private JScrollPane scrollPanel;
@@ -203,6 +204,7 @@ public class PresentacionesUI extends JPanel {
 		txtId.setColumns(10);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Presentacion> presentaciones) {
 		// TODO Auto-generated method stub
 		pnTabla.setVisible(true);
@@ -429,10 +431,12 @@ public class PresentacionesUI extends JPanel {
 		this.txtId = txtId;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinPresentaciones() {
 		return binPresentaciones;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinPresentaciones(JTableBinding binPresentaciones) {
 		this.binPresentaciones = binPresentaciones;
 	}

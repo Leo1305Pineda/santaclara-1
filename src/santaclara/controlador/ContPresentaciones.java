@@ -9,10 +9,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import santaclara.Servicio.ServicioEmpaqueProducto;
 import santaclara.Servicio.ServicioPresentacion;
 import santaclara.Servicio.ServicioProducto;
-import santaclara.modelo.EmpaqueProducto;
 import santaclara.modelo.Presentacion;
 import santaclara.modelo.Producto;
 import santaclara.vista.PresentacionesUI;
