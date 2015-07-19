@@ -8,8 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 import santaclara.dao.IConcesionarioDAO;
+import santaclara.modelo.Camion;
 import santaclara.modelo.Concesionario;
+import santaclara.modelo.Ruta;
 import santaclara.modelo.Usuario;
 
 public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
@@ -34,7 +37,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 			fw.append("camion:"+(concesionario.getCamion() == null
 					? "  ":concesionario.getCamion().getId())+"\n");
 			fw.append("ruta:"+(concesionario.getRuta() == null
-					? "  ":concesionario.getCamion().getId())+"\n");
+					? "  ":concesionario.getRuta().getId())+"\n");
 
 		}
 		fw.close();
@@ -56,7 +59,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 			 CamionDAO camionDAO = new CamionDAO();
 			 		concesionario.setCamion(
 			 			camionDAO.getCamion(
-			 					new Integer(scaner.skip("camion:").nextLine().trim())));
+			 					new Integer(scaner.skip("camion:").nextLine().toString().trim())));
 			 
 			 RutaDAO rutaDAO = new RutaDAO();
 			 concesionario.setRuta(
@@ -92,17 +95,32 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 		List<Concesionario> concesionarios = getConcecionarios();
 		//buscar codigo el ultimo codigo Asignado 
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		List<Usuario> usuarios = usuarioDAO.getUsuarios();
+		Ruta ruta;
+		Camion camion;
 		if(concesionario.getId() == null )
 		{
 			int i = 0;
-			for(Concesionario concesionario1 : concesionarios)
+			for(Usuario usuario1 : usuarios)
 			{
-				if(concesionario1.getId()> i )
+				if(usuario1.getId()> i )
 				{
-					i = concesionario1.getId();
+					i = usuario1.getId();
 				}
 			}
-			concesionario.setId(i+1);
+			Usuario usuario = new Usuario(null,concesionario.getUsername(),
+												concesionario.getCedula(), 
+												concesionario.getNombre(),
+												concesionario.getContrasena());
+			
+			usuarioDAO.guardar(usuario);
+			
+			ruta = concesionario.getRuta();
+			camion = concesionario.getCamion(); 
+			
+			concesionario = getConcesionario(usuarioDAO.getUsuario(i+1));
+			concesionario.setRuta(ruta);
+			concesionario.setCamion(camion);
 			concesionarios.add(concesionario);
 		}
 		else
@@ -111,19 +129,32 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 			{
 				if(concesionario1.getId().equals(concesionario.getId()))
 				{ 
-					concesionario1.setId(concesionario.getId());
-					concesionario1.setUsername(concesionario.getUsername());
-					concesionario1.setCedula(concesionario.getCedula());
-					concesionario1.setNombre(concesionario.getNombre());
-					concesionario1.setContrasena(concesionario.getContrasena());
+					Usuario usuario = new Usuario();
+					usuario.setId(concesionario.getId());
+					usuario.setUsername(concesionario.getUsername());
+					usuario.setCedula(concesionario.getCedula());
+					usuario.setNombre(concesionario.getNombre());
+					usuario.setContrasena(concesionario.getContrasena());
+					new UsuarioDAO().guardar(usuario);
+					
+					concesionario1.setCamion(concesionario.getCamion());
+					concesionario1.setRuta(concesionario.getRuta());
 				}
 			}
 		}
-		usuarioDAO.guardar(concesionario);
 		guardarTodo(concesionarios);
-
 	}
 
+	private Concesionario getConcesionario(Usuario usuario) throws FileNotFoundException{
+		Concesionario concesionario = new Concesionario();
+		concesionario.setId(usuario.getId());
+		concesionario.setCedula(usuario.getCedula());
+		concesionario.setContrasena(usuario.getContrasena());
+		concesionario.setNombre(usuario.getNombre());
+		concesionario.setUsername(usuario.getUsername());
+		
+		return concesionario; 
+}
 	@Override
 	public void eliminar(Concesionario concesionario) throws IOException {
 		List<Concesionario> concecionarios =getConcecionarios();

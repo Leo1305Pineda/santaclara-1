@@ -9,23 +9,23 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import santaclara.Servicio.ServicioPresentacion;
-import santaclara.Servicio.ServicioProducto;
-import santaclara.modelo.Presentacion;
-import santaclara.modelo.Producto;
-import santaclara.vista.PresentacionesUI;
+import santaclara.Servicio.ServicioZona;
+import santaclara.Servicio.ServicioJefeVenta;
+import santaclara.modelo.JefeVenta;
+import santaclara.modelo.Zona;
+import santaclara.vista.ZonasUI;
 
-public class ContPresentaciones extends ContGeneral implements IContGeneral{
+public class ContZonas extends ContGeneral implements IContGeneral{
 	
-	private ServicioPresentacion servicioPresentacion;
-	private PresentacionesUI vista;
+	private ServicioZona servicioZona;
+	private ZonasUI vista;
 	
-	public ContPresentaciones(ContPrincipal contPrincipal) throws Exception {
+	public ContZonas(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
-		servicioPresentacion = new ServicioPresentacion();
-		vista = new PresentacionesUI(this,servicioPresentacion.getPresentaciones());
-		vista.activarBinding(servicioPresentacion.getPresentaciones());
+		servicioZona = new ServicioZona();
+		vista = new ZonasUI(this,servicioZona.getZonas());
+		vista.activarBinding(servicioZona.getZonas());
 		dibujar(vista);
 		vista.quitarNuevo();
 	}
@@ -42,7 +42,7 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.activarNuevoPresentacion();
+				vista.activarNuevoZona();
 				vista.getPnTabla().setVisible(false);
 			}
 		};
@@ -56,25 +56,25 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent e) {
 				if (vista.getTable().getSelectedRow()>=0)
 				{
-					Presentacion presentacion  = new Presentacion();
+					Zona zona  = new Zona();
 					try {
-						presentacion = servicioPresentacion.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						zona = servicioZona.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
 					} catch (NumberFormatException | IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					if (presentacion != null)
+					if (zona != null)
 					{
-						vista.activarNuevoPresentacion();
+						vista.activarNuevoZona();;
 						vista.getScrollPanel().setVisible(false);
 						
-						vista.getTxtId().setText(presentacion.getId().toString());
-						vista.getTxtNombre().setText(presentacion.getMaterial());
+						vista.getTxtId().setText(zona.getId().toString());
+						vista.getTxtNombre().setText(zona.getDescripcion());
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(vista,"Seleccione la fila");
+					JOptionPane.showMessageDialog(vista,"Seleccione la Zona");
 				}
 		}
 		};
@@ -87,26 +87,26 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				Presentacion presentacion = new Presentacion();
+				Zona zona = new Zona();
 				
-				if (vista.getTxtId().getText().equals("")) presentacion.setId(null);
-					else presentacion.setId(new Integer(vista.getTxtId().getText().toString())); 
+				if (vista.getTxtId().getText().equals("")) zona.setId(null);
+					else zona.setId(new Integer(vista.getTxtId().getText().toString())); 
 				
 				if (vista.getTxtNombre().getText().equals("")) JOptionPane.showMessageDialog(vista,"Campos Vacios: Nombre Material");
 					else
 						{
 							try {
-									presentacion.setMaterial(vista.getTxtNombre().getText().toString());
+									zona.setDescripcion(vista.getTxtNombre().getText().toString());
 									
-									JOptionPane.showMessageDialog(vista,servicioPresentacion.guardar(presentacion));
+									JOptionPane.showMessageDialog(vista,servicioZona.guardar(zona));
 									// agregarlo a la lista
-									vista.getPresentaciones().add(presentacion);
+									vista.getZonas().add(zona);
 									
-									vista.getBinPresentaciones().unbind();
-									vista.getBinPresentaciones().bind();
-									vista.activarBinding(servicioPresentacion.getPresentaciones());
+									vista.getBinZonas().unbind();
+									vista.getBinZonas().bind();
+									vista.activarBinding(servicioZona.getZonas());
 									vista.quitarNuevo();
-									
+									vista.getScrollPanel().setVisible(true);
 									
 								} catch (IOException e1) {
 								// TODO Auto-generated catch block
@@ -146,17 +146,17 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 		};
 	}
 
-	public ServicioPresentacion getServicioPresentaciones() {
-		return servicioPresentacion;
+	public ServicioZona getServicioZonas() {
+		return servicioZona;
 	}
 
-	public void setServicioPresentaciones(
-			ServicioPresentacion servicioPresentaciones) {
-		this.servicioPresentacion = servicioPresentaciones;
+	public void setServicioZonas(
+			ServicioZona servicioZonas) {
+		this.servicioZona = servicioZonas;
 	}
 
 	
-	public void setVista(PresentacionesUI vista) {
+	public void setVista(ZonasUI vista) {
 		this.vista = vista;
 	}
 
@@ -192,16 +192,16 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-						Presentacion presentacion;
-						presentacion = servicioPresentacion.getPresentacion(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
+						Zona zona;
+						zona = servicioZona.getZona(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
 						
-						ServicioProducto servicioProducto = new ServicioProducto();
+						ServicioJefeVenta servicioJefeVenta = new ServicioJefeVenta();
 						
-						List<Producto> productos = servicioProducto.getProductos();
+						List<JefeVenta> jefeVentas = servicioJefeVenta.getJefeVentas();
 						Boolean enc = new Boolean(false);
-						for(Producto producto: productos)
+						for(JefeVenta jefeVenta: jefeVentas)
 						{
-							if(producto.getPresentacion().getId().equals(presentacion.getId()))
+							if(jefeVenta.getZona().getId().equals(zona.getId()))
 								{
 									enc=true;
 									break;
@@ -209,16 +209,16 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 						}
 						if(enc==false)
 						{
-							servicioPresentacion.eliminar(presentacion);
+							servicioZona.eliminar(zona);
 						
-							vista.getBinPresentaciones().unbind();
-							vista.getBinPresentaciones().bind();				
-							vista.activarBinding(servicioPresentacion.getPresentaciones());
+							vista.getBinZonas().unbind();
+							vista.getBinZonas().bind();				
+							vista.activarBinding(servicioZona.getZonas());
 							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 							vista.quitarNuevo();
 						}
 						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
-								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: Producto");
+								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: JefeVenta");
 						
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

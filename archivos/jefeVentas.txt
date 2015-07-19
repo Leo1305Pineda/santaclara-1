@@ -1,10 +1,4 @@
 id:0
 idZona:1
 id:1
-idZona:2
-id:2
-idZona:3
-id:21
-idZona:0
-id:22
-idZona:2
+idZona:4

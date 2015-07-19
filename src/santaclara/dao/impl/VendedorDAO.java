@@ -115,10 +115,14 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 			{
 				if(vendedor1.getId().equals(vendedor.getId()))
 				{
-					vendedor1.setUsername(vendedor.getUsername());
-					vendedor1.setCedula(vendedor.getCedula());
-					vendedor1.setNombre(vendedor.getNombre());
-					vendedor1.setContrasena(vendedor.getContrasena());
+					Usuario usuario = new Usuario();
+					usuario.setId(vendedor.getId());
+					usuario.setUsername(vendedor.getUsername());
+					usuario.setCedula(vendedor.getCedula());
+					usuario.setNombre(vendedor.getNombre());
+					usuario.setContrasena(vendedor.getContrasena());
+					new UsuarioDAO().guardar(usuario);
+					
 					vendedor1.setRutas(vendedor.getRutas());
 				}
 			}

@@ -126,19 +126,6 @@ public class VendedoresUI extends JPanel {
 		btnModificar.setBackground(Color.DARK_GRAY);
 		botones.add(btnModificar);
 		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(contVendedores.cliente());
-		btnEliminar.setBackground(Color.DARK_GRAY);
-		btnEliminar.setForeground(Color.WHITE);
-		botones.add(btnEliminar);
-		
-		JButton btnSalir = new JButton("Salir");
-		btnSalir.addActionListener(contVendedores.salir());
-		btnSalir.setForeground(Color.WHITE);
-		btnSalir.setBackground(Color.DARK_GRAY);
-		botones.add(btnSalir);
-		pnVendedores.add(scrollPanel);
-		
 		JPanel panel = new JPanel();
 		panel.setBounds(723, 447, 94, 76);
 		pnVendedores.add(panel);
@@ -247,12 +234,6 @@ public class VendedoresUI extends JPanel {
 		btnQuitar.setForeground(Color.WHITE);
 		btnQuitar.setBackground(Color.DARK_GRAY);
 		
-		JButton btnNuevaRuta = new JButton("Nueva");
-		btnNuevaRuta.addActionListener(contVendedores.ruta());
-		pnOpcionRutas.add(btnNuevaRuta);
-		btnNuevaRuta.setForeground(Color.WHITE);
-		btnNuevaRuta.setBackground(Color.DARK_GRAY);
-		
 		comboRutas = new JComboBox();
 		comboRutas.setBounds(12, 22, 422, 20);
 		comboRutas.setRenderer(new ListCellRenderer() {
@@ -288,7 +269,7 @@ public class VendedoresUI extends JPanel {
 		});
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnGuardar.addActionListener(contVendedores.guardar());
+
 		//txtId.setVisible(false);
 		  
 

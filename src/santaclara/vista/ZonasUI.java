@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.miginfocom.swing.MigLayout;
-import santaclara.controlador.ContPresentaciones;
-import santaclara.modelo.Presentacion;
+import santaclara.controlador.ContZonas;
+import santaclara.modelo.Zona;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -31,11 +31,11 @@ import javax.swing.JLabel;
 import java.awt.Font;
 
 @SuppressWarnings("serial")
-public class PresentacionesUI extends JPanel {
+public class ZonasUI extends JPanel {
 	
 	private JPanel pnOpciones;
 	private JPanel panel;
-	private JPanel pnPresentaciones;
+	private JPanel pnZonas;
 	private JPanel panel_1;
 	private JPanel pnTabla;
 	
@@ -44,40 +44,41 @@ public class PresentacionesUI extends JPanel {
 	private JButton btnAtras;
 	private JButton btnSalir;
 	private JButton btnABuscar;
+	private JButton btnEliminar;
 	
 	private JTable table;
 	@SuppressWarnings("rawtypes")
-	private JTableBinding binPresentaciones; 
+	private JTableBinding binZonas; 
 	
 	private JScrollPane scrollPanel;
 	
 	private JTextField txtABuscar;
 		
-	private List<Presentacion> presentaciones = new ArrayList<Presentacion>();
-	private JPanel pnPresentacion;
+	private List<Zona> zonas = new ArrayList<Zona>();
+	private JPanel pnZona;
 	private JButton btnGuardar;
 	private JButton btnCancelar;
 	private JLabel label;
 	private JTextField txtNombre;
 	private JTextField txtId;
 	
-	public PresentacionesUI(ContPresentaciones contPresentaciones,List<Presentacion> presentaciones) {
-		this.presentaciones = presentaciones;
+	public ZonasUI(ContZonas contZonas,List<Zona> Zonas) {
+		this.zonas = Zonas;
 		setBackground(Color.DARK_GRAY);
 		setLayout(null);
 		
-		pnPresentaciones = new JPanel();
-		pnPresentaciones.setBackground(Color.DARK_GRAY);
-		pnPresentaciones.setForeground(Color.DARK_GRAY);
-		pnPresentaciones.setBounds(12, 12, 546, 315);
-		pnPresentaciones.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Presentacion", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		add(pnPresentaciones);
-		pnPresentaciones.setLayout(null);
+		pnZonas = new JPanel();
+		pnZonas.setBackground(Color.DARK_GRAY);
+		pnZonas.setForeground(Color.DARK_GRAY);
+		pnZonas.setBounds(12, 12, 546, 315);
+		pnZonas.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Zona", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		add(pnZonas);
+		pnZonas.setLayout(null);
 		
 		panel = new JPanel();
 		panel.setBackground(Color.GRAY);
 		panel.setBounds(12, 45, 522, 42);
-		pnPresentaciones.add(panel);
+		pnZonas.add(panel);
 		panel.setLayout(null);
 		
 		pnOpciones = new JPanel();
@@ -88,7 +89,7 @@ public class PresentacionesUI extends JPanel {
 		pnOpciones.setLayout(null);
 		
 		btnNuevo = new JButton("Nuevo");
-		btnNuevo.addActionListener(contPresentaciones.nuevo());
+		btnNuevo.addActionListener(contZonas.nuevo());
 		btnNuevo.setBounds(100, 15, 103, 16);
 		btnNuevo.setForeground(Color.WHITE);
 		btnNuevo.setBackground(Color.DARK_GRAY);
@@ -96,7 +97,7 @@ public class PresentacionesUI extends JPanel {
 		pnOpciones.add(btnNuevo);
 		
 		btnEditar = new JButton("Editar");
-		btnEditar.addActionListener(contPresentaciones.modificar());
+		btnEditar.addActionListener(contZonas.modificar());
 		btnEditar.setBounds(207, 15, 102, 16);
 		btnEditar.setForeground(Color.WHITE);
 		btnEditar.setBackground(Color.DARK_GRAY);
@@ -104,7 +105,7 @@ public class PresentacionesUI extends JPanel {
 		pnOpciones.add(btnEditar);
 		
 		btnAtras = new JButton("Atras");
-		btnAtras.addActionListener(contPresentaciones.atras());
+		btnAtras.addActionListener(contZonas.atras());
 		btnAtras.setBounds(5, 15, 92, 16);
 		btnAtras.setForeground(Color.WHITE);
 		btnAtras.setBackground(Color.DARK_GRAY);
@@ -112,24 +113,24 @@ public class PresentacionesUI extends JPanel {
 		pnOpciones.add(btnAtras);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.addActionListener(contPresentaciones.salir());
+		btnSalir.addActionListener(contZonas.salir());
 		btnSalir.setBounds(425, 15, 90, 16);
 		btnSalir.setForeground(Color.WHITE);
 		btnSalir.setBackground(Color.DARK_GRAY);
 		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
 		pnOpciones.add(btnSalir);
 		
-		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setForeground(Color.WHITE);
 		btnEliminar.setBackground(Color.DARK_GRAY);
 		btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-		btnEliminar.addActionListener(contPresentaciones.eliminar());
+		btnEliminar.addActionListener(contZonas.eliminar());
 		btnEliminar.setBounds(312, 15, 110, 16);
 		pnOpciones.add(btnEliminar);
 		
 		pnTabla = new JPanel();
 		pnTabla.setBounds(12, 85, 520, 181);
-		pnPresentaciones.add(pnTabla);
+		pnZonas.add(pnTabla);
 		pnTabla.setLayout(null);
 		
 		scrollPanel = new JScrollPane();
@@ -144,7 +145,7 @@ public class PresentacionesUI extends JPanel {
 		panel_1.setForeground(Color.GRAY);
 		panel_1.setBackground(Color.DARK_GRAY);
 		panel_1.setBounds(12, 13, 522, 30);
-		pnPresentaciones.add(panel_1);
+		pnZonas.add(panel_1);
 		panel_1.setLayout(new MigLayout("", "[grow]", "[]"));
 		
 		txtABuscar = new JTextField();
@@ -154,26 +155,26 @@ public class PresentacionesUI extends JPanel {
 		txtABuscar.setColumns(10);
 		
 		btnABuscar = new JButton("");
-		btnABuscar.addActionListener(contPresentaciones.buscar());
+		btnABuscar.addActionListener(contZonas.buscar());
 		btnABuscar.setVerticalAlignment(SwingConstants.TOP);
 		btnABuscar.setBackground(Color.DARK_GRAY);
 		btnABuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
 		panel_1.add(btnABuscar, "cell 0 0");
 		
-		pnPresentacion = new JPanel();
-		pnPresentacion.setBackground(Color.DARK_GRAY);
-		pnPresentacion.setBounds(12, 270, 520, 30);
-		pnPresentacion.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		pnPresentaciones.add(pnPresentacion);
-		pnPresentacion.setLayout(null);
+		pnZona = new JPanel();
+		pnZona.setBackground(Color.DARK_GRAY);
+		pnZona.setBounds(12, 270, 520, 30);
+		pnZona.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		pnZonas.add(pnZona);
+		pnZona.setLayout(null);
 		
 		btnGuardar = new JButton("Guardar");
-		btnGuardar.addActionListener(contPresentaciones.guardar());
+		btnGuardar.addActionListener(contZonas.guardar());
 		btnGuardar.setBounds(395, 10, 115, 16);
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
-		pnPresentacion.add(btnGuardar);
+		pnZona.add(btnGuardar);
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
@@ -185,42 +186,42 @@ public class PresentacionesUI extends JPanel {
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setBackground(Color.DARK_GRAY);
 		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-		pnPresentacion.add(btnCancelar);
+		pnZona.add(btnCancelar);
 		
 		label = new JLabel("Nombre:");
 		label.setForeground(Color.WHITE);
 		label.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
 		label.setBounds(130, 5, 69, 25);
-		pnPresentacion.add(label);
+		pnZona.add(label);
 		
 		txtNombre = new JTextField();
 		txtNombre.setColumns(10);
 		txtNombre.setBounds(200, 10, 188, 16);
-		pnPresentacion.add(txtNombre);
+		pnZona.add(txtNombre);
 		
 		txtId = new JTextField();
 		txtId.setBounds(254, 12, 54, 19);
-		pnPresentacion.add(txtId);
+		pnZona.add(txtId);
 		txtId.setColumns(10);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void activarBinding(List<Presentacion> presentaciones) {
+	public void activarBinding(List<Zona> zonas) {
 		// TODO Auto-generated method stub
 		pnTabla.setVisible(true);
 		table = new JTable();
 		scrollPanel.setViewportView(table);
-		binPresentaciones = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
-    			presentaciones,table);
+		binZonas = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
+    			zonas,table);
 		
-		BeanProperty idPresentacion  = BeanProperty.create("id");
-		BeanProperty materialPresentacion = BeanProperty.create("material");
+		BeanProperty idZona  = BeanProperty.create("id");
+		BeanProperty descripcionZona = BeanProperty.create("descripcion");
 	    
 	    
-	    binPresentaciones.addColumnBinding(idPresentacion).setColumnClass(Integer.class).setColumnName("id");;
-	    binPresentaciones.addColumnBinding(materialPresentacion).setColumnClass(String.class).setColumnName("Material");
+	    binZonas.addColumnBinding(idZona).setColumnClass(Integer.class).setColumnName("id");;
+	    binZonas.addColumnBinding(descripcionZona).setColumnClass(String.class).setColumnName("Descripcion");
 	    
-	    binPresentaciones.bind();
+	    binZonas.bind();
 
 	}
 
@@ -241,12 +242,12 @@ public class PresentacionesUI extends JPanel {
 		this.panel = panel;
 	}
 
-	public JPanel getPnPresentacion() {
-		return pnPresentaciones;
+	public JPanel getPnZona() {
+		return pnZonas;
 	}
 
-	public void setPnPresentacion(JPanel pnPresentacion) {
-		this.pnPresentaciones = pnPresentacion;
+	public void setPnZona(JPanel pnZona) {
+		this.pnZonas = pnZona;
 	}
 
 	public JPanel getPanel_1() {
@@ -337,28 +338,29 @@ public class PresentacionesUI extends JPanel {
 		this.scrollPanel = scrollPanel;
 	}
 
-	public List<Presentacion> getPresentaciones() {
-		return presentaciones;
+	public List<Zona> getZonas() {
+		return zonas;
 	}
 
-	public void setPresentaciones(List<Presentacion> presentaciones) {
-		this.presentaciones = presentaciones;
+	public void setZonas(List<Zona> Zonas) {
+		this.zonas = Zonas;
 	}
 
 	public void quitarNuevo() {
 		// TODO Auto-generated method stub
-		pnPresentacion.setVisible(false);
+		pnZona.setVisible(false);
 		
 		pnTabla.setVisible(true);
 		scrollPanel.setVisible(true);
+		
 	}
 
-	public JPanel getPnPresentaciones() {
-		return pnPresentaciones;
+	public JPanel getPnZonas() {
+		return pnZonas;
 	}
 
-	public void setPnPresentaciones(JPanel pnPresentaciones) {
-		this.pnPresentaciones = pnPresentaciones;
+	public void setPnZonas(JPanel pnZonas) {
+		this.pnZonas = pnZonas;
 	}
 
 	public JTextField getTxtABuscar() {
@@ -401,11 +403,11 @@ public class PresentacionesUI extends JPanel {
 		this.txtNombre.setText(Nombre);
 	}
 
-	public void activarNuevoPresentacion() {
+	public void activarNuevoZona() {
 		// TODO Auto-generated method stub
 		txtId.setVisible(false);
-		pnPresentacion.setBounds(12, 81, 520, 30);
-		pnPresentacion.setVisible(true);
+		pnZona.setBounds(12, 81, 520, 30);
+		pnZona.setVisible(true);
 		setTxtNombre("");
 		pnTabla.setVisible(false);
 	}
@@ -431,12 +433,12 @@ public class PresentacionesUI extends JPanel {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public JTableBinding getBinPresentaciones() {
-		return binPresentaciones;
+	public JTableBinding getBinZonas() {
+		return binZonas;
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void setBinPresentaciones(JTableBinding binPresentaciones) {
-		this.binPresentaciones = binPresentaciones;
+	public void setBinZonas(JTableBinding binZonas) {
+		this.binZonas = binZonas;
 	}
 }

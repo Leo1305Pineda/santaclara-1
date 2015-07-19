@@ -37,20 +37,25 @@ public class ServicioJefeVenta {
 		
 		jefeVentas = jefeVentaDAO.getJefeVentas();  
 		
-		if(jefeVenta.getId()!=null)
+		if(jefeVenta.getId()!=null)//validar para modificar
 		{
 			for(JefeVenta jefeVenta1 :jefeVentas)
 			{
-				if(jefeVenta1.getId().equals(jefeVenta.getId())&&
-					jefeVenta1.getZona().getId().equals(jefeVenta.getZona().getId()))//Revisar 
+				if(jefeVenta1.getId().equals(jefeVenta.getId())) 
 				{
 					if(jefeVenta1.getCedula().equals(jefeVenta.getCedula())&&
 						jefeVenta1.getNombre().equals(jefeVenta.getNombre())&&
 						jefeVenta1.getUsername().equals(jefeVenta.getUsername())&&
-						jefeVenta1.getContrasena().equals(jefeVenta.getContrasena()))
+						jefeVenta1.getContrasena().equals(jefeVenta.getContrasena())&&
+						jefeVenta1.getZona().getId().equals(jefeVenta.getZona().getId()))
 					
 						return "jefeVenta Existente";
-					break;//rompe el for para modificar
+				}
+				else if (jefeVenta1.getZona().getId().equals(jefeVenta.getZona().getId())){
+					/*Cada Zona es Coordinada por un jefe de venta*/
+					return "La Zona ya fue asignada al Jefe de Venta: \n"+ 
+						   "id | Nombre     \n" +
+						   jefeVenta1.getId()+"  | "+jefeVenta1.getUsername();
 				}
 			}
 		}
@@ -60,12 +65,16 @@ public class ServicioJefeVenta {
 		
 	}
 	
-	public JefeVenta getConcesionario(Integer id) throws IOException{
+	public JefeVenta getJefeVenta(Integer id) throws IOException{
 		return jefeVentaDAO.getJefeVenta(id);
 	}
 	
 	public void eliminar(JefeVenta jefeVenta) throws IOException{
 		jefeVentaDAO.eliminar(jefeVenta);
 	}
+	
+	public Boolean  getUsuario(Integer id)throws IOException{
+		if  (jefeVentaDAO.getJefeVenta(id)!=null) return true;
+		return false;	}
 	
 }

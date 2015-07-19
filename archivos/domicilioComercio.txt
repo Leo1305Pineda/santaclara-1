@@ -2,3 +2,5 @@ idCliente:1
 tipo:C
 idCliente:2
 tipo:D
+idCliente:5
+tipo:D

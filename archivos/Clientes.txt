@@ -6,7 +6,7 @@ telefono:04161556613
 ruta:1
 id:2
 rif:V-16787345
-razonsocial:Juan M.
+razonsocial:Juan Mendoza.
 direccion:Barrio el Jebe Sector la Estrella
 telefono:04266543982
 ruta:1
@@ -22,3 +22,21 @@ razonsocial:BTR.CA
 direccion:El Carmen
 telefono:0251-6543765
 ruta:2
+id:5
+rif:null
+razonsocial:2ewdsadadsa
+direccion:a
+telefono:aaa
+ruta:3
+id:6
+rif:null
+razonsocial:El Marque
+direccion:dafdead
+telefono:13212121
+ruta:6
+id:7
+rif:rtgsdtg
+razonsocial:Bodegon de la cuadra
+direccion:egerg
+telefono:fdhtrehdtr
+ruta:6

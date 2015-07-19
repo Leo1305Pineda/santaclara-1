@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -23,7 +24,7 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		servicioRuta = new ServicioRuta();
-		vista = new RutasUI(this,servicioRuta.getZonas(),servicioRuta.getRutas());
+		vista = new RutasUI(this,servicioRuta.getRutas(),servicioRuta.getZonas());
 		vista.activarBinding(servicioRuta.getRutas());
 		dibujar(vista);
 		vista.quitarNuevo();
@@ -111,7 +112,7 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 								vista.activarNuevoRuta();
 								vista.getTxtId().setText(ruta.getId().toString());
 								vista.getTxtNombre().setText(ruta.getNombre());
-								vista.getCmbZona().setSelectedItem(ruta.getZona());
+								setSelectedValue(vista.getCmbZona(), ruta.getZona().getId());
 							}
 						}
 						else
@@ -198,4 +199,52 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 		};
 	}
 	
+	public ActionListener Atras() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+						ActivarAtras();
+			}
+		};
+	}
+
+
+	public ActionListener AbrirZona() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+						new ContZonas(getContPrincipal());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		};
+	}
+
+	
+	@SuppressWarnings("rawtypes")
+	public void setSelectedValue(JComboBox comboBox,Integer id)
+    {	
+        for (int i = 0; i < comboBox.getItemCount(); i++)
+        {
+        	comboBox.setSelectedIndex(i);
+        	Boolean enc=false;
+        	switch (comboBox.getSelectedItem().getClass().getName().toString()) {
+			case "santaclara.modelo.Zona":
+				enc = (((Zona)comboBox.getSelectedItem()).getId().equals(id)); 
+					break;
+			default:
+				break;
+			}
+        	if (enc) break;
+        }
+    }
 }

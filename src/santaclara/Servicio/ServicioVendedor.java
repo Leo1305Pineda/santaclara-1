@@ -6,8 +6,8 @@ import java.util.List;
 
 import santaclara.dao.impl.RutaDAO;
 import santaclara.dao.impl.VendedorDAO;
-import santaclara.modelo.Ruta;
 import santaclara.modelo.Vendedor;
+import santaclara.modelo.Ruta;
 
 public class ServicioVendedor {
 	
@@ -42,7 +42,7 @@ public class ServicioVendedor {
 		
 		
 		vendedorDAO.guardar(vendedor);
-		return "Operacion Exitosa";
+		return "";
 		
 	}
 	
@@ -50,5 +50,18 @@ public class ServicioVendedor {
 		rutaDAO.guardar(ruta);
 	}
 	
-	
+	public Boolean  getUsuario(Integer id)throws IOException{
+		if  (vendedorDAO.getVendedor(id)!=null) return true;
+		return false;
+	}
+
+	public Vendedor getVendedor(Integer id) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		return vendedorDAO.getVendedor(id);
+	}
+
+	public void eliminar(Vendedor vendedor) throws IOException {
+		// TODO Auto-generated method stub
+		vendedorDAO.eliminar(vendedor);
+	}	
 }

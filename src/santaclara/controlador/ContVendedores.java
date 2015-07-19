@@ -9,73 +9,58 @@ import javax.swing.JPanel;
 
 import santaclara.Servicio.ServicioVendedor;
 import santaclara.modelo.Vendedor;
-import santaclara.vista.VendedoresUI;
+import santaclara.vista.UsuariosUI;
 
 public class ContVendedores extends ContGeneral implements IContGeneral {
-
-	private VendedoresUI vista;
-	private ServicioVendedor servicioVendedor = new ServicioVendedor();
-	private ContPrincipal contPrincipal;
-	private ContRutas contRutas;
-	private ContClientes contClientes;
 	
-	public ContVendedores(ContPrincipal contPrincipal) throws Exception {
-		// TODO Auto-generated constructor stub
-		this.contPrincipal = contPrincipal;
-		setContPrincipal(contPrincipal);
-		vista = new VendedoresUI(this,servicioVendedor.getVendedores(),servicioVendedor.getRutas());
-		vista.activarBinding(servicioVendedor.getVendedores());
-		vista.activarJComboBoxBinding();
-		dibujar(vista);
-		vista.quitarNuevo();
-	}
-
+	private UsuariosUI vista ;
+	private ServicioVendedor servicioVendedor = new ServicioVendedor();
+	
 	@Override
 	public JPanel getVista() {
 		// TODO Auto-generated method stub
-		return vista;
+		return null;
+	}
+	
+	public ContVendedores(UsuariosUI vista) {
+		super();
+		this.vista = vista;
 	}
 
-	@SuppressWarnings("deprecation")
 	public String ValidarTxt(){
 		
 	if (vista.getTxtNombre().getText().equals("")) return " Nombre ";
 	if (vista.getTxtCedula().getText().equals("")) return " Cedula ";
 	if (vista.getTxtContrasena().getText().equals("")) return " Contraseña ";
-	if (vista.getTxtUsername().getText().equals("")) return " UserName ";
-	if (!vista.getTxtContrasenaRepetir().getText().equals(vista.getTxtContrasena().getText())) return "Contraseña invalida ";
+	if (vista.getTxtUserName().getText().equals("")) return " UserName ";
+	if (!vista.getTxtReContrasena().getText().equals(vista.getTxtContrasena().getText())) return "Contraseña invalida ";
+	if (vista.getRutasVendedores().size()<=0) return "Ninguna Ruta Asociada al Concesionario";
 	return "";
 	}
 	
-  // evento Guardar Prodcuto 
-	public ActionListener guardar() {
+	public void Guardar() {
 		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@SuppressWarnings("deprecation")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				// se va hacer las validaciones del controlador 
 				Vendedor vendedor = new Vendedor();
 			
 				if (vista.getTxtId().getText().equals("")) vendedor.setId(null);//Nuevo vendedor
-				else vendedor.setId(new Integer(vista.getTxtId().getText().toString()));//Modifica vendedor 
+				else vendedor.setId(new Integer(vista.getTxtId().getText().toString().trim()));//Modifica vendedor 
 				
 				if (ValidarTxt().equals(""))//los text no estan vacios
 				{
 					vendedor.setNombre(vista.getTxtNombre().getText());
 					vendedor.setCedula(vista.getTxtCedula().getText());
 					vendedor.setContrasena(vista.getTxtContrasena().getText());
-					vendedor.setUsername(vista.getTxtUsername().getText());
+					vendedor.setUsername(vista.getTxtUserName().getText());
 					vendedor.setRutas(vista.getRutasVendedores());
 					try {
-							JOptionPane.showMessageDialog(vista,servicioVendedor.guardar(vendedor));
-							
-							// agregarlo a la lista;
-							vista.getBinVendedores().unbind();
-							vista.getBinVendedores().bind();
-							vista.activarBinding(servicioVendedor.getVendedores());   
+							String msg = new String(servicioVendedor.guardar(vendedor));
+							if (msg.equals(""))
+							{
+								JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
+								MostrarTabla();
+							}
+							else JOptionPane.showMessageDialog(vista,msg);
 					
 						} catch (IOException e1) {
 						// TODO Auto-generated catch block
@@ -84,64 +69,6 @@ public class ContVendedores extends ContGeneral implements IContGeneral {
 						}
 				}
 				else  JOptionPane.showMessageDialog(vista,"Campos Vacios: "+ValidarTxt());
-			}
-		};
-	}
-	
-	public ActionListener nuevo() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.activarNuevoVendedor();
-				
-			}
-		};
-	}
-	
-	public ActionListener salir(){
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				qutarVista();
-			}
-		};
-	}
-	
-	public ActionListener cliente(){
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				try {
-					contClientes = new ContClientes(contPrincipal);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		};
-	}
-	
-	public ActionListener ruta(){
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				try {
-					contRutas= new ContRutas(contPrincipal);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		};
 	}
 	
 	public ActionListener modificar(){
@@ -162,10 +89,12 @@ public class ContVendedores extends ContGeneral implements IContGeneral {
 							vista.getTxtCedula().setText(vendedor.getCedula());
 							vista.getTxtNombre().setText(vendedor.getNombre());
 							vista.getTxtContrasena().setText(vendedor.getContrasena());
-							vista.getTxtContrasenaRepetir().setText(vendedor.getContrasena());
-							vista.getTxtUsername().setText(vendedor.getUsername());
+							vista.getTxtReContrasena().setText(vendedor.getContrasena());
+							vista.getTxtUserName().setText(vendedor.getUsername());
+							
 							vista.setRutasVendedores(vendedor.getRutas());
-							vista.activarBindingRutas(vista.getRutasVendedores());
+							
+							vista.activarBindingRutas(vendedor.getRutas());//vista.getRutasVendedores());
 							
 						}
 					}
@@ -180,34 +109,70 @@ public class ContVendedores extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
-
-
-	public ServicioVendedor getServicioVendedor() {
-		return servicioVendedor;
+	
+	public ActionListener nuevo() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				vista.activarNuevoVendedor();
+				
+			}
+		};
 	}
 
-	public void setServicioVendedor(ServicioVendedor servicioVendedor) {
-		this.servicioVendedor = servicioVendedor;
+	public void Modificar() {
+		// TODO Auto-generated method stub
+		try {	
+			Vendedor vendedor  = new Vendedor();
+			vendedor = servicioVendedor.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+
+			if (vendedor != null)
+			{
+				vista.activarNuevo();
+
+				vista.getTxtId().setText(vendedor.getId().toString());
+				vista.getTxtNombre().setText(vendedor.getNombre());
+				vista.getTxtCedula().setText(vendedor.getCedula());
+				vista.getTxtContrasena().setText(vendedor.getContrasena());
+				vista.getTxtUserName().setText(vendedor.getUsername());
+				vista.getTxtReContrasena().setText(vendedor.getContrasena());//Temporal
+				vista.setRutasVendedores(vendedor.getRutas());
+				vista.activarBindingRutas(vendedor.getRutas());
+
+			}
+			else JOptionPane.showMessageDialog(vista,"Seleccione la fila");
+			
+		} catch (NumberFormatException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+	}
+	
+	public void Eliminar() throws NumberFormatException, IOException {
+		// TODO Auto-generated method stub
+		Vendedor vendedor = servicioVendedor.getVendedor(
+				new Integer(vista.getTable().getValueAt(
+							vista.getTable().getSelectedRow(),0).toString()));
+
+		if (vendedor.getId().equals(null)) JOptionPane.showMessageDialog(vista,"Operacion Fallida\n Valor no exixtente");
+		else
+			{
+				servicioVendedor.eliminar(vendedor);
+				JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
+				MostrarTabla();
+			}
+	}
+	
+	void MostrarTabla() throws NumberFormatException, IOException{
+		vista.getBinUsuarios().unbind();
+		vista.getBinUsuarios().bind();
+		vista.activarBindingVendedores(servicioVendedor.getVendedores());
+		vista.quitarNuevo();
 	}
 
-	public ContRutas getContRutas() {
-		return contRutas;
-	}
-
-	public void setContRutas(ContRutas contRutas) {
-		this.contRutas = contRutas;
-	}
-
-	public ContClientes getContClientes() {
-		return contClientes;
-	}
-
-	public void setContClientes(ContClientes contClientes) {
-		this.contClientes = contClientes;
-	}
-
-	public void setVista(VendedoresUI vista) {
-		this.vista = vista;
-	} 
 	
 }

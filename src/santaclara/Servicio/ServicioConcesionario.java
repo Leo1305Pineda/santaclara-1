@@ -38,24 +38,42 @@ public class ServicioConcesionario {
 		concesionarios = concesionarioDAO.getConcecionarios();
 		
 		for(Concesionario comcesionario1 :concesionarios)
-		{
-			if(comcesionario1.getId().equals(concesionario.getId())&&
-					comcesionario1.getCamion().getId().equals(concesionario.getCamion().getId() )&&
-					comcesionario1.getRuta().getId().equals(concesionario.getRuta().getId())) 
+		{	
+			if(comcesionario1.getId().equals(concesionario.getId()))
 			{
+				/* ¿ Existe Algun Cambio?*/
 				if(comcesionario1.getCedula().equals(concesionario.getCedula())&&
 						comcesionario1.getNombre().equals(concesionario.getNombre())&&
 						comcesionario1.getUsername().equals(concesionario.getUsername())&&
-						comcesionario1.getContrasena().equals(concesionario.getContrasena()))
-					
-				return "Concesionario Existente";
-				break;//rompe el for para modificar
+						comcesionario1.getContrasena().equals(concesionario.getContrasena())&&
+						comcesionario1.getCamion().getId().equals(concesionario.getCamion().getId())&&
+						comcesionario1.getRuta().getId().equals(concesionario.getRuta().getId())) 
+					return "Concesionario Existente";
+				
 			}
+			else if(comcesionario1.getRuta().getId().equals(concesionario.getRuta().getId())){
+				/*A un Concesionario se le asigna una ruta. ¿Existe otro con la misma Ruta?*/
+				return "La Ruta ya fue asignada al Concesionario: \n"+ 
+					   "id | Nombre     \n" +
+					   comcesionario1.getId()+"  | "+comcesionario1.getUsername();
+			}
+			else if(comcesionario1.getCamion().getId().equals(concesionario.getCamion().getId())){
+					/*Para despachar los producto contrata a los concesionario
+					 *  que son los dueños de de los camiones 
+					 * a travez de los cuales seran entragados los productos. 
+					 * ¿Existe un camion que se le fue asignadao a otro concesionario?*/
+					return "El Camion ya fue asignada al Concesionario: \n"+ 
+						   "id | Nombre     \n" +
+						   comcesionario1.getId()+"  | "+comcesionario1.getUsername();
+			}
+			/*los Concesionario solo podran tomar rutas 
+			 * en donde los cliente sean
+			 * domicilio Comercial */
+			//if(concesionario.getRuta().getId().equals());  pendiente por hacer
+		
 		}
 		concesionarioDAO.guardar(concesionario);
-		return "Operacion Exitosa";
-				
-		
+		return "";
 	}
 	
 	public Concesionario getConcesionario(Integer id) throws IOException{
@@ -66,4 +84,8 @@ public class ServicioConcesionario {
 		concesionarioDAO.eliminar(concesionario);
 	}
 	
+	public Boolean  getUsuario(Integer id)throws IOException{
+		if  (concesionarioDAO.getConcesionario(id)!=null) return true;
+		return false;
+	}
 }

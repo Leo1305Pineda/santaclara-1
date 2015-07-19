@@ -95,10 +95,14 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 			{
 				if(jefeVenta1.getId().equals(jefeVenta.getId()))
 				{ 
-					jefeVenta1.setUsername(jefeVenta.getUsername());
-					jefeVenta1.setCedula(jefeVenta.getCedula());
-					jefeVenta1.setNombre(jefeVenta.getNombre());
-					jefeVenta1.setContrasena(jefeVenta.getContrasena());
+					Usuario usuario = new Usuario();
+					usuario.setId(jefeVenta.getId());
+					usuario.setUsername(jefeVenta.getUsername());
+					usuario.setCedula(jefeVenta.getCedula());
+					usuario.setNombre(jefeVenta.getNombre());
+					usuario.setContrasena(jefeVenta.getContrasena());
+					new UsuarioDAO().guardar(usuario);
+					
 					jefeVenta1.setZona(jefeVenta.getZona());
 				}
 			}

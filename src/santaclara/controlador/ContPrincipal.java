@@ -27,10 +27,8 @@ public  class ContPrincipal implements IContGeneral {
 		// TODO Auto-generated method stub
 		vista = new PrincipalUI(this);
 		// iniciar session
-	//	
 		try {
 			setControlador(new ContIniciarSesion(this));
-			//setControlador(new ContProductos(ContPrincipal.this));
 		}
 		catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -126,7 +124,7 @@ public  class ContPrincipal implements IContGeneral {
 				}
 				else if(e.getSource().equals(vista.getMntConcesionario()))
 				{
-					//ActivarConcesionarios();
+					ActivarUsuarios();
 				}
 				else if(e.getSource().equals(vista.getMntConcesionarioRutas()))
 				{
@@ -138,7 +136,7 @@ public  class ContPrincipal implements IContGeneral {
 				}
 				else if(e.getSource().equals(vista.getMntJefeVenta()))
 				{
-					//ActivarJefeVentas();
+					ActivarUsuarios();
 				}
 				else if(e.getSource().equals(vista.getMntPresentaciones()))
 				{
@@ -158,11 +156,11 @@ public  class ContPrincipal implements IContGeneral {
 				}
 				else if(e.getSource().equals(vista.getMntSabores()))
 				{
-					//ActivarSabores();
+					ActivarSabores();
 				}
 				else if(e.getSource().equals(vista.getMntSalps()))
 				{
-					//ActivarSalps();
+					ActivarClientes();
 				}
 				else if(e.getSource().equals(vista.getMntUsuarios()))
 				{
@@ -170,7 +168,7 @@ public  class ContPrincipal implements IContGeneral {
 				}
 				else if(e.getSource().equals(vista.getMntVendedores()))
 				{
-					ActivarVendedores();
+					ActivarUsuarios();
 				}
 				else if(e.getSource().equals(vista.getMntVisitas()))
 				{
@@ -178,7 +176,7 @@ public  class ContPrincipal implements IContGeneral {
 				}
 				else if(e.getSource().equals(vista.getMntZonas()))
 				{
-					//ActivarZonas();
+					ActivarZonas();
 				}
 			}
 		};
@@ -208,7 +206,7 @@ public  class ContPrincipal implements IContGeneral {
 	public void ActivarVendedores() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContVendedores(ContPrincipal.this);
+			controlador = new ContUsuarios(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -316,7 +314,16 @@ public  class ContPrincipal implements IContGeneral {
 			e1.printStackTrace();
 		}
 	}
-	
+	public void ActivarZonas() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContZonas(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	
 	public void ActivarAtras(){
 		// TODO Auto-generated method stub
@@ -335,7 +342,7 @@ public  class ContPrincipal implements IContGeneral {
 			break;
 			case "santaclara.vista.ClientesUI":			ActivarClientes();
 			break;
-			case "santaclara.vista.RutaUI":				ActivarRutas();
+			case "santaclara.vista.RutasUI":				ActivarRutas();
 			break;
 			case "santaclara.vista.CapacidadesUI":		ActivarCapacidades();
 			break;
@@ -351,7 +358,8 @@ public  class ContPrincipal implements IContGeneral {
 			break;
 			case "santaclara.vista.UsuariosUI":	ActivarUsuarios();
 			break;
-
+			case "santaclara.vista.ZonasUI":	ActivarZonas();
+			break;
 
 			default:
 				break;

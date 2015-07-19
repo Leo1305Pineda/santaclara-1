@@ -57,4 +57,15 @@ public class ServicioConcesionarioRuta {
 		concesionarioRutaDAO.eliminar(concesionarioRuta);
 	}
 	
+	public Boolean getConcesionario(Integer id) throws NumberFormatException, IOException{
+		
+		//concesionarioRutas =  new ArrayList<ConcesionarioRuta>();
+		this.concesionarioRutas = concesionarioRutaDAO.getConcesionarioRutas();
+		for(ConcesionarioRuta concesionarioRuta1: concesionarioRutas)
+		{
+			if(concesionarioRuta1.getConcesionario().getId().equals(id)) return true;
+		}
+		
+		return false;
+	}
 }
