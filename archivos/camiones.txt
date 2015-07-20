@@ -19,3 +19,10 @@ capacidad:4500.0
 modelo:350
 marca:ford
 ano:2015
+id:4
+placa:Ar-653f
+color:Verde
+capacidad:10000.0
+modelo:Cargo
+marca:Fiat
+ano:2000

@@ -382,16 +382,19 @@ public class UsuariosUI extends JPanel {
 					boolean cellHasFocus) {
 				// TODO Auto-generated method stub
 				Ruta ruta = (Ruta)value;
+				if(!ruta.equals(null))
+				{
+					JPanel pnRuta = new JPanel();
+					pnRuta.add(new JTextField(ruta.getId().toString()));
+					pnRuta.add(new JTextField(ruta.getNombre()));
+					pnRuta.add(new JTextField(ruta.getZona().getId().toString()));
+					pnRuta.add(new JTextField(ruta.getZona().getDescripcion()));
 				
-				JPanel pnRuta = new JPanel();
-				pnRuta.add(new JTextField(ruta.getId().toString()));
-				pnRuta.add(new JTextField(ruta.getNombre()));
-				pnRuta.add(new JTextField(ruta.getZona().getId().toString()));
-				pnRuta.add(new JTextField(ruta.getZona().getDescripcion()));
+					pnRuta.setLayout(new GridLayout(1, 0, 0, 0));
 				
-				pnRuta.setLayout(new GridLayout(1, 0, 0, 0));
-				
-				return pnRuta;	
+					return pnRuta;
+				}
+				return null;
 			}
 		});
 	
@@ -619,6 +622,7 @@ public class UsuariosUI extends JPanel {
 	
 	@SuppressWarnings("rawtypes")
 	public void activarJComboBoxBindingRuta(){
+		
 		JComboBoxBinding jcomboRutas = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,rutas,comboRutas);
 	    jcomboRutas.bind();
 	}

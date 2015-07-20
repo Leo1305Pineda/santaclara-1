@@ -1,9 +1,12 @@
 package santaclara.controlador;
 
+
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -11,10 +14,12 @@ import javax.swing.JTable;
 
 import santaclara.Servicio.ServicioCamion;
 import santaclara.Servicio.ServicioRuta;
+import santaclara.Servicio.ServicioSalp;
 import santaclara.Servicio.ServicioUsuario;
 import santaclara.Servicio.ServicioZona;
+import santaclara.modelo.Ruta;
+import santaclara.modelo.Salp;
 import santaclara.modelo.Usuario;
-
 import santaclara.vista.UsuariosUI;
 
 public class ContUsuarios extends ContGeneral implements IContGeneral{
@@ -309,6 +314,25 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 						vista.getBtnNuevo().setEnabled(true);
 						vista.getPnRuta().setVisible(true);
 						vista.getPnZona().setBounds(0, 227, 852, 63);
+						
+						List<Ruta> rutas = new ServicioRuta().getRutas();
+						List<Ruta> rutaSalps = new ArrayList<Ruta>();
+						
+						List<Salp> clientes = new ServicioSalp().getSalps();
+						for(Ruta ruta: rutas)
+						{
+							for(Salp cliente :clientes)
+							{
+								if(ruta.getId().equals(cliente.getRuta().getId()))
+								{
+									rutaSalps.add(cliente.getRuta());
+									break;
+								}
+							}
+						}
+						vista.setRutas(rutaSalps);
+						vista.activarJComboBoxBindingRuta();
+						
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -323,6 +347,26 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 						vista.getBtnNuevo().setEnabled(true);
 						vista.getPnRuta().setVisible(true);
 						vista.getPnZona().setBounds(0, 227, 852, 63);
+						
+						List<Ruta> rutas = new ServicioRuta().getRutas();
+						List<Ruta> rutaDomicilioComercios = new ArrayList<Ruta>();
+						
+						List<Salp> clientes = new ServicioSalp().getSalps();
+						for(Ruta ruta: rutas)
+						{
+							for(Salp cliente :clientes)
+							{
+								if(ruta.getId().equals(cliente.getRuta().getId()))
+								{
+									rutaDomicilioComercios.add(cliente.getRuta());
+									break;
+								}
+							}
+						}
+						vista.setRutas(rutaDomicilioComercios);
+						vista.activarJComboBoxBindingRuta();
+					
+						
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
