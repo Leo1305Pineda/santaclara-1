@@ -13,3 +13,15 @@ nombre:Fortunato
 id:4
 zona:4
 nombre:La Estrella
+id:5
+zona:1
+nombre:Cerro gordo
+id:6
+zona:1
+nombre:Carorita
+id:7
+zona:1
+nombre:Altos del Norte
+id:8
+zona:2
+nombre:Alto del Sur

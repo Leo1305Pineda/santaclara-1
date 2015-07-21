@@ -17,7 +17,6 @@ import santaclara.modelo.Vendedor;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.BorderLayout;
 import java.awt.Toolkit;
 
 
@@ -28,11 +27,28 @@ public class PrincipalUI {
 	private ContPrincipal controlador;
 
 	private 	JMenu mnCatalogo;
-	private 	JMenuItem mntProductos;
+	private     JMenuItem mntAlmacen;
+	private     JMenuItem mntCamiones;
+	private     JMenuItem mntCapacidades;
 	private 	JMenuItem mntClientes;
-	private 	JMenuItem mntVendedores;
-	private 	JMenuItem mntConcesionario;
+	private 	JMenuItem mntConcesionarios;
+	private 	JMenuItem mntConcesionarioRutas;
+	private 	JMenu mnDetalleFacturacion;
+	private 	JMenu mnDomicilioComerciales;
+	private 	JMenuItem mntEmpaqueProductos;
 	private 	JMenu mnFacturacion;
+	private 	JMenuItem mntJefeVenta;
+	private 	JMenuItem mntPresentaciones;
+	private 	JMenuItem mntProductos;
+	private 	JMenuItem mntProductoAlmacenes;
+	private 	JMenuItem mntRutas;
+	private 	JMenuItem mntSabores;
+	private 	JMenuItem mntSalps;
+	private 	JMenuItem mntUsuarios;
+	private 	JMenuItem mntVendedores;
+	private 	JMenuItem mntVisitas;
+	private 	JMenuItem mntZonas;
+	
 	private 	JMenu mnReportes;
 	private 	JMenu mnConsulta;
 	private 	JMenu mnSalir;
@@ -74,6 +90,7 @@ public class PrincipalUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("unused")
 	private void initialize() {
 		frame = new JFrame("Embotelladora Santa Clara");
 		 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -89,32 +106,93 @@ public class PrincipalUI {
 		JMenu mnCatalogo = new JMenu("Catalogo");
 		menuBar.add(mnCatalogo);
 		
-	    mntProductos = new JMenuItem("Productos ");
-		mnCatalogo.add(mntProductos);
-		mntProductos.addActionListener(controlador.activarMenu());
+		mntAlmacen = new JMenuItem("Almacenes");
+		mnCatalogo.add(mntAlmacen);
+		mntAlmacen.addActionListener(controlador.activarMenu());
+		
+		mntCamiones = new JMenuItem("Camiones");
+		mnCatalogo.add(mntCamiones);
+		mntCamiones.addActionListener(controlador.activarMenu());
+		
+		mntCapacidades = new JMenuItem("Capacidades");
+		mnCatalogo.add(mntCapacidades);
+		mntCapacidades.addActionListener(controlador.activarMenu());
 		
 		mntClientes = new JMenuItem("Clientes");
 		mnCatalogo.add(mntClientes);
 		mntClientes.addActionListener(controlador.activarMenu());
+		
+		mntConcesionarios = new JMenuItem("Concesionarios");
+		mnCatalogo.add(mntConcesionarios);
+		mntConcesionarios.addActionListener(controlador.activarMenu());
+		
+		mntConcesionarioRutas = new JMenuItem("ConcesionarioRutas");
+		mnCatalogo.add(mntConcesionarioRutas);
+		mntConcesionarioRutas.addActionListener(controlador.activarMenu());
+		
+		
+		mntEmpaqueProductos = new JMenuItem("Empaque Productos");
+		mnCatalogo.add(mntEmpaqueProductos);
+		mntEmpaqueProductos.addActionListener(controlador.activarMenu());
 	    
+		mnFacturacion = new JMenu("Facturacion");
+		menuBar.add(mnFacturacion);
+		
+		mntJefeVenta = new JMenuItem("Jefe Ventas");
+		mnCatalogo.add(mntJefeVenta);
+		mntJefeVenta.addActionListener(controlador.activarMenu());
+		
+		mntPresentaciones = new JMenuItem("Presentaciones");
+		mnCatalogo.add(mntPresentaciones);
+		mntPresentaciones.addActionListener(controlador.activarMenu());
+		
+		mntProductos = new JMenuItem("Productos");
+		mnCatalogo.add(mntProductos);
+		mntProductos.addActionListener(controlador.activarMenu());
+		
+		mntProductoAlmacenes = new JMenuItem("Producto por Almacenes");
+		mnCatalogo.add(mntProductoAlmacenes);
+		mntProductoAlmacenes.addActionListener(controlador.activarMenu());
+		
+		mntRutas = new JMenuItem("Ruta");
+		mnCatalogo.add(mntRutas);
+		mntRutas.addActionListener(controlador.activarMenu());
+		
+		mntSabores = new JMenuItem("Sabores");
+		mnCatalogo.add(mntSabores);
+		mntSabores.addActionListener(controlador.activarMenu());
+		
+		mntSalps = new JMenuItem("Salps");
+		mnCatalogo.add(mntSalps);
+		mntSalps.addActionListener(controlador.activarMenu());
+		
+		mntUsuarios = new JMenuItem("Usuarios");
+		mnCatalogo.add(mntUsuarios);
+		mntUsuarios.addActionListener(controlador.activarMenu());
+		
 		mntVendedores = new JMenuItem("Vendedores");
 		mnCatalogo.add(mntVendedores);
 		mntVendedores.addActionListener(controlador.activarMenu());
 		
-		JMenuItem mntConcesionario = new JMenuItem("Consesionarios");
-		mnCatalogo.add(mntConcesionario);
+		mntVisitas = new JMenuItem("Visitas");
+		mnCatalogo.add(mntVisitas);
+		mntVisitas.addActionListener(controlador.activarMenu());
 		
-		JMenu mnFacturacion = new JMenu("Facturacion");
-		menuBar.add(mnFacturacion);
+		mntZonas = new JMenuItem("Zonas");
+		mnCatalogo.add(mntZonas);
+		mntZonas.addActionListener(controlador.activarMenu());
 		
-		JMenu mnReportes = new JMenu("Reportes");
+		mntConcesionarios = new JMenuItem("Consesionarios");
+		mnCatalogo.add(mntConcesionarios);
+		
+		mnReportes = new JMenu("Reportes");
 		menuBar.add(mnReportes);
 		
-		JMenu mnConsulta = new JMenu("Consulta");
+		mnConsulta = new JMenu("Consulta");
 		menuBar.add(mnConsulta);
 		
-		JMenu mnSalir = new JMenu("Salir");
-		JMenuItem mntCerrar = new JMenuItem("cerrar sesión ");
+		mnSalir = new JMenu("Salir");
+		mntCerrar = new JMenuItem("cerrar sesión ");
  
 	 
 		mnSalir.add(mntCerrar);  
@@ -181,12 +259,12 @@ public class PrincipalUI {
 		this.mnCatalogo = mnCatalogo;
 	}
 
-	public JMenuItem getMntProductos() {
-		return mntProductos;
+	public JMenuItem getMntEmpaqueProductos() {
+		return mntEmpaqueProductos;
 	}
 
-	public void setMntProductos(JMenuItem mntProductos) {
-		this.mntProductos = mntProductos;
+	public void setMntEmpaqueProductos(JMenuItem mntProductos) {
+		this.mntEmpaqueProductos = mntProductos;
 	}
 
 	public JMenuItem getMntClientes() {
@@ -198,11 +276,11 @@ public class PrincipalUI {
 	}
 
 	public JMenuItem getMntConcesionario() {
-		return mntConcesionario;
+		return mntConcesionarios;
 	}
 
 	public void setMntConcesionario(JMenuItem mntConcesionario) {
-		this.mntConcesionario = mntConcesionario;
+		this.mntConcesionarios = mntConcesionario;
 	}
 
 	public JMenu getMnFacturacion() {
@@ -245,6 +323,155 @@ public class PrincipalUI {
 		this.mntCerrar = mntCerrar;
 	}
 
-	
-	
+	public JMenuItem getMntRuta() {
+		return mntRutas;
+	}
+
+	public void setMntRuta(JMenuItem mntRuta) {
+		this.mntRutas = mntRuta;
+	}
+
+	public ContPrincipal getControlador() {
+		return controlador;
+	}
+
+	public void setControlador(ContPrincipal controlador) {
+		this.controlador = controlador;
+	}
+
+	public JMenuItem getMntRutas() {
+		return mntRutas;
+	}
+
+	public void setMntRutas(JMenuItem mntRutas) {
+		this.mntRutas = mntRutas;
+	}
+
+	public JMenuItem getMntPresentaciones() {
+		return mntPresentaciones;
+	}
+
+	public void setMntPresentaciones(JMenuItem mntPresentaciones) {
+		this.mntPresentaciones = mntPresentaciones;
+	}
+
+	public JMenuItem getMntAlmacen() {
+		return mntAlmacen;
+	}
+
+	public void setMntAlmacen(JMenuItem mntAlmacen) {
+		this.mntAlmacen = mntAlmacen;
+	}
+
+	public JMenuItem getMntCamiones() {
+		return mntCamiones;
+	}
+
+	public void setMntCamiones(JMenuItem mntCamiones) {
+		this.mntCamiones = mntCamiones;
+	}
+
+	public JMenuItem getMntCapacidades() {
+		return mntCapacidades;
+	}
+
+	public void setMntCapacidades(JMenuItem mntCapacidades) {
+		this.mntCapacidades = mntCapacidades;
+	}
+
+	public JMenuItem getMntConcesionarios() {
+		return mntConcesionarios;
+	}
+
+	public void setMntConcesionarios(JMenuItem mntConcesionarios) {
+		this.mntConcesionarios = mntConcesionarios;
+	}
+
+	public JMenuItem getMntConcesionarioRutas() {
+		return mntConcesionarioRutas;
+	}
+
+	public void setMntConcesionarioRutas(JMenuItem mntConcesionarioRutas) {
+		this.mntConcesionarioRutas = mntConcesionarioRutas;
+	}
+
+	public JMenu getMnDetalleFacturacion() {
+		return mnDetalleFacturacion;
+	}
+
+	public void setMnDetalleFacturacion(JMenu mnDetalleFacturacion) {
+		this.mnDetalleFacturacion = mnDetalleFacturacion;
+	}
+
+	public JMenu getMnDomicilioComerciales() {
+		return mnDomicilioComerciales;
+	}
+
+	public void setMnDomicilioComerciales(JMenu mnDomicilioComerciales) {
+		this.mnDomicilioComerciales = mnDomicilioComerciales;
+	}
+
+	public JMenuItem getMntJefeVenta() {
+		return mntJefeVenta;
+	}
+
+	public void setMntJefeVenta(JMenuItem mntJefeVenta) {
+		this.mntJefeVenta = mntJefeVenta;
+	}
+
+	public JMenuItem getMntProductos() {
+		return mntProductos;
+	}
+
+	public void setMntProductos(JMenuItem mntProductos) {
+		this.mntProductos = mntProductos;
+	}
+
+	public JMenuItem getMntProductoAlmacenes() {
+		return mntProductoAlmacenes;
+	}
+
+	public void setMntProductoAlmacenes(JMenuItem mntProductoAlmacenes) {
+		this.mntProductoAlmacenes = mntProductoAlmacenes;
+	}
+
+	public JMenuItem getMntSabores() {
+		return mntSabores;
+	}
+
+	public void setMntSabores(JMenuItem mntSabores) {
+		this.mntSabores = mntSabores;
+	}
+
+	public JMenuItem getMntSalps() {
+		return mntSalps;
+	}
+
+	public void setMntSalps(JMenuItem mntSalps) {
+		this.mntSalps = mntSalps;
+	}
+
+	public JMenuItem getMntUsuarios() {
+		return mntUsuarios;
+	}
+
+	public void setMntUsuarios(JMenuItem mntUsuarios) {
+		this.mntUsuarios = mntUsuarios;
+	}
+
+	public JMenuItem getMntVisitas() {
+		return mntVisitas;
+	}
+
+	public void setMntVisitas(JMenuItem mntVisitas) {
+		this.mntVisitas = mntVisitas;
+	}
+
+	public JMenuItem getMntZonas() {
+		return mntZonas;
+	}
+
+	public void setMntZonas(JMenuItem mntZonas) {
+		this.mntZonas = mntZonas;
+	}
 }

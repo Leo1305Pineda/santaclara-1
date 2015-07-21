@@ -6,7 +6,8 @@ iva:7.2618E9
 descuento:0.0
 idCliente:2
 idVendedor:0
-id:0
+estado:Pendiente
+id:1
 fecha:115/5/6
 total:7.35E9
 saldo:8.82E7
@@ -14,7 +15,8 @@ iva:7.2618E9
 descuento:0.0
 idCliente:1
 idVendedor:1
-id:1
+estado:Cancelada
+id:2
 fecha:115/9/1
 total:655.0
 saldo:8329.0
@@ -22,3 +24,4 @@ iva:655.0
 descuento:655.0
 idCliente:1
 idVendedor:1
+estado:Cancelada

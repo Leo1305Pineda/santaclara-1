@@ -54,7 +54,7 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 			{
 				if(almacen1.getId().equals(almacen.getId()))
 				{ 
-					almacen1=almacen;
+					almacen1.setUbicacion(almacen.getUbicacion());
 				}
 			}
 		}

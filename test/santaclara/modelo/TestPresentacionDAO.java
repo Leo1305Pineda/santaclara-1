@@ -16,6 +16,7 @@ public class TestPresentacionDAO {
 	public void presentacionTest() throws FileNotFoundException {
 		PresentacionDAO presentacionDAO = new PresentacionDAO();
 		assertNotNull(presentacionDAO);
+		//assertNull(presentacionDAO.getPresentaciones());
 		assertEquals(3,presentacionDAO.getPresentaciones().size());
 	}
 	@Test

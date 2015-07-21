@@ -14,6 +14,16 @@ public class Concesionario extends Usuario{
 		this.ruta = ruta;
 	}
 	
+
+
+	public Concesionario(Camion camion, Ruta ruta) {
+		super();
+		this.camion = camion;
+		this.ruta = ruta;
+	}
+
+
+
 	public Camion getCamion() {
 		return camion;
 	}

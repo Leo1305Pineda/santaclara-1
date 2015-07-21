@@ -11,6 +11,7 @@ import java.util.Scanner;
 import santaclara.dao.IJefeVentaDAO;
 import santaclara.modelo.JefeVenta;
 import santaclara.modelo.Usuario; 
+import santaclara.modelo.Zona;
 
 public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 
@@ -25,33 +26,15 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 		while(scaner.hasNext())
 		{
 			 JefeVenta jefeVenta = new JefeVenta();
-			 jefeVenta.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 
+			 UsuarioDAO usuarioDAO = new UsuarioDAO();
+			 
+			 jefeVenta = getJefeVenta(usuarioDAO.getUsuario(
+					 new Integer(scaner.skip("id:").nextLine().toString().trim())));
+		
 			 ZonaDAO zonaDAO = new ZonaDAO();
-			 jefeVenta.setZona(zonaDAO.getZona(new Integer(scaner.skip("idZona:").nextLine().trim())));
-			 
-/*			 Scanner sc = new Scanner(scaner.skip("idVisitas:").nextLine()).useDelimiter(",");
-			 
-			 if (sc.hasNext())
-			 {
-				 List<Visita> visitas = new ArrayList<Visita>();
-				 while(sc.hasNext())
-				 {
-					 Visita visita = new Visita();
-					 visita.setId(sc.nextInt());
-					//guardar demas datos de la rutas
-					 VisitaDAO visitaDAO = new VisitaDAO();
-					 visita = visitaDAO.getVisita(visita.getId());
-					 visitas.add(visita);
-				 }
-				 jefeVenta.setVisita(visitas);
-			 }
-			 else
-			 {
-				jefeVenta.setVisita(null);
-			 }
-			 sc.close();
-*/
-			 
+			 jefeVenta.setZona(zonaDAO.getZona(new Integer(scaner.skip("idZona:").nextLine().toString().trim())));
+			 			 
 			 jefeVentas.add(jefeVenta); 
 		}
 		scaner.close();
@@ -74,31 +57,17 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 				}
 			}
 		}
-		//guarda demas datos de la zona
-/* 		List<Zona> zonas;
-		ZonaDAO zonaDAO = new ZonaDAO();
-		zonas = zonaDAO.getZonas();
-		for(JefeVenta jefeVenta: jefeVentas)
-		{
-			for(Zona zona: zonas)
-			{
-				if(jefeVenta.getId().equals(zona.getJefeVenta()))
-				{
-					jefeVenta.setZona(zona);
-					break;
-				}
-			}
-		}
-*/
+	
 		return jefeVentas;
 	}
 	@Override
 	public void guardar(JefeVenta jefeVenta) throws IOException {
 		// TODO Auto-generated method stub
-		List<JefeVenta> jefeVentas = getJefeVentas();
-		//buscar codigo el ultimo codigo Asignado 
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		UsuarioDAO usuarioDAO = new UsuarioDAO(); 
 		List<Usuario> usuarios = usuarioDAO.getUsuarios();
+		List<JefeVenta> jefeVentas = getJefeVentas();
+		Zona zona;
+		//buscar codigo el ultimo codigo Asignado 
 		if(jefeVenta.getId() == null )
 		{
 			int i = 0;
@@ -109,7 +78,15 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 					i = usuario1.getId();
 				}
 			}
-			jefeVenta.setId(i+1);
+			Usuario usuario = new Usuario(null,jefeVenta.getUsername(), jefeVenta.getCedula(), jefeVenta.getNombre(),
+					jefeVenta.getContrasena());
+			
+			usuarioDAO.guardar(usuario);
+			
+			zona = jefeVenta.getZona();
+			
+			jefeVenta = getJefeVenta(usuarioDAO.getUsuario(i+1));
+			jefeVenta.setZona(zona);
 			jefeVentas.add(jefeVenta);
 		}
 		else
@@ -118,16 +95,32 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 			{
 				if(jefeVenta1.getId().equals(jefeVenta.getId()))
 				{ 
-					jefeVenta1.setUsername(jefeVenta.getUsername());
-					jefeVenta1.setCedula(jefeVenta.getCedula());
-					jefeVenta1.setNombre(jefeVenta.getNombre());
-					jefeVenta1.setContrasena(jefeVenta.getContrasena());
+					Usuario usuario = new Usuario();
+					usuario.setId(jefeVenta.getId());
+					usuario.setUsername(jefeVenta.getUsername());
+					usuario.setCedula(jefeVenta.getCedula());
+					usuario.setNombre(jefeVenta.getNombre());
+					usuario.setContrasena(jefeVenta.getContrasena());
+					new UsuarioDAO().guardar(usuario);
+					
+					jefeVenta1.setZona(jefeVenta.getZona());
 				}
 			}
 		}
-		usuarioDAO.guardar(jefeVenta);
 		guardarTodo(jefeVentas);
 	}
+
+	private JefeVenta getJefeVenta(Usuario usuario) throws FileNotFoundException{
+		JefeVenta jefeVenta = new JefeVenta();
+		jefeVenta.setId(usuario.getId());
+		jefeVenta.setCedula(usuario.getCedula());
+		jefeVenta.setContrasena(usuario.getContrasena());
+		jefeVenta.setNombre(usuario.getNombre());
+		jefeVenta.setUsername(usuario.getUsername());
+		
+		return jefeVenta; 
+}
+	
 	@Override
 	public void eliminar(JefeVenta jefeVenta) throws IOException {
 		// TODO Auto-generated method stub
@@ -165,13 +158,6 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 		for(JefeVenta jefeVenta : jefeVentas)
 		{
 			fw.append("id:"+jefeVenta.getId().toString()+"\n");
-			/*	List<Visita> visitas = jefeVenta.getVisitas();
-				String linea = new String(",");
-				for(Visita visita : visitas ) {
-					linea =  linea+visita.getId()+",";
-				}
-				fw.append("idVisitas:"+linea+"\n");
-			*/
 			fw.append("idZona:"+(jefeVenta.getZona() == null 
 					?"  ": jefeVenta.getZona().getId().toString())+"\n");
 		}

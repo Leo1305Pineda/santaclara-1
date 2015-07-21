@@ -3,6 +3,7 @@ package santaclara.dao.impl;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -147,7 +148,6 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 		}
 		fw.close();
 	}
-
 	
 	/*
  	La Estructura de los Archivos sera la Siguiente 

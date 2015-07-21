@@ -1,8 +1,8 @@
 idCliente:1
-idConcesionario:1
+idConcesionario:4
 idRuta:1
 dias:,1,2,3,
 idCliente:1
-idConcesionario:1
-idRuta:2
+idConcesionario:4
+idRuta:1
 dias:,4,5,6,

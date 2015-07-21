@@ -1,29 +1,31 @@
 package santaclara.modelo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Salp extends Cliente{
-	private List<Factura> facturas = new ArrayList<Factura>();
+	private String descripcion;
+
+	public Salp(String descripcion) {
+		super();
+		this.descripcion = descripcion;
+	}
 
 	public Salp() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	public Salp(Integer id, String rif, String razonsocial, String direccion,
+			String telefono, Ruta ruta) {
+		super(id, rif, razonsocial, direccion, telefono, ruta);
+		// TODO Auto-generated constructor stub
+	}
 
-	public Salp(List<Factura> facturas) {
-		super();
-		this.facturas = facturas;
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 	
-	public List<Factura> getFacturas() {
-		return facturas;
-	}
-
-	public void setFacturas(List<Factura> facturas) {
-		this.facturas = facturas;
-	}
- 
 
 }

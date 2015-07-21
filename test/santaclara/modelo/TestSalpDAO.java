@@ -38,7 +38,7 @@ public class TestSalpDAO {
 		FacturaDAO facturaDAO = new FacturaDAO();
 		facturas.add(facturaDAO.getFactura(0));
 		facturas.add(facturaDAO.getFactura(1));
-		salp1.setFacturas(facturas);
+	//	salp1.setFacturas(facturas);
 		
 		salpDAO.guardar(salp1);
 		assertNotNull(salp1.getId());

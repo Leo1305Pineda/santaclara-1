@@ -41,6 +41,15 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 			 factura.setSaldo(new Double(scaner.skip("saldo:").nextLine().trim()));
 			 factura.setIva(new Double(scaner.skip("iva:").nextLine().trim()));
 			 factura.setDescuento(new Double(scaner.skip("descuento:").nextLine().trim()));
+			 switch (scaner.skip("estado:").nextLine().toString().trim()) {
+			case "Pendiente":factura.setEstado(true);	
+				break;
+			case "Cancelada":factura.setEstado(false);
+				break;
+
+			default:factura.setEstado(true);
+				break;
+			}
 			 
 			 ClienteDAO clienteDAO = new ClienteDAO();
 			 factura.setCliente(
@@ -89,6 +98,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 					factura1.setDescuento(factura.getDescuento());
 					factura1.setCliente(factura.getCliente());
 					factura1.setVendedor(factura.getVendedor());
+					factura1.setEstado(factura.getEstado());
 				}
 			}
 		}
@@ -138,6 +148,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 			fw.append("descuento:"+factura.getDescuento().toString()+"\n");
 			fw.append("idCliente:"+(factura.getCliente() == null ? "  ":factura.getCliente().getId().toString())+"\n");
 			fw.append("idVendedor:"+(factura.getVendedor() == null ? "  ":factura.getVendedor().getId().toString())+"\n");
+			fw.append("estado:"+(factura.getEstado() == true ? "Pendiente":"Cancelada\n"));
 		}
 		fw.close();
 	}

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import santaclara.Servicio.ServicioCliente;
 import santaclara.dao.ISalpDAO;
 import santaclara.modelo.Cliente;
-import santaclara.modelo.Factura;
 import santaclara.modelo.Salp;
 //import santaclara.dao.IFactura;
 
@@ -30,66 +30,27 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 		{
 			 Salp salp = new Salp();
 			 salp.setId(new Integer(scaner.skip("idCliente:").nextLine()));
-			
-			 Scanner sc = new Scanner(scaner.skip("idFacturas:").nextLine()).useDelimiter(",");
-			 
-			 //cargo la lista de facturas
-			 if (sc.hasNext())
-			 {
-				 List<Factura> facturas = new ArrayList<Factura>();
-				 while(sc.hasNext())
-				 {
-					 Factura factura = new Factura();
-					 factura.setId(sc.nextInt());
-					 facturas.add(factura);
-				 }
-				 salp.setFacturas(facturas);
-				 salps.add(salp);
-			 }
-			 else
-			 {
-				 salp.setFacturas(null);
-				 salps.add(salp);
-			 }
-			 sc.close();
+			 salps.add(salp);
 		}
 		//Cargo la info de Cliente
 		List<Cliente> clientes;
 		clientes = clienteDAO.getClientes();
-		for(Salp sapl1 :salps)
+		for(Salp salp1 :salps)
 		{
 			for(Cliente cliente: clientes)
 			{
-				if(sapl1.getId().equals(cliente.getId()))
+				if(salp1.getId().equals(cliente.getId()))
 				{
-					sapl1.setRif(cliente.getRif());
-					sapl1.setId(cliente.getId());
-					sapl1.setRazonsocial(cliente.getRazonsocial());
-					sapl1.setDireccion(cliente.getDireccion());
-					sapl1.setTelefono(cliente.getTelefono());
+					salp1.setRif(cliente.getRif());
+					salp1.setId(cliente.getId());
+					salp1.setRazonsocial(cliente.getRazonsocial());
+					salp1.setDireccion(cliente.getDireccion());
+					salp1.setTelefono(cliente.getTelefono());
+					salp1.setRuta(cliente.getRuta());
 					break;
 				}
 			}
-		}
-		//Cargo la info de las Facturas
-//		List<Factura> facturas;
-	//	facturas = FacturaDAO.getFacturas();
-		for(Salp sapl1 :salps)
-		{
-			for(Cliente cliente: clientes)
-			{
-				if(sapl1.getId().equals(cliente.getId()))
-				{
-					sapl1.setRif(cliente.getRif());
-					sapl1.setId(cliente.getId());
-					sapl1.setRazonsocial(cliente.getRazonsocial());
-					sapl1.setDireccion(cliente.getDireccion());
-					sapl1.setTelefono(cliente.getTelefono());
-					break;
-				}
-			}
-		}
-			  
+		}			  
 		return salps;
 		
 	}
@@ -98,17 +59,29 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 	public void guardar(Salp salp) throws IOException {
 		// TODO Auto-generated method stub
 		List<Salp> salps = getSalps();
+		List<Cliente> clientes = new ServicioCliente().getClientes();
 		//buscar codigo el ultimo codigo Asignado 
 		if(salp.getId() == null )
 		{
 			int i = 0;
-			for(Salp salp1 : salps)
+			for(Cliente cliente : clientes)
 			{
-				if(salp1.getId()> i )
+				if(cliente.getId()> i )
 				{
-					i = salp1.getId();
+					i = cliente.getId();
 				}
 			}
+			
+			Cliente cliente = new Cliente();
+			
+			cliente.setId(salp.getId());
+			cliente.setRif(salp.getRif());
+			cliente.setDireccion(salp.getDireccion());
+			cliente.setTelefono(salp.getTelefono());
+			cliente.setRazonsocial(salp.getRazonsocial());
+			cliente.setRuta(salp.getRuta());
+			
+			new ClienteDAO().guardar(cliente);
 			salp.setId(i+1);
 			salps.add(salp);
 		}
@@ -118,13 +91,18 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 			{
 				if(salp1.getId().equals(salp.getId()))
 				{
-					/// vacio 
-					salp1.setRif(salp.getRif());
-					salp1.setRazonsocial(salp.getRazonsocial());
-					salp1.setDireccion(salp.getDireccion());
-					salp1.setTelefono(salp.getTelefono());
-					salp1.setRuta(salp.getRuta());
-					salp1.setFacturas(salp.getFacturas());
+					Cliente cliente = new Cliente();
+					
+					cliente.setId(salp.getId());
+					cliente.setRif(salp.getRif());
+					cliente.setDireccion(salp.getDireccion());
+					cliente.setTelefono(salp.getTelefono());
+					cliente.setRazonsocial(salp.getRazonsocial());
+					cliente.setRuta(salp.getRuta());
+					
+					new ClienteDAO().guardar(cliente);
+					// aca los cambio del salp
+					
 				}
 				
 			}
@@ -134,7 +112,7 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 
 	@Override
 	public void eliminar(Salp salp) throws IOException {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub		
 		List<Salp> salps = getSalps();
 		for(Salp salp1 :salps)
 		{
@@ -163,28 +141,13 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 
 	}
 
-	public void guardarTodo(List<Salp> domicilioComercios ) throws IOException
+	public void guardarTodo(List<Salp> salps ) throws IOException
 	{
 		FileWriter fw = new FileWriter(ruta);
-		for(Salp domicilioComercio :domicilioComercios)
+		for(Salp salp1 :salps)
 		{
-			fw.append("idCliente:"+(domicilioComercio == null
-					? "  ":domicilioComercio.getId().toString())+"\n");
-			
-			List<Factura> facturas = domicilioComercio.getFacturas();
-			String linea = new String(",");
-			if (domicilioComercio.getFacturas()==null)
-			{
-			linea = "";	
-			}
-			else
-			{
-				for(Factura factura : facturas ) 
-				{
-					linea =  linea+factura.getId()+",";
-				}
-			}
-			fw.append("idFacturas:"+linea+"\n");
+			fw.append("idCliente:"+(salp1 == null
+					? "  ":salp1.getId().toString())+"\n");
 		}
 		fw.close();
 	}

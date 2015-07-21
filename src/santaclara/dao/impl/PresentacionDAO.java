@@ -26,9 +26,10 @@ public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 		{
 			 Presentacion presentacion = new Presentacion();
 			 presentacion.setId(new Integer(scaner.skip("id:").nextLine().trim()));
-			 presentacion.setMaterial(scaner.skip("material:").nextLine().trim());
+			 presentacion.setMaterial(scaner.skip("material:").nextLine().toString());
 			 presentaciones.add(presentacion);
 		}
+		
 		return presentaciones;
 	}
 
@@ -86,8 +87,8 @@ public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 		FileWriter fw = new FileWriter(ruta);
 		for(Presentacion presentacion :presentaciones)
 		{
-			fw.append("id:"+presentacion.getId().toString()+"\n");
-			fw.append("material:"+presentacion.getMaterial()+"\n");
+			fw.append("id:"+presentacion.getId().toString().trim()+"\n");
+			fw.append("material:"+presentacion.getMaterial().toString()+"\n");
 		}
 		fw.close();
 	}

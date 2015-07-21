@@ -29,20 +29,31 @@ import santaclara.modelo.Sabor;
 
 import java.awt.Color;
 import java.awt.Font;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.BoxLayout;
 import javax.swing.JSeparator;
 
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+
+import net.miginfocom.swing.MigLayout;
+
+@SuppressWarnings("serial")
 public class ProductosUI extends JPanel {
 
 	private JTable table;
+	
+	private JScrollPane scrollPanel; 
+	
 	private List<Producto> productos = new ArrayList<Producto>();
+	@SuppressWarnings("rawtypes")
 	private JTableBinding  binProductos;
 
 	private JTextField txtBuscar;
@@ -51,16 +62,24 @@ public class ProductosUI extends JPanel {
 	private List<Sabor> sabores = new ArrayList<Sabor>();
 	private List<Capacidad> capacidades = new ArrayList<Capacidad>();
 	
-	private JComboBox cmbSabor;
-    private JComboBox cmbPresentacion;
-    private JComboBox cmbCapacidad;
+	private JComboBox<Sabor> cmbSabor;
+    private JComboBox<Presentacion> cmbPresentacion;
+    private JComboBox<Capacidad> cmbCapacidad;
     private JButton btnGuardar;
 
     private JTextField 			txtNombre;
+    private JTextField  txtId;
 	private JSpinner			 txtPrecio; 
 	private JPanel 	  			 panelProducto;
-	private JButton    			btnNuevo;
 	
+	private JButton btnNuevo;
+	private JButton	btnModificar;
+	private JButton btnEliminar;
+	private JButton btnSabor; 
+	
+	private JTextField txtABuscar;
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ProductosUI(ContProductos contProductos, List<Producto> productos,List<Capacidad> capacidades, 
 		List<Sabor> sabores,List<Presentacion> presentaciones) {
 		
@@ -71,84 +90,137 @@ public class ProductosUI extends JPanel {
 		
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
-		setBackground(Color.GRAY);
-		setSize(800,600);
-		setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
+		setBackground(Color.DARK_GRAY);
+		setSize(1000,733);
+		setLayout(null);
 		
 		JPanel pnProductos = new JPanel();
-		pnProductos.setSize(800,300);
-		pnProductos.setBackground(Color.GRAY);
-		pnProductos.setBorder(new TitledBorder(null, "Listado de Productos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnProductos.setLocation(12, 12);
+		pnProductos.setSize(1000,680);
+		pnProductos.setBackground(Color.DARK_GRAY);
+		pnProductos.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Productos", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		add(pnProductos);
 
-		JPanel botones = new JPanel();
-		botones.setBackground(Color.GRAY);
-		botones.setLocation(708, 39);
-		botones.setBorder(new TitledBorder(null, "opciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		botones.setSize(131,223);
-		botones.setLayout(null);
 		
-
-		btnNuevo = new JButton("Nuevo");
-		btnNuevo.setForeground(Color.WHITE);
-		btnNuevo.setBackground(Color.DARK_GRAY);
-		btnNuevo.setBounds(22,50, 100, 25);
-		btnNuevo.addActionListener(contProductos.nuevo());
-		botones.add(btnNuevo);
-
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(22,80,100, 25);
-		btnModificar.setForeground(Color.WHITE);
-		btnModificar.setBackground(Color.DARK_GRAY);
-		botones.add(btnModificar);
-
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(22,105, 100, 25);
-		btnEliminar.setForeground(Color.WHITE);
-		btnEliminar.setBackground(Color.DARK_GRAY);
-		botones.add(btnEliminar);
-
-		
-		JScrollPane scrollPanel = new JScrollPane();
-		scrollPanel.setBounds(23, 38, 673, 224);
+		scrollPanel = new JScrollPane();
+		scrollPanel.setBounds(12, 96, 953, 162);
 		table = new JTable();
-		table.setBackground(Color.WHITE);
+		table.setBackground(Color.GRAY);
 		scrollPanel.setViewportView(table);
 		pnProductos.setLayout(null);
-		pnProductos.add(botones);
+				
+				
 		pnProductos.add(scrollPanel);
 		
+		JPanel pnAction = new JPanel();
+		pnAction.setBackground(Color.GRAY);
+		pnAction.setForeground(Color.DARK_GRAY);
+		pnAction.setBounds(12, 47, 953, 48);
+		pnProductos.add(pnAction);
+						pnAction.setLayout(null);
+				
+						JPanel botones = new JPanel();
+						botones.setBounds(0, 0, 952, 37);
+						pnAction.add(botones);
+						botones.setBackground(Color.DARK_GRAY);
+						botones.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), "opciones", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(255, 255, 255)));
+						
+						btnModificar = new JButton("Editar");
+						btnModificar.setBounds(228, 17, 100, 16);
+						btnModificar.setIcon(new ImageIcon("img/gestion/Modificara.png"));
+						
+										btnModificar.setToolTipText("Modificar");
+										
+										btnModificar.setForeground(Color.WHITE);
+										btnModificar.setBackground(Color.DARK_GRAY);
+										btnModificar.addActionListener(contProductos.modificar());
+										
+
+										btnNuevo = new JButton("Nuevo");
+										btnNuevo.setBounds(124, 17, 100, 16);
+										btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
+										btnNuevo.setForeground(Color.WHITE);
+										btnNuevo.setBackground(Color.DARK_GRAY);
+										btnNuevo.addActionListener(contProductos.nuevo());
+										botones.setLayout(null);
+										
+										JButton btnAtras = new JButton("Atras");
+										btnAtras.addActionListener(contProductos.Atras());
+										btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
+										btnAtras.setBounds(12, 17, 92, 16);
+										botones.add(btnAtras);
+										btnAtras.setForeground(Color.WHITE);
+										btnAtras.setBackground(Color.DARK_GRAY);
+										botones.add(btnNuevo);
+										botones.add(btnModificar);
+										
+										btnEliminar = new JButton("Eliminar");
+										btnEliminar.setBounds(331, 17, 110, 16);
+										btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
+										btnEliminar.setForeground(Color.WHITE);
+										btnEliminar.setBackground(Color.DARK_GRAY);
+										btnEliminar.addActionListener(contProductos.eliminar());
+										botones.add(btnEliminar);
+										
+										JButton button_2 = new JButton("Presentacion");
+										button_2.setIcon(new ImageIcon("img/gestion/Presentacion.png"));
+										button_2.setBounds(460, 17, 150, 16);
+										button_2.setForeground(Color.WHITE);
+										button_2.setBackground(Color.DARK_GRAY);
+										button_2.addActionListener(contProductos.AbrirPresentaciones());
+										botones.add(button_2);
+										
+										JButton button_3 = new JButton("Capacidad");
+										button_3.addActionListener(contProductos.AbrirCapacidades());
+										button_3.setIcon(new ImageIcon("img/gestion/Capacidad.png"));
+										button_3.setBounds(615, 17, 130, 16);
+										button_3.setForeground(Color.WHITE);
+										button_3.setBackground(Color.DARK_GRAY);
+										botones.add(button_3);
+										
+										btnSabor = new JButton("Sabor");
+										btnSabor.setIcon(new ImageIcon("img/gestion/Sabor.png"));
+										btnSabor.setBounds(750, 17, 100, 16);
+										btnSabor.setForeground(Color.WHITE);
+										btnSabor.setBackground(Color.DARK_GRAY);
+										btnSabor.addActionListener(contProductos.AbrirSabor());
+										botones.add(btnSabor);
+										
+										JButton button = new JButton("Salir");
+										button.addActionListener(contProductos.salir());
+										button.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
+										button.setBounds(854, 17, 86, 16);
+										button.setForeground(Color.WHITE);
+										button.setBackground(Color.DARK_GRAY);
+										botones.add(button);
+		
 		panelProducto = new JPanel();
-		panelProducto.setSize(800,300);
-		panelProducto.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Editar Producto", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelProducto.setBackground(Color.GRAY);
+		panelProducto.setBounds(12, 286, 954, 40);
+		pnProductos.add(panelProducto);
+		panelProducto.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Editar Producto", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		panelProducto.setBackground(Color.DARK_GRAY);
 		panelProducto.getSize(new Dimension(800, 150));
 		panelProducto.setLayout(null);
-		panelProducto.setVisible(false);
 		
-		JLabel lblNombre = new JLabel("Nombre :");
-		lblNombre.setBounds(5, 15, 150, 25);
+		JLabel lblNombre = new JLabel("Nombre:");
+		lblNombre.setBounds(92, 11, 69, 25);
 		lblNombre.setForeground(Color.WHITE);
 		lblNombre.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
 		panelProducto.add(lblNombre);
 
 		txtNombre = new JTextField();
-		txtNombre.setBounds(155, 15, 150, 25);
+		txtNombre.setBounds(155, 15, 121, 16);
 		panelProducto.add(txtNombre);
 		txtNombre.setColumns(10);
 		
-		JLabel lblPresentacion = new JLabel("Presentacion ");
-		lblPresentacion.setForeground(Color.WHITE);
-		lblPresentacion.setBounds(349, 15, 150, 25);
-		panelProducto.add(lblPresentacion);
 		
-		
-		cmbPresentacion = new JComboBox();
-		cmbPresentacion.setBounds(523, 15, 150,25);
+		cmbPresentacion = new JComboBox<Presentacion>();
+		cmbPresentacion.setBounds(460, 15, 150,16);
 		cmbPresentacion.setBackground(SystemColor.controlHighlight);
 		cmbPresentacion.setForeground(Color.BLACK);
 		cmbPresentacion.setRenderer(new ListCellRenderer() {
 			
+		
 			@Override
 			public Component getListCellRendererComponent(JList list, Object value,
 					int index, boolean isSelected, boolean cellHasFocus) {
@@ -158,14 +230,9 @@ public class ProductosUI extends JPanel {
 			}
 		});
 		panelProducto.add(cmbPresentacion);
-		 
-		JLabel lblCapacidad = new JLabel("Capacidad:");
-		lblCapacidad.setBounds(5, 65, 150,25);
-		lblCapacidad.setForeground(Color.WHITE);
-		panelProducto.add(lblCapacidad);
 
-		cmbCapacidad = new JComboBox();
-		cmbCapacidad.setBounds(155, 65, 150,25);
+		cmbCapacidad = new JComboBox<Capacidad>();
+		cmbCapacidad.setBounds(615, 15, 130,16);
 		cmbCapacidad.setBackground(SystemColor.controlHighlight);
 		cmbCapacidad.setRenderer(new ListCellRenderer() {
 			@Override
@@ -178,15 +245,9 @@ public class ProductosUI extends JPanel {
 		});
 
 		panelProducto.add(cmbCapacidad);
-
-		JLabel lblSabor = new JLabel("Sabor:");
-		lblSabor.setBounds(349, 65, 150,25);
-		lblSabor.setForeground(Color.WHITE);
-		lblSabor.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		panelProducto.add(lblSabor);
 				
-		cmbSabor = new JComboBox();
-		cmbSabor.setBounds(523, 65, 150,25);
+		cmbSabor = new JComboBox<Sabor>();
+		cmbSabor.setBounds(750, 15, 100,16);
 		cmbSabor.setBackground(SystemColor.controlHighlight);
 		cmbSabor.setRenderer(new ListCellRenderer() {
 			@Override
@@ -199,38 +260,78 @@ public class ProductosUI extends JPanel {
 		});
 		panelProducto.add(cmbSabor);
 				
-		JLabel lblPrecio = new JLabel("Precio");
-		lblPrecio.setBounds(5, 115,  150,25);
+		JLabel lblPrecio = new JLabel("Precio:");
+		lblPrecio.setBounds(280, 12,  54,25);
 		lblPrecio.setBackground(SystemColor.controlHighlight);
 		lblPrecio.setForeground(Color.WHITE);
 		panelProducto.add(lblPrecio);
 				
 		txtPrecio = new JSpinner(new SpinnerNumberModel(0.0,0.00,Double.MAX_VALUE,0.1));
-		txtPrecio.setBounds(155, 115, 150,25);
+		txtPrecio.setBounds(328, 15, 121,16);
 		((JSpinner.NumberEditor)txtPrecio.getEditor()).getFormat().setMinimumFractionDigits(2);
 		panelProducto.add(txtPrecio);
-				
-		btnGuardar = new JButton("Guardar");
-		btnGuardar.setBounds(455, 160, 150,25);
-		btnGuardar.setBackground(Color.DARK_GRAY);
-		btnGuardar.setForeground(Color.WHITE);
-		btnGuardar.addActionListener(contProductos.guardar());
-		panelProducto.add(btnGuardar);
-		
-		add(panelProducto);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(5, 152, 844, 12);
 		panelProducto.add(separator);
-		  
+		
+		btnGuardar = new JButton("Guardar");
+		btnGuardar.setBounds(855, 15, 93, 16);
+		panelProducto.add(btnGuardar);
+		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
+		btnGuardar.setBackground(Color.DARK_GRAY);
+		btnGuardar.setForeground(Color.WHITE);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(5, 15, 85, 16);
+		panelProducto.add(btnCancelar);
+		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				quitarNuevo();
+				scrollPanel.setVisible(true);
+			}
+		});
+		btnCancelar.setForeground(Color.WHITE);
+		btnCancelar.setBackground(Color.DARK_GRAY);
+		
+		txtId = new JTextField();
+		txtId.setBounds(460, 12, 44, 19);
+		panelProducto.add(txtId);
+		txtId.setColumns(10);
+		txtId.setVisible(false);
+		btnGuardar.addActionListener(contProductos.guardar());
+		
+		JPanel panel = new JPanel();
+		panel.setForeground(Color.GRAY);
+		panel.setBackground(Color.DARK_GRAY);
+		panel.setBounds(12, 12, 954, 35);
+		pnProductos.add(panel);
+		panel.setLayout(new MigLayout("", "[grow]", "[]"));
+		
+		txtABuscar = new JTextField();
+		txtABuscar.setForeground(Color.WHITE);
+		txtABuscar.setColumns(10);
+		txtABuscar.setBackground(Color.DARK_GRAY);
+		panel.add(txtABuscar, "flowx,cell 0 0,growx");
+		
+		JButton btnBuscar = new JButton("");
+		btnBuscar.addActionListener(contProductos.buscar());
+		btnBuscar.setVerticalAlignment(SwingConstants.TOP);
+		btnBuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
+		btnBuscar.setBackground(Color.DARK_GRAY);
+		panel.add(btnBuscar, "cell 0 0");
 		 
 	}
 
-	public void activarBinding() {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void activarBinding(List<Producto> lsProductos) {
 		// TODO Auto-generated method stub
-
+		table = new JTable();
+		scrollPanel.setViewportView(table);
+		scrollPanel.setBounds(12, 96, 953, 670);
 		binProductos = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
-    			productos,table);
+    			lsProductos,table);
 	    BeanProperty nombreProducto = BeanProperty.create("nombre");
 	    BeanProperty idProducto  = BeanProperty.create("id");
 	    BeanProperty capacidadProducto  = BeanProperty.create("capacidad.volumenStr");
@@ -274,26 +375,32 @@ public class ProductosUI extends JPanel {
 		this.txtBuscar = txtBuscar;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbSabor() {
 		return cmbSabor;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setCmbSabor(JComboBox cmbSabor) {
 		this.cmbSabor = cmbSabor;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbPresentacion() {
 		return cmbPresentacion;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setCmbPresentacion(JComboBox cmbPresentacion) {
 		this.cmbPresentacion = cmbPresentacion;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbCapacidad() {
 		return cmbCapacidad;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setCmbCapacidad(JComboBox cmbCapacidad) {
 		this.cmbCapacidad = cmbCapacidad;
 	}
@@ -330,27 +437,110 @@ public class ProductosUI extends JPanel {
 		this.productos = productos;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public JTableBinding getBinProductos() {
 		return binProductos;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setBinProductos(JTableBinding binProductos) {
 		this.binProductos = binProductos;
 	}
+	
+	
+
+	public List<Presentacion> getPresentaciones() {
+		return presentaciones;
+	}
+
+	public void setPresentaciones(List<Presentacion> presentaciones) {
+		this.presentaciones = presentaciones;
+	}
+
+	public List<Sabor> getSabores() {
+		return sabores;
+	}
+
+	public void setSabores(List<Sabor> sabores) {
+		this.sabores = sabores;
+	}
+
+	public List<Capacidad> getCapacidades() {
+		return capacidades;
+	}
+
+	public void setCapacidades(List<Capacidad> capacidades) {
+		this.capacidades = capacidades;
+	}
+
+	public JTextField getTxtId() {
+		return txtId;
+	}
+
+	public void setTxtId(JTextField txtId) {
+		this.txtId = txtId;
+	}
+
+	public JPanel getPanelProducto() {
+		return panelProducto;
+	}
+
+	public void setPanelProducto(JPanel panelProducto) {
+		this.panelProducto = panelProducto;
+	}
+
+	public JButton getBtnNuevo() {
+		return btnNuevo;
+	}
+
+	public void setBtnNuevo(JButton btnNuevo) {
+		this.btnNuevo = btnNuevo;
+	}
+
+	public JButton getBtnModificar() {
+		return btnModificar;
+	}
+
+	public void setBtnModificar(JButton btnModificar) {
+		this.btnModificar = btnModificar;
+	}
+
+	public JButton getBtnEliminar() {
+		return btnEliminar;
+	}
+
+	public void setBtnEliminar(JButton btnEliminar) {
+		this.btnEliminar = btnEliminar;
+	}
+
 
 	public void activarNuevoProducto() {
 		// TODO Auto-generated method stub
 		panelProducto.setVisible(true);
+		panelProducto.setBounds(12, 96, 953, 40);
 		txtNombre.setText("");
 		txtPrecio.setValue(0);
- 
-		
 	}
 
 	public void quitarNuevo() {
 		// TODO Auto-generated method stub
-
 		panelProducto.setVisible(false);
+	}
+
+	public JScrollPane getScrollPanel() {
+		return scrollPanel;
+	}
+
+	public void setScrollPanel(JScrollPane scrollPanel) {
+		this.scrollPanel = scrollPanel;
+	}
+
+	public JTextField getTxtABuscar() {
+		return txtABuscar;
+	}
+
+	public void setTxtABuscar(String txtABuscar) {
+		this.txtABuscar.setText(txtABuscar);
 	}
 }
 

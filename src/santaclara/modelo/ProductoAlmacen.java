@@ -1,16 +1,16 @@
 package santaclara.modelo;
 
 public class ProductoAlmacen {
-	private EmpaqueProducto producto;
+	private EmpaqueProducto empaqueProducto;
 	private Almacen almacen;
 	private Integer stock;
 	private Integer stockMin;
 	private Integer existencia;
 	
-	public ProductoAlmacen(EmpaqueProducto producto, Almacen almacen,
+	public ProductoAlmacen(EmpaqueProducto empaqueProducto, Almacen almacen,
 			Integer stock, Integer stockMin, Integer existencia) {
 		super();
-		this.producto = producto;
+		this.empaqueProducto = empaqueProducto;
 		this.almacen = almacen;
 		this.stock = stock;
 		this.stockMin = stockMin;
@@ -18,20 +18,27 @@ public class ProductoAlmacen {
 	}
 
 	
-	public EmpaqueProducto getProducto() {
-		return producto;
+	public EmpaqueProducto getEmpaqueProducto() {
+		return empaqueProducto;
 	}
 
 
-	public void setProducto(EmpaqueProducto producto) {
-		this.producto = producto;
+	public void setEmpaqueProducto(EmpaqueProducto empaqueProducto) {
+		this.empaqueProducto = empaqueProducto;
 	}
 
 
 	public Almacen getAlmacen() {
 		return almacen;
 	}
+	
+	public String getUbicacion() {
+		return almacen.getUbicacion();
+	}
 
+	public String getIdAlmacen() {
+		return almacen.getId().toString();
+	}
 
 	public void setAlmacen(Almacen almacen) {
 		this.almacen = almacen;
@@ -71,5 +78,6 @@ public class ProductoAlmacen {
 	public ProductoAlmacen() {
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	
 }

@@ -3,16 +3,15 @@ package santaclara.vista;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
+
 import java.awt.Color;
+
 import javax.swing.JTable;
-import javax.swing.JList;
-import javax.swing.JTabbedPane;
-import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
+
 import java.awt.SystemColor;
 
+@SuppressWarnings("serial")
 public class Panelmostrarproductos extends JPanel {
 	private JTable table;
 
@@ -48,9 +47,11 @@ public class Panelmostrarproductos extends JPanel {
 				"Codigo", "Nombre", "Presentacion", "Capacidad", "Sabor", "Precio"
 			}
 		) {
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] {
 				String.class, String.class, String.class, String.class, Object.class, String.class
 			};
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
