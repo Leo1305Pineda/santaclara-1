@@ -19,5 +19,8 @@ public interface IClienteDAO extends IGenericoDAO {
 	public Cliente getCliente(Integer id) throws FileNotFoundException;
 	
 	public Boolean getCliente(Cliente cliente) throws FileNotFoundException;
+
+	public Cliente getCliente(String rif) throws FileNotFoundException;
+
 	
 }	

@@ -30,10 +30,10 @@ public class ServicioSalp {
 		return salpDAO.getSalp(id);
 	}
 
-	public String guardar(Salp salp) throws IOException {
+	public void guardar(Salp salp) throws IOException {
 		// TODO Auto-generated method stub
+		
 		salpDAO.guardar(salp);
-		return "Operacion Exitosa";
 	}
 	
 	public Salp getSalp(Integer id) throws IOException{

@@ -6,3 +6,5 @@ id:2
 material:Vidrio
 id:3
 material:Cartonesos
+id:4
+material:Retornable

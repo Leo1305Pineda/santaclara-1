@@ -19,3 +19,12 @@ cantidad:45
 id:8
 idProducto:13
 cantidad:40
+id:9
+idProducto:24
+cantidad:12
+id:10
+idProducto:1
+cantidad:1000
+id:11
+idProducto:27
+cantidad:24

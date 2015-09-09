@@ -1,5 +1,6 @@
 package santaclara.modelo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Visita {
@@ -8,7 +9,7 @@ public class Visita {
 	private String motivo;
 	private String descripcion;
 	private Integer valorVendedor;
-	private Integer ValorProducto;
+	private Integer valorProducto;
 	private Boolean estado;
 	private JefeVenta jefeVenta;
 	private Cliente cliente;
@@ -22,7 +23,7 @@ public class Visita {
 		this.motivo = motivo;
 		this.descripcion = descripcion;
 		this.valorVendedor = valorVendedor;
-		ValorProducto = valorProducto;
+		this.valorProducto = valorProducto;
 		this.estado = estado;
 		this.jefeVenta = jefeVenta;
 		this.cliente = cliente;
@@ -39,6 +40,13 @@ public class Visita {
 	}
 	public Date getFecha() {
 		return fecha;
+	}
+	public String getFechaStr() {
+		if (fecha==null)return "";
+		else{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+			return sdf.format(fecha);
+		} 
 	}
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
@@ -58,17 +66,31 @@ public class Visita {
 	public Integer getValorVendedor() {
 		return valorVendedor;
 	}
+	public String getValorVendedorStr() {
+		if (valorVendedor==null) return "";
+		else return valorVendedor.toString();
+	}
 	public void setValorVendedor(Integer valorVendedor) {
 		this.valorVendedor = valorVendedor;
 	}
 	public Integer getValorProducto() {
-		return ValorProducto;
+		return valorProducto;
+	}
+	public String getValorProductoStr() {
+		if (valorProducto==null) return "";
+		else return valorProducto.toString();
 	}
 	public void setValorProducto(Integer valorProducto) {
-		ValorProducto = valorProducto;
+		this.valorProducto = valorProducto;
 	}
 	public Boolean getEstado() {
 		return estado;
+	}
+	public String getEstadoStr() {
+		if (estado == null) return "";
+		if (getEstado().equals(true))return "Hecha";
+		else return "Por Hacer";
+		
 	}
 	public void setEstado(Boolean estado) {
 		this.estado = estado;
@@ -86,6 +108,13 @@ public class Visita {
 		this.cliente = cliente;
 	}
 	
-	
+	public void setFecha(String cadena) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+			this.fecha = sdf.parse(cadena);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	
 }

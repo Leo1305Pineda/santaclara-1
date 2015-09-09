@@ -44,6 +44,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
+
+import javax.swing.table.DefaultTableModel;
+
+import org.jdesktop.beansbinding.ObjectProperty;
+
+import javax.swing.ListSelectionModel;
+
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.event.MouseMotionAdapter;
+
 @SuppressWarnings("serial")
 public class UsuariosUI extends JPanel {
 	
@@ -58,6 +71,7 @@ public class UsuariosUI extends JPanel {
 	private JPanel pnZona;
 	private JPanel pnUsuario;
 	private JPanel pnCamion;
+	private JPanel panelMensaje = new JPanel();
 	
 	private JLabel lblTipoUsuario;
 	private JLabel lblUserName;
@@ -68,6 +82,8 @@ public class UsuariosUI extends JPanel {
 	private JLabel lblZona;
 	private JLabel lblCamion;
 	private JLabel lblMensaje;
+	private JLabel label = new JLabel();
+	private JLabel label1 = new JLabel();
 	
 	private JTextField txtUserName;
 	private JTextField txtId;
@@ -84,7 +100,6 @@ public class UsuariosUI extends JPanel {
 	private JButton btnSalir;
 	private JButton btnABuscar;
 	private JButton btnEliminar;
-	private JButton btnAbrirZona;
 	private JButton btnQuitar;
 	private JButton btnAgregar;
 	private JButton btnGuardar;
@@ -198,30 +213,36 @@ public class UsuariosUI extends JPanel {
 		btnEliminar.setBounds(365, 15, 115, 16);
 		pnOpciones.add(btnEliminar);
 		
-		btnAbrirRuta = new JButton("Ruta");
-		btnAbrirRuta.setBounds(485, 15, 115, 16);
-		pnOpciones.add(btnAbrirRuta);
-		btnAbrirRuta.setForeground(Color.WHITE);
-		btnAbrirRuta.setBackground(Color.DARK_GRAY);
-		
-		btnAbrirZona = new JButton("Zona");
-		btnAbrirZona.setForeground(Color.WHITE);
-		btnAbrirZona.setBackground(Color.DARK_GRAY);
-		btnAbrirZona.setBounds(605, 15, 115, 16);
-		pnOpciones.add(btnAbrirZona);
-		
 		pnTabla = new JPanel();
 		pnTabla.setBounds(12, 85, 852, 103);
 		pnUsuarios.add(pnTabla);
-		pnTabla.setLayout(null);
-		
-		scrollPanel = new JScrollPane();
-		scrollPanel.setBounds(0, 0, 852, 100);
-		pnTabla.add(scrollPanel);
+		GridBagLayout gbl_pnTabla = new GridBagLayout();
+		gbl_pnTabla.columnWidths = new int[]{852, 0};
+		gbl_pnTabla.rowHeights = new int[]{100, 0};
+		gbl_pnTabla.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_pnTabla.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		pnTabla.setLayout(gbl_pnTabla);
 		
 		table = new JTable();
-		table.setBounds(0, 0, 1, 1);
-		pnTabla.add(table);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+			}
+		));
+		GridBagConstraints gbc_table = new GridBagConstraints();
+		gbc_table.anchor = GridBagConstraints.NORTHWEST;
+		gbc_table.gridx = 0;
+		gbc_table.gridy = 0;
+		pnTabla.add(table, gbc_table);
+		
+		scrollPanel = new JScrollPane();
+		GridBagConstraints gbc_scrollPanel = new GridBagConstraints();
+		gbc_scrollPanel.fill = GridBagConstraints.BOTH;
+		gbc_scrollPanel.gridx = 0;
+		gbc_scrollPanel.gridy = 0;
+		pnTabla.add(scrollPanel, gbc_scrollPanel);
 		
 		panel_1 = new JPanel();
 		panel_1.setForeground(Color.GRAY);
@@ -257,7 +278,7 @@ public class UsuariosUI extends JPanel {
 		
 		pnEditar = new JPanel();
 		pnEditar.setBackground(Color.GRAY);
-		pnEditar.setBounds(12, 200, 852, 305);
+		pnEditar.setBounds(12, 200, 852, 328);
 		pnUsuarios.add(pnEditar);
 		pnEditar.setLayout(null);
 		
@@ -265,7 +286,7 @@ public class UsuariosUI extends JPanel {
 		pnUsuario.setLayout(null);
 		pnUsuario.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"Editar Usuario", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnUsuario.setBackground(Color.DARK_GRAY);
-		pnUsuario.setBounds(0, 5, 852, 80);
+		pnUsuario.setBounds(0, 5, 852, 100);
 		pnEditar.add(pnUsuario);
 		
 		btnGuardar = new JButton("Guardar");
@@ -286,22 +307,22 @@ public class UsuariosUI extends JPanel {
 		});
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(5, 17, 120, 16);
+		btnCancelar.setBounds(720, 45, 120, 16);
 		pnUsuario.add(btnCancelar);
 		
 		lblUserName = new JLabel("UserName:");
 		lblUserName.setForeground(Color.WHITE);
 		lblUserName.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblUserName.setBounds(143, 13, 81, 25);
+		lblUserName.setBounds(520, 17, 81, 25);
 		pnUsuario.add(lblUserName);
 		
 		txtUserName = new JTextField();
 		txtUserName.setColumns(10);
-		txtUserName.setBounds(229, 17, 200, 16);
+		txtUserName.setBounds(612, 21, 102, 16);
 		pnUsuario.add(txtUserName);
 		
 		txtId = new JTextField();
-		txtId.setColumns(10);
+		txtId.setColumns(10); 
 		txtId.setBounds(163, 9, 54, 19);
 		txtId.setVisible(false);
 		pnUsuario.add(txtId);
@@ -309,48 +330,69 @@ public class UsuariosUI extends JPanel {
 		lblCedula = new JLabel("Cedula:");
 		lblCedula.setForeground(Color.WHITE);
 		lblCedula.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblCedula.setBounds(36, 40, 69, 25);
+		lblCedula.setBounds(22, 13, 69, 25);
 		pnUsuario.add(lblCedula);
 		
 		lblContrasena = new JLabel("Contraseña:");
 		lblContrasena.setForeground(Color.WHITE);
 		lblContrasena.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblContrasena.setBounds(239, 40, 103, 25);
+		lblContrasena.setBounds(22, 51, 103, 25);
 		pnUsuario.add(lblContrasena);
 		
-		lblNombre = new JLabel("Nombre:");
+		lblNombre = new JLabel("Nombre Y Apellido:");
 		lblNombre.setForeground(Color.WHITE);
 		lblNombre.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblNombre.setBounds(440, 13, 69, 25);
+		lblNombre.setBounds(228, 17, 167, 25);
 		pnUsuario.add(lblNombre);
 		
 		lblReContrasena = new JLabel("Repetir Contraseña:");
 		lblReContrasena.setForeground(Color.WHITE);
 		lblReContrasena.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblReContrasena.setBounds(440, 40, 157, 25);
+		lblReContrasena.setBounds(228, 51, 157, 25);
 		pnUsuario.add(lblReContrasena);
 		
 		txtCedula = new JTextField();
 		txtCedula.setColumns(10);
-		txtCedula.setBounds(124, 45, 100, 16);
+		txtCedula.setBounds(110, 17, 100, 16);
 		pnUsuario.add(txtCedula);
 		
 		txtContrasena = new JPasswordField();
 		txtContrasena.setColumns(10);
-		txtContrasena.setBounds(327, 42, 100, 16);
+		txtContrasena.setBounds(110, 55, 100, 16);
 		pnUsuario.add(txtContrasena);
 		
 		txtNombre = new JTextField();
 		txtNombre.setColumns(10);
-		txtNombre.setBounds(499, 16, 200, 16);
+		txtNombre.setBounds(382, 17, 126, 16);
 		pnUsuario.add(txtNombre);
 		
 		txtReContrasena = new JPasswordField();
 		txtReContrasena.setColumns(10);
-		txtReContrasena.setBounds(599, 43, 100, 16);
+		txtReContrasena.setBounds(382, 55, 126, 16);
 		pnUsuario.add(txtReContrasena);
 		
 		pnEditarRuta = new JPanel();
+		pnEditarRuta.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) { 
+				panelMensaje.repaint();
+				panelMensaje.setBounds(0, 0, 150, 30);
+				panelMensaje.setLocation(e.getPoint());
+				panelMensaje.setBackground(Color.DARK_GRAY);
+				label.repaint();
+				label.setText("  Ruta Asignada ");
+				label.setForeground(Color.CYAN);
+				label1.repaint();
+				label1.setText(" Ruta Disponibles");
+				label1.setForeground(Color.yellow);
+				label.setBounds(0, 0, 150, 15);
+				label1.setBounds(0, 15, 150, 15);
+				panelMensaje.add(label);
+				panelMensaje.add(label1);
+				
+				pnEditarRuta.add(panelMensaje);
+			}
+		});
 		pnEditarRuta.setLayout(null);
 		String formatString = new String("  Id Ruta                        "+
 				 "Nombre Ruta              "+
@@ -358,7 +400,7 @@ public class UsuariosUI extends JPanel {
 				 "Nombre Zona              ");
 		pnEditarRuta.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),formatString, TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnEditarRuta.setBackground(Color.DARK_GRAY);
-		pnEditarRuta.setBounds(0, 88, 852, 135);
+		pnEditarRuta.setBounds(0, 104, 852, 169);
 		pnEditar.add(pnEditarRuta);
 		
 		pnRutas = new JPanel();
@@ -369,34 +411,13 @@ public class UsuariosUI extends JPanel {
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 709, 70);
 		pnRutas.add(scrollPane);
-		
 		tablaRutas = new JTable();
 		scrollPane.setViewportView(tablaRutas);
 		
 		comboRutas = new JComboBox();
+		
 		comboRutas.setBounds(10, 12, 618, 24);
-		comboRutas.setRenderer(new ListCellRenderer() {
-			@Override
-			public Component getListCellRendererComponent(JList list,
-					Object value, int index, boolean isSelected,
-					boolean cellHasFocus) {
-				// TODO Auto-generated method stub
-				Ruta ruta = (Ruta)value;
-				if(!ruta.equals(null))
-				{
-					JPanel pnRuta = new JPanel();
-					pnRuta.add(new JTextField(ruta.getId().toString()));
-					pnRuta.add(new JTextField(ruta.getNombre()));
-					pnRuta.add(new JTextField(ruta.getZona().getId().toString()));
-					pnRuta.add(new JTextField(ruta.getZona().getDescripcion()));
-				
-					pnRuta.setLayout(new GridLayout(1, 0, 0, 0));
-				
-					return pnRuta;
-				}
-				return null;
-			}
-		});
+		comboRutas.setRenderer(contUsuarios.rendererComboRuta());
 	
 		pnEditarRuta.add(comboRutas);
 		
@@ -434,15 +455,22 @@ public class UsuariosUI extends JPanel {
 		pnEditarRuta.add(btnQuitar);
 		
 		lblMensaje = new JLabel();
-		lblMensaje.setBounds(10, 110, 830, 20);
+		lblMensaje.setBounds(10, 110, 830, 54);
 		pnEditarRuta.add(lblMensaje);
-		lblMensaje.setForeground(Color.RED);
+		lblMensaje.setForeground(Color.WHITE);
+		
+		btnAbrirRuta = new JButton("Ruta");
+		btnAbrirRuta.addActionListener(contUsuarios.abrirRuta());
+		btnAbrirRuta.setBounds(725, 16, 120, 16);
+		pnEditarRuta.add(btnAbrirRuta);
+		btnAbrirRuta.setForeground(Color.WHITE);
+		btnAbrirRuta.setBackground(Color.DARK_GRAY);
 		
 		pnZona = new JPanel();
 		pnZona.setLayout(null);
 		pnZona.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Editar Zona", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnZona.setBackground(Color.DARK_GRAY);
-		pnZona.setBounds(0, 227, 409, 63);
+		pnZona.setBounds(0, 253, 409, 63);
 		pnEditar.add(pnZona);
 		
 		cmbZona = new JComboBox();
@@ -469,6 +497,7 @@ public class UsuariosUI extends JPanel {
 		pnZona.add(lblZona);
 		
 		btnZona = new JButton("Zona");
+		btnZona.addActionListener(contUsuarios.abrirZonas());
 		btnZona.setForeground(Color.WHITE);
 		btnZona.setBackground(Color.DARK_GRAY);
 		btnZona.setBounds(316, 22, 93, 24);
@@ -478,11 +507,11 @@ public class UsuariosUI extends JPanel {
 		pnCamion.setLayout(null);
 		pnCamion.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Editar Camion", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnCamion.setBackground(Color.DARK_GRAY);
-		pnCamion.setBounds(405, 227, 435, 63);
+		pnCamion.setBounds(405, 253, 435, 63);
 		pnEditar.add(pnCamion);
 		
 		cmbCamion = new JComboBox();
-		cmbCamion.setBounds(75, 22, 248, 24);
+		cmbCamion.setBounds(75, 22, 151, 24);
 		cmbCamion.setRenderer(new ListCellRenderer() {
 			@Override
 			public Component getListCellRendererComponent(JList list,
@@ -515,10 +544,12 @@ public class UsuariosUI extends JPanel {
 		pnCamion.add(lblCamion);
 		
 		btnCamion = new JButton("Camion");
+		btnCamion.addActionListener(contUsuarios.abrirCamiones());
 		btnCamion.setForeground(Color.WHITE);
 		btnCamion.setBackground(Color.DARK_GRAY);
-		btnCamion.setBounds(330, 22, 93, 24);
+		btnCamion.setBounds(312, 22, 120, 16);
 		pnCamion.add(btnCamion);
+		initDataBindings();
 		
 	}
 	
@@ -526,6 +557,7 @@ public class UsuariosUI extends JPanel {
 	public void activarBindingVendedores(List<Vendedor> vendedores) {
 		pnTabla.setVisible(true);
 		table = new JTable();
+		
 		scrollPanel.setViewportView(table);
 		binUsuarios = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
     			vendedores,table);
@@ -533,17 +565,15 @@ public class UsuariosUI extends JPanel {
 		BeanProperty UserNameUsuario = BeanProperty.create("username");
 		BeanProperty CedulaUsuario = BeanProperty.create("cedula");
 		BeanProperty NombreUsuario = BeanProperty.create("nombre");
-		
-		BeanProperty rutaVendedor = BeanProperty.create("ruta.nombre");
+		BeanProperty Rutas = BeanProperty.create("strRutas");	
 		
 		binUsuarios.addColumnBinding(idUsuario).setColumnClass(Integer.class).setColumnName("idVendedor ");
 		binUsuarios.addColumnBinding(UserNameUsuario).setColumnClass(String.class).setColumnName("UserName");
 		binUsuarios.addColumnBinding(CedulaUsuario).setColumnClass(String.class).setColumnName("Cedula");
 		binUsuarios.addColumnBinding(NombreUsuario).setColumnClass(String.class).setColumnName("Nombre");
+		binUsuarios.addColumnBinding(Rutas).setColumnClass(List.class).setColumnName("Rutas");
 		
-		binUsuarios.addColumnBinding(rutaVendedor).setColumnClass(String.class).setColumnName("Ruta1");
-	    binUsuarios.addColumnBinding(rutaVendedor).setColumnClass(String.class).setColumnName("Ruta2");
-	    binUsuarios.addColumnBinding(rutaVendedor).setColumnClass(String.class).setColumnName("Ruta3");
+	
 	    binUsuarios.bind();
 	}
 	
@@ -676,9 +706,12 @@ public class UsuariosUI extends JPanel {
 	
 	public void activarNuevoVendedor(){
 		pnEditar.setVisible(true);
-		pnEditar.setBounds(12, 81, 852, 230);
+		pnEditar.setBounds(12, 81, 852, 420);
+		pnEditarRuta.setBounds(0, 104, 852, 250);
 		btnAgregar.setVisible(true);
 		btnQuitar.setVisible(true);
+		getLblMensaje().setForeground(Color.GREEN);
+		getLblMensaje().setBounds(10, 210, 830, 54);
 		getLblMensaje().setText("solo puede Asignar tres Rutas. Se Guardaran las tres Primeras en la tabla");
 	}
 	public void activarNuevoJefeVenta(){
@@ -691,13 +724,14 @@ public class UsuariosUI extends JPanel {
 
 	public void activarNuevoConcesionario(){
 		pnEditar.setVisible(true);
-		pnEditar.setBounds(12, 81, 852, 298);
+		pnEditar.setBounds(12, 81, 852, 420);
+		pnEditarRuta.setBounds(0, 104, 852, 250);
 		btnAgregar.setVisible(false);
 		btnQuitar.setVisible(false);
 		pnCamion.setVisible(true);
-		pnCamion.setBounds(0,227, 852, 63);
-		btnCamion.setBounds(735, 23, 93, 24);
-		cmbCamion.setBounds(75, 22, 660, 24);
+		pnCamion.setBounds(0,355, 852, 67);
+		btnCamion.setBounds(735, 23, 120, 16);
+		cmbCamion.setBounds(75, 22, 600, 24);
 		pnZona.setVisible(false);
 		pnRutas.setVisible(false);
 		lblMensaje.setText("");
@@ -1016,13 +1050,6 @@ public class UsuariosUI extends JPanel {
 		this.usuarios = usuarios;
 	}
 
-	public JButton getBtnAbrirZona() {
-		return btnAbrirZona;
-	}
-
-	public void setBtnAbrirZona(JButton btnAbrirZona) {
-		this.btnAbrirZona = btnAbrirZona;
-	}
 
 	public JComboBox<Ruta> getComboRutas() {
 		return comboRutas;
@@ -1172,5 +1199,17 @@ public class UsuariosUI extends JPanel {
 
 	public List<Camion> getCamiones() {
 		return camiones;
-	}	
+	}
+	
+	protected void initDataBindings() {
+		BeanProperty<JTable, Integer> jTableBeanProperty = BeanProperty.create("selectedColumn");
+		ObjectProperty<JTable> jTableObjectProperty = ObjectProperty.create();
+		AutoBinding<JTable, Integer, JTable, JTable> autoBinding = Bindings.createAutoBinding(UpdateStrategy.READ, table, jTableBeanProperty, table, jTableObjectProperty);
+		autoBinding.bind();
+		//
+		BeanProperty<JTable, Integer> jTableBeanProperty_1 = BeanProperty.create("selectedRow");
+		BeanProperty<JTable, List<Object>> jTableBeanProperty_2 = BeanProperty.create("selectedElements");
+		AutoBinding<JTable, Integer, JTable, List<Object>> autoBinding_1 = Bindings.createAutoBinding(UpdateStrategy.READ, table, jTableBeanProperty_1, table, jTableBeanProperty_2);
+		autoBinding_1.bind();
+	}
 }

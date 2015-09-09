@@ -182,6 +182,19 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 	telefono:04161556613
 	ruta:1
   * */
+	@Override
+	public Cliente getCliente(String rif) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		List<Cliente> clientes = getClientes();
+		for(Cliente cliente1 :clientes)
+		{
+			if(cliente1.getRif().equals(rif))
+			{
+				return cliente1;
+			}
+		}
+		return null;
+	}
 	
 } 
 

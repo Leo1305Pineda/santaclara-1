@@ -4,3 +4,9 @@ idCliente:2
 tipo:D
 idCliente:5
 tipo:D
+idCliente:6
+tipo:C
+idCliente:8
+tipo:D
+idCliente:9
+tipo:C

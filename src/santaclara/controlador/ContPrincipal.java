@@ -172,7 +172,7 @@ public  class ContPrincipal implements IContGeneral {
 				}
 				else if(e.getSource().equals(vista.getMntVisitas()))
 				{
-					//ActivarVisitas();
+					ActivarVisitas();
 				}
 				else if(e.getSource().equals(vista.getMntZonas()))
 				{
@@ -191,7 +191,16 @@ public  class ContPrincipal implements IContGeneral {
 			e1.printStackTrace();
 		}
 	}
-	
+	public void ActivarVisitas(){
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContVisitas(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	public void ActivarClientes() {
 		// TODO Auto-generated method stub
 		try {

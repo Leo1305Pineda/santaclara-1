@@ -5,7 +5,7 @@ id:1
 zona:1
 nombre:El Carmen
 id:2
-zona:2
+zona:4
 nombre:Los Crepusculo
 id:3
 zona:3
@@ -20,8 +20,11 @@ id:6
 zona:1
 nombre:Carorita
 id:7
-zona:1
+zona:5
 nombre:Altos del Norte
 id:8
-zona:2
+zona:7
 nombre:Alto del Sur
+id:9
+zona:7
+nombre:La Fortuna

@@ -38,3 +38,13 @@ username:Ramon
 cedula:V-14634976
 nombre:Ramon Castro
 contrasena:1234
+id:8
+username:Jaikel
+cedula:V-12734678
+nombre:Jaikel Paez
+contrasena:123
+id:9
+username:Felipe
+cedula:V-5376222
+nombre:Felipe
+contrasena:123

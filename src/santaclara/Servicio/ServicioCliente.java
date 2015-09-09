@@ -1,6 +1,7 @@
 package santaclara.Servicio;
 
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -52,5 +53,10 @@ public class ServicioCliente {
 	}
 	public void modificar (Cliente cliente) throws IOException{
 		clienteDAO.guardar(cliente);
+	}
+
+	public Cliente getCliente(String rif) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		return clienteDAO.getCliente(rif);
 	}
 }

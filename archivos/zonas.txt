@@ -8,3 +8,9 @@ id:3
 descripcion:Este
 id:4
 descripcion:Oeste
+id:5
+descripcion:NorOeste
+id:6
+descripcion:NorEste
+id:7
+descripcion:SurEste

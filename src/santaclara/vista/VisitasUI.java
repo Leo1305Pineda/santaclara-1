@@ -1,402 +1,320 @@
 package santaclara.vista;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.SystemColor;
+import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 import javax.swing.JTable;
-
-import org.jdesktop.beansbinding.AutoBinding;
-import org.jdesktop.beansbinding.BeanProperty;
-import org.jdesktop.swingbinding.JComboBoxBinding;
-import org.jdesktop.swingbinding.JTableBinding;
-import org.jdesktop.swingbinding.SwingBindings;
-
-import santaclara.controlador.ContProductos;
-import santaclara.modelo.Capacidad;
-import santaclara.modelo.Presentacion;
-import santaclara.modelo.Producto;
-import santaclara.modelo.Sabor;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.JSeparator;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
-
-import net.miginfocom.swing.MigLayout;
-import java.awt.GridLayout;
-import javax.swing.SpinnerModel;
 import javax.swing.JCheckBox;
+
+import org.jdesktop.swingbinding.JTableBinding;
+
+import santaclara.controlador.ContVisitas;
+import santaclara.modelo.Usuario;
+
+import javax.swing.DefaultComboBoxModel;
+
+import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
 public class VisitasUI extends JPanel {
-
+	
+	private JFrame frame = new JFrame();
+	
+	private JPanel pnVisitas;
+	private JPanel pnConsultar;
+	private JPanel panelVisitaJefeVenta;
+	private JPanel pntipoUser;
+	private JPanel pnUsuario;
+	
+	private JButton btnAtras;
+	private JButton btnSalir;
+	private JButton btnGuardar;
+	private JButton btnCancelar;
+	private JButton boton = new JButton("+ Visita");
+	
+	private JComboBox<String> comboTipoUser;
+	private JComboBox<Usuario> comboUsuario;
+	
+	private JCheckBox chckbxEstado;
+   
+    private JTextField txtMotivo;
+    private JTextField txtDescripcion;
+	
+	private JSpinner txtValVendedor;
+	private JSpinner txtValProducto;
+	
+	private JLabel lblValorproducto;
+	private JLabel lblMotivo;
+	private JLabel lblValVendedor;
+	private JLabel lblFecha;
+	private JLabel lblDescripcion;
+	
+	private JScrollPane scrollPanel;
+	
 	private JTable table;
 	
-	private JScrollPane scrollPanel; 
-	
-	private List<Producto> productos = new ArrayList<Producto>();
 	@SuppressWarnings("rawtypes")
-	private JTableBinding  binProductos;
-
-	private JTextField txtBuscar;
-
-	private List<Presentacion> presentaciones = new ArrayList<Presentacion>();
-	private List<Sabor> sabores = new ArrayList<Sabor>();
-	private List<Capacidad> capacidades = new ArrayList<Capacidad>();
-    private JComboBox<Presentacion> cmbCliente;
-    private JButton btnGuardar;
-
-    private JTextField 			txtNombre;
-    private JTextField  txtId;
-	private JSpinner			 txtValVendedor; 
-	private JPanel 	  			 panelProducto;
+	private JTableBinding  binVisitas;
+	private JTextField txtFecha;
+	private JTextField txtCliente;
+	private JTextField txtRuta;
 	
-	private JButton btnNuevo;
-	private JButton	btnModificar;
-	private JButton btnEliminar;
-	
-	private JTextField txtABuscar;
-	private JPanel pnJefeVenta;
-	private JComboBox<Presentacion> cmbJefeVenta;
-	private JLabel lblValorproducto;
-	private JTextField txtDescripcion;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public VisitasUI(ContProductos contProductos, List<Producto> productos,List<Capacidad> capacidades, 
-		List<Sabor> sabores,List<Presentacion> presentaciones) {
-		
-		this.productos = productos;
-		this.presentaciones = presentaciones;
-		this.capacidades = capacidades;
-		this.sabores = sabores;
+	public VisitasUI(ContVisitas contVisitas) {
 		
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
 		setBackground(Color.DARK_GRAY);
-		setSize(895,723);
+		setSize(895,696);
 		setLayout(null);
 		
-		JPanel pnProductos = new JPanel();
-		pnProductos.setLocation(12, 12);
-		pnProductos.setSize(875,680);
-		pnProductos.setBackground(Color.DARK_GRAY);
-		pnProductos.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Productos", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		add(pnProductos);
+		pnVisitas = new JPanel();
+		pnVisitas.setLocation(12, 12);
+		pnVisitas.setSize(875,672);
+		pnVisitas.setBackground(Color.DARK_GRAY);
+		pnVisitas.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Visita", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		add(pnVisitas);
 
-		
 		scrollPanel = new JScrollPane();
-		scrollPanel.setBounds(12, 96, 852, 379);
+		scrollPanel.setBounds(12, 85, 852, 391);
 		table = new JTable();
-		table.setBackground(Color.GRAY);
+		table.addMouseListener(contVisitas.ActivarClick());
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+			}
+		));
+		table.setForeground(new Color(51, 51, 51));
+		table.setFont(new Font("Dialog", Font.PLAIN, 12));
+		
+		
+		table.setDefaultRenderer(String.class, contVisitas.getTableCellRenderer());
+		
+		table.setBackground(Color.WHITE);
 		scrollPanel.setViewportView(table);
-		pnProductos.setLayout(null);
+		pnVisitas.setLayout(null);
 				
-				
-		pnProductos.add(scrollPanel);
+		pnVisitas.add(scrollPanel);
 		
-		JPanel pnAction = new JPanel();
-		pnAction.setBackground(Color.GRAY);
-		pnAction.setForeground(Color.DARK_GRAY);
-		pnAction.setBounds(12, 47, 852, 48);
-		pnProductos.add(pnAction);
-						pnAction.setLayout(null);
-				
-						JPanel botones = new JPanel();
-						botones.setBounds(0, 0, 853, 37);
-						pnAction.add(botones);
-						botones.setBackground(Color.DARK_GRAY);
-						botones.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), "opciones", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(255, 255, 255)));
-						
-						btnModificar = new JButton("Editar");
-						btnModificar.setBounds(228, 17, 100, 16);
-						btnModificar.setIcon(new ImageIcon("img/gestion/Modificara.png"));
-						
-										btnModificar.setToolTipText("Modificar");
-										
-										btnModificar.setForeground(Color.WHITE);
-										btnModificar.setBackground(Color.DARK_GRAY);
-										btnModificar.addActionListener(contProductos.modificar());
-										
-
-										btnNuevo = new JButton("Nuevo");
-										btnNuevo.setBounds(124, 17, 100, 16);
-										btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
-										btnNuevo.setForeground(Color.WHITE);
-										btnNuevo.setBackground(Color.DARK_GRAY);
-										btnNuevo.addActionListener(contProductos.nuevo());
-										botones.setLayout(null);
-										
-										JButton btnAtras = new JButton("Atras");
-										btnAtras.addActionListener(contProductos.Atras());
-										btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
-										btnAtras.setBounds(12, 17, 92, 16);
-										botones.add(btnAtras);
-										btnAtras.setForeground(Color.WHITE);
-										btnAtras.setBackground(Color.DARK_GRAY);
-										botones.add(btnNuevo);
-										botones.add(btnModificar);
-										
-										btnEliminar = new JButton("Eliminar");
-										btnEliminar.setBounds(331, 17, 110, 16);
-										btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-										btnEliminar.setForeground(Color.WHITE);
-										btnEliminar.setBackground(Color.DARK_GRAY);
-										btnEliminar.addActionListener(contProductos.eliminar());
-										botones.add(btnEliminar);
-										
-										JButton btnCliente = new JButton("Cliente");
-										btnCliente.setIcon(new ImageIcon("img/gestion/Presentacion.png"));
-										btnCliente.setBounds(460, 17, 150, 16);
-										btnCliente.setForeground(Color.WHITE);
-										btnCliente.setBackground(Color.DARK_GRAY);
-										btnCliente.addActionListener(contProductos.AbrirPresentaciones());
-										botones.add(btnCliente);
-										
-										JButton bntJefeVenta = new JButton("Capacidad");
-										bntJefeVenta.addActionListener(contProductos.AbrirCapacidades());
-										bntJefeVenta.setIcon(new ImageIcon("img/gestion/Capacidad.png"));
-										bntJefeVenta.setBounds(615, 17, 130, 16);
-										bntJefeVenta.setForeground(Color.WHITE);
-										bntJefeVenta.setBackground(Color.DARK_GRAY);
-										botones.add(bntJefeVenta);
-										
-										JButton button = new JButton("Salir");
-										button.addActionListener(contProductos.salir());
-										button.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
-										button.setBounds(751, 17, 86, 16);
-										button.setForeground(Color.WHITE);
-										button.setBackground(Color.DARK_GRAY);
-										botones.add(button);
+		panelVisitaJefeVenta = new JPanel();
+		panelVisitaJefeVenta.setBounds(12, 488, 852, 172);
+		pnVisitas.add(panelVisitaJefeVenta);
+		panelVisitaJefeVenta.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Editar Visita Jefe Venta", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		panelVisitaJefeVenta.setBackground(Color.DARK_GRAY);
+		panelVisitaJefeVenta.getSize(new Dimension(800, 150));
+		panelVisitaJefeVenta.setLayout(null);
 		
-		panelProducto = new JPanel();
-		panelProducto.setBounds(12, 487, 852, 181);
-		pnProductos.add(panelProducto);
-		panelProducto.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Editar Visita", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		panelProducto.setBackground(Color.DARK_GRAY);
-		panelProducto.getSize(new Dimension(800, 150));
-		panelProducto.setLayout(null);
-		
-		JLabel lblMotivo = new JLabel("Motivo:");
-		lblMotivo.setBounds(303, 67, 69, 25);
+		lblMotivo = new JLabel("Motivo:");
+		lblMotivo.setBounds(12, 62, 85, 25);
 		lblMotivo.setForeground(Color.WHITE);
 		lblMotivo.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		panelProducto.add(lblMotivo);
+		panelVisitaJefeVenta.add(lblMotivo);
 
-		txtNombre = new JTextField();
-		txtNombre.setBounds(419, 71, 121, 16);
-		panelProducto.add(txtNombre);
-		txtNombre.setColumns(10);
+		txtMotivo = new JTextField();
+		txtMotivo.setBounds(114, 66, 287, 16);
+		panelVisitaJefeVenta.add(txtMotivo);
+		txtMotivo.setColumns(10);
 				
-		JLabel lblValVendedor = new JLabel("Valor Vendedor:");
-		lblValVendedor.setBounds(31, 94,  116,25);
+		lblValVendedor = new JLabel("Valor Vendedor:");
+		lblValVendedor.setBounds(12, 99,  116,25);
 		lblValVendedor.setBackground(SystemColor.controlHighlight);
 		lblValVendedor.setForeground(Color.WHITE);
-		panelProducto.add(lblValVendedor);
+		panelVisitaJefeVenta.add(lblValVendedor);
 				
 		txtValVendedor = new JSpinner(new SpinnerNumberModel(0.0,0.00,Double.MAX_VALUE,0.1));
-		txtValVendedor.setBounds(159, 98, 121,16);
+		txtValVendedor.setBounds(129, 103, 69,16);
 		((JSpinner.NumberEditor)txtValVendedor.getEditor()).getFormat().setMinimumFractionDigits(2);
-		panelProducto.add(txtValVendedor);
-		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(5, 152, 844, 12);
-		panelProducto.add(separator);
+		panelVisitaJefeVenta.add(txtValVendedor);
 		
 		btnGuardar = new JButton("Guardar");
-		btnGuardar.setBounds(713, 28, 127, 16);
-		panelProducto.add(btnGuardar);
+		btnGuardar.setBounds(504, 112, 127, 16);
+		panelVisitaJefeVenta.add(btnGuardar);
 		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		btnGuardar.setForeground(Color.WHITE);
 		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(17, 28, 130, 16);
-		panelProducto.add(btnCancelar);
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(643, 108, 130, 16);
+		panelVisitaJefeVenta.add(btnCancelar);
 		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				quitarNuevo();
-				scrollPanel.setVisible(true);
-			}
-		});
+		btnCancelar.addActionListener(contVisitas.QuitarFrame());
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setBackground(Color.DARK_GRAY);
-		
-		txtId = new JTextField();
-		txtId.setBounds(15, 43, 44, 19);
-		panelProducto.add(txtId);
-		txtId.setColumns(10);
-		
-		JPanel pnCliente = new JPanel();
-		pnCliente.setBackground(Color.DARK_GRAY);
-		pnCliente.setBounds(159, 15, 260, 40);
-		pnCliente.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "idCliente  |Nombre   ", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		panelProducto.add(pnCliente);
-		pnCliente.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		
-		cmbCliente = new JComboBox<Presentacion>();
-		pnCliente.add(cmbCliente);
-		cmbCliente.setBackground(SystemColor.controlHighlight);
-		cmbCliente.setForeground(Color.BLACK);
-		cmbCliente.setRenderer(new ListCellRenderer() {
-			
-		
-			@Override
-			public Component getListCellRendererComponent(JList list, Object value,
-					int index, boolean isSelected, boolean cellHasFocus) {
-				// TODO Auto-generated method stub
-				Presentacion presentacion = (Presentacion) value;
-				return new JLabel(presentacion.getMaterial());
-			}
-		});
-		
-		pnJefeVenta = new JPanel();
-		pnJefeVenta.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "idJefeVenta  |Nombre   ", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		pnJefeVenta.setBackground(Color.DARK_GRAY);
-		pnJefeVenta.setBounds(441, 15, 260, 40);
-		panelProducto.add(pnJefeVenta);
-		pnJefeVenta.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		cmbJefeVenta = new JComboBox<Presentacion>();
-		cmbJefeVenta.setForeground(Color.BLACK);
-		cmbJefeVenta.setBackground(SystemColor.controlHighlight);
-		pnJefeVenta.add(cmbJefeVenta);
-		
+	
 		lblValorproducto = new JLabel("Valor Producto:");
 		lblValorproducto.setForeground(Color.WHITE);
 		lblValorproducto.setBackground(SystemColor.controlHighlight);
-		lblValorproducto.setBounds(303, 94, 116, 25);
-		panelProducto.add(lblValorproducto);
+		lblValorproducto.setBounds(217, 99, 116, 25);
+		panelVisitaJefeVenta.add(lblValorproducto);
 		
-		JSpinner txtValProducto = new JSpinner((SpinnerModel) null);
-		txtValProducto.setBounds(419, 104, 121, 16);
-		panelProducto.add(txtValProducto);
+		txtValProducto = new JSpinner(new SpinnerNumberModel(1.0,1.0,Double.MAX_VALUE,1.0));
+		txtValProducto.setBounds(334, 108, 69, 16);
+		panelVisitaJefeVenta.add(txtValProducto);
 		
-		JLabel lblFecha = new JLabel("Fecha:");
+		lblFecha = new JLabel("Fecha:");
 		lblFecha.setForeground(Color.WHITE);
 		lblFecha.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblFecha.setBounds(31, 67, 69, 25);
-		panelProducto.add(lblFecha);
+		lblFecha.setBounds(12, 19, 69, 25);
+		panelVisitaJefeVenta.add(lblFecha);
 		
-		JLabel lblDescripcion = new JLabel("Descripcion:");
+		lblDescripcion = new JLabel("Descripcion:");
 		lblDescripcion.setForeground(Color.WHITE);
 		lblDescripcion.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblDescripcion.setBounds(558, 62, 100, 25);
-		panelProducto.add(lblDescripcion);
+		lblDescripcion.setBounds(434, 57, 100, 25);
+		panelVisitaJefeVenta.add(lblDescripcion);
 		
 		txtDescripcion = new JTextField();
 		txtDescripcion.setColumns(10);
-		txtDescripcion.setBounds(654, 71, 186, 16);
-		panelProducto.add(txtDescripcion);
+		txtDescripcion.setBounds(536, 61, 287, 16);
+		panelVisitaJefeVenta.add(txtDescripcion);
 		
-		JCheckBox chckbxEstado = new JCheckBox("Estado");
+		chckbxEstado = new JCheckBox("Estado");
 		chckbxEstado.setForeground(Color.WHITE);
 		chckbxEstado.setBackground(Color.DARK_GRAY);
-		chckbxEstado.setBounds(556, 101, 129, 23);
-		panelProducto.add(chckbxEstado);
-		txtId.setVisible(false);
-		btnGuardar.addActionListener(contProductos.guardar());
+		chckbxEstado.setBounds(412, 105, 129, 23);
+		panelVisitaJefeVenta.add(chckbxEstado);
 		
-		JPanel panel = new JPanel();
-		panel.setForeground(Color.GRAY);
-		panel.setBackground(Color.DARK_GRAY);
-		panel.setBounds(12, 12, 852, 35);
-		pnProductos.add(panel);
-		panel.setLayout(new MigLayout("", "[grow]", "[]"));
+		txtFecha = new JTextField();
+		txtFecha.setColumns(10);
+		txtFecha.setBounds(114, 22, 145, 16);
+		panelVisitaJefeVenta.add(txtFecha);
 		
-		txtABuscar = new JTextField();
-		txtABuscar.setForeground(Color.WHITE);
-		txtABuscar.setColumns(10);
-		txtABuscar.setBackground(Color.DARK_GRAY);
-		panel.add(txtABuscar, "flowx,cell 0 0,growx");
+		txtCliente = new JTextField();
+		txtCliente.setColumns(10);
+		txtCliente.setBounds(406, 19, 145, 16);
+		panelVisitaJefeVenta.add(txtCliente);
 		
-		JButton btnBuscar = new JButton("");
-		btnBuscar.addActionListener(contProductos.buscar());
-		btnBuscar.setVerticalAlignment(SwingConstants.TOP);
-		btnBuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
-		btnBuscar.setBackground(Color.DARK_GRAY);
-		panel.add(btnBuscar, "cell 0 0");
-		 
+		txtRuta = new JTextField();
+		txtRuta.setColumns(10);
+		txtRuta.setBounds(678, 19, 145, 16);
+		panelVisitaJefeVenta.add(txtRuta);
+		
+		pnConsultar = new JPanel();
+		pnConsultar.setBounds(11, 18, 853, 68);
+		pnVisitas.add(pnConsultar);
+		pnConsultar.setBackground(Color.DARK_GRAY);
+		pnConsultar.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), "", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		pnConsultar.setLayout(null);
+		
+		btnAtras = new JButton("Atras");
+		btnAtras.addActionListener(contVisitas.Atras());
+		btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
+		btnAtras.setBounds(12, 17, 92, 16);
+		pnConsultar.add(btnAtras);
+		btnAtras.setForeground(Color.WHITE);
+		btnAtras.setBackground(Color.DARK_GRAY);
+		
+		btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(contVisitas.salir());
+		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
+		btnSalir.setBounds(751, 17, 86, 16);
+		btnSalir.setForeground(Color.WHITE);
+		btnSalir.setBackground(Color.DARK_GRAY);
+		pnConsultar.add(btnSalir);
+		
+		pntipoUser = new JPanel();
+		pntipoUser.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "tipo de Usuario", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		pntipoUser.setBackground(Color.DARK_GRAY);
+		pntipoUser.setBounds(116, 10, 260, 45);
+		pnConsultar.add(pntipoUser);
+		pntipoUser.setLayout(null);
+		
+		comboTipoUser = new JComboBox<String>();
+		comboTipoUser.addActionListener(contVisitas.ActivarComboTipo());
+		comboTipoUser.setBounds(5, 15, 250, 25);
+		comboTipoUser.setModel(new DefaultComboBoxModel(new String[] {"JefeVenta", "Concesionario"}));
+		comboTipoUser.setForeground(Color.BLACK);
+		comboTipoUser.setBackground(SystemColor.controlHighlight);
+		pntipoUser.add(comboTipoUser);
+		
+		pnUsuario = new JPanel();
+		pnUsuario.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "idUsuario  |Nombre   ", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		pnUsuario.setBackground(Color.DARK_GRAY);
+		pnUsuario.setBounds(376, 10, 260, 45);
+		pnConsultar.add(pnUsuario);
+		pnUsuario.setLayout(null);
+		
+		comboUsuario = new JComboBox<Usuario>();
+		comboUsuario.addActionListener(contVisitas.ActivarComboUsuario());
+		comboUsuario.setBounds(5, 15, 250, 25);
+		comboUsuario.setForeground(Color.BLACK);
+		comboUsuario.setRenderer(contVisitas.setRendererComboUsuario());
+		
+		comboUsuario.setBackground(SystemColor.controlHighlight);
+		pnUsuario.add(comboUsuario);
+		btnGuardar.addActionListener(contVisitas.guardar());
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void activarBinding(List<Producto> lsProductos) {
-		// TODO Auto-generated method stub
-		table = new JTable();
-		scrollPanel.setViewportView(table);
-		scrollPanel.setBounds(12, 96, 953, 670);
-		binProductos = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
-    			lsProductos,table);
-	    BeanProperty nombreProducto = BeanProperty.create("nombre");
-	    BeanProperty idProducto  = BeanProperty.create("id");
-	    BeanProperty capacidadProducto  = BeanProperty.create("capacidad.volumenStr");
-	    BeanProperty presentacionProducto = BeanProperty.create("presentacion.material");
-	    BeanProperty saborProducto = BeanProperty.create("sabor.sabor");
-	    BeanProperty precioProducto = BeanProperty.create("precioStr");
-
-	    binProductos.addColumnBinding(idProducto).setColumnClass(Integer.class).setColumnName("id");;
-	    binProductos.addColumnBinding(nombreProducto).setColumnClass(String.class).setColumnName("Nombre");
-	    binProductos.addColumnBinding(capacidadProducto).setColumnClass(String.class).setColumnName("Capacidad");
-	    binProductos.addColumnBinding(presentacionProducto).setColumnClass(String.class).setColumnName("Presentacion");;
-	    binProductos.addColumnBinding(saborProducto).setColumnClass(String.class).setColumnName("Sabor");;
-	    binProductos.addColumnBinding(precioProducto).setColumnClass(String.class).setColumnName("Precio");;
-
-	    binProductos.bind();
-
-	    JComboBoxBinding jcomboPresentacion = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,presentaciones,cmbCliente);
-
-	    jcomboPresentacion.bind();
-
+	public JPanel getPnVisitas() {
+		return pnVisitas;
 	}
 
-	
-	public JTable getTable() {
-		return table;
+	public void setPnVisitas(JPanel pnVisitas) {
+		this.pnVisitas = pnVisitas;
 	}
 
-	public void setTable(JTable table) {
-		this.table = table;
+	public JPanel getPnConsultar() {
+		return pnConsultar;
 	}
 
-	public JTextField getTxtBuscar() {
-		return txtBuscar;
+	public void setPnConsultar(JPanel pnConsultar) {
+		this.pnConsultar = pnConsultar;
 	}
 
-	public void setTxtBuscar(JTextField txtBuscar) {
-		this.txtBuscar = txtBuscar;
+	public JPanel getPanelVisitaJefeVenta() {
+		return panelVisitaJefeVenta;
 	}
 
-
-	@SuppressWarnings("rawtypes")
-	public JComboBox getCmbPresentacion() {
-		return cmbCliente;
+	public void setPanelVisitaJefeVenta(JPanel panelVisitaJefeVenta) {
+		this.panelVisitaJefeVenta = panelVisitaJefeVenta;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void setCmbPresentacion(JComboBox cmbPresentacion) {
-		this.cmbCliente = cmbPresentacion;
+	public JPanel getPntipoUser() {
+		return pntipoUser;
+	}
+
+	public void setPntipoUser(JPanel pntipoUser) {
+		this.pntipoUser = pntipoUser;
+	}
+
+	public JPanel getPnUsuario() {
+		return pnUsuario;
+	}
+
+	public void setPnUsuario(JPanel pnUsuario) {
+		this.pnUsuario = pnUsuario;
+	}
+
+	public JButton getBtnAtras() {
+		return btnAtras;
+	}
+
+	public void setBtnAtras(JButton btnAtras) {
+		this.btnAtras = btnAtras;
+	}
+
+	public JButton getBtnSalir() {
+		return btnSalir;
+	}
+
+	public void setBtnSalir(JButton btnSalir) {
+		this.btnSalir = btnSalir;
 	}
 
 	public JButton getBtnGuardar() {
@@ -407,118 +325,108 @@ public class VisitasUI extends JPanel {
 		this.btnGuardar = btnGuardar;
 	}
 
+	public JButton getBtnCancelar() {
+		return btnCancelar;
+	}
+
+	public void setBtnCancelar(JButton btnCancelar) {
+		this.btnCancelar = btnCancelar;
+	}
+
+	public JComboBox<String> getComboTipoUser() {
+		return comboTipoUser;
+	}
+
+	public void setComboTipoUser(JComboBox<String> comboTipoUser) {
+		this.comboTipoUser = comboTipoUser;
+	}
+
+	public JComboBox<Usuario> getComboUsuario() {
+		return comboUsuario;
+	}
+
+	public void setComboUsuario(JComboBox<Usuario> comboUsuario) {
+		this.comboUsuario = comboUsuario;
+	}
+
+	public JCheckBox getChckbxEstado() {
+		return chckbxEstado;
+	}
+
+	public void setChckbxEstado(JCheckBox chckbxEstado) {
+		this.chckbxEstado = chckbxEstado;
+	}
+
 	public JTextField getTxtNombre() {
-		return txtNombre;
+		return txtMotivo;
 	}
 
 	public void setTxtNombre(JTextField txtNombre) {
-		this.txtNombre = txtNombre;
+		this.txtMotivo = txtNombre;
 	}
 
-	public JSpinner getTxtPrecio() {
+	public JTextField getTxtDescripcion() {
+		return txtDescripcion;
+	}
+
+	public void setTxtDescripcion(JTextField txtDescripcion) {
+		this.txtDescripcion = txtDescripcion;
+	}
+
+	public JSpinner getTxtValVendedor() {
 		return txtValVendedor;
 	}
 
-	public void setTxtPrecio(JSpinner txtPrecio) {
-		this.txtValVendedor = txtPrecio;
+	public void setTxtValVendedor(JSpinner txtValVendedor) {
+		this.txtValVendedor = txtValVendedor;
 	}
 
-	public List<Producto> getProductos() {
-		return productos;
+	public JSpinner getTxtValProducto() {
+		return txtValProducto;
 	}
 
-	public void setProductos(List<Producto> productos) {
-		this.productos = productos;
+	public void setTxtValProducto(JSpinner txtValProducto) {
+		this.txtValProducto = txtValProducto;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public JTableBinding getBinProductos() {
-		return binProductos;
+	public JLabel getLblValorproducto() {
+		return lblValorproducto;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public void setBinProductos(JTableBinding binProductos) {
-		this.binProductos = binProductos;
-	}
-	
-	
-
-	public List<Presentacion> getPresentaciones() {
-		return presentaciones;
+	public void setLblValorproducto(JLabel lblValorproducto) {
+		this.lblValorproducto = lblValorproducto;
 	}
 
-	public void setPresentaciones(List<Presentacion> presentaciones) {
-		this.presentaciones = presentaciones;
+	public JLabel getLblMotivo() {
+		return lblMotivo;
 	}
 
-	public List<Sabor> getSabores() {
-		return sabores;
+	public void setLblMotivo(JLabel lblMotivo) {
+		this.lblMotivo = lblMotivo;
 	}
 
-	public void setSabores(List<Sabor> sabores) {
-		this.sabores = sabores;
+	public JLabel getLblValVendedor() {
+		return lblValVendedor;
 	}
 
-	public List<Capacidad> getCapacidades() {
-		return capacidades;
+	public void setLblValVendedor(JLabel lblValVendedor) {
+		this.lblValVendedor = lblValVendedor;
 	}
 
-	public void setCapacidades(List<Capacidad> capacidades) {
-		this.capacidades = capacidades;
+	public JLabel getLblFecha() {
+		return lblFecha;
 	}
 
-	public JTextField getTxtId() {
-		return txtId;
+	public void setLblFecha(JLabel lblFecha) {
+		this.lblFecha = lblFecha;
 	}
 
-	public void setTxtId(JTextField txtId) {
-		this.txtId = txtId;
+	public JLabel getLblDescripcion() {
+		return lblDescripcion;
 	}
 
-	public JPanel getPanelProducto() {
-		return panelProducto;
-	}
-
-	public void setPanelProducto(JPanel panelProducto) {
-		this.panelProducto = panelProducto;
-	}
-
-	public JButton getBtnNuevo() {
-		return btnNuevo;
-	}
-
-	public void setBtnNuevo(JButton btnNuevo) {
-		this.btnNuevo = btnNuevo;
-	}
-
-	public JButton getBtnModificar() {
-		return btnModificar;
-	}
-
-	public void setBtnModificar(JButton btnModificar) {
-		this.btnModificar = btnModificar;
-	}
-
-	public JButton getBtnEliminar() {
-		return btnEliminar;
-	}
-
-	public void setBtnEliminar(JButton btnEliminar) {
-		this.btnEliminar = btnEliminar;
-	}
-
-
-	public void activarNuevoProducto() {
-		// TODO Auto-generated method stub
-		panelProducto.setVisible(true);
-		panelProducto.setBounds(12, 96, 953, 40);
-		txtNombre.setText("");
-		txtValVendedor.setValue(0);
-	}
-
-	public void quitarNuevo() {
-		// TODO Auto-generated method stub
-		panelProducto.setVisible(false);
+	public void setLblDescripcion(JLabel lblDescripcion) {
+		this.lblDescripcion = lblDescripcion;
 	}
 
 	public JScrollPane getScrollPanel() {
@@ -529,13 +437,81 @@ public class VisitasUI extends JPanel {
 		this.scrollPanel = scrollPanel;
 	}
 
-	public JTextField getTxtABuscar() {
-		return txtABuscar;
+	public JTable getTabla() {
+		return table;
 	}
 
-	public void setTxtABuscar(String txtABuscar) {
-		this.txtABuscar.setText(txtABuscar);
+	public void setTable(JTable table) {
+		this.table = table;
 	}
+
+	@SuppressWarnings("rawtypes")
+	public JTableBinding getBinVisitas() {
+		return binVisitas;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public void setBinVisitas(JTableBinding binVisitas) {
+		this.binVisitas = binVisitas;
+	}
+	public void quitarNuevo() {
+		// TODO Auto-generated method stub
+		panelVisitaJefeVenta.setVisible(false);
+		scrollPanel.setVisible(true);
+		
+	}
+
+	public JButton getBoton() {
+		return boton;
+	}
+
+	public void setBoton(JButton boton) {
+		this.boton = boton;
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public JTextField getTxtFecha() {
+		return txtFecha;
+	}
+
+	public void setTxtFecha(JTextField txtFecha) {
+		this.txtFecha = txtFecha;
+	}
+
+	public JTextField getTxtCliente() {
+		return txtCliente;
+	}
+
+	public void setTxtCliente(JTextField txtCliente) {
+		this.txtCliente = txtCliente;
+	}
+
+	public JTextField getTxtRuta() {
+		return txtRuta;
+	}
+
+	public void setTxtRuta(JTextField txtRuta) {
+		this.txtRuta = txtRuta;
+	}
+
+	public JTextField getTxtMotivo() {
+		return txtMotivo;
+	}
+
+	public void setTxtMotivo(JTextField txtMotivo) {
+		this.txtMotivo = txtMotivo;
+	}
+	
 }
-
 

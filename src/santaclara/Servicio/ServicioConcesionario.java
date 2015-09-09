@@ -32,9 +32,20 @@ public class ServicioConcesionario {
 		return concesionarioDAO.getConcesionario(id);
 	}
 
-	public String guardar(Concesionario concesionario) throws IOException {
+	public void guardar(Concesionario concesionario) throws Exception {
 		// TODO Auto-generated method stub
 		
+		validarConcesionario(concesionario);
+		validarConcesionarioRuta(concesionario);
+		validarCamion(concesionario);
+			/*los Concesionario solo podran tomar rutas 
+			 * en donde los cliente sean
+			 * domicilio Comercial */
+			//if(concesionario.getRuta().getId().equals());  pendiente por hacer
+		concesionarioDAO.guardar(concesionario);
+	}
+	public void validarConcesionario(Concesionario concesionario) throws Exception
+	{
 		concesionarios = concesionarioDAO.getConcecionarios();
 		
 		for(Concesionario comcesionario1 :concesionarios)
@@ -48,34 +59,45 @@ public class ServicioConcesionario {
 						comcesionario1.getContrasena().equals(concesionario.getContrasena())&&
 						comcesionario1.getCamion().getId().equals(concesionario.getCamion().getId())&&
 						comcesionario1.getRuta().getId().equals(concesionario.getRuta().getId())) 
-					return "Concesionario Existente";
+					throw new Exception("Concesionario Existente");
 				
 			}
-			else if(comcesionario1.getRuta().getId().equals(concesionario.getRuta().getId())){
-				/*A un Concesionario se le asigna una ruta. ¿Existe otro con la misma Ruta?*/
-				return "La Ruta ya fue asignada al Concesionario: \n"+ 
-					   "id | Nombre     \n" +
-					   comcesionario1.getId()+"  | "+comcesionario1.getUsername();
-			}
-			else if(comcesionario1.getCamion().getId().equals(concesionario.getCamion().getId())){
-					/*Para despachar los producto contrata a los concesionario
-					 *  que son los dueños de de los camiones 
-					 * a travez de los cuales seran entragados los productos. 
-					 * ¿Existe un camion que se le fue asignadao a otro concesionario?*/
-					return "El Camion ya fue asignada al Concesionario: \n"+ 
-						   "id | Nombre     \n" +
-						   comcesionario1.getId()+"  | "+comcesionario1.getUsername();
-			}
-			/*los Concesionario solo podran tomar rutas 
-			 * en donde los cliente sean
-			 * domicilio Comercial */
-			//if(concesionario.getRuta().getId().equals());  pendiente por hacer
-		
 		}
-		concesionarioDAO.guardar(concesionario);
-		return "";
 	}
-	
+	public void validarConcesionarioRuta(Concesionario concesionarioRuta) throws Exception
+	{
+		concesionarios = concesionarioDAO.getConcecionarios();
+		
+		for(Concesionario comcesionario1 :concesionarios)
+		{	
+			if(comcesionario1.getRuta().getId().equals(concesionarioRuta.getRuta().getId()) &&
+					!comcesionario1.getId().equals(concesionarioRuta.getId())){
+				/*A un Concesionario se le asigna una ruta. ¿Existe otro con la misma Ruta?*/
+				throw new Exception( "La Ruta ya fue asignada al Concesionario: \n"+ 
+					   "id | Nombre     \n" +
+					   comcesionario1.getId()+"  | "+comcesionario1.getUsername()+"\n Cree una Nueva Ruta");	
+			}
+		}
+	}
+	public void validarCamion(Concesionario concesionario) throws Exception
+	{
+		concesionarios = concesionarioDAO.getConcecionarios();
+		
+		for(Concesionario comcesionario1 :concesionarios)
+		{	
+
+			if(comcesionario1.getCamion().getId().equals(concesionario.getCamion().getId()) &&
+					!comcesionario1.getId().equals(concesionario.getId())){
+				/*Para despachar los producto contrata a los concesionario
+				 *  que son los dueños de de los camiones 
+				 * 	a travez de los cuales seran entragados los productos. 
+				 * 	¿Existe un camion que se le fue asignadao a otro concesionario?*/
+				throw new Exception("El Camion ya fue asignada al Concesionario: \n"+ 
+						"id | Nombre     \n" +
+						comcesionario1.getId()+"  | "+comcesionario1.getUsername()+"\n Cree un Nuevo Camion");
+			}
+		}
+	}
 	public Concesionario getConcesionario(Integer id) throws IOException{
 		return concesionarioDAO.getConcesionario(id);
 	}

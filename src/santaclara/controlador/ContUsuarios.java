@@ -1,6 +1,9 @@
 package santaclara.controlador;
 
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,15 +11,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 
 import santaclara.Servicio.ServicioCamion;
+import santaclara.Servicio.ServicioConcesionario;
+import santaclara.Servicio.ServicioDomicilioComercio;
 import santaclara.Servicio.ServicioRuta;
 import santaclara.Servicio.ServicioSalp;
 import santaclara.Servicio.ServicioUsuario;
 import santaclara.Servicio.ServicioZona;
+import santaclara.modelo.Concesionario;
+import santaclara.modelo.DomicilioComercio;
 import santaclara.modelo.Ruta;
 import santaclara.modelo.Salp;
 import santaclara.modelo.Usuario;
@@ -61,12 +71,66 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 				// TODO Auto-generated method stub
 				vista.activarNuevo();
 				vista.LimpiarTxt();
+				try {
+					cargarRutas();
+				} catch (NumberFormatException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				vista.getPnTabla().setVisible(false);
 			}
 		};
 	}
 	
+	public ActionListener abrirRuta() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				try {
+					new ContRutas(getContPrincipal());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		};
+	}
 	
+	public ActionListener abrirZonas(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				try {
+					new ContZonas(getContPrincipal());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		};
+	}
+	public ActionListener abrirCamiones(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				try {
+					new ContCamiones(getContPrincipal());
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			}
+		};
+	}
 	
 	public ActionListener modificar() {
 		// TODO Auto-generated method stub
@@ -77,6 +141,15 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 				if (vista.getTable().getSelectedRow()>=0)
 				{
 					vista.activarNuevo();
+					try {
+						cargarRutas();
+					} catch (NumberFormatException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					if (vista.getTable().getSelectedRow()>=0)
 					{
 						if(vista.getCmbTipoUsuario().getSelectedItem().equals("JefeVenta"))
@@ -96,8 +169,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 					}
 				}
 				else JOptionPane.showMessageDialog(vista,"Seleccione la fila");
-			}
-				
+			}		
 
 			private void Modificar() {
 				// TODO Auto-generated method stub
@@ -154,10 +226,13 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 				} catch (HeadlessException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 
-			private void GuardarUsuario() throws HeadlessException, IOException {
+			private void GuardarUsuario() throws Exception {
 				// TODO Auto-generated method stub
 					Usuario usuario = new Usuario(); 
 					if (vista.getTxtId().getText().equals("")) JOptionPane.showMessageDialog(vista,"Seleccione el Tipo de Usuario");
@@ -169,10 +244,12 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 						usuario.setUsername(vista.getTxtUserName().getText().toString());
 						usuario.setContrasena(vista.getTxtContrasena().getText().toString());
 								
-						JOptionPane.showMessageDialog(vista,servicioUsuario.guardar(usuario));
+						servicioUsuario.guardar(usuario);
+						
 						vista.getBinUsuarios().unbind();
 						vista.getBinUsuarios().bind();
 						vista.activarBinding(servicioUsuario.getUsuarios());
+						JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
 						vista.quitarNuevo();
 					}
 				}
@@ -315,24 +392,6 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 						vista.getPnRuta().setVisible(true);
 						vista.getPnZona().setBounds(0, 227, 852, 63);
 						
-						List<Ruta> rutas = new ServicioRuta().getRutas();
-						List<Ruta> rutaSalps = new ArrayList<Ruta>();
-						
-						List<Salp> clientes = new ServicioSalp().getSalps();
-						for(Ruta ruta: rutas)
-						{
-							for(Salp cliente :clientes)
-							{
-								if(ruta.getId().equals(cliente.getRuta().getId()))
-								{
-									rutaSalps.add(cliente.getRuta());
-									break;
-								}
-							}
-						}
-						vista.setRutas(rutaSalps);
-						vista.activarJComboBoxBindingRuta();
-						
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -348,25 +407,6 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 						vista.getPnRuta().setVisible(true);
 						vista.getPnZona().setBounds(0, 227, 852, 63);
 						
-						List<Ruta> rutas = new ServicioRuta().getRutas();
-						List<Ruta> rutaDomicilioComercios = new ArrayList<Ruta>();
-						
-						List<Salp> clientes = new ServicioSalp().getSalps();
-						for(Ruta ruta: rutas)
-						{
-							for(Salp cliente :clientes)
-							{
-								if(ruta.getId().equals(cliente.getRuta().getId()))
-								{
-									rutaDomicilioComercios.add(cliente.getRuta());
-									break;
-								}
-							}
-						}
-						vista.setRutas(rutaDomicilioComercios);
-						vista.activarJComboBoxBindingRuta();
-					
-						
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -378,5 +418,94 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 				vista.quitarNuevo();
 			}
 		};
+	}
+	
+	public void cargarRutas() throws NumberFormatException, IOException{
+		
+		if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
+		{	
+			List<Ruta> rutas = new ServicioRuta().getRutas();// todas las rutas
+			List<Ruta> rutaSalps = new ArrayList<Ruta>();//solo las del cliente salp
+		
+			List<Salp> clientes = new ServicioSalp().getSalps();
+			
+			for(Ruta ruta: rutas)
+			{
+				for(Salp cliente :clientes)
+				{
+					if(ruta.getId().equals(cliente.getRuta().getId()))
+					{
+						// cargo las ruta donde los cliente son solo salp
+						rutaSalps.add(cliente.getRuta()); 
+						break;
+					}
+				}
+			}
+			vista.setRutas(rutaSalps);
+			vista.activarJComboBoxBindingRuta();
+		}
+		else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Concesionario"))
+		{
+			List<Ruta> rutas = new ServicioRuta().getRutas();
+			List<Ruta> rutaDomicilioComercios = new ArrayList<Ruta>();
+		
+			List<DomicilioComercio> clientes = new ServicioDomicilioComercio().getDomicilioComercios();
+			for(Ruta ruta: rutas)
+			{
+				for(DomicilioComercio cliente :clientes)
+				{
+					if(ruta.getId().equals(cliente.getRuta().getId()))
+					{
+						rutaDomicilioComercios.add(cliente.getRuta());
+						break;
+					}
+				}
+			}	
+			vista.setRutas(rutaDomicilioComercios);
+			vista.activarJComboBoxBindingRuta();
+		}
+	}
+	@SuppressWarnings("rawtypes")
+	public ListCellRenderer rendererComboRuta(){
+		return new ListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				// TODO Auto-generated method stub
+				Ruta ruta = (Ruta)value;
+				if(!ruta.equals(null))
+				{
+					JPanel pnRuta = new JPanel();
+					JTextField texto = new JTextField();
+					
+						try {
+							for(Concesionario concesionario: new ServicioConcesionario().getConcecionarios()){
+								if(concesionario.getRuta().getId().equals(ruta.getId()))
+								{
+									texto.setBackground(Color.cyan);
+									break;
+								}
+								else
+									texto.setBackground(Color.yellow);
+							}
+						} catch (NumberFormatException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+					}
+						
+					texto.setText(ruta.getId().toString());
+					pnRuta.add(texto);
+					
+					pnRuta.add(new JTextField(ruta.getNombre()));
+					pnRuta.add(new JTextField(ruta.getZona().getId().toString()));
+					pnRuta.add(new JTextField(ruta.getZona().getDescripcion()));
+				
+					pnRuta.setLayout(new GridLayout(1, 0, 0, 0));
+					return pnRuta;
+				}
+				return null;
+				}
+			};
 	}
 }

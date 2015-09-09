@@ -18,25 +18,37 @@ telefono:04245042292
 ruta:2
 id:4
 rif:V-19727835
-razonsocial:BTR.CA
-direccion:El Carmen
+razonsocial:Birtraje.CA
+direccion:El ujano
 telefono:0251-6543765
-ruta:2
+ruta:1
 id:5
-rif:null
-razonsocial:2ewdsadadsa
-direccion:a
-telefono:aaa
-ruta:3
+rif:V-23565437
+razonsocial:Chiquito
+direccion:carrera 4 con 6 y 7
+telefono:0251-3374528
+ruta:5
 id:6
-rif:null
-razonsocial:El Marque
-direccion:dafdead
-telefono:13212121
-ruta:6
+rif:V-13425678
+razonsocial:Abasto contillas
+direccion:Carrera 45 entre calle23 y 24
+telefono:0414-6532532
+ruta:5
 id:7
-rif:rtgsdtg
-razonsocial:Bodegon de la cuadra
-direccion:egerg
-telefono:fdhtrehdtr
-ruta:6
+rif:V-15643873
+razonsocial:Gregorio
+direccion:Carrera 9 entre calle 1 y 2
+telefono:0412-5365436
+ruta:9
+id:8
+rif:V-13874098
+razonsocial:Maria
+direccion:Carrera4 con calle36 y 37
+telefono:0424-5249233
+ruta:9
+id:9
+rif:V-4565765
+razonsocial:La Arepera
+direccion:Carrera7 entre calle1 y 2
+telefono:0416-7352345
+ruta:0

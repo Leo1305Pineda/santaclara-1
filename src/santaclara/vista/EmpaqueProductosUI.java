@@ -39,9 +39,6 @@ import santaclara.modelo.EmpaqueProducto;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
 @SuppressWarnings("serial")
 public class EmpaqueProductosUI extends JPanel {
@@ -80,7 +77,7 @@ public class EmpaqueProductosUI extends JPanel {
 	
 	private List<EmpaqueProducto> empaqueProductos = new ArrayList<EmpaqueProducto>();
 	private List<Producto> 		productos = new ArrayList<Producto>();
-	private JLabel lblEmpaque;
+	private JPanel pnEmpaque;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EmpaqueProductosUI(ContEmpaqueProductos contEmpaqueProductos, List<EmpaqueProducto> empaqueProductos,List<Producto> productos) {
@@ -96,7 +93,7 @@ public class EmpaqueProductosUI extends JPanel {
 		
 		pnEmpaqueProductos = new JPanel();
 		pnEmpaqueProductos.setLocation(12, 12);
-		pnEmpaqueProductos.setSize(740,547);
+		pnEmpaqueProductos.setSize(740,628);
 		pnEmpaqueProductos.setBackground(Color.DARK_GRAY);
 		pnEmpaqueProductos.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Empaque por Producto", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		add(pnEmpaqueProductos);
@@ -124,22 +121,22 @@ public class EmpaqueProductosUI extends JPanel {
 		btnModificar.addActionListener(contEmpaqueProductos.modificar());
 		botones.add(btnModificar);
 		
-				btnNuevo = new JButton("Nuevo");
-				btnNuevo.setBounds(124, 17, 100, 16);
-				btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
-				btnNuevo.setForeground(Color.WHITE);
-				btnNuevo.setBackground(Color.DARK_GRAY);
-				btnNuevo.addActionListener(contEmpaqueProductos.nuevo());
-				botones.setLayout(null);
+		btnNuevo = new JButton("Nuevo");
+		btnNuevo.setBounds(124, 17, 100, 16);
+		btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
+		btnNuevo.setForeground(Color.WHITE);
+		btnNuevo.setBackground(Color.DARK_GRAY);
+		btnNuevo.addActionListener(contEmpaqueProductos.nuevo());
+		botones.setLayout(null);
 				
-				btnAtras = new JButton("Atras");
-				btnAtras.addActionListener(contEmpaqueProductos.Atras());
-				btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
-				btnAtras.setBounds(12, 17, 92, 16);
-				botones.add(btnAtras);
-				btnAtras.setForeground(Color.WHITE);
-				btnAtras.setBackground(Color.DARK_GRAY);		
-				botones.add(btnNuevo);
+		btnAtras = new JButton("Atras");
+		btnAtras.addActionListener(contEmpaqueProductos.Atras());
+		btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
+		btnAtras.setBounds(12, 17, 92, 16);
+		botones.add(btnAtras);
+		btnAtras.setForeground(Color.WHITE);
+		btnAtras.setBackground(Color.DARK_GRAY);		
+		botones.add(btnNuevo);
 				
 		
 		btnEliminar = new JButton("Eliminar");
@@ -150,15 +147,6 @@ public class EmpaqueProductosUI extends JPanel {
 		btnEliminar.setBackground(Color.DARK_GRAY);
 		btnEliminar.addActionListener(contEmpaqueProductos.eliminar());
 		botones.add(btnEliminar);
-		
-		btnProducto = new JButton("Producto");
-		btnProducto.setToolTipText("Abrir");
-		btnProducto.setIcon(new ImageIcon("img/gestion/Presentacion.png"));
-		btnProducto.setBounds(446, 17, 164, 16);
-		btnProducto.setForeground(Color.WHITE);
-		btnProducto.setBackground(Color.DARK_GRAY);
-		btnProducto.addActionListener(contEmpaqueProductos.AbrirProducto());
-		botones.add(btnProducto);
 		
 		btnSalir = new JButton("Salir");
 		btnSalir.setToolTipText("Cerrar");
@@ -207,29 +195,64 @@ public class EmpaqueProductosUI extends JPanel {
 		
 		
 		panelProducto = new JPanel();
-		panelProducto.setBounds(14, 495, 714, 40);
+		panelProducto.setBounds(14, 495, 714, 121);
 		pnEmpaqueProductos.add(panelProducto);
 		panelProducto.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Editar Empaque Producto", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		panelProducto.setBackground(Color.DARK_GRAY);
 		panelProducto.getSize(new Dimension(800, 150));
 		panelProducto.setLayout(null);
 		
+		JLabel lblCantidad = new JLabel("Cantidad:");
+		lblCantidad.setBounds(12, 10,  75,25);
+		lblCantidad.setBackground(SystemColor.controlHighlight);
+		lblCantidad.setForeground(Color.WHITE);
+		panelProducto.add(lblCantidad);
+		
+		txtCantidad = new JSpinner(new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1));
+		txtCantidad.setBounds(89, 14, 100,16);
+		((JSpinner.NumberEditor)txtCantidad.getEditor()).getFormat().setMinimumFractionDigits(0);
+		panelProducto.add(txtCantidad);
+		
+		btnGuardar = new JButton("Guardar");
+		btnGuardar.setToolTipText("Guardar");
+		btnGuardar.setBounds(325, 15, 112, 16);
+		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
+		btnGuardar.setBackground(Color.DARK_GRAY);
+		btnGuardar.setForeground(Color.WHITE);
+		btnGuardar.addActionListener(contEmpaqueProductos.guardar());
+		panelProducto.add(btnGuardar);
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(201, 15, 120, 16);
+		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				quitarNuevo();
+			}
+		});
+		btnCancelar.setForeground(Color.WHITE);
+		btnCancelar.setBackground(Color.DARK_GRAY);
+		panelProducto.add(btnCancelar);
+		
+		txtId = new JTextField();
+		txtId.setBounds(658, 13, 44, 19);
+		panelProducto.add(txtId);
+		txtId.setColumns(10);
+		
+		pnEmpaque = new JPanel();
+		pnEmpaque.setBackground(Color.DARK_GRAY);
+		pnEmpaque.setBounds(5, 36, 702, 56);
+		pnEmpaque.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true),"Nombre            |"
+				+ "Presentacion  |"
+				+ "Capacidad      |"
+				+ "Sabor               |"
+				+ "Precio               |", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		panelProducto.add(pnEmpaque);
+		pnEmpaque.setLayout(null);
+		
 		cmbProducto = new JComboBox<Producto>();
-		cmbProducto.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseExited(MouseEvent e) {
-				cmbProducto.setBounds(383, 11, 207, 22);
-				txtCantidad.setVisible(true);
-			}
-		});
-		cmbProducto.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				cmbProducto.setBounds(1, 11, 712, 22);
-				txtCantidad.setVisible(false);
-			}
-		});
-		cmbProducto.setBounds(383, 11, 207,22);
+		cmbProducto.setBounds(5, 20, 550, 24);
+		pnEmpaque.add(cmbProducto);
 		cmbProducto.setBackground(SystemColor.controlHighlight);
 		cmbProducto.setForeground(Color.BLACK);
 		cmbProducto.setRenderer(new ListCellRenderer() {
@@ -251,50 +274,15 @@ public class EmpaqueProductosUI extends JPanel {
 				return pnProducto;//new JPanel().add(new JTextField("dd"));
 			}
 		});
-		panelProducto.add(cmbProducto);
 		
-		JLabel lblCantidad = new JLabel("Cantidad:");
-		lblCantidad.setBounds(130, 12,  75,25);
-		lblCantidad.setBackground(SystemColor.controlHighlight);
-		lblCantidad.setForeground(Color.WHITE);
-		panelProducto.add(lblCantidad);
-		
-		txtCantidad = new JSpinner(new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1));
-		txtCantidad.setBounds(200, 15, 100,16);
-		((JSpinner.NumberEditor)txtCantidad.getEditor()).getFormat().setMinimumFractionDigits(0);
-		panelProducto.add(txtCantidad);
-		
-		btnGuardar = new JButton("Guardar");
-		btnGuardar.setToolTipText("Guardar");
-		btnGuardar.setBounds(595, 15, 112, 16);
-		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
-		btnGuardar.setBackground(Color.DARK_GRAY);
-		btnGuardar.setForeground(Color.WHITE);
-		btnGuardar.addActionListener(contEmpaqueProductos.guardar());
-		panelProducto.add(btnGuardar);
-		
-		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(10, 15, 120, 16);
-		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				quitarNuevo();
-			}
-		});
-		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.setBackground(Color.DARK_GRAY);
-		panelProducto.add(btnCancelar);
-		
-		txtId = new JTextField();
-		txtId.setBounds(460, 12, 44, 19);
-		panelProducto.add(txtId);
-		txtId.setColumns(10);
-		
-		lblEmpaque = new JLabel("Empaque:");
-		lblEmpaque.setForeground(Color.WHITE);
-		lblEmpaque.setBackground(SystemColor.controlHighlight);
-		lblEmpaque.setBounds(308, 12, 75, 25);
-		panelProducto.add(lblEmpaque);
+		btnProducto = new JButton("Producto");
+		btnProducto.setBounds(565, 20, 127, 25);
+		pnEmpaque.add(btnProducto);
+		btnProducto.setToolTipText("Abrir");
+		btnProducto.setIcon(new ImageIcon("img/gestion/Presentacion.png"));
+		btnProducto.setForeground(Color.WHITE);
+		btnProducto.setBackground(Color.DARK_GRAY);
+		btnProducto.addActionListener(contEmpaqueProductos.AbrirProducto());
 	
 		txtId.setVisible(false);
 		 
@@ -443,7 +431,7 @@ public class EmpaqueProductosUI extends JPanel {
 	public void activarNuevoEmpaqueProducto() {
 		// TODO Auto-generated method stub
 		panelProducto.setVisible(true);
-		panelProducto.setBounds(12, 95, 714, 40);
+		panelProducto.setBounds(12, 95, 714, 100);
 		scrollPanel.setVisible(false);
 		txtCantidad.setValue(0);
 	}
@@ -576,13 +564,6 @@ public class EmpaqueProductosUI extends JPanel {
 		this.pnEmpaqueProductos = pnEmpaqueProductos;
 	}
 
-	public JLabel getLblEmpaque() {
-		return lblEmpaque;
-	}
-
-	public void setLblEmpaque(JLabel lblEmpaque) {
-		this.lblEmpaque = lblEmpaque;
-	}
 	
 }
 

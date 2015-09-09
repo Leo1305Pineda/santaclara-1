@@ -30,17 +30,16 @@ public class ContConcesionarios extends ContGeneral implements IContGeneral {
 		this.vista = vista;
 	}
 
-	public String ValidarTxt(){
+	public void ValidarTxt() throws Exception{
 		
-	if (vista.getTxtNombre().getText().equals("")) return " Nombre ";
-	if (vista.getTxtCedula().getText().equals("")) return " Cedula ";
-	if (vista.getTxtContrasena().getText().equals("")) return " Contraseña ";
-	if (vista.getTxtUserName().getText().equals("")) return " UserName ";
-	if (!vista.getTxtReContrasena().getText().equals(vista.getTxtContrasena().getText())) return "Contraseña invalida ";
-	return "";
+	if (vista.getTxtNombre().getText().equals("")) throw new  Exception(" Nombre ");
+	if (vista.getTxtCedula().getText().equals("")) throw new Exception(" Cedula ");
+	if (vista.getTxtContrasena().getText().equals("")) throw new Exception(" Contraseña ");
+	if (vista.getTxtUserName().getText().equals("")) throw new Exception(" UserName ");
+	if (!vista.getTxtReContrasena().getText().equals(vista.getTxtContrasena().getText())) throw new Exception("Contraseña invalida ");
 	}
 	
-	public void Guardar() {
+	public void Guardar() throws Exception {
 		// TODO Auto-generated method stub
 				// se va hacer las validaciones del controlador 
 				Concesionario concesionario = new Concesionario();
@@ -48,8 +47,8 @@ public class ContConcesionarios extends ContGeneral implements IContGeneral {
 				if (vista.getTxtId().getText().equals("")) concesionario.setId(null);//Nuevo vendedor
 				else concesionario.setId(new Integer(vista.getTxtId().getText().toString()));//Modifica vendedor 
 				
-				if (ValidarTxt().equals(""))//los text no estan vacios
-				{
+				ValidarTxt();
+				
 					concesionario.setNombre(vista.getTxtNombre().getText());
 					concesionario.setCedula(vista.getTxtCedula().getText());
 					concesionario.setContrasena(vista.getTxtContrasena().getText());
@@ -57,20 +56,14 @@ public class ContConcesionarios extends ContGeneral implements IContGeneral {
 					concesionario.setRuta((Ruta)vista.getComboRutas().getSelectedItem());
 					concesionario.setCamion((Camion)vista.getCmbCamion().getSelectedItem());
 					try {
-							String msg = new String(servicioConcesionario.guardar(concesionario));
-							if (msg.equals(""))
-							{
-								JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
-								MostrarTabla();
-							}
-							else JOptionPane.showMessageDialog(vista,msg);
+							servicioConcesionario.guardar(concesionario);
+							JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
+							MostrarTabla();
 						} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						JOptionPane.showConfirmDialog(null,e1.getMessage());
 						e1.printStackTrace();
 						}
-				}
-				else  JOptionPane.showMessageDialog(vista,"Campos Vacios: "+ValidarTxt());
 	}
 	
 	public ActionListener nuevo() {
@@ -93,6 +86,7 @@ public class ContConcesionarios extends ContGeneral implements IContGeneral {
 				concesionario = servicioConcesionario.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
 				if (concesionario != null)
 				{
+					
 					vista.activarNuevoConcesionario();
 					vista.getTxtId().setText(concesionario.getId().toString());
 					vista.getTxtCedula().setText(concesionario.getCedula());

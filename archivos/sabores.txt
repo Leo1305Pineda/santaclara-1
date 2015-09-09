@@ -6,3 +6,9 @@ id:2
 sabor:uva
 id:3
 sabor:manzana
+id:4
+sabor:Durazno
+id:5
+sabor:Pera
+id:6
+sabor:Limon
