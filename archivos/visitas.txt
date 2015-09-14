@@ -23,7 +23,7 @@ descripcion:realisada exitosamente
 valorVendedor:0
 valorProducto:0
 estado:hecho
-idJefeVenta:1
+idJefeVenta:0
 idCliente:4
 id:3
 fecha:06/06/2015
@@ -32,5 +32,5 @@ descripcion:por realizar
 valorVendedor:0
 valorProducto:0
 estado:pendiente
-idJefeVenta:1
+idJefeVenta:0
 idCliente:3

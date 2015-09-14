@@ -53,47 +53,48 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				// se va hacer las validaciones del controlador 
-
-				Producto producto = new Producto();
-				String msg="";
-				
-				if (vista.getTxtId().getText().equals("")) producto.setId(null);
+				try {
+					validar();
+					Producto producto = new Producto();
+					if (vista.getTxtId().getText().equals(""))producto.setId(null);
 					else producto.setId(new Integer(vista.getTxtId().getText().toString()));
 				
-				if (vista.getTxtNombre().getText().equals(""))msg=" Nombre ";
-					else producto.setNombre(vista.getTxtNombre().getText());
+					producto.setNombre(vista.getTxtNombre().getText());			
+					producto.setPrecio((Double) vista.getTxtPrecio().getValue());
+					producto.setCapacidad((Capacidad) vista.getCmbCapacidad().getSelectedItem());
+					producto.setPresentacion((Presentacion)vista.getCmbPresentacion().getSelectedItem());
+					producto.setSabor((Sabor)vista.getCmbSabor().getSelectedItem());
 				
-				
-				if(vista.getTxtPrecio().getValue().equals(0))producto.setPrecio(0.0);
-					else producto.setPrecio((Double) vista.getTxtPrecio().getValue());
-				
-				producto.setCapacidad((Capacidad) vista.getCmbCapacidad().getSelectedItem());
-				producto.setPresentacion((Presentacion)vista.getCmbPresentacion().getSelectedItem());
-				producto.setSabor((Sabor)vista.getCmbSabor().getSelectedItem());
-				
-				if (msg!="") JOptionPane.showMessageDialog(vista,"Campos Vacios: "+msg);
-					else
-						{
-							try {
-									JOptionPane.showMessageDialog(vista,servicioProducto.guardar(producto));
-									// agregarlo a la lista
-									vista.getProductos().add(producto);
-									vista.getBinProductos().unbind();
-									vista.getBinProductos().bind();
-									vista.activarBinding(servicioProducto.getProductos());
-									vista.quitarNuevo();
-									vista.getScrollPanel().setVisible(true);
-									
-								} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								JOptionPane.showConfirmDialog(null,e1.getMessage());
-								e1.printStackTrace();
-								}
-						}
+				    servicioProducto.guardar(producto);
+					// agregarlo a la lista
+					vista.getProductos().add(producto);
+					vista.getBinProductos().unbind();
+					vista.getBinProductos().bind();
+					vista.activarBinding(servicioProducto.getProductos());
+					vista.quitarNuevo();
+					vista.getScrollPanel().setVisible(true);
+				    JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+				} catch (Exception exe) {
+					// TODO Auto-generated catch block
+					JOptionPane.showConfirmDialog(vista,exe.getMessage());
+					exe.printStackTrace();
+				}
 			}
 		};
 	}
 	
+	protected void validar() throws Exception {
+		// TODO Auto-generated method stub
+		if(vista.getTxtNombre().getText().trim().length() == 0)
+		{
+			throw new Exception("Ingrese nombre ");
+		}
+		if( (Double)(vista.getTxtPrecio().getValue()) <= 1.0 )
+		{
+			throw new Exception("Ingrese un monto superior a 1 Bsf. ");
+		}
+	}
+
 	public ActionListener buscar() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -215,15 +216,11 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 							{
 								vista.activarNuevoProducto();
 								vista.getScrollPanel().setVisible(false);
-								
 								vista.getTxtId().setText(producto.getId().toString());
 								vista.getTxtNombre().setText(producto.getNombre());
 								vista.getTxtPrecio().setValue(producto.getPrecio());
-								
 								setSelectedValue(vista.getCmbPresentacion(),producto.getPresentacion().getId());
-								
 								setSelectedValue(vista.getCmbCapacidad(),producto.getCapacidad().getId());
-								
 								setSelectedValue(vista.getCmbSabor(),producto.getSabor().getId());
 							}
 						}
@@ -247,7 +244,8 @@ public class ContProductos extends ContGeneral implements IContGeneral {
         {
         	comboBox.setSelectedIndex(i);
         	Boolean enc=false;
-        	switch (comboBox.getSelectedItem().getClass().getName().toString()) {
+        	switch (comboBox.getSelectedItem().getClass().getName().toString()) 
+        	{
 			case "santaclara.modelo.Presentacion":
 				enc = (((Presentacion)comboBox.getSelectedItem()).getId().equals(id)); 
 					break;

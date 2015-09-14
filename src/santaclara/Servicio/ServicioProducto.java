@@ -54,26 +54,23 @@ public class ServicioProducto {
 		return capacidadDAO.getCapacidades();
 	}
 
-	public String guardar(Producto producto) throws IOException {
+	public void guardar(Producto producto) throws Exception {
 		// TODO Auto-generated method stub
 		
 			productos = productoDAO.getProductos();
-			
+
 			for(Producto producto1 :productos)
 			{
-					if(producto1.getNombre().equals(producto.getNombre())&&
-							producto1.getCapacidad().getId().equals(producto.getCapacidad().getId())&&
-							producto1.getPresentacion().getId().equals(producto.getPresentacion().getId())&&
-							producto1.getSabor().getId().equals(producto.getSabor().getId())&&	
-						!producto1.getId().equals(producto.getId()))
-					{ 
-						return "Producto Existente";
-					}
+				if(producto1.getNombre().equals(producto.getNombre()) &&
+					producto1.getCapacidad().getId().equals(producto.getCapacidad().getId())&&
+					producto1.getPresentacion().getId().equals(producto.getPresentacion().getId())&&
+					producto1.getSabor().getId().equals(producto.getSabor().getId()) &&	
+					!producto1.getId().equals(producto.getId()))
+				{ 
+					throw new Exception("Producto Existente");
+				}
 			}
-			
-		
 			productoDAO.guardar(producto); 
-			return "Operacion Exitosa ";
 	}
 	
 	public void eliminar(Producto producto) throws IOException{

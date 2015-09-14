@@ -56,7 +56,6 @@ public class ClientesUI extends JPanel {
 	private JLabel lblDireccion;
 	
 	private JTextField txtRazonSocial;
-	private JTextField txtId;
 	private JTextField txtABuscar;
 	private JTextField txtTelefono;
 	private JTextField txtDireccion;
@@ -84,6 +83,7 @@ public class ClientesUI extends JPanel {
 	private List<Cliente> clientes = new ArrayList<Cliente>();
 	private List<Ruta> rutas = new ArrayList<Ruta>();
 	private JTextField txtRif;
+	private JTextField txtId;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ClientesUI(ContClientes contClientes,List<Cliente> clientes,List<Ruta> rutas) {
@@ -96,7 +96,7 @@ public class ClientesUI extends JPanel {
 		pnClientes = new JPanel();
 		pnClientes.setBackground(Color.DARK_GRAY);
 		pnClientes.setForeground(Color.DARK_GRAY);
-		pnClientes.setBounds(12, 12, 746, 384);
+		pnClientes.setBounds(12, 12, 746, 537);
 		pnClientes.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Clientes", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		add(pnClientes);
 		pnClientes.setLayout(null);
@@ -162,12 +162,12 @@ public class ClientesUI extends JPanel {
 		btnAbrirRuta.setBackground(Color.DARK_GRAY);
 		
 		pnTabla = new JPanel();
-		pnTabla.setBounds(12, 85, 726, 103);
+		pnTabla.setBounds(12, 85, 726, 265);
 		pnClientes.add(pnTabla);
 		pnTabla.setLayout(null);
 		
 		scrollPanel = new JScrollPane();
-		scrollPanel.setBounds(0, 0, 725, 100);
+		scrollPanel.setBounds(0, 0, 726, 261);
 		pnTabla.add(scrollPanel);
 		
 		table = new JTable();
@@ -208,7 +208,7 @@ public class ClientesUI extends JPanel {
 		
 		pnEditar = new JPanel();
 		pnEditar.setBackground(Color.GRAY);
-		pnEditar.setBounds(12, 205, 726, 179);
+		pnEditar.setBounds(12, 346, 726, 179);
 		pnClientes.add(pnEditar);
 		pnEditar.setLayout(null);
 		
@@ -216,14 +216,14 @@ public class ClientesUI extends JPanel {
 		pnCliente.setLayout(null);
 		pnCliente.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"Editar Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnCliente.setBackground(Color.DARK_GRAY);
-		pnCliente.setBounds(0, 5, 726, 63);
+		pnCliente.setBounds(0, 5, 726, 118);
 		pnEditar.add(pnCliente);
 		
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(contClientes.guardar());
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
-		btnGuardar.setBounds(594, 17, 120, 16);
+		btnGuardar.setBounds(390, 90, 120, 16);
 		pnCliente.add(btnGuardar);
 		
 		btnCancelar = new JButton("Cancelar");
@@ -237,58 +237,58 @@ public class ClientesUI extends JPanel {
 		});
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(5, 17, 120, 16);
+		btnCancelar.setBounds(253, 90, 120, 16);
 		pnCliente.add(btnCancelar);
 		
 		lblRazonSocial = new JLabel("Razon Social:");
 		lblRazonSocial.setForeground(Color.WHITE);
 		lblRazonSocial.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblRazonSocial.setBounds(173, 8, 100, 25);
+		lblRazonSocial.setBounds(12, 15, 100, 25);
 		pnCliente.add(lblRazonSocial);
 		
 		txtRazonSocial = new JTextField();
 		txtRazonSocial.setColumns(10);
-		txtRazonSocial.setBounds(277, 12, 292, 16);
+		txtRazonSocial.setBounds(130, 19, 292, 16);
 		pnCliente.add(txtRazonSocial);
-		
-		txtId = new JTextField();
-		txtId.setColumns(10);
-		txtId.setBounds(163, 9, 54, 19);
-		txtId.setVisible(false);
-		pnCliente.add(txtId);
 		
 		lblTelefono = new JLabel("Telefono:");
 		lblTelefono.setForeground(Color.WHITE);
 		lblTelefono.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblTelefono.setBounds(478, 38, 69, 25);
+		lblTelefono.setBounds(440, 15, 69, 25);
 		pnCliente.add(lblTelefono);
 		
 		lblDireccion = new JLabel("Direccion:");
 		lblDireccion.setForeground(Color.WHITE);
 		lblDireccion.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblDireccion.setBounds(217, 38, 100, 25);
+		lblDireccion.setBounds(241, 62, 81, 16);
 		pnCliente.add(lblDireccion);
 		
 		txtTelefono = new JTextField();
 		txtTelefono.setColumns(10);
-		txtTelefono.setBounds(565, 42, 149, 16);
+		txtTelefono.setBounds(527, 19, 149, 16);
 		pnCliente.add(txtTelefono);
 		
 		txtDireccion = new JTextField();
 		txtDireccion.setColumns(10);
-		txtDireccion.setBounds(300, 42, 160, 16);
+		txtDireccion.setBounds(317, 62, 376, 16);
 		pnCliente.add(txtDireccion);
 		
 		JLabel lblRif = new JLabel("Rif:");
 		lblRif.setForeground(Color.WHITE);
 		lblRif.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblRif.setBounds(5, 38, 39, 25);
+		lblRif.setBounds(22, 52, 39, 25);
 		pnCliente.add(lblRif);
 		
 		txtRif = new JTextField();
 		txtRif.setColumns(10);
-		txtRif.setBounds(47, 41, 160, 16);
+		txtRif.setBounds(53, 52, 160, 16);
 		pnCliente.add(txtRif);
+		
+		txtId = new JTextField();
+		txtId.setColumns(10);
+		txtId.setBounds(63, 80, 160, 16);
+		txtId.setVisible(false);
+		pnCliente.add(txtId);
 		
 		pnDomicilioComercial = new JPanel();
 		pnDomicilioComercial.setLayout(null);
@@ -298,7 +298,7 @@ public class ClientesUI extends JPanel {
 				 "Nombre Zona              ");
 		pnDomicilioComercial.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),formatString, TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnDomicilioComercial.setBackground(Color.DARK_GRAY);
-		pnDomicilioComercial.setBounds(0, 71, 726, 102);
+		pnDomicilioComercial.setBounds(0, 122, 736, 57);
 		pnEditar.add(pnDomicilioComercial);
 		
 		comboRutas = new JComboBox();
@@ -335,16 +335,17 @@ public class ClientesUI extends JPanel {
 		pnTabla.setVisible(true);
 		table = new JTable();
 		scrollPanel.setViewportView(table);
-		binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
-    			salps,table);
+		binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,salps,table);
 		
 			BeanProperty idCliente  = BeanProperty.create("id");
+			BeanProperty rif = BeanProperty.create("rif");
 			BeanProperty razonSocial = BeanProperty.create("razonsocial");
 			BeanProperty direccion = BeanProperty.create("direccion");
 			BeanProperty telefono = BeanProperty.create("telefono");
 			BeanProperty rutaCliente = BeanProperty.create("ruta.nombre");
 			
 			binClientes.addColumnBinding(idCliente).setColumnClass(Integer.class).setColumnName("idCliente");
+			binClientes.addColumnBinding(rif).setColumnClass(String.class).setColumnName("rif");
 			binClientes.addColumnBinding(razonSocial).setColumnClass(String.class).setColumnName("Razon Social");
 			binClientes.addColumnBinding(direccion).setColumnClass(String.class).setColumnName("Direccion");
 			binClientes.addColumnBinding(telefono).setColumnClass(String.class).setColumnName("Telefono");
@@ -360,24 +361,28 @@ public class ClientesUI extends JPanel {
 		table = new JTable();
 		scrollPanel.setViewportView(table);
 		List<DomicilioComercio> aux = new ArrayList<DomicilioComercio>();
+		
 		for(DomicilioComercio domicilioComercio : domicilioComercios)
 		{
-			if(domicilioComercio.getTipo().equals("C")
-					&& cmbTipoCliente.getSelectedItem().equals("Comercial"))aux.add(domicilioComercio);
-			else if(domicilioComercio.getTipo().equals("D")
-					&& cmbTipoCliente.getSelectedItem().equals("Domicilio"))aux.add(domicilioComercio);
+			if(domicilioComercio.getTipo().equals("C") && cmbTipoCliente.getSelectedItem().equals("Comercial")) 
+				aux.add(domicilioComercio);
+			else if(domicilioComercio.getTipo().equals("D")  && cmbTipoCliente.getSelectedItem().equals("Domicilio"))
+				aux.add(domicilioComercio);
 		}
+		
 		domicilioComercios = aux;
-		binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
-    			domicilioComercios,table);
+
+		binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,domicilioComercios,table);
 		
 		BeanProperty idCliente  = BeanProperty.create("id");
+		BeanProperty rif = BeanProperty.create("rif");
 		BeanProperty razonSocial = BeanProperty.create("razonsocial");
 		BeanProperty direccion = BeanProperty.create("direccion");
 		BeanProperty telefono = BeanProperty.create("telefono");
 		BeanProperty rutaCliente = BeanProperty.create("ruta.nombre");
 
 		binClientes.addColumnBinding(idCliente).setColumnClass(Integer.class).setColumnName("idCliente");
+		binClientes.addColumnBinding(rif).setColumnClass(String.class).setColumnName("rif");
 		binClientes.addColumnBinding(razonSocial).setColumnClass(String.class).setColumnName("Razon Social");
 		binClientes.addColumnBinding(direccion).setColumnClass(String.class).setColumnName("Direccion");
 		binClientes.addColumnBinding(telefono).setColumnClass(String.class).setColumnName("Telefono");
@@ -393,9 +398,11 @@ public class ClientesUI extends JPanel {
 	}
 	
 	public void LimpiarTxt(){
+	 txtId.setText("");
 	 txtDireccion.setText("");
 	 txtRazonSocial.setText("");
 	 txtTelefono.setText("");
+	 txtRif.setText("");
 	}
 	public void activarNuevo() {
 		// TODO Auto-generated method stub
@@ -410,6 +417,7 @@ public class ClientesUI extends JPanel {
 		pnEditar.setBounds(12, 85, 726, 179);
 		pnTabla.setVisible(true);
 		scrollPanel.setVisible(true);
+		txtRif.setEnabled(true);
 		
 	}
 
@@ -517,13 +525,7 @@ public class ClientesUI extends JPanel {
 		this.txtRazonSocial = txtRazonSocial;
 	}
 
-	public JTextField getTxtId() {
-		return txtId;
-	}
 
-	public void setTxtId(JTextField txtId) {
-		this.txtId = txtId;
-	}
 
 	public JTextField getTxtABuscar() {
 		return txtABuscar;
@@ -621,14 +623,7 @@ public class ClientesUI extends JPanel {
 		this.btnAbrirRuta = btnAbrirRuta;
 	}
 
-	public JComboBox<String> getCmbTipoUsuario() {
-		return cmbTipoCliente;
-	}
-
-	public void setCmbTipoUsuario(JComboBox<String> cmbTipoUsuario) {
-		this.cmbTipoCliente = cmbTipoUsuario;
-	}
-
+	 
 	public JComboBox<Ruta> getComboRutas() {
 		return comboRutas;
 	}
@@ -701,13 +696,40 @@ public class ClientesUI extends JPanel {
 		return txtRif;
 	}
 
+	public void setTxtRif(String txtRif) {
+		this.txtRif.setText(txtRif);
+	}
+	
+	
+	
+
+	public JTextField getTxtId() {
+		return txtId;
+	}
+
+	public void setTxtId(JTextField txtId) {
+		this.txtId = txtId;
+	}
+
 	public void setTxtRif(JTextField txtRif) {
 		this.txtRif = txtRif;
 	}
 
+	public void setSelectedValueRuta(Integer id)
+    	{	
+       	 	for (int i = 0; i < comboRutas.getItemCount(); i++)
+       		{
+        		comboRutas.setSelectedIndex(i);
+        		if ((((Ruta)comboRutas.getSelectedItem()).getId().equals(id)))
+			{
+				break;
+       	 		}
+		}
+    	}
+	
+	
 	@SuppressWarnings("rawtypes")
 	public void setBinClientes(JTableBinding binClientes) {
 		this.binClientes = binClientes;
 	}
-	
 }

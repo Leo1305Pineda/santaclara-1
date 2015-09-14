@@ -26,3 +26,17 @@ capacidad:10000.0
 modelo:Cargo
 marca:Fiat
 ano:2000
+id:5
+placa:Gd167ty
+color:Verde
+capacidad:10000.0
+modelo:5000
+marca:Fiat
+ano:1990
+id:6
+placa:mfr92u
+color:Blanco
+capacidad:10000.0
+modelo:4555
+marca:mack
+ano:2000

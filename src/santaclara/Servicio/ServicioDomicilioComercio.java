@@ -30,11 +30,9 @@ public class ServicioDomicilioComercio {
 		return domicilioComercioDAO.getDomicilioComercio(id);
 	}
 
-	public String guardar(DomicilioComercio domicilioComercio) throws IOException {
+	public void guardar(DomicilioComercio domicilioComercio) throws IOException {
 		// TODO Auto-generated method stub
-		
 		domicilioComercioDAO.guardar(domicilioComercio);
-				return "Operacion Exitosa";
 	}
 	
 	public DomicilioComercio getdDomicilioComercio(Integer id) throws IOException{

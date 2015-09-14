@@ -48,6 +48,7 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class ProductosUI extends JPanel {
 
+	private JPanel botones;
 	private JTable table;
 	
 	private JScrollPane scrollPanel; 
@@ -75,7 +76,10 @@ public class ProductosUI extends JPanel {
 	private JButton btnNuevo;
 	private JButton	btnModificar;
 	private JButton btnEliminar;
-	private JButton btnSabor; 
+	private JButton btnSabor;
+	private JButton btnSalir;
+	private JButton btnPresentacion;
+	private JButton btnCapacidades;
 	
 	private JTextField txtABuscar;
 	
@@ -117,82 +121,80 @@ public class ProductosUI extends JPanel {
 		pnAction.setForeground(Color.DARK_GRAY);
 		pnAction.setBounds(12, 47, 953, 48);
 		pnProductos.add(pnAction);
-						pnAction.setLayout(null);
+		pnAction.setLayout(null);
 				
-						JPanel botones = new JPanel();
-						botones.setBounds(0, 0, 952, 37);
-						pnAction.add(botones);
-						botones.setBackground(Color.DARK_GRAY);
-						botones.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), "opciones", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		botones = new JPanel();
+		botones.setBounds(0, 0, 952, 37);
+		pnAction.add(botones);
+		botones.setBackground(Color.DARK_GRAY);
+		botones.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), "opciones", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(255, 255, 255)));
 						
-						btnModificar = new JButton("Editar");
-						btnModificar.setBounds(228, 17, 100, 16);
-						btnModificar.setIcon(new ImageIcon("img/gestion/Modificara.png"));
-						
-										btnModificar.setToolTipText("Modificar");
+		btnModificar = new JButton("Editar");
+		btnModificar.setBounds(228, 17, 100, 16);
+		btnModificar.setIcon(new ImageIcon("img/gestion/Modificara.png"));
+		btnModificar.setToolTipText("Modificar");
+		btnModificar.setForeground(Color.WHITE);
+		btnModificar.setBackground(Color.DARK_GRAY);
+		btnModificar.addActionListener(contProductos.modificar());
 										
-										btnModificar.setForeground(Color.WHITE);
-										btnModificar.setBackground(Color.DARK_GRAY);
-										btnModificar.addActionListener(contProductos.modificar());
+		btnNuevo = new JButton("Nuevo");							
+		btnNuevo.setBounds(124, 17, 100, 16);							
+		btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));							
+		btnNuevo.setForeground(Color.WHITE);						
+		btnNuevo.setBackground(Color.DARK_GRAY);						
+		btnNuevo.addActionListener(contProductos.nuevo());
+		botones.setLayout(null);
 										
-
-										btnNuevo = new JButton("Nuevo");
-										btnNuevo.setBounds(124, 17, 100, 16);
-										btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
-										btnNuevo.setForeground(Color.WHITE);
-										btnNuevo.setBackground(Color.DARK_GRAY);
-										btnNuevo.addActionListener(contProductos.nuevo());
-										botones.setLayout(null);
 										
-										JButton btnAtras = new JButton("Atras");
-										btnAtras.addActionListener(contProductos.Atras());
-										btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
-										btnAtras.setBounds(12, 17, 92, 16);
-										botones.add(btnAtras);
-										btnAtras.setForeground(Color.WHITE);
-										btnAtras.setBackground(Color.DARK_GRAY);
-										botones.add(btnNuevo);
-										botones.add(btnModificar);
+		JButton btnAtras = new JButton("Atras");
+		btnAtras.addActionListener(contProductos.Atras());
+		btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
+		btnAtras.setBounds(12, 17, 92, 16);
+		botones.add(btnAtras);
+		btnAtras.setForeground(Color.WHITE);
+		btnAtras.setBackground(Color.DARK_GRAY);
+		botones.add(btnNuevo);
+		botones.add(btnModificar);
 										
-										btnEliminar = new JButton("Eliminar");
-										btnEliminar.setBounds(331, 17, 110, 16);
-										btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-										btnEliminar.setForeground(Color.WHITE);
-										btnEliminar.setBackground(Color.DARK_GRAY);
-										btnEliminar.addActionListener(contProductos.eliminar());
-										botones.add(btnEliminar);
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBounds(331, 17, 110, 16);
+		btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
+		btnEliminar.setForeground(Color.WHITE);
+		btnEliminar.setBackground(Color.DARK_GRAY);
+	    btnEliminar.addActionListener(contProductos.eliminar());
+		botones.add(btnEliminar);
 										
-										JButton button_2 = new JButton("Presentacion");
-										button_2.setIcon(new ImageIcon("img/gestion/Presentacion.png"));
-										button_2.setBounds(460, 17, 150, 16);
-										button_2.setForeground(Color.WHITE);
-										button_2.setBackground(Color.DARK_GRAY);
-										button_2.addActionListener(contProductos.AbrirPresentaciones());
-										botones.add(button_2);
+		btnPresentacion = new JButton("Presentacion");
+		btnPresentacion.setIcon(new ImageIcon("img/gestion/Presentacion.png"));
+		btnPresentacion.setBounds(460, 17, 150, 16);
+		btnPresentacion.setForeground(Color.WHITE);
+		btnPresentacion.setBackground(Color.DARK_GRAY);
+		btnPresentacion.addActionListener(contProductos.AbrirPresentaciones());
+		botones.add(btnPresentacion);
 										
-										JButton button_3 = new JButton("Capacidad");
-										button_3.addActionListener(contProductos.AbrirCapacidades());
-										button_3.setIcon(new ImageIcon("img/gestion/Capacidad.png"));
-										button_3.setBounds(615, 17, 130, 16);
-										button_3.setForeground(Color.WHITE);
-										button_3.setBackground(Color.DARK_GRAY);
-										botones.add(button_3);
+		btnCapacidades = new JButton("Capacidad");
+		btnCapacidades.addActionListener(contProductos.AbrirCapacidades());
+		btnCapacidades.setIcon(new ImageIcon("img/gestion/Capacidad.png"));
+		btnCapacidades.setBounds(615, 17, 130, 16);
+		btnCapacidades.setForeground(Color.WHITE);
+		btnCapacidades.setBackground(Color.DARK_GRAY);
+		botones.add(btnCapacidades);
 										
-										btnSabor = new JButton("Sabor");
-										btnSabor.setIcon(new ImageIcon("img/gestion/Sabor.png"));
-										btnSabor.setBounds(750, 17, 100, 16);
-										btnSabor.setForeground(Color.WHITE);
-										btnSabor.setBackground(Color.DARK_GRAY);
-										btnSabor.addActionListener(contProductos.AbrirSabor());
-										botones.add(btnSabor);
+		btnSabor = new JButton("Sabor");
+		btnSabor.setIcon(new ImageIcon("img/gestion/Sabor.png"));
+		btnSabor.setBounds(750, 17, 100, 16);
+		btnSabor.setForeground(Color.WHITE);
+		btnSabor.setBackground(Color.DARK_GRAY);
+		btnSabor.addActionListener(contProductos.AbrirSabor());
+		botones.add(btnSabor);
 										
-										JButton button = new JButton("Salir");
-										button.addActionListener(contProductos.salir());
-										button.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
-										button.setBounds(854, 17, 86, 16);
-										button.setForeground(Color.WHITE);
-										button.setBackground(Color.DARK_GRAY);
-										botones.add(button);
+		btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(contProductos.salir());
+		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
+		btnSalir.setBounds(854, 17, 86, 16);
+		btnSalir.setForeground(Color.WHITE);
+		btnSalir.setBackground(Color.DARK_GRAY);
+		botones.add(btnSalir);
 		
 		panelProducto = new JPanel();
 		panelProducto.setBounds(12, 286, 954, 40);
@@ -266,7 +268,7 @@ public class ProductosUI extends JPanel {
 		lblPrecio.setForeground(Color.WHITE);
 		panelProducto.add(lblPrecio);
 				
-		txtPrecio = new JSpinner(new SpinnerNumberModel(0.0,0.00,Double.MAX_VALUE,0.1));
+		txtPrecio = new JSpinner(new SpinnerNumberModel(1.0,1.0,Double.MAX_VALUE,1.0));
 		txtPrecio.setBounds(328, 15, 121,16);
 		((JSpinner.NumberEditor)txtPrecio.getEditor()).getFormat().setMinimumFractionDigits(2);
 		panelProducto.add(txtPrecio);
@@ -281,6 +283,7 @@ public class ProductosUI extends JPanel {
 		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		btnGuardar.setForeground(Color.WHITE);
+		btnGuardar.addActionListener(contProductos.guardar());
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(5, 15, 85, 16);
@@ -300,7 +303,6 @@ public class ProductosUI extends JPanel {
 		panelProducto.add(txtId);
 		txtId.setColumns(10);
 		txtId.setVisible(false);
-		btnGuardar.addActionListener(contProductos.guardar());
 		
 		JPanel panel = new JPanel();
 		panel.setForeground(Color.GRAY);
@@ -518,8 +520,9 @@ public class ProductosUI extends JPanel {
 		// TODO Auto-generated method stub
 		panelProducto.setVisible(true);
 		panelProducto.setBounds(12, 96, 953, 40);
+		txtId.setText("");
 		txtNombre.setText("");
-		txtPrecio.setValue(0);
+		txtPrecio.setValue(1.0);
 	}
 
 	public void quitarNuevo() {

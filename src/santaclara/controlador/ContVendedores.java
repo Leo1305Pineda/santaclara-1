@@ -38,7 +38,7 @@ public class ContVendedores extends ContGeneral implements IContGeneral {
 	return "";
 	}
 	
-	public void Guardar() {
+	public void Guardar() throws Exception {
 		// TODO Auto-generated method stub
 				// se va hacer las validaciones del controlador 
 				Vendedor vendedor = new Vendedor();
@@ -46,29 +46,22 @@ public class ContVendedores extends ContGeneral implements IContGeneral {
 				if (vista.getTxtId().getText().equals("")) vendedor.setId(null);//Nuevo vendedor
 				else vendedor.setId(new Integer(vista.getTxtId().getText().toString().trim()));//Modifica vendedor 
 				
-				if (ValidarTxt().equals(""))//los text no estan vacios
-				{
+				ValidarTxt();
+				
 					vendedor.setNombre(vista.getTxtNombre().getText());
 					vendedor.setCedula(vista.getTxtCedula().getText());
 					vendedor.setContrasena(vista.getTxtContrasena().getText());
 					vendedor.setUsername(vista.getTxtUserName().getText());
 					vendedor.setRutas(vista.getRutasVendedores());
 					try {
-							String msg = new String(servicioVendedor.guardar(vendedor));
-							if (msg.equals(""))
-							{
-								JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
-								MostrarTabla();
-							}
-							else JOptionPane.showMessageDialog(vista,msg);
-					
+							servicioVendedor.guardar(vendedor);
+							JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
+							MostrarTabla();
 						} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						JOptionPane.showConfirmDialog(null,e1.getMessage());
 						e1.printStackTrace();
 						}
-				}
-				else  JOptionPane.showMessageDialog(vista,"Campos Vacios: "+ValidarTxt());
 	}
 	
 	public ActionListener modificar(){

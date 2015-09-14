@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import santaclara.dao.IVisitaDAO;
@@ -16,7 +15,6 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 	private String ruta = "archivos/visitas.txt";
 	private Scanner scaner;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public List<Visita> getVisitas() throws FileNotFoundException {
 		// TODO Auto-generated method stub
@@ -28,18 +26,18 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		{
 			 Visita visita = new Visita();
 			 visita.setId(new Integer(scaner.skip("id:").nextLine().trim()));
-			 visita.setFecha(new Date(scaner.skip("fecha:").nextLine().trim()));
+			 visita.setFecha(scaner.skip("fecha:").nextLine().toString().trim());
 			 visita.setMotivo(scaner.skip("motivo:").nextLine());
 			 visita.setDescripcion(scaner.skip("descripcion:").nextLine());
 			 visita.setValorVendedor(new Integer(scaner.skip("valorVendedor:").nextLine().trim()));
 			 visita.setValorProducto(new Integer(scaner.skip("valorProducto:").nextLine().trim()));
 			 linea = new String();
 			 linea = scaner.skip("estado:").nextLine().trim();
-			 if (linea == "hecho")
+			 if (linea.toString().equals("hecho"))
 				 {
 				 visita.setEstado(true);
 				 }
-			 else if((linea == "pendiente"))
+			 else if((linea.toString().equals("pendiente")))
 				 {
 				  visita.setEstado(false);
 				 }

@@ -24,11 +24,9 @@ import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridLayout;
 
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -42,7 +40,6 @@ import santaclara.modelo.EmpaqueProducto;
 import santaclara.modelo.ProductoAlmacen;
 import net.miginfocom.swing.MigLayout;
 
-import java.awt.GridLayout;
 
 @SuppressWarnings("serial")
 public class ProductoAlmacenesUI extends JPanel {
@@ -91,6 +88,7 @@ public class ProductoAlmacenesUI extends JPanel {
 	private List<ProductoAlmacen> productoAlmacenes = new ArrayList<ProductoAlmacen>();
 	private List<Almacen> 		almacenes = new ArrayList<Almacen>();
 	private List<EmpaqueProducto> empaqueProductos = new ArrayList<EmpaqueProducto>();
+	private JPanel pnAlmacen;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ProductoAlmacenesUI(ContProductoAlmacenes contProductoAlmacenes,List<ProductoAlmacen> productoAlmacenes,List<EmpaqueProducto> empaqueProductos,List<Almacen> almacenes) {
@@ -107,9 +105,9 @@ public class ProductoAlmacenesUI extends JPanel {
 		
 		pnPreoductoAlmacenes = new JPanel();
 		pnPreoductoAlmacenes.setLocation(12, 12);
-		pnPreoductoAlmacenes.setSize(976,533);
+		pnPreoductoAlmacenes.setSize(976,561);
 		pnPreoductoAlmacenes.setBackground(Color.DARK_GRAY);
-		pnPreoductoAlmacenes.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Producto Almacen", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		pnPreoductoAlmacenes.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Producto por Almacenes", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		add(pnPreoductoAlmacenes);
 		pnPreoductoAlmacenes.setLayout(null);
 		
@@ -162,31 +160,14 @@ public class ProductoAlmacenesUI extends JPanel {
 		btnEliminar.addActionListener(contProductoAlmacenes.eliminar());
 		botones.add(btnEliminar);
 		
-		btnEmpaqueProducto = new JButton("Empaque Prod.");
-		btnEmpaqueProducto.setToolTipText("Abrir");
-		btnEmpaqueProducto.setIcon(new ImageIcon("img/gestion/Presentacion.png"));
-		btnEmpaqueProducto.setBounds(525, 17, 160, 16);
-		btnEmpaqueProducto.setForeground(Color.WHITE);
-		btnEmpaqueProducto.setBackground(Color.DARK_GRAY);
-		btnEmpaqueProducto.addActionListener(contProductoAlmacenes.AbrirEmpaqueProducto());
-		botones.add(btnEmpaqueProducto);
-		
 		btnSalir = new JButton("Salir");
 		btnSalir.setToolTipText("Cerrar");
 		btnSalir.addActionListener(contProductoAlmacenes.salir());
 		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
-		btnSalir.setBounds(835, 17, 110, 16);
+		btnSalir.setBounds(525, 17, 125, 16);
 		btnSalir.setForeground(Color.WHITE);
 		btnSalir.setBackground(Color.DARK_GRAY);
 		botones.add(btnSalir);
-		
-		btnAlmacen = new JButton("Almacen");
-		btnAlmacen.addActionListener(contProductoAlmacenes.AbrirAlmacen());
-		btnAlmacen.setToolTipText("Abrir");
-		btnAlmacen.setForeground(Color.WHITE);
-		btnAlmacen.setBackground(Color.DARK_GRAY);
-		btnAlmacen.setBounds(690, 17, 140, 16);
-		botones.add(btnAlmacen);
 		
 		panel = new JPanel();
 		panel.setForeground(Color.GRAY);
@@ -211,12 +192,12 @@ public class ProductoAlmacenesUI extends JPanel {
 		
 		pnTabla = new JPanel();
 		pnTabla.setBackground(Color.DARK_GRAY);
-		pnTabla.setBounds(14, 91, 950, 392);
+		pnTabla.setBounds(14, 85, 950, 289);
 		pnPreoductoAlmacenes.add(pnTabla);
 		pnTabla.setLayout(null);
 		
 		scrollPanel = new JScrollPane();
-		scrollPanel.setBounds(0, 0, 950, 396);
+		scrollPanel.setBounds(0, 12, 950, 265);
 		scrollPanel.setBackground(Color.DARK_GRAY);
 		pnTabla.add(scrollPanel);
 		
@@ -226,167 +207,145 @@ public class ProductoAlmacenesUI extends JPanel {
 		
 		
 		panelProductoAlmacen = new JPanel();
-		panelProductoAlmacen.setBounds(14, 495, 950, 29);
+		panelProductoAlmacen.setBounds(14, 386, 950, 163);
 		pnPreoductoAlmacenes.add(panelProductoAlmacen);
 		panelProductoAlmacen.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		panelProductoAlmacen.setBackground(Color.DARK_GRAY);
 		panelProductoAlmacen.getSize(new Dimension(800, 150));
 		panelProductoAlmacen.setLayout(null);
 		
-		cmbAlmacenes = new JComboBox();
-		cmbAlmacenes.setForeground(Color.BLACK);
-		cmbAlmacenes.setBackground(SystemColor.controlHighlight);
-		cmbAlmacenes.setBounds(690, 2, 140, 22);
-		cmbAlmacenes.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				cmbAlmacenes.setBounds(690,2, 140, 29);
-				txtStock.setVisible(true);
-				txtStockMin.setVisible(true);
-				txtExistencia.setVisible(true);
-				lblStock.setVisible(true);
-				lblStockmin.setVisible(true);
-				lblExistencia.setText("Empaque Producto");
-				cmbEmpaqueProducto.setVisible(true);
-			}
-		});
-		cmbAlmacenes.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				cmbAlmacenes.setBounds(1, 2, 950, 29);
-				txtStock.setVisible(false);
-				txtStockMin.setVisible(false);
-				txtExistencia.setVisible(false);
-				lblStock.setVisible(false);
-				lblStockmin.setVisible(false);
-				lblExistencia.setText("Existencia");;
-				cmbEmpaqueProducto.setVisible(false);
-			}
-		});
-	
-		cmbAlmacenes.setRenderer(new ListCellRenderer() {
-			
-			@Override
-			public Component getListCellRendererComponent(JList list, Object value,
-					int index, boolean isSelected, boolean cellHasFocus) {
-				// TODO Auto-generated method stub
-				Almacen almacen = (Almacen) value;			
-				
-				JPanel pnalmacen = new JPanel();
-				pnalmacen.add(new JTextField(almacen.getUbicacion()));
-				pnalmacen.setLayout(new GridLayout(1, 0, 0, 0));
-				return pnalmacen;
-			}
-		});
-		panelProductoAlmacen.add(cmbAlmacenes);
-		
-		cmbEmpaqueProducto = new JComboBox();
-		cmbEmpaqueProducto.setBounds(525, 2, 160,22);
-		cmbEmpaqueProducto.setBackground(SystemColor.controlHighlight);
-		cmbEmpaqueProducto.setForeground(Color.BLACK);
-		cmbEmpaqueProducto.addMouseListener(new MouseAdapter() {
-	
-			@Override
-			public void mouseExited(MouseEvent e) {
-				cmbEmpaqueProducto.setBounds(525, 2, 160, 29);
-				txtStock.setVisible(true);
-				txtStockMin.setVisible(true);
-				txtExistencia.setVisible(true);
-				lblStock.setVisible(true);
-				lblStockmin.setVisible(true);
-				lblExistencia.setVisible(true);
-				cmbAlmacenes.setVisible(true);
-			}
-		});
-		cmbEmpaqueProducto.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				cmbEmpaqueProducto.setBounds(1, 2,950, 29);
-				txtStock.setVisible(false);
-				txtStockMin.setVisible(false);
-				txtExistencia.setVisible(false);
-				lblStock.setVisible(false);
-				lblStockmin.setVisible(false);
-				lblExistencia.setVisible(false);
-				cmbAlmacenes.setVisible(false);
-			}
-		});
-		cmbEmpaqueProducto.setRenderer(new ListCellRenderer() {
-			
-			@Override
-			public Component getListCellRendererComponent(JList list, Object value,
-					int index, boolean isSelected, boolean cellHasFocus) {
-				// TODO Auto-generated method stub
-				EmpaqueProducto empaqueProducto = (EmpaqueProducto) value;
-		
-				JPanel pnEmpaqueProducto = new JPanel();
-				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getNombre()));
-				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getPresentacion().getMaterial()));
-				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getCapacidad().getVolumenStr()));
-				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getSabor().getSabor()));
-				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getPrecioStr()));
-				pnEmpaqueProducto.add(new JTextField(empaqueProducto.getCantidadStr()));
-				pnEmpaqueProducto.setLayout(new GridLayout(1, 0, 0, 0));
-				
-				return pnEmpaqueProducto;
-			}
-		});
-		panelProductoAlmacen.add(cmbEmpaqueProducto);
-		
 		lblStock = new JLabel("Stock");
-		lblStock.setBounds(125, 0,  56,25);
+		lblStock.setBounds(10, 12,  56,25);
 		lblStock.setBackground(SystemColor.controlHighlight);
 		lblStock.setForeground(Color.WHITE);
 		panelProductoAlmacen.add(lblStock);
 		
 		txtStock = new JSpinner(new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1));
-		txtStock.setBounds(165, 2, 70,16);
+		txtStock.setBounds(50, 14, 70,16);
 		((JSpinner.NumberEditor)txtStock.getEditor()).getFormat().setMinimumFractionDigits(0);
 		panelProductoAlmacen.add(txtStock);
 		
 		txtStockMin = new JSpinner(new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1));
-		txtStockMin.setBounds(300, 2, 70, 16);
+		txtStockMin.setBounds(210, 14, 70, 16);
 		((JSpinner.NumberEditor)txtStockMin.getEditor()).getFormat().setMinimumFractionDigits(0);
 		panelProductoAlmacen.add(txtStockMin);
 		
 		txtExistencia = new JSpinner(new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1));
-		txtExistencia.setBounds(450, 2, 70, 16);
+		txtExistencia.setBounds(390, 16, 70, 16);
 		((JSpinner.NumberEditor)txtExistencia.getEditor()).getFormat().setMinimumFractionDigits(0);
 		panelProductoAlmacen.add(txtExistencia);
-		
-		btnGuardar = new JButton("Guardar");
-		btnGuardar.setToolTipText("Guardar");
-		btnGuardar.setBounds(835, 2, 112, 16);
-		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
-		btnGuardar.setBackground(Color.DARK_GRAY);
-		btnGuardar.setForeground(Color.WHITE);
-		btnGuardar.addActionListener(contProductoAlmacenes.guardar());
-		panelProductoAlmacen.add(btnGuardar);
-		
-		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(2, 2, 120, 16);
-		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				quitarNuevo();
-			}
-		});
-		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.setBackground(Color.DARK_GRAY);
-		panelProductoAlmacen.add(btnCancelar);
 		
 		lblStockmin = new JLabel("StockMin");
 		lblStockmin.setForeground(Color.WHITE);
 		lblStockmin.setBackground(SystemColor.controlHighlight);
-		lblStockmin.setBounds(235, 0, 75, 25);
+		lblStockmin.setBounds(145, 12, 75, 25);
 		panelProductoAlmacen.add(lblStockmin);
 		
 		lblExistencia = new JLabel("Existencia");
 		lblExistencia.setForeground(Color.WHITE);
 		lblExistencia.setBackground(SystemColor.controlHighlight);
-		lblExistencia.setBounds(375, -2, 82, 25);
+		lblExistencia.setBounds(315, 12, 82, 25);
 		panelProductoAlmacen.add(lblExistencia);
+		
+		JPanel pnEmpaqueProducto = new JPanel();
+		pnEmpaqueProducto.setBackground(Color.DARK_GRAY);
+		pnEmpaqueProducto.setBounds(2, 45, 945, 46);
+		panelProductoAlmacen.add(pnEmpaqueProducto);
+		pnEmpaqueProducto.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), " EmpaqueProducto|"
+				+ "Presentacion        |"
+				+ "Capacidad             |"
+				+ "Sabor                      |"
+				+ "Precio                    |"
+				+ "Cantidad                |", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		pnEmpaqueProducto.setLayout(null);	
+		cmbEmpaqueProducto = new JComboBox();
+		cmbEmpaqueProducto.setBounds(10, 15, 810, 24);
+		pnEmpaqueProducto.add(cmbEmpaqueProducto);
+		cmbEmpaqueProducto.setBackground(SystemColor.controlHighlight);
+		cmbEmpaqueProducto.setForeground(Color.BLACK);		
+		cmbEmpaqueProducto.setRenderer(new ListCellRenderer() {
+											
+		@Override
+	public Component getListCellRendererComponent(JList list, Object value,
+			int index, boolean isSelected, boolean cellHasFocus) {
+			// TODO Auto-generated method stub
+			EmpaqueProducto empaqueProducto = (EmpaqueProducto) value;
+			JPanel pnEmpaqueProducto = new JPanel();
+			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getNombre()));
+			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getPresentacion().getMaterial()));
+			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getCapacidad().getVolumenStr()));
+			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getSabor().getSabor()));
+			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getPrecioStr()));
+			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getCantidadStr()));
+			pnEmpaqueProducto.setLayout(new GridLayout(1, 0, 0, 0));
+												
+			return pnEmpaqueProducto;
+			}
+	});
+		btnEmpaqueProducto = new JButton("Empaque");
+		btnEmpaqueProducto.setBounds(820, 14, 120, 25);
+		pnEmpaqueProducto.add(btnEmpaqueProducto);
+		btnEmpaqueProducto.setToolTipText("Abrir");
+		btnEmpaqueProducto.setIcon(new ImageIcon("img/gestion/Presentacion.png"));
+		btnEmpaqueProducto.setForeground(Color.WHITE);
+		btnEmpaqueProducto.setBackground(Color.DARK_GRAY);
+						
+		pnAlmacen = new JPanel();
+		pnAlmacen.setBackground(Color.DARK_GRAY);
+		pnAlmacen.setBounds(2, 103, 945, 46);
+		pnAlmacen.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), " Almacen ", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		panelProductoAlmacen.add(pnAlmacen);
+		pnAlmacen.setLayout(null);
+						
+		cmbAlmacenes = new JComboBox();
+		cmbAlmacenes.setBounds(10, 15, 810, 24);
+		pnAlmacen.add(cmbAlmacenes);
+		cmbAlmacenes.setForeground(Color.BLACK);
+		cmbAlmacenes.setBackground(SystemColor.controlHighlight);
+		cmbAlmacenes.setRenderer(new ListCellRenderer() {
+							
+			@Override
+			public Component getListCellRendererComponent(JList list, Object value,
+					int index, boolean isSelected, boolean cellHasFocus) {
+					// TODO Auto-generated method stub
+					Almacen almacen = (Almacen) value;			
+								
+					JPanel pnalmacen = new JPanel();
+					pnalmacen.add(new JTextField(almacen.getUbicacion()));
+					pnalmacen.setLayout(new GridLayout(1, 0, 0, 0));
+					return pnalmacen;
+				}
+			});
+						
+		btnAlmacen = new JButton("Almacen");
+		btnAlmacen.setBounds(820, 14, 120, 25);
+		pnAlmacen.add(btnAlmacen);
+		btnAlmacen.addActionListener(contProductoAlmacenes.AbrirAlmacen());
+		btnAlmacen.setToolTipText("Abrir");
+		btnAlmacen.setForeground(Color.WHITE);
+		btnAlmacen.setBackground(Color.DARK_GRAY);
+						
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(481, 15, 120, 16);
+		panelProductoAlmacen.add(btnCancelar);
+		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+					quitarNuevo();
+					}
+			});
+		btnCancelar.setForeground(Color.WHITE);
+		btnCancelar.setBackground(Color.DARK_GRAY);
+					
+		btnGuardar = new JButton("Guardar");
+		btnGuardar.setBounds(605, 15, 112, 16);
+		panelProductoAlmacen.add(btnGuardar);
+		btnGuardar.setToolTipText("Guardar");
+		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
+		btnGuardar.setBackground(Color.DARK_GRAY);
+		btnGuardar.setForeground(Color.WHITE);
+		btnGuardar.addActionListener(contProductoAlmacenes.guardar());
+		btnEmpaqueProducto.addActionListener(contProductoAlmacenes.AbrirEmpaqueProducto());
 		 
 	}
 
@@ -525,7 +484,7 @@ public class ProductoAlmacenesUI extends JPanel {
 		// TODO Auto-generated method stub
 	
 		panelProductoAlmacen.setVisible(true);
-		panelProductoAlmacen.setBounds(12, 95, 950, 29);
+		panelProductoAlmacen.setBounds(12, 95, 950, 280);
 		
 		pnTabla.setVisible(false);
 		scrollPanel.setVisible(false);
@@ -696,9 +655,6 @@ public class ProductoAlmacenesUI extends JPanel {
 	public void setCmbEmpaqueProducto(JComboBox cmbEmpaqueProducto) {
 		this.cmbEmpaqueProducto = cmbEmpaqueProducto;
 	}
-	
-	
-	
 }
 
 

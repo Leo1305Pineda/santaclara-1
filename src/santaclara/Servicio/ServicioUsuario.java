@@ -60,7 +60,7 @@ public class ServicioUsuario {
 		return usuarioDAO.getUsuario(id);
 	}
 
-	public String guardar(Usuario usuario) throws IOException {
+	public void guardar(Usuario usuario) throws Exception {
 		// TODO Auto-generated method stub
 		
 		usuarios = usuarioDAO.getUsuarios();
@@ -73,13 +73,12 @@ public class ServicioUsuario {
 			{
 				if(Usuario1.getNombre().equals(usuario.getNombre())&&
 						Usuario1.getContrasena().equals(usuario.getContrasena()))
-				return "Usuario Existente";
+					throw new Exception ("El Vendedor Existente"); 
 				break;//rompe el for para modificar
 			}
 		}
 		
 		usuarioDAO.guardar(usuario);
-		return "Operacion Exitosa";
 				
 		
 	}

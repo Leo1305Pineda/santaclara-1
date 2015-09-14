@@ -38,5 +38,6 @@ public class TestRutaDAO {
 		rutaDAO.eliminar(ruta);
 		assertEquals(almacenes.size(),rutaDAO.getRutas().size());
 		rutaDAO.Mostrar();
+	
 	}
 }
