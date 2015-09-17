@@ -26,8 +26,14 @@ import santaclara.controlador.ContVisitas;
 import santaclara.modelo.Usuario;
 
 import javax.swing.DefaultComboBoxModel;
-
 import javax.swing.table.DefaultTableModel;
+
+import com.toedter.calendar.JDateChooser;
+
+import javax.swing.SwingConstants;
+
+import java.awt.GridLayout;
+import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class VisitasUI extends JPanel {
@@ -43,8 +49,8 @@ public class VisitasUI extends JPanel {
 	private JButton btnAtras;
 	private JButton btnSalir;
 	private JButton btnGuardar;
-	private JButton btnCancelar;
-	private JButton boton = new JButton("+ Visita");
+	private JButton btnEliminar;
+	private JButton boton= new JButton();
 	
 	private JComboBox<String> comboTipoUser;
 	private JComboBox<Usuario> comboUsuario;
@@ -62,6 +68,9 @@ public class VisitasUI extends JPanel {
 	private JLabel lblValVendedor;
 	private JLabel lblFecha;
 	private JLabel lblDescripcion;
+	private JLabel lbljefeVentaid;
+	private JLabel lblCedula;
+	private JLabel lblNombre; 
 	
 	private JScrollPane scrollPanel;
 	
@@ -69,13 +78,20 @@ public class VisitasUI extends JPanel {
 	
 	@SuppressWarnings("rawtypes")
 	private JTableBinding  binVisitas;
-	private JTextField txtFecha;
-	private JTextField txtCliente;
-	private JTextField txtRuta;
+	
+	private JDateChooser dateFecha ;
+	private JLabel lblJefeUsername;
+	private JPanel panel;
+	private JLabel lblrif;
+	private JLabel lblRazonSocial;
+	private JLabel lblDireccion;
+	private JLabel lblTelefono;
+	private JLabel lblZona;
+	private JLabel lblRuta;
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public VisitasUI(ContVisitas contVisitas) {
+	public VisitasUI(ContVisitas contVisitas) throws IOException {
 		
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
@@ -91,7 +107,7 @@ public class VisitasUI extends JPanel {
 		add(pnVisitas);
 
 		scrollPanel = new JScrollPane();
-		scrollPanel.setBounds(12, 85, 852, 391);
+		scrollPanel.setBounds(12, 85, 852, 51);
 		table = new JTable();
 		table.addMouseListener(contVisitas.ActivarClick());
 		table.setModel(new DefaultTableModel(
@@ -113,7 +129,7 @@ public class VisitasUI extends JPanel {
 		pnVisitas.add(scrollPanel);
 		
 		panelVisitaJefeVenta = new JPanel();
-		panelVisitaJefeVenta.setBounds(12, 488, 852, 172);
+		panelVisitaJefeVenta.setBounds(22, 138, 512, 423);
 		pnVisitas.add(panelVisitaJefeVenta);
 		panelVisitaJefeVenta.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Editar Visita Jefe Venta", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		panelVisitaJefeVenta.setBackground(Color.DARK_GRAY);
@@ -121,89 +137,136 @@ public class VisitasUI extends JPanel {
 		panelVisitaJefeVenta.setLayout(null);
 		
 		lblMotivo = new JLabel("Motivo:");
-		lblMotivo.setBounds(12, 62, 85, 25);
+		lblMotivo.setHorizontalAlignment(SwingConstants.LEFT);
+		lblMotivo.setBounds(45, 188, 85, 25);
 		lblMotivo.setForeground(Color.WHITE);
 		lblMotivo.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
 		panelVisitaJefeVenta.add(lblMotivo);
 
 		txtMotivo = new JTextField();
-		txtMotivo.setBounds(114, 66, 287, 16);
+		txtMotivo.setBounds(134, 192, 323, 16);
 		panelVisitaJefeVenta.add(txtMotivo);
 		txtMotivo.setColumns(10);
 				
 		lblValVendedor = new JLabel("Valor Vendedor:");
-		lblValVendedor.setBounds(12, 99,  116,25);
+		lblValVendedor.setBounds(45, 257,  116,25);
 		lblValVendedor.setBackground(SystemColor.controlHighlight);
 		lblValVendedor.setForeground(Color.WHITE);
 		panelVisitaJefeVenta.add(lblValVendedor);
 				
-		txtValVendedor = new JSpinner(new SpinnerNumberModel(0.0,0.00,Double.MAX_VALUE,0.1));
-		txtValVendedor.setBounds(129, 103, 69,16);
-		((JSpinner.NumberEditor)txtValVendedor.getEditor()).getFormat().setMinimumFractionDigits(2);
+		txtValVendedor = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
+		txtValVendedor.setBounds(162, 261, 69,16);
+		((JSpinner.NumberEditor)txtValVendedor.getEditor()).getFormat().setMinimumFractionDigits(0);
 		panelVisitaJefeVenta.add(txtValVendedor);
 		
 		btnGuardar = new JButton("Guardar");
-		btnGuardar.setBounds(504, 112, 127, 16);
+		btnGuardar.setFont(new Font("Dialog", Font.BOLD, 12));
+		btnGuardar.setBounds(195, 295, 127, 16);
 		panelVisitaJefeVenta.add(btnGuardar);
 		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		btnGuardar.setForeground(Color.WHITE);
+		btnGuardar.addActionListener(contVisitas.ActivarGuardar());
 		
-		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(643, 108, 130, 16);
-		panelVisitaJefeVenta.add(btnCancelar);
-		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-		btnCancelar.addActionListener(contVisitas.QuitarFrame());
-		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.setBackground(Color.DARK_GRAY);
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBounds(330, 295, 130, 16);
+		panelVisitaJefeVenta.add(btnEliminar);
+		btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
+		btnEliminar.addActionListener(contVisitas.ActivarEliminar());
+		btnEliminar.setForeground(Color.WHITE);
+		btnEliminar.setBackground(Color.DARK_GRAY);
 	
 		lblValorproducto = new JLabel("Valor Producto:");
 		lblValorproducto.setForeground(Color.WHITE);
 		lblValorproducto.setBackground(SystemColor.controlHighlight);
-		lblValorproducto.setBounds(217, 99, 116, 25);
+		lblValorproducto.setBounds(271, 257, 116, 25);
 		panelVisitaJefeVenta.add(lblValorproducto);
 		
-		txtValProducto = new JSpinner(new SpinnerNumberModel(1.0,1.0,Double.MAX_VALUE,1.0));
-		txtValProducto.setBounds(334, 108, 69, 16);
+		txtValProducto = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
+		txtValProducto.setBounds(388, 261, 69, 16);
+		((JSpinner.NumberEditor)txtValProducto.getEditor()).getFormat().setMinimumFractionDigits(0);
 		panelVisitaJefeVenta.add(txtValProducto);
 		
 		lblFecha = new JLabel("Fecha:");
 		lblFecha.setForeground(Color.WHITE);
 		lblFecha.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblFecha.setBounds(12, 19, 69, 25);
+		lblFecha.setBounds(45, 150, 69, 25);
 		panelVisitaJefeVenta.add(lblFecha);
 		
 		lblDescripcion = new JLabel("Descripcion:");
 		lblDescripcion.setForeground(Color.WHITE);
 		lblDescripcion.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblDescripcion.setBounds(434, 57, 100, 25);
+		lblDescripcion.setBounds(45, 225, 107, 25);
 		panelVisitaJefeVenta.add(lblDescripcion);
 		
 		txtDescripcion = new JTextField();
 		txtDescripcion.setColumns(10);
-		txtDescripcion.setBounds(536, 61, 287, 16);
+		txtDescripcion.setBounds(134, 229, 323, 16);
 		panelVisitaJefeVenta.add(txtDescripcion);
 		
 		chckbxEstado = new JCheckBox("Estado");
 		chckbxEstado.setForeground(Color.WHITE);
 		chckbxEstado.setBackground(Color.DARK_GRAY);
-		chckbxEstado.setBounds(412, 105, 129, 23);
+		chckbxEstado.setBounds(45, 290, 129, 23);
 		panelVisitaJefeVenta.add(chckbxEstado);
 		
-		txtFecha = new JTextField();
-		txtFecha.setColumns(10);
-		txtFecha.setBounds(114, 22, 145, 16);
-		panelVisitaJefeVenta.add(txtFecha);
+		dateFecha = new JDateChooser();
+		dateFecha.setBounds(134, 156, 175, 19);
+		panelVisitaJefeVenta.add(dateFecha);
 		
-		txtCliente = new JTextField();
-		txtCliente.setColumns(10);
-		txtCliente.setBounds(406, 19, 145, 16);
-		panelVisitaJefeVenta.add(txtCliente);
+		JPanel pnInfoJVenta = new JPanel();
+		pnInfoJVenta.setBackground(Color.DARK_GRAY);
+		pnInfoJVenta.setBounds(40, 22, 175, 108);
+		pnInfoJVenta.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Info. del Jefe de Venta", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		panelVisitaJefeVenta.add(pnInfoJVenta);
+		pnInfoJVenta.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		txtRuta = new JTextField();
-		txtRuta.setColumns(10);
-		txtRuta.setBounds(678, 19, 145, 16);
-		panelVisitaJefeVenta.add(txtRuta);
+		lbljefeVentaid = new JLabel("id");
+		lbljefeVentaid.setForeground(Color.WHITE);
+		pnInfoJVenta.add(lbljefeVentaid);
+		
+		lblCedula = new JLabel("Cedula");
+		lblCedula.setForeground(Color.WHITE);
+		pnInfoJVenta.add(lblCedula);
+		
+		lblJefeUsername = new JLabel("Nombre de Usuario");
+		lblJefeUsername.setForeground(Color.WHITE);
+		pnInfoJVenta.add(lblJefeUsername);
+		
+		lblNombre = new JLabel("Nombre");
+		lblNombre.setForeground(Color.WHITE);
+		pnInfoJVenta.add(lblNombre);
+		
+		lblZona = new JLabel("Zona");
+		lblZona.setForeground(Color.WHITE);
+		pnInfoJVenta.add(lblZona);
+		
+		panel = new JPanel();
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Info. del Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		panel.setBackground(Color.DARK_GRAY);
+		panel.setBounds(282, 22, 175, 108);
+		panelVisitaJefeVenta.add(panel);
+		panel.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		lblrif = new JLabel("rif");
+		lblrif.setForeground(Color.WHITE);
+		panel.add(lblrif);
+		
+		lblRazonSocial = new JLabel("razonSocial");
+		lblRazonSocial.setForeground(Color.WHITE);
+		panel.add(lblRazonSocial);
+		
+		lblDireccion = new JLabel("Direccion");
+		lblDireccion.setForeground(Color.WHITE);
+		panel.add(lblDireccion);
+		
+		lblTelefono = new JLabel("Telefono");
+		lblTelefono.setForeground(Color.WHITE);
+		panel.add(lblTelefono);
+		
+		lblRuta = new JLabel("Ruta");
+		lblRuta.setForeground(Color.WHITE);
+		panel.add(lblRuta);
 		
 		pnConsultar = new JPanel();
 		pnConsultar.setBounds(11, 18, 853, 68);
@@ -325,12 +388,12 @@ public class VisitasUI extends JPanel {
 		this.btnGuardar = btnGuardar;
 	}
 
-	public JButton getBtnCancelar() {
-		return btnCancelar;
+	public JButton getBtnEliminar() {
+		return btnEliminar;
 	}
 
-	public void setBtnCancelar(JButton btnCancelar) {
-		this.btnCancelar = btnCancelar;
+	public void setBtnEliminarr(JButton btnEliminar) {
+		this.btnEliminar = btnEliminar;
 	}
 
 	public JComboBox<String> getComboTipoUser() {
@@ -481,36 +544,108 @@ public class VisitasUI extends JPanel {
 		this.frame = frame;
 	}
 
-	public JTextField getTxtFecha() {
-		return txtFecha;
-	}
-
-	public void setTxtFecha(JTextField txtFecha) {
-		this.txtFecha = txtFecha;
-	}
-
-	public JTextField getTxtCliente() {
-		return txtCliente;
-	}
-
-	public void setTxtCliente(JTextField txtCliente) {
-		this.txtCliente = txtCliente;
-	}
-
-	public JTextField getTxtRuta() {
-		return txtRuta;
-	}
-
-	public void setTxtRuta(JTextField txtRuta) {
-		this.txtRuta = txtRuta;
-	}
-
 	public JTextField getTxtMotivo() {
 		return txtMotivo;
 	}
 
 	public void setTxtMotivo(JTextField txtMotivo) {
 		this.txtMotivo = txtMotivo;
+	}
+
+	public JDateChooser getDateFecha() {
+		return dateFecha;
+	}
+
+	public void setDateFecha(JDateChooser dateFecha) {
+		this.dateFecha = dateFecha;
+	}
+
+	public JLabel getLblJefeUsername() {
+		return lblJefeUsername;
+	}
+
+	public void setLblJefeUsername(JLabel lblJefeUsername) {
+		this.lblJefeUsername = lblJefeUsername;
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public void setPanel(JPanel panel) {
+		this.panel = panel;
+	}
+
+	public JLabel getLblrif() {
+		return lblrif;
+	}
+
+	public void setLblrif(JLabel lblrif) {
+		this.lblrif = lblrif;
+	}
+
+	public JLabel getLblRazonSocial() {
+		return lblRazonSocial;
+	}
+
+	public void setLblRazonSocial(JLabel lblRazonSocial) {
+		this.lblRazonSocial = lblRazonSocial;
+	}
+
+	public JLabel getLblDireccion() {
+		return lblDireccion;
+	}
+
+	public void setLblDireccion(JLabel lblDireccion) {
+		this.lblDireccion = lblDireccion;
+	}
+
+	public JLabel getLblTelefono() {
+		return lblTelefono;
+	}
+
+	public void setLblTelefono(JLabel lblTelefono) {
+		this.lblTelefono = lblTelefono;
+	}
+
+	public JLabel getLblZona() {
+		return lblZona;
+	}
+
+	public void setLblZona(JLabel lblZona) {
+		this.lblZona = lblZona;
+	}
+
+	public JLabel getLblRuta() {
+		return lblRuta;
+	}
+
+	public void setLblRuta(JLabel lblRuta) {
+		this.lblRuta = lblRuta;
+	}
+
+	public JLabel getLbljefeVentaid() {
+		return lbljefeVentaid;
+	}
+
+	public void setLbljefeVentaid(JLabel lbljefeVentaid) {
+		this.lbljefeVentaid = lbljefeVentaid;
+	}
+
+	public JLabel getLblCedula() {
+		return lblCedula;
+	}
+
+	public void setLblCedula(JLabel lblCedula) {
+		this.lblCedula = lblCedula;
+	}
+
+	public JLabel getLblNombre() {
+		return lblNombre;
+	}
+
+	public void setLblNombre(JLabel lblNombre) {
+		this.lblNombre = lblNombre;
 	}
 	
 }

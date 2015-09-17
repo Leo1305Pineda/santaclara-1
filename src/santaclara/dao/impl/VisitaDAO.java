@@ -4,9 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+
 import santaclara.dao.IVisitaDAO;
 import santaclara.modelo.Visita;
 
@@ -26,7 +30,15 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		{
 			 Visita visita = new Visita();
 			 visita.setId(new Integer(scaner.skip("id:").nextLine().trim()));
-			 visita.setFecha(scaner.skip("fecha:").nextLine().toString().trim());
+			 Date fecha = new Date();
+			try {
+				fecha = new SimpleDateFormat("dd/mm/yyyy").parse(scaner.skip("fecha:").nextLine().toString().trim());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 visita.setFecha(fecha);
+			 
 			 visita.setMotivo(scaner.skip("motivo:").nextLine());
 			 visita.setDescripcion(scaner.skip("descripcion:").nextLine());
 			 visita.setValorVendedor(new Integer(scaner.skip("valorVendedor:").nextLine().trim()));
@@ -94,11 +106,8 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		{
 			for(Visita visita1 :visitas)
 			{
-				if(visita1.getId().equals(visita.getId())
-						&& visita1.getJefeVenta().getId().equals(visita.getId())
-						&& visita1.getCliente().getId().equals(visita.getCliente().getId()))
-				{
-					/// vacio 
+				if(visita1.getId().equals(visita.getId()))
+				{ 
 					visita1.setDescripcion(visita.getDescripcion());
 					visita1.setEstado(visita.getEstado());
 					visita1.setFecha(visita.getFecha());
@@ -120,9 +129,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		List<Visita> Visitas = getVisitas();
 		for(Visita visita1 :Visitas)
 		{
-			if(visita1.getId().equals(visita.getId())
-					&& visita1.getJefeVenta().getId().equals(visita.getId())
-					&& visita1.getCliente().getId().equals(visita.getCliente().getId()))
+			if(visita1.getId().equals(visita.getId()))
 			{
 				Visitas.remove(visita1);
 				break;
@@ -133,12 +140,13 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 	}
 
 	@Override
-	public Visita getVisita(Integer idVisita,Integer idJefeVenta,Integer idCliente)throws FileNotFoundException {
+	public Visita getVisita(Date fecha,Integer idJefeVenta,Integer idCliente) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<Visita> visitas = getVisitas();
+		
 		for(Visita visita1 :visitas)
 		{
-			if(visita1.getId().equals(idVisita)
+			if(visita1.getFecha().equals(fecha)
 					&& visita1.getJefeVenta().getId().equals(idJefeVenta)
 					&& visita1.getCliente().getId().equals(idCliente))
 			{
@@ -148,19 +156,46 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		return null;
 	}
 	
+	public String getFechaStr(Date fecha) {
+		if (fecha==null)return "";
+		else{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+			return sdf.format(fecha);
+		} 
+	}
+	
+	public Boolean isVisita(Date fecha,Integer idCliente,Integer idJefeVenta)throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		List<Visita> visitas = getVisitas();
+		
+		for(Visita visita1 :visitas)
+		{
+			
+			System.out.println(getFechaStr(fecha)+" = "+getFechaStr(visita1.getFecha()));	
+			if(visita1.getFecha().equals(fecha)
+					&& visita1.getJefeVenta().getId().equals(idJefeVenta)
+					&& visita1.getCliente().getId().equals(idCliente))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void guardarTodo(List<Visita> visitas) throws IOException
 	{
 		FileWriter fw = new FileWriter(ruta);
 		for(Visita visita : visitas)
 		{
 			fw.append("id:"+visita.getId().toString()+"\n");
-			fw.append("fecha:"+visita.getFecha().toString()+"\n");
+			fw.append("fecha:"+visita.getFechaStr()+"\n");
 			fw.append("motivo:"+visita.getMotivo().toString()+"\n");
 			fw.append("descripcion:"+visita.getDescripcion().toString()+"\n");
 			fw.append("valorVendedor:"+visita.getValorVendedor().toString()+"\n");
 			fw.append("valorProducto:"+visita.getValorProducto().toString()+"\n");
-			fw.append("estado:"+visita.getEstado().toString()+"\n");
-			
+			if(visita.getEstado()==true)
+			fw.append("estado:hecho\n");
+			else fw.append("estado:pendiente\n");
 			fw.append("idJefeVenta:"+(visita.getJefeVenta()== null
 					? "  ":visita.getJefeVenta().getId().toString())+"\n");
 			
@@ -170,6 +205,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		fw.close();
 	}
 
+}
 	
 	/*
  	La Estructura de los Archivos sera la Siguiente 
@@ -186,5 +222,4 @@ idCliente:3
 
   * */
 	
-} 
 

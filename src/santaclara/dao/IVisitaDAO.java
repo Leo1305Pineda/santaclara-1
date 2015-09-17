@@ -2,6 +2,7 @@ package santaclara.dao;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import santaclara.modelo.Visita;
@@ -14,6 +15,6 @@ public interface IVisitaDAO extends IGenericoDAO {
 	
 	public void eliminar(Visita visita) throws   IOException;
 	
-	public Visita getVisita(Integer idVisita,Integer idJefeVenta,Integer idCliente) throws FileNotFoundException;
+	public Visita getVisita(Date fecha,Integer idJefeVenta,Integer idCliente) throws FileNotFoundException;
 		
 }	
