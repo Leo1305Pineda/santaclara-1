@@ -34,3 +34,57 @@ valorProducto:0
 estado:pendiente
 idJefeVenta:0
 idCliente:3
+id:4
+fecha:16/12/2014
+motivo:prueba
+descripcion:prueba
+valorVendedor:0
+valorProducto:0
+estado:hecho
+idJefeVenta:0
+idCliente:4
+id:5
+fecha:19/09/2015
+motivo:modifica
+descripcion:edita
+valorVendedor:0
+valorProducto:0
+estado:pendiente
+idJefeVenta:0
+idCliente:4
+id:6
+fecha:20/09/2015
+motivo:prueba 2
+descripcion:prueba buena
+valorVendedor:0
+valorProducto:0
+estado:hecho
+idJefeVenta:0
+idCliente:4
+id:7
+fecha:19/09/2015
+motivo:revision de zona
+descripcion:visita de rutina
+valorVendedor:0
+valorProducto:0
+estado:pendiente
+idJefeVenta:0
+idCliente:6
+id:8
+fecha:19/10/2015
+motivo:visita
+descripcion:revisar los productos
+valorVendedor:0
+valorProducto:0
+estado:hecho
+idJefeVenta:0
+idCliente:6
+id:9
+fecha:19/09/2015
+motivo:Visita al cliente
+descripcion:por inconformidad
+valorVendedor:0
+valorProducto:0
+estado:pendiente
+idJefeVenta:0
+idCliente:1

@@ -44,10 +44,19 @@ public class Visita {
 	public String getFechaStr() {
 		if (fecha==null)return "";
 		else{
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			return sdf.format(fecha);
 		} 
 	}
+	
+	public String getFechaStr(Date fecha) {
+		if (fecha==null)return "";
+		else{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			return sdf.format(fecha);
+		} 
+	}
+	
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
@@ -110,7 +119,7 @@ public class Visita {
 	
 	public void setFecha(String cadena) {
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			this.fecha = sdf.parse(cadena);
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -32,7 +32,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 			 visita.setId(new Integer(scaner.skip("id:").nextLine().trim()));
 			 Date fecha = new Date();
 			try {
-				fecha = new SimpleDateFormat("dd/mm/yyyy").parse(scaner.skip("fecha:").nextLine().toString().trim());
+				fecha = new SimpleDateFormat("dd/MM/yyyy").parse(scaner.skip("fecha:").nextLine().toString().trim());
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -156,27 +156,15 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		return null;
 	}
 	
-	public String getFechaStr(Date fecha) {
-		if (fecha==null)return "";
-		else{
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
-			return sdf.format(fecha);
-		} 
-	}
-	
 	public Boolean isVisita(Date fecha,Integer idCliente,Integer idJefeVenta)throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<Visita> visitas = getVisitas();
-		
 		for(Visita visita1 :visitas)
-		{
-			
-			System.out.println(getFechaStr(fecha)+" = "+getFechaStr(visita1.getFecha()));	
-			if(visita1.getFecha().equals(fecha)
-					&& visita1.getJefeVenta().getId().equals(idJefeVenta)
-					&& visita1.getCliente().getId().equals(idCliente))
+		{	
+			if( visita1.getJefeVenta().getId().equals(idJefeVenta) && visita1.getCliente().getId().equals(idCliente))
 			{
-				return true;
+				
+				if (visita1.getFecha().equals(fecha)) return true;
 			}
 		}
 		return false;

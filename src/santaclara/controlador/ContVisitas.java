@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
@@ -38,7 +40,6 @@ import santaclara.Servicio.ServicioConcesionario;
 import santaclara.Servicio.ServicioJefeVenta;
 import santaclara.Servicio.ServicioRuta;
 import santaclara.Servicio.ServicioVisita;
-import santaclara.dao.impl.VisitaDAO;
 import santaclara.modelo.Cliente;
 import santaclara.modelo.Concesionario;
 import santaclara.modelo.JefeVenta;
@@ -49,16 +50,13 @@ import santaclara.vista.VisitasUI;
 
 public class ContVisitas extends ContGeneral implements IContGeneral {
 
-	private VisitasUI vista;
-//	private ServicioVisita servicioVisita = new ServicioVisita();;
-	
-//	private JefeVentaDAO jefeVentaDAO = new JefeVentaDAO();	
+	private VisitasUI vista;	
 	
 	public ContVisitas(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		vista = new VisitasUI(this);
-		vista.getScrollPanel().setBounds(12, 85, 852, 575);
+		vista.getScrollPanel().setBounds(12, 85, 1154, 600);
 		CargarComboUsuario();
 		ConsultaJefeVenta();
 		dibujar(vista);
@@ -84,7 +82,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 				try {
 					if(vista.getComboTipoUser().getSelectedItem().equals("JefeVenta"))
 					{
-						SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 						
 						Visita visita = new ServicioVisita().getVisita(vista.getDateFecha().getDate(),
 								new Integer(vista.getLbljefeVentaid().getText()),
@@ -97,9 +95,9 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 							visita.setCliente(new ServicioCliente().getCliente(vista.getLblrif().getText()));
 							visita.setJefeVenta(new ServicioJefeVenta().getJefeVenta(new Integer(vista.getLbljefeVentaid().getText())));
 							
-							if(new ServicioVisita().isVisita(new SimpleDateFormat("dd/mm/yyyy").parse(new VisitaDAO().getFechaStr(vista.getDateFecha().getDate())),
-											new Integer(vista.getLbljefeVentaid().getText()),
-											((Cliente)new ServicioCliente().getCliente(vista.getLblrif().getText())).getId()))
+							if(new ServicioVisita().isVisita(vista.getDateFecha().getDate(),
+	                				((Cliente)new ServicioCliente().getCliente(vista.getLblrif().getText())).getId(),
+	                				new Integer(vista.getLbljefeVentaid().getText())))
 									{
 										throw new Exception("La Fecha ya se Encuentra Asociada al Cliente ");
 									}
@@ -279,39 +277,43 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 			public Component getTableCellRendererComponent(JTable tabla, Object value,
 					boolean arg2, boolean arg3, int row, int column) {
 				// TODO Auto-generated method stub
-			    
 				JPanel celda = new JPanel();
 				JLabel label = new JLabel();			
 				
 				label.setText(value.toString());
 				
-				if (vista.getTabla().getValueAt(row,0).equals("")) celda.setBackground(Color.lightGray);
-				else celda.setBackground(Color.cyan);
-				
-				for(int i=0;i<vista.getTabla().getColumnCount() ;i++)
-				{ 
-					String campo = new String(vista.getTabla().getColumnName(i));
-					if(campo.equals("Fecha"))
-					{
-						if(label.getText().equals("")&& column == 0)  
-						{
-							celda.setLayout(null);
-							vista.getBoton().setIcon(new ImageIcon("img/gestion/mas.png"));
-							vista.getBoton().setBackground(Color.lightGray);
-							vista.getBoton().setFont(new Font("Dialog", Font.BOLD, 10));
-							vista.getBoton().setForeground(Color.green);
-							vista.getBoton().setBounds(2, 0, 20, 20);
-							celda.add(vista.getBoton());
-						}
-						else
-						{
-							celda.add(label);
-							celda.setLayout(new GridLayout(1, 0, 0, 0));
-						}
-						
+				for(int c=0;c<vista.getTabla().getColumnCount() ;c++)
+				{  
+					String campo = new String(vista.getTabla().getColumnName(c));
+					switch(campo){ 
+						case "Fecha":{
+							if (vista.getTabla().getValueAt(row,c).equals(""))celda.setBackground(Color.lightGray);
+							else celda.setBackground(Color.cyan);
+							
+							if(label.getText().equals("")&& column == c)  
+							{
+								celda.setLayout(null);
+								vista.getBoton().setIcon(new ImageIcon("img/gestion/mas.png"));
+								vista.getBoton().setBackground(Color.lightGray);
+								vista.getBoton().setFont(new Font("Dialog", Font.BOLD, 10));
+								vista.getBoton().setForeground(Color.green);
+								vista.getBoton().setBounds(2, 0, 20, 20);
+								celda.add(vista.getBoton());
+							}
+							else
+								{
+									celda.add(label);
+									celda.setLayout(new GridLayout(1, 0, 0, 0));
+								}						
+						}break;
+						case "Estado":{
+							if(label.getText().equals("") && column == c)celda.setBackground(Color.lightGray);
+							else if (label.getText().equals("Hecha") && column == c)celda.setBackground(Color.yellow);
+							else if (label.getText().equals("Por Hacer") && column == c) celda.setBackground(Color.cyan);
+							else ;
+						}break;
 					}
 				}
-				
 				return celda;
 			}
 		};
@@ -355,80 +357,103 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount()==2)
 				{
-					JFrame frame = vista.getFrame();
-					
-					vista.getPanelVisitaJefeVenta().setVisible(true);
-					frame.add(vista.getPanelVisitaJefeVenta());
-					frame.setBounds(100, 200, 500, 400);
-					frame.setLayout(new GridLayout(1,0,0,0));
-					frame.setVisible(true);
-					for(int i=0;i<vista.getTabla().getColumnCount() ;i++)
-					{ 
-						String campo = new String(vista.getTabla().getColumnName(i));
-						Integer fila = new Integer(vista.getTabla().getSelectedRow());
-						
-						switch (campo) {
-						case "Fecha":{
-							try {
-								String value = new String(vista.getTabla().getValueAt(fila, i).toString());
-								if (value.equals("")) vista.getDateFecha().setDate(new Date());
-								else vista.getDateFecha().setDate(new SimpleDateFormat("dd/mm/yyyy").parse(value));
-							} catch (ParseException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
+					limpiar();
+						if (vista.getComboTipoUser().getSelectedItem().equals("JefeVenta"))
+						{
+							mostrarEditarJefeVenta();
 						}
-							break;
-						case "Estado":{
-							if(vista.getTabla().getValueAt(fila, i).equals("Hecha")){
-								vista.getChckbxEstado().setSelected(true);;	
-							}
-							else
-								vista.getChckbxEstado().setSelected(false);
+						else//para el consecionario
+						{
+							
 						}
-						break;
-						case "Ruta": ;
-						break;
-						case "Rif Cliente": try {
-								CargarInfoCliente(vista.getTabla().getValueAt(fila, i).toString());
-								try {
-									CargarInfoJefeVenta();
-								} catch (IOException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-							} catch (FileNotFoundException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} 
-						break;
-						case "Motivo": vista.getTxtMotivo().setText((String)vista.getTabla().getValueAt(fila, i));
-						break;
-						case "Descripcion": vista.getTxtDescripcion().setText((String)vista.getTabla().getValueAt(fila, i));
-						break;
-						case "Valor Vendedor":{
-							String value = new String(vista.getTabla().getValueAt(fila, i).toString());
-							if (value.equals(""))vista.getTxtValVendedor().setValue(0);
-							else vista.getTxtValVendedor().setValue(new Integer(value));
-						}
-						break;
-						case "Valor Producto":{
-							String value = new String(vista.getTabla().getValueAt(fila, i).toString());
-							if (value.equals(""))vista.getTxtValProducto().setValue(0);
-							else vista.getTxtValProducto().setValue(new Integer(value));
-		
-						}
-						break;
-
-						default:
-							break;
-						}
-						
-					}
 				}
 			}
 		};
 	} 
+	
+	void mostrarEditarJefeVenta(){
+		mostrarEditarVentanaJefeVenta();
+		for(int columna=vista.getTabla().getColumnCount()-1;columna>=0 ;columna--)
+		{
+			String campo = new String(vista.getTabla().getColumnName(columna));
+			Integer fila = new Integer(vista.getTabla().getSelectedRow());
+			switch (campo) {
+			case "Estado":{
+				if(vista.getTabla().getValueAt(fila, columna).equals("Hecha")){
+					vista.getChckbxEstado().setSelected(true);;	
+				}
+				else
+					vista.getChckbxEstado().setSelected(false);
+			}
+			break;
+			case "Ruta": ;
+			break;
+			case "Rif Cliente":
+				try {
+						CargarInfoCliente(vista.getTabla().getValueAt(fila, columna).toString());
+						CargarInfoJefeVenta();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			break;
+			case "Motivo": vista.getTxtMotivo().setText((String)vista.getTabla().getValueAt(fila, columna));
+			break;
+			case "Descripcion": vista.getTxtDescripcion().setText((String)vista.getTabla().getValueAt(fila, columna));
+			break;
+			case "Valor Vendedor":{
+				String value = new String(vista.getTabla().getValueAt(fila, columna).toString());
+				if (value.equals(""))vista.getTxtValVendedor().setValue(0);
+				else vista.getTxtValVendedor().setValue(new Integer(value));
+			}
+			break;
+			case "Valor Producto":{
+				String value = new String(vista.getTabla().getValueAt(fila, columna).toString());
+				if (value.equals(""))vista.getTxtValProducto().setValue(0);
+				else vista.getTxtValProducto().setValue(new Integer(value));
+
+			}
+			break;
+			case "Fecha":{
+				try {
+					String value = new String(vista.getTabla().getValueAt(fila, columna).toString());
+					if (value.equals("")) vista.getDateFecha().setDate(new Date());
+					else vista.getDateFecha().setDate(new SimpleDateFormat("dd/MM/yyyy").parse(value));
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	void limpiar(){
+		vista.getLblrif().setText("");
+		vista.getLblRazonSocial().setText("");
+		vista.getLblTelefono().setText("");
+		vista.getLblDireccion().setText("");
+		vista.getLblRuta().setText("");
+		vista.getLbljefeVentaid().setText("");
+		vista.getLblCedula().setText("");
+		vista.getLblJefeUsername().setText("");
+		vista.getLblNombre().setText("");
+		vista.getLblZona().setText("");
+		}
+	
+	void mostrarEditarVentanaJefeVenta(){
+		JFrame frame = vista.getFrame();
+		
+		vista.getPanelVisitaJefeVenta().setVisible(true);
+		frame.add(vista.getPanelVisitaJefeVenta());
+		frame.setTitle("Editar Jefe de Venta");
+		frame.setBounds(100, 200, 500, 400);
+		frame.setLayout(new GridLayout(1,0,0,0));
+		frame.setVisible(true);	
+	}
 	
 	void CargarInfoCliente(String rif) throws FileNotFoundException{
 		Cliente cliente = new ServicioCliente().getCliente(rif);
@@ -443,8 +468,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 	void CargarInfoJefeVenta() throws IOException{
 		Usuario usuario = (Usuario)vista.getComboUsuario().getSelectedItem();
 		
-		JefeVenta jefeVenta = new ServicioJefeVenta().getJefeVenta(
-				usuario.getId());
+		JefeVenta jefeVenta = new ServicioJefeVenta().getJefeVenta(usuario.getId());
 		vista.getLbljefeVentaid().setText(jefeVenta.getId().toString());
 		vista.getLblCedula().setText(jefeVenta.getCedula());
 		vista.getLblJefeUsername().setText(jefeVenta.getUsername());
@@ -559,6 +583,53 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 					}
 			}
 		};
+	}
+
+	public PropertyChangeListener changeDateFecha() {
+		// TODO Auto-generated method stub
+		return	new PropertyChangeListener(){ 
+	        public void propertyChange(PropertyChangeEvent e) {
+	               
+	                if(vista.getDateFecha().getDate()!=null && 
+	                		vista.getLbljefeVentaid().getText()!="" &&
+	                		vista.getLblrif().getText()!="")
+	                {
+	                	try {
+	                		if(new ServicioVisita().isVisita(vista.getDateFecha().getDate(),
+	                				((Cliente)new ServicioCliente().getCliente(vista.getLblrif().getText())).getId(),
+	                				new Integer(vista.getLbljefeVentaid().getText())))
+								{
+	                				vista.getLblMensaje().setForeground(Color.cyan);
+									vista.getLblMensaje().setText( "Editar Visita");
+									Visita visita = new ServicioVisita().getVisita(
+											vista.getDateFecha().getDate(),
+											new Integer(vista.getLbljefeVentaid().getText()),
+											((Cliente)new ServicioCliente().getCliente(vista.getLblrif().getText())).getId());
+									vista.getTxtMotivo().setText(visita.getMotivo());
+		                			vista.getTxtDescripcion().setText(visita.getDescripcion());
+		                			vista.getTxtValProducto().setValue(visita.getValorProducto());
+		                			vista.getTxtValVendedor().setValue(visita.getValorVendedor());
+		                			vista.getChckbxEstado().setSelected(visita.getEstado());
+								}
+	                		else 
+	                		{
+	                			vista.getLblMensaje().setForeground(Color.lightGray);
+	                			vista.getLblMensaje().setText( "Nueva Visita");
+	                			vista.getTxtMotivo().setText("");
+	                			vista.getTxtDescripcion().setText("");
+	                			vista.getTxtValProducto().setValue(0);
+	                			vista.getTxtValVendedor().setValue(0);
+	                			vista.getChckbxEstado().setSelected(false);
+	                			
+	                		}
+							} catch (NumberFormatException | FileNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+	                }
+	                else vista.getLblMensaje().setText("");
+	        }
+	};
 	}
 	
 }

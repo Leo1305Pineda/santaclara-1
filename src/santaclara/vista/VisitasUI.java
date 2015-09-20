@@ -70,7 +70,8 @@ public class VisitasUI extends JPanel {
 	private JLabel lblDescripcion;
 	private JLabel lbljefeVentaid;
 	private JLabel lblCedula;
-	private JLabel lblNombre; 
+	private JLabel lblNombre;
+	private JLabel lblMensaje;
 	
 	private JScrollPane scrollPanel;
 	
@@ -96,18 +97,18 @@ public class VisitasUI extends JPanel {
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
 		setBackground(Color.DARK_GRAY);
-		setSize(895,696);
+		setSize(1216,696);
 		setLayout(null);
 		
 		pnVisitas = new JPanel();
 		pnVisitas.setLocation(12, 12);
-		pnVisitas.setSize(875,672);
+		pnVisitas.setSize(1178,672);
 		pnVisitas.setBackground(Color.DARK_GRAY);
 		pnVisitas.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Visita", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		add(pnVisitas);
 
 		scrollPanel = new JScrollPane();
-		scrollPanel.setBounds(12, 85, 852, 51);
+		scrollPanel.setBounds(12, 85, 1154, 51);
 		table = new JTable();
 		table.addMouseListener(contVisitas.ActivarClick());
 		table.setModel(new DefaultTableModel(
@@ -211,6 +212,7 @@ public class VisitasUI extends JPanel {
 		panelVisitaJefeVenta.add(chckbxEstado);
 		
 		dateFecha = new JDateChooser();
+		dateFecha.addPropertyChangeListener(contVisitas.changeDateFecha());
 		dateFecha.setBounds(134, 156, 175, 19);
 		panelVisitaJefeVenta.add(dateFecha);
 		
@@ -226,7 +228,7 @@ public class VisitasUI extends JPanel {
 		pnInfoJVenta.add(lbljefeVentaid);
 		
 		lblCedula = new JLabel("Cedula");
-		lblCedula.setForeground(Color.WHITE);
+		lblCedula.setForeground(new Color(255, 255, 255));
 		pnInfoJVenta.add(lblCedula);
 		
 		lblJefeUsername = new JLabel("Nombre de Usuario");
@@ -268,8 +270,14 @@ public class VisitasUI extends JPanel {
 		lblRuta.setForeground(Color.WHITE);
 		panel.add(lblRuta);
 		
+		lblMensaje = new JLabel("");
+		lblMensaje.setForeground(Color.WHITE);
+		lblMensaje.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+		lblMensaje.setBounds(327, 150, 182, 25);
+		panelVisitaJefeVenta.add(lblMensaje);
+		
 		pnConsultar = new JPanel();
-		pnConsultar.setBounds(11, 18, 853, 68);
+		pnConsultar.setBounds(11, 18, 1155, 68);
 		pnVisitas.add(pnConsultar);
 		pnConsultar.setBackground(Color.DARK_GRAY);
 		pnConsultar.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), "", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(255, 255, 255)));
@@ -646,6 +654,18 @@ public class VisitasUI extends JPanel {
 
 	public void setLblNombre(JLabel lblNombre) {
 		this.lblNombre = lblNombre;
+	}
+
+	public JLabel getLblMensaje() {
+		return lblMensaje;
+	}
+
+	public void setLblMensaje(JLabel lblMensaje) {
+		this.lblMensaje = lblMensaje;
+	}
+
+	public void setBtnEliminar(JButton btnEliminar) {
+		this.btnEliminar = btnEliminar;
 	}
 	
 }
