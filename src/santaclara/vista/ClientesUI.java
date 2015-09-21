@@ -37,6 +37,7 @@ import santaclara.modelo.Salp;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 
 @SuppressWarnings("serial")
 public class ClientesUI extends JPanel {
@@ -49,16 +50,21 @@ public class ClientesUI extends JPanel {
 	private JPanel pnEditar; 
 	private JPanel pnDomicilioComercial;
 	private JPanel pnCliente;
+	private JPanel pnCheckDia;
 	
 	private JLabel lblTipoCliente;
 	private JLabel lblRazonSocial;
 	private JLabel lblTelefono;
 	private JLabel lblDireccion;
+	private JLabel lblRif;
+	private JLabel lblDiaVisita;
 	
 	private JTextField txtRazonSocial;
 	private JTextField txtABuscar;
 	private JTextField txtTelefono;
 	private JTextField txtDireccion;
+	private JTextField txtRif;
+	private JTextField txtId;
 	
 	private JButton btnNuevo;
 	private JButton btnEditar;
@@ -69,6 +75,13 @@ public class ClientesUI extends JPanel {
 	private JButton btnGuardar;
 	private JButton btnCancelar;
 	private JButton btnAbrirRuta;
+	
+	private JCheckBox checkLune;
+	private JCheckBox checkMarte;
+	private JCheckBox checkMiercole;
+	private JCheckBox checkJueve; 
+	private JCheckBox checkVierne;
+	private JCheckBox checkSabado;
 	
 	private JComboBox<String> cmbTipoCliente ;
 	private JComboBox<Ruta> comboRutas;
@@ -82,9 +95,7 @@ public class ClientesUI extends JPanel {
 	
 	private List<Cliente> clientes = new ArrayList<Cliente>();
 	private List<Ruta> rutas = new ArrayList<Ruta>();
-	private JTextField txtRif;
-	private JTextField txtId;
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ClientesUI(ContClientes contClientes,List<Cliente> clientes,List<Ruta> rutas) {
 		this.clientes = clientes;
@@ -162,12 +173,12 @@ public class ClientesUI extends JPanel {
 		btnAbrirRuta.setBackground(Color.DARK_GRAY);
 		
 		pnTabla = new JPanel();
-		pnTabla.setBounds(12, 85, 726, 265);
+		pnTabla.setBounds(12, 85, 726, 257);
 		pnClientes.add(pnTabla);
 		pnTabla.setLayout(null);
 		
 		scrollPanel = new JScrollPane();
-		scrollPanel.setBounds(0, 0, 726, 261);
+		scrollPanel.setBounds(0, 0, 726, 253);
 		pnTabla.add(scrollPanel);
 		
 		table = new JTable();
@@ -208,7 +219,7 @@ public class ClientesUI extends JPanel {
 		
 		pnEditar = new JPanel();
 		pnEditar.setBackground(Color.GRAY);
-		pnEditar.setBounds(12, 346, 726, 179);
+		pnEditar.setBounds(12, 343, 726, 182);
 		pnClientes.add(pnEditar);
 		pnEditar.setLayout(null);
 		
@@ -216,14 +227,14 @@ public class ClientesUI extends JPanel {
 		pnCliente.setLayout(null);
 		pnCliente.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"Editar Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnCliente.setBackground(Color.DARK_GRAY);
-		pnCliente.setBounds(0, 5, 726, 118);
+		pnCliente.setBounds(0, 8, 726, 110);
 		pnEditar.add(pnCliente);
 		
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(contClientes.guardar());
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
-		btnGuardar.setBounds(390, 90, 120, 16);
+		btnGuardar.setBounds(463, 80, 120, 16);
 		pnCliente.add(btnGuardar);
 		
 		btnCancelar = new JButton("Cancelar");
@@ -237,58 +248,88 @@ public class ClientesUI extends JPanel {
 		});
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(253, 90, 120, 16);
+		btnCancelar.setBounds(595, 80, 120, 16);
 		pnCliente.add(btnCancelar);
 		
 		lblRazonSocial = new JLabel("Razon Social:");
 		lblRazonSocial.setForeground(Color.WHITE);
 		lblRazonSocial.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblRazonSocial.setBounds(12, 15, 100, 25);
+		lblRazonSocial.setBounds(200, 15, 100, 25);
 		pnCliente.add(lblRazonSocial);
 		
 		txtRazonSocial = new JTextField();
 		txtRazonSocial.setColumns(10);
-		txtRazonSocial.setBounds(130, 19, 292, 16);
+		txtRazonSocial.setBounds(300, 19, 300, 16);
 		pnCliente.add(txtRazonSocial);
 		
 		lblTelefono = new JLabel("Telefono:");
 		lblTelefono.setForeground(Color.WHITE);
 		lblTelefono.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblTelefono.setBounds(440, 15, 69, 25);
+		lblTelefono.setBounds(10, 52, 69, 25);
 		pnCliente.add(lblTelefono);
 		
 		lblDireccion = new JLabel("Direccion:");
 		lblDireccion.setForeground(Color.WHITE);
 		lblDireccion.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblDireccion.setBounds(241, 62, 81, 16);
+		lblDireccion.setBounds(200, 52, 81, 16);
 		pnCliente.add(lblDireccion);
 		
 		txtTelefono = new JTextField();
 		txtTelefono.setColumns(10);
-		txtTelefono.setBounds(527, 19, 149, 16);
+		txtTelefono.setBounds(86, 56, 100, 16);
 		pnCliente.add(txtTelefono);
 		
 		txtDireccion = new JTextField();
 		txtDireccion.setColumns(10);
-		txtDireccion.setBounds(317, 62, 376, 16);
+		txtDireccion.setBounds(300, 52, 300, 16);
 		pnCliente.add(txtDireccion);
 		
-		JLabel lblRif = new JLabel("Rif:");
+		lblRif = new JLabel("Rif:");
 		lblRif.setForeground(Color.WHITE);
 		lblRif.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblRif.setBounds(22, 52, 39, 25);
+		lblRif.setBounds(10, 15, 39, 25);
 		pnCliente.add(lblRif);
 		
 		txtRif = new JTextField();
 		txtRif.setColumns(10);
-		txtRif.setBounds(53, 52, 160, 16);
+		txtRif.setBounds(86, 19, 100, 16);
 		pnCliente.add(txtRif);
 		
 		txtId = new JTextField();
 		txtId.setColumns(10);
-		txtId.setBounds(63, 80, 160, 16);
+		txtId.setBounds(0, 12, 20, 16);
 		txtId.setVisible(false);
 		pnCliente.add(txtId);
+		
+		lblDiaVisita = new JLabel("Dia Visitas: ");
+		lblDiaVisita.setForeground(Color.WHITE);
+		lblDiaVisita.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+		lblDiaVisita.setBounds(10, 80, 100, 25);
+		pnCliente.add(lblDiaVisita);
+		
+		pnCheckDia = new JPanel();
+		pnCheckDia.setBackground(Color.GRAY);
+		pnCheckDia.setBounds(90, 75, 350, 25);
+		pnCliente.add(pnCheckDia);
+		pnCheckDia.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		checkLune = new JCheckBox("Lun.");
+		pnCheckDia.add(checkLune);
+		
+		checkMarte = new JCheckBox("Mar.");
+		pnCheckDia.add(checkMarte);
+		
+		checkMiercole = new JCheckBox("Mié.");
+		pnCheckDia.add(checkMiercole);
+		
+		checkJueve = new JCheckBox("Jue.");
+		pnCheckDia.add(checkJueve);
+		
+		checkVierne = new JCheckBox("Vie.");
+		pnCheckDia.add(checkVierne);
+		
+		checkSabado = new JCheckBox("Sáb.");
+		pnCheckDia.add(checkSabado);
 		
 		pnDomicilioComercial = new JPanel();
 		pnDomicilioComercial.setLayout(null);
@@ -403,6 +444,12 @@ public class ClientesUI extends JPanel {
 	 txtRazonSocial.setText("");
 	 txtTelefono.setText("");
 	 txtRif.setText("");
+	 checkLune.setSelected(false);
+	 checkMarte.setSelected(false);
+	 checkMiercole.setSelected(false);
+	 checkJueve.setSelected(false);
+	 checkVierne.setSelected(false);
+	 checkSabado.setSelected(false);
 	}
 	public void activarNuevo() {
 		// TODO Auto-generated method stub
@@ -732,4 +779,78 @@ public class ClientesUI extends JPanel {
 	public void setBinClientes(JTableBinding binClientes) {
 		this.binClientes = binClientes;
 	}
+
+	public JPanel getPnCheckDia() {
+		return pnCheckDia;
+	}
+
+	public void setPnCheckDia(JPanel pnCheckDia) {
+		this.pnCheckDia = pnCheckDia;
+	}
+
+	public JLabel getLblRif() {
+		return lblRif;
+	}
+
+	public void setLblRif(JLabel lblRif) {
+		this.lblRif = lblRif;
+	}
+
+	public JLabel getLblDiaVisita() {
+		return lblDiaVisita;
+	}
+
+	public void setLblDiaVisita(JLabel lblDiaVisita) {
+		this.lblDiaVisita = lblDiaVisita;
+	}
+
+	public JCheckBox getCheckLune() {
+		return checkLune;
+	}
+
+	public void setCheckLune(JCheckBox checkLune) {
+		this.checkLune = checkLune;
+	}
+
+	public JCheckBox getCheckMarte() {
+		return checkMarte;
+	}
+
+	public void setCheckMarte(JCheckBox checkMarte) {
+		this.checkMarte = checkMarte;
+	}
+
+	public JCheckBox getCheckMiercole() {
+		return checkMiercole;
+	}
+
+	public void setCheckMiercole(JCheckBox checkMiercole) {
+		this.checkMiercole = checkMiercole;
+	}
+
+	public JCheckBox getCheckJueve() {
+		return checkJueve;
+	}
+
+	public void setCheckJueve(JCheckBox checkJueve) {
+		this.checkJueve = checkJueve;
+	}
+
+	public JCheckBox getCheckVierne() {
+		return checkVierne;
+	}
+
+	public void setCheckVierne(JCheckBox checkVierne) {
+		this.checkVierne = checkVierne;
+	}
+
+	public JCheckBox getCheckSabado() {
+		return checkSabado;
+	}
+
+	public void setCheckSabado(JCheckBox checkSabado) {
+		this.checkSabado = checkSabado;
+	}
+	
+	
 }

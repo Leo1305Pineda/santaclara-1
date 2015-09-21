@@ -57,12 +57,12 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 			 linea =scaner.skip("idJefeVenta:").nextLine().trim();
 			 if(linea.trim().length() == 0)
 			 {
-				 visita.setJefeVenta(null);
+				 visita.setUsuario(null);
 			 }
 			 else
 			 {
 				 JefeVentaDAO jefeVentaDAO = new JefeVentaDAO();
-				 visita.setJefeVenta(jefeVentaDAO.getJefeVenta(new Integer(linea)));				 	 
+				 visita.setUsuario(jefeVentaDAO.getJefeVenta(new Integer(linea)));				 	 
 			 }
 			 
 			 linea =scaner.skip("idCliente:").nextLine().trim();
@@ -111,7 +111,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 					visita1.setDescripcion(visita.getDescripcion());
 					visita1.setEstado(visita.getEstado());
 					visita1.setFecha(visita.getFecha());
-					visita1.setJefeVenta(visita.getJefeVenta());
+					visita1.setUsuario(visita.getUsuario());
 					visita1.setMotivo(visita.getMotivo());
 					visita1.setValorProducto(visita.getValorProducto());
 					visita1.setValorVendedor(visita.getValorVendedor());
@@ -147,7 +147,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		for(Visita visita1 :visitas)
 		{
 			if(visita1.getFecha().equals(fecha)
-					&& visita1.getJefeVenta().getId().equals(idJefeVenta)
+					&& visita1.getUsuario().getId().equals(idJefeVenta)
 					&& visita1.getCliente().getId().equals(idCliente))
 			{
 				return visita1;
@@ -161,7 +161,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		List<Visita> visitas = getVisitas();
 		for(Visita visita1 :visitas)
 		{	
-			if( visita1.getJefeVenta().getId().equals(idJefeVenta) && visita1.getCliente().getId().equals(idCliente))
+			if( visita1.getUsuario().getId().equals(idJefeVenta) && visita1.getCliente().getId().equals(idCliente))
 			{
 				
 				if (visita1.getFecha().equals(fecha)) return true;
@@ -184,8 +184,8 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 			if(visita.getEstado()==true)
 			fw.append("estado:hecho\n");
 			else fw.append("estado:pendiente\n");
-			fw.append("idJefeVenta:"+(visita.getJefeVenta()== null
-					? "  ":visita.getJefeVenta().getId().toString())+"\n");
+			fw.append("idJefeVenta:"+(visita.getUsuario()== null
+					? "  ":visita.getUsuario().getId().toString())+"\n");
 			
 			fw.append("idCliente:"+(visita.getCliente() == null 
 					?" ":visita.getCliente().getId().toString())+"\n");

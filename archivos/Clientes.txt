@@ -52,3 +52,9 @@ razonsocial:La Arepera
 direccion:Carrera7 entre calle1 y 2
 telefono:0416-7352345
 ruta:0
+id:10
+rif:197356346
+razonsocial:El Bodegon C.A.
+direccion:Carrera 4 con calle 5y6
+telefono:02513652765
+ruta:1

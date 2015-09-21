@@ -3,6 +3,7 @@ package santaclara.modelo;
 public class DomicilioComercio extends Cliente {
 	
 	private String tipo;
+	private Integer diaVisita;
 
 	public DomicilioComercio() {
 		super();
@@ -21,4 +22,11 @@ public class DomicilioComercio extends Cliente {
 		this.tipo = tipo;
 	}
 
+	public Integer getDiaVisita() {
+		return diaVisita;
+	}
+
+	public void setDiaVisita(Integer diaVisita) {
+		this.diaVisita = diaVisita;
+	}
 }

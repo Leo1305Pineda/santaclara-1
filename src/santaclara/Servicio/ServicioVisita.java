@@ -2,12 +2,17 @@ package santaclara.Servicio;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import santaclara.dao.impl.ClienteDAO;
 import santaclara.dao.impl.VisitaDAO;
 import santaclara.modelo.Cliente;
+import santaclara.modelo.Concesionario;
+import santaclara.modelo.DomicilioComercio;
+import santaclara.modelo.JefeVenta;
+import santaclara.modelo.Ruta;
 import santaclara.modelo.Visita;
 
 
@@ -36,7 +41,7 @@ public class ServicioVisita {
 			for(Visita visita1 :visitas)
 			{
 				if(visita1.getMotivo().equals(visita.getMotivo()) &&
-					visita1.getJefeVenta().getId().equals(visita.getJefeVenta().getId())&&
+					visita1.getUsuario().getId().equals(visita.getUsuario().getId())&&
 					visita1.getCliente().getId().equals(visita.getCliente().getId())&&
 					visita1.getDescripcion().equals(visita.getDescripcion()) &&	
 					visita1.getFecha().equals(visita.getFecha()) &&
@@ -58,4 +63,95 @@ public class ServicioVisita {
 	public void  Eliminar(Visita visita) throws IOException{
 		new VisitaDAO().eliminar(visita);
 	}
+	
+public List<Visita> ConsultaJefeVenta(JefeVenta jefeVenta) throws NumberFormatException, IOException{
+		
+		JefeVenta jefeVentaCombo = new JefeVenta();
+		jefeVentaCombo = jefeVenta;
+		if(jefeVentaCombo!=null)
+		{
+		List<Visita> visitas = new ServicioVisita().getVisitas();
+		List<Visita> visitasAux = new ArrayList<Visita>();
+		List<Ruta> rutas = new ServicioRuta().getRutas();
+		List<Cliente> clientes = new ServicioCliente().getClientes();
+		
+		for(Ruta ruta: rutas)
+		{
+			if(ruta.getZona().getId().equals(jefeVentaCombo.getZona().getId()))
+			{
+				for(Cliente cliente: clientes)
+				{
+					if(cliente.getRuta().getId().equals(ruta.getId()))
+					{
+						Visita visita = new Visita();
+						
+						for(Visita visita1: visitas)
+						{
+							if(visita1.getCliente().getId().equals(cliente.getId())&&
+									visita1.getUsuario().getId().equals(jefeVentaCombo.getId()))
+							{
+								visitasAux.add(visita1);
+							}
+						}
+						visita.setCliente(cliente);
+						visita.setUsuario(jefeVentaCombo);
+						visita.setDescripcion("");
+						visita.setEstado(null);
+						visita.setFecha("");
+						visita.setMotivo("");
+						visita.setValorProducto(null);
+						visita.setValorVendedor(null);
+						
+						visitasAux.add(visita);
+					}
+				}
+			}
+		}
+			return visitasAux;	
+		}
+		return null;
+	}
+
+public List<Visita> ConsultaConcesionario(Concesionario concesionario) throws NumberFormatException, IOException{
+	
+	
+	if(concesionario!=null)
+	{
+	List<Visita> visitas = new ServicioVisita().getVisitas();
+	List<Visita> visitasAux = new ArrayList<Visita>();
+	List<Cliente> clientes = new ServicioCliente().getClientes();
+	
+	for(Cliente cliente: clientes)
+	{
+		if(cliente.getRuta().getId().equals(concesionario.getRuta().getId())&&
+				cliente.getClass().getName().equals(new DomicilioComercio().getClass().getName()))
+		{
+			Visita visita = new Visita();
+			
+			for(Visita visita1: visitas)
+			{
+				if(visita1.getCliente().getId().equals(cliente.getId())&&
+						visita1.getUsuario().getId().equals(concesionario.getId()))
+				{
+					visitasAux.add(visita1);
+				}
+			}
+			visita.setCliente(cliente);
+			visita.setUsuario(concesionario);
+			visita.setDescripcion("");
+			visita.setEstado(null);
+			visita.setFecha("");
+			visita.setMotivo("");
+			visita.setValorProducto(null);
+			visita.setValorVendedor(null);
+			
+			visitasAux.add(visita);
+		}
+	}
+			return visitasAux;	
+	}
+	return null;
+}
+
+
 }

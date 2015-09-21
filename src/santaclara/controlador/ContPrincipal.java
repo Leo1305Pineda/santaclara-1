@@ -369,6 +369,8 @@ public  class ContPrincipal implements IContGeneral {
 			break;
 			case "santaclara.vista.ZonasUI":	ActivarZonas();
 			break;
+			case "santaclara.vista.VisitasUI":	ActivarVisitas();
+			break;
 
 			default:
 				break;

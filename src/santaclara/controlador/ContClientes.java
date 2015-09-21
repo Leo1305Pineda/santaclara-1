@@ -70,29 +70,86 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 							Cliente cliente  = new Cliente();
 							try {
 								cliente = new ServicioCliente().buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-							} catch (NumberFormatException | IOException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-							if (cliente != null)
-							{
-								vista.activarNuevo();
-								vista.getTxtId().setText(cliente.getId().toString());
-								vista.getTxtDireccion().setText(cliente.getDireccion());
-								vista.getTxtRazonSocial().setText(cliente.getRazonsocial());
-								vista.getTxtRif().setText(cliente.getRif());
-								vista.getTxtRif().setEnabled(false);
-								vista.getTxtTelefono().setText(cliente.getTelefono());
-								vista.setSelectedValueRuta(cliente.getRuta().getId());
-							}
+								if (cliente != null)
+								{
+									vista.activarNuevo();
+									vista.getTxtId().setText(cliente.getId().toString());
+									vista.getTxtDireccion().setText(cliente.getDireccion());
+									vista.getTxtRazonSocial().setText(cliente.getRazonsocial());
+									vista.getTxtRif().setText(cliente.getRif());
+									vista.getTxtRif().setEnabled(false);
+									vista.getTxtTelefono().setText(cliente.getTelefono());
+									vista.setSelectedValueRuta(cliente.getRuta().getId());
+									mostrarDiaVisita(cliente.getId());
+								}
+								} catch (NumberFormatException | IOException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 					}
+					else JOptionPane.showMessageDialog(vista,"Seleccione la fila");
 				}
-				else JOptionPane.showMessageDialog(vista,"Seleccione la fila");
-			}
-				
 			};
+		};
+	}
+	
+	public void mostrarDiaVisita(Integer id) throws IOException{
+		if (vista.getCmbTipoCliente().getSelectedItem().equals("Domicilio") || 
+				vista.getCmbTipoCliente().getSelectedItem().equals("Comercial"))
+		{
+			setCkeckDiaVisita((new ServicioDomicilioComercio().getdDomicilioComercio(id)).getDiaVisita());	
 		}
+	}
+	
+	public void setCkeckDiaVisita(Integer numero){
+		 Integer exp, digito;
+	        Double binario;
+	        
+	        exp= new Integer(0);
+	        binario= new Double(0);
+	        while(numero!=0){
+	                digito = numero % 2;           
+	                binario = binario + digito * Math.pow(10, exp);
+	               
+	                switch (exp) {
+					case 0:
+						if (new Integer((int) (digito * Math.pow(10, exp))).equals(1)) //si se asigna el domingo;
+						break;
+					case 1:if (new Integer((int) (digito * Math.pow(10, exp))).equals(10)) vista.getCheckLune().setSelected(true);
+					break;
+					case 2:if (new Integer((int) (digito * Math.pow(10, exp))).equals(100)) vista.getCheckMarte().setSelected(true);
+					break;
+					case 3:if (new Integer((int) (digito * Math.pow(10, exp))).equals(1000)) vista.getCheckMiercole().setSelected(true);
+					break;
+					case 4:if (new Integer((int) (digito * Math.pow(10, exp))).equals(10000)) vista.getCheckJueve().setSelected(true);
+					break;
+					case 5:if (new Integer((int) (digito * Math.pow(10, exp))).equals(100000)) vista.getCheckVierne().setSelected(true);
+					break;
+					case 6:if (new Integer((int) (digito * Math.pow(10, exp))).equals(1000000)) vista.getCheckSabado().setSelected(true);
+					break;
 
+					default:
+						break;
+					}
+	      
+	                exp++;
+	                numero = numero/2;
+	        }
+	}
+
+	public Integer getCheckDiaVisita(Boolean getCheckDomingo,Boolean getCheckLune,
+			Boolean getCheckMarte,Boolean getCheckMiercole,Boolean getCheckJueve,Boolean getCheckVierne,Boolean getCheckSabado){
+		Integer decimal = new Integer(0);
+		if(getCheckDomingo.booleanValue()) decimal = decimal + (int) Math.pow(2,0);
+		if(getCheckLune.booleanValue()) decimal = decimal + (int) Math.pow(2,1);
+		if(getCheckMarte.booleanValue()) decimal = decimal + (int) Math.pow(2,2);
+		if(getCheckMiercole.booleanValue()) decimal = decimal + (int) Math.pow(2,3);
+		if(getCheckJueve.booleanValue()) decimal = decimal + (int) Math.pow(2,4);
+		if(getCheckVierne.booleanValue()) decimal = decimal + (int) Math.pow(2,5);
+		if(getCheckSabado.booleanValue()) decimal = decimal + (int) Math.pow(2,6);
+		return decimal;
+
+	}
 	
 	public ActionListener guardar() {
 		// TODO Auto-generated method stub
@@ -141,6 +198,10 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 						{
 							domicilioComercio.setTipo("C");
 						}
+						domicilioComercio.setDiaVisita(getCheckDiaVisita(false, vista.getCheckLune().isSelected(),
+								vista.getCheckMarte().isSelected(), vista.getCheckMiercole().isSelected(),
+								vista.getCheckJueve().isSelected(), vista.getCheckVierne().isSelected(),
+								vista.getCheckSabado().isSelected()));
 						new ServicioDomicilioComercio().guardar(domicilioComercio);
 						vista.getBinClientes().unbind();
 						vista.getBinClientes().bind();
