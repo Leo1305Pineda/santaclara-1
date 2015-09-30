@@ -219,7 +219,7 @@ public class VisitasUI extends JPanel {
 		JPanel pnInfoJVenta = new JPanel();
 		pnInfoJVenta.setBackground(Color.DARK_GRAY);
 		pnInfoJVenta.setBounds(40, 22, 175, 108);
-		pnInfoJVenta.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Info. del Jefe de Venta", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		pnInfoJVenta.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Usuario", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		panelVisitaJefeVenta.add(pnInfoJVenta);
 		pnInfoJVenta.setLayout(new GridLayout(0, 1, 0, 0));
 		

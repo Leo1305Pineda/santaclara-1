@@ -48,6 +48,7 @@ public class PrincipalUI {
 	private 	JMenuItem mntVendedores;
 	private 	JMenuItem mntVisitas;
 	private 	JMenuItem mntZonas;
+	private 	JMenuItem mntCalendarios;
 	
 	private 	JMenu mnReportes;
 	private 	JMenu mnConsulta;
@@ -103,7 +104,7 @@ public class PrincipalUI {
 
 		menuBar.setToolTipText("Manu");
 		frame.setJMenuBar(menuBar);
-		JMenu mnCatalogo = new JMenu("Catalogo");
+	    mnCatalogo = new JMenu("Catalogo");
 		menuBar.add(mnCatalogo);
 		
 		mntAlmacen = new JMenuItem("Almacenes");
@@ -113,6 +114,10 @@ public class PrincipalUI {
 		mntCamiones = new JMenuItem("Camiones");
 		mnCatalogo.add(mntCamiones);
 		mntCamiones.addActionListener(controlador.activarMenu());
+		
+		mntCalendarios = new JMenuItem("Calendario");
+		mnCatalogo.add(mntCalendarios);
+		mntCalendarios.addActionListener(controlador.activarMenu());
 		
 		mntCapacidades = new JMenuItem("Capacidades");
 		mnCatalogo.add(mntCapacidades);
@@ -474,4 +479,15 @@ public class PrincipalUI {
 	public void setMntZonas(JMenuItem mntZonas) {
 		this.mntZonas = mntZonas;
 	}
+
+	public JMenuItem getMntCalendarios() {
+		return mntCalendarios;
+	}
+
+	public void setMntCalendarios(JMenuItem mntCalendarios) {
+		this.mntCalendarios = mntCalendarios;
+	}
+
+	
+	
 }

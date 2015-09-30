@@ -1,5 +1,7 @@
 package santaclara.modelo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Factura {
@@ -87,7 +89,35 @@ public class Factura {
 	public void setEstado(Boolean estado) {
 		this.estado = estado;
 	}
+	
+	public String getEstadoStr() {
+		if (estado == null) return "";
+		if (getEstado().equals(true))return "Cancelada";
+		else return "Pendiente";
+		
+	}
 
+	public void setFecha(String cadena) throws ParseException {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			this.fecha = sdf.parse(cadena);
+	}
+		
+		public String getFechaStr(Date fecha) {
+			if (fecha==null)return "";
+			else{
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				return sdf.format(fecha);
+			} 
+		}
+		
+		public String getFechaStr() {
+			if (fecha==null)return "";
+			else{
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				return sdf.format(fecha);
+			} 
+		}
+	
 /*
  * Estructura
  * 

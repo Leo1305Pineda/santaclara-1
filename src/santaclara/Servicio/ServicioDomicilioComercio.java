@@ -1,9 +1,12 @@
 package santaclara.Servicio;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.modelo.DomicilioComercio;
+import santaclara.modelo.Ruta;
 import santaclara.dao.impl.DomicilioComercioDAO;
 
 public class ServicioDomicilioComercio {
@@ -42,5 +45,13 @@ public class ServicioDomicilioComercio {
 	public void eliminar(DomicilioComercio domicilioComercio) throws IOException{
 		domicilioComercioDAO.eliminar(domicilioComercio);
 	}
-	
+	public List<DomicilioComercio> getDomicilioComercios(Ruta ruta) throws FileNotFoundException{
+		List<DomicilioComercio> domicilioComercios = new DomicilioComercioDAO().getDomicilioComercios();
+		List<DomicilioComercio> domicilioComercios2 = new ArrayList<DomicilioComercio>();
+		for(DomicilioComercio domicilioComercio : domicilioComercios)
+		{
+			if (domicilioComercio.getRuta().getId().equals(ruta.getId())) domicilioComercios2.add(domicilioComercio);
+		}
+		return domicilioComercios2;
+	}
 }

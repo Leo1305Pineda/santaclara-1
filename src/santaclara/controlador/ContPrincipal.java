@@ -17,12 +17,18 @@ public  class ContPrincipal implements IContGeneral {
 	private Stack<String> cache = new Stack<String>();
 	private Boolean editorActivo = new Boolean(false);
 	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public static void main(String[] args) {
 	   ContPrincipal controlador = new  ContPrincipal();
 	   controlador.ejecutar();   
 	   
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	private void ejecutar() {
 		// TODO Auto-generated method stub
 		vista = new PrincipalUI(this);
@@ -68,10 +74,16 @@ public  class ContPrincipal implements IContGeneral {
 		
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public IContGeneral getControlador() {
 		return controlador;
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public void setControlador(IContGeneral controlador) {
 		this.controlador = controlador;
 	}
@@ -177,6 +189,10 @@ public  class ContPrincipal implements IContGeneral {
 				else if(e.getSource().equals(vista.getMntZonas()))
 				{
 					ActivarZonas();
+				}
+				else if(e.getSource().equals(vista.getMntCalendarios()))
+				{
+					ActivarCalendarios();
 				}
 			}
 		};
@@ -334,6 +350,17 @@ public  class ContPrincipal implements IContGeneral {
 		}
 	}
 	
+	public void ActivarCalendarios() {
+		// TODO Auto-generated method stub
+		try {
+			controlador = new ContCalendarios(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
 	public void ActivarAtras(){
 		// TODO Auto-generated method stub
 		if (!cache.empty())
@@ -368,6 +395,8 @@ public  class ContPrincipal implements IContGeneral {
 			case "santaclara.vista.UsuariosUI":	ActivarUsuarios();
 			break;
 			case "santaclara.vista.ZonasUI":	ActivarZonas();
+			break;
+			case "santaclara.vista.VisitasUI":	ActivarVisitas();
 			break;
 
 			default:

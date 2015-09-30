@@ -37,13 +37,14 @@ import org.jdesktop.swingbinding.SwingBindings;
 
 import santaclara.Servicio.ServicioCliente;
 import santaclara.Servicio.ServicioConcesionario;
+import santaclara.Servicio.ServicioDomicilioComercio;
 import santaclara.Servicio.ServicioJefeVenta;
-import santaclara.Servicio.ServicioRuta;
+import santaclara.Servicio.ServicioSalp;
 import santaclara.Servicio.ServicioVisita;
 import santaclara.modelo.Cliente;
 import santaclara.modelo.Concesionario;
+import santaclara.modelo.DomicilioComercio;
 import santaclara.modelo.JefeVenta;
-import santaclara.modelo.Ruta;
 import santaclara.modelo.Usuario;
 import santaclara.modelo.Visita;
 import santaclara.vista.VisitasUI;
@@ -58,7 +59,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 		vista = new VisitasUI(this);
 		vista.getScrollPanel().setBounds(12, 85, 1154, 600);
 		CargarComboUsuario();
-		ConsultaJefeVenta();
+		activarBinding(new ServicioVisita().ConsultaJefeVenta((JefeVenta)vista.getComboUsuario().getSelectedItem()));
 		dibujar(vista);
 		vista.quitarNuevo();
 	}
@@ -80,8 +81,6 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 				// TODO Auto-generated method stub
 				// se va hacer las validaciones del controlador 
 				try {
-					if(vista.getComboTipoUser().getSelectedItem().equals("JefeVenta"))
-					{
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 						
 						Visita visita = new ServicioVisita().getVisita(vista.getDateFecha().getDate(),
@@ -93,7 +92,12 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 							visita = new Visita();
 							visita.setId(null);
 							visita.setCliente(new ServicioCliente().getCliente(vista.getLblrif().getText()));
-							visita.setJefeVenta(new ServicioJefeVenta().getJefeVenta(new Integer(vista.getLbljefeVentaid().getText())));
+							if(vista.getComboTipoUser().getSelectedItem().equals("JefeVenta"))
+							{
+								visita.setUsuario(new ServicioJefeVenta().getJefeVenta(new Integer(vista.getLbljefeVentaid().getText())));
+							}
+							else
+								visita.setUsuario(new ServicioConcesionario().getConcesionario(new Integer(vista.getLbljefeVentaid().getText())));
 							
 							if(new ServicioVisita().isVisita(vista.getDateFecha().getDate(),
 	                				((Cliente)new ServicioCliente().getCliente(vista.getLblrif().getText())).getId(),
@@ -111,12 +115,14 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 						visita.setValorVendedor((Integer) vista.getTxtValVendedor().getValue());
 			
 						new ServicioVisita().guardar(visita);
-						ConsultaJefeVenta();
-					}
-					else 
-					{
-						//new ContVendedores(vista).Guardar();
-					}
+						
+						if(vista.getComboTipoUser().getSelectedItem().equals("JefeVenta"))
+						{
+							activarBinding(new ServicioVisita().ConsultaJefeVenta((JefeVenta)vista.getComboUsuario().getSelectedItem()));
+						}
+						else
+							activarBinding(new ServicioVisita().ConsultaConcesionario((Concesionario)vista.getComboUsuario().getSelectedItem()));
+						
 					JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 				} catch (Exception exe) {
 					// TODO Auto-generated catch block
@@ -192,7 +198,10 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 				try {
 					if (vista.getComboUsuario().getSelectedItem()!=null &&
 							vista.getComboUsuario().getSelectedItem().getClass().getName().equals("santaclara.modelo.JefeVenta"))
-							ConsultaJefeVenta();
+						activarBinding(new ServicioVisita().ConsultaJefeVenta((JefeVenta)vista.getComboUsuario().getSelectedItem()));
+					else if (vista.getComboUsuario().getSelectedItem()!=null &&
+							vista.getComboUsuario().getSelectedItem().getClass().getName().equals("santaclara.modelo.Concesionario"))
+						activarBinding(new ServicioVisita().ConsultaConcesionario((Concesionario)vista.getComboUsuario().getSelectedItem()));
 					else {}//ConsultaConcesionario
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
@@ -273,44 +282,100 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 	public TableCellRenderer getTableCellRenderer(){
 		return new TableCellRenderer() {
 			
+			@SuppressWarnings("deprecation")
 			@Override
 			public Component getTableCellRendererComponent(JTable tabla, Object value,
 					boolean arg2, boolean arg3, int row, int column) {
 				// TODO Auto-generated method stub
 				JPanel celda = new JPanel();
-				JLabel label = new JLabel();			
+				JLabel label = new JLabel();	
 				
-				label.setText(value.toString());
+				if(value ==null) label.setText("");
+				else label.setText(value.toString());
 				
 				for(int c=0;c<vista.getTabla().getColumnCount() ;c++)
 				{  
 					String campo = new String(vista.getTabla().getColumnName(c));
 					switch(campo){ 
 						case "Fecha":{
-							if (vista.getTabla().getValueAt(row,c).equals(""))celda.setBackground(Color.lightGray);
-							else celda.setBackground(Color.cyan);
-							
-							if(label.getText().equals("")&& column == c)  
-							{
-								celda.setLayout(null);
-								vista.getBoton().setIcon(new ImageIcon("img/gestion/mas.png"));
-								vista.getBoton().setBackground(Color.lightGray);
-								vista.getBoton().setFont(new Font("Dialog", Font.BOLD, 10));
-								vista.getBoton().setForeground(Color.green);
-								vista.getBoton().setBounds(2, 0, 20, 20);
-								celda.add(vista.getBoton());
-							}
-							else
+							try {
+								if(column==c && label.getText() != "")
 								{
-									celda.add(label);
-									celda.setLayout(new GridLayout(1, 0, 0, 0));
-								}						
+									Date fecha = new Date();
+									SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+									fecha = sdf.parse(label.getText());
+									
+									switch (fecha.getDay()) {
+									case 0:label.setText("Dom. "+label.getText());				
+										break;
+									case 1:label.setText("Lun. "+label.getText());				
+										break;
+									case 2:label.setText("Mar. "+label.getText());				
+										break;
+									case 3:label.setText(";Mie. "+label.getText());				
+										break;
+									case 4:label.setText("Jue. "+label.getText());				
+										break;
+									case 5:label.setText("Vie. "+label.getText());				
+										break;
+									case 6:label.setText("Sab. "+label.getText());				
+										break;
+
+									default:label.setText("");
+										break;
+									}
+
+								}								
+								if (vista.getTabla().getValueAt(row,c).equals(""))celda.setBackground(Color.lightGray);
+								else celda.setBackground(Color.cyan);
+								
+								if(label.getText().equals("")&& column == c)  
+								{
+									celda.setLayout(null);
+									vista.getBoton().setIcon(new ImageIcon("img/gestion/mas.png"));
+									vista.getBoton().setBackground(Color.lightGray);
+									vista.getBoton().setFont(new Font("Dialog", Font.BOLD, 10));
+									vista.getBoton().setForeground(Color.green);
+									vista.getBoton().setBounds(2, 0, 20, 20);
+									celda.add(vista.getBoton());
+								}
+								else
+									{
+										celda.add(label);
+										celda.setLayout(new GridLayout(1, 0, 0, 0));
+									}
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}break;
+						
 						case "Estado":{
 							if(label.getText().equals("") && column == c)celda.setBackground(Color.lightGray);
 							else if (label.getText().equals("Hecha") && column == c)celda.setBackground(Color.yellow);
 							else if (label.getText().equals("Por Hacer") && column == c) celda.setBackground(Color.cyan);
 							else ;
+						}break;
+						case "Cliente":{
+							try {
+								if(column == c)
+								{
+									DomicilioComercio domicilioComercio = new ServicioDomicilioComercio().buscar(new Integer(label.getText()));
+									if(domicilioComercio != null)
+									{
+										if(domicilioComercio.getTipo().equals("D"))label.setText("Domicilio");
+										else label.setText("Comencio");
+									}
+									else if ((new ServicioSalp().buscar(new Integer(label.getText()))!=null)) label.setText("Salp");
+									else label.setText("");
+								}
+							} catch (NumberFormatException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}break;
 					}
 				}
@@ -330,8 +395,9 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 	  
 		BeanProperty fechaVisita  = BeanProperty.create("fechaStr");
 		BeanProperty nombreRuta  = BeanProperty.create("cliente.ruta.nombre");
-		BeanProperty idCliente = BeanProperty.create("cliente.rif");
+		BeanProperty rifCliente = BeanProperty.create("cliente.rif");
 		BeanProperty nombreCliente = BeanProperty.create("cliente.razonsocial");
+		BeanProperty Cliente = BeanProperty.create("cliente.id");
 	    BeanProperty motivo = BeanProperty.create("motivo");
 	    BeanProperty descripcion = BeanProperty.create("descripcion");
 	    BeanProperty valorVendedor = BeanProperty.create("valorVendedorStr");
@@ -341,8 +407,11 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 	    binVistas.addColumnBinding(fechaVisita).setColumnClass(String.class).setColumnName("Fecha").setEditable(true);
 	    binVistas.addColumnBinding(estado).setColumnClass(String.class).setColumnName("Estado");
 	    binVistas.addColumnBinding(nombreRuta).setColumnClass(String.class).setColumnName("Ruta");
-	    binVistas.addColumnBinding(idCliente).setColumnClass(String.class).setColumnName("Rif Cliente");
-	    binVistas.addColumnBinding(nombreCliente).setColumnClass(String.class).setColumnName("Cliente");
+	
+	    binVistas.addColumnBinding(Cliente).setColumnClass(String.class).setColumnName("Cliente");
+	    binVistas.addColumnBinding(rifCliente).setColumnClass(String.class).setColumnName("Rif");
+	    binVistas.addColumnBinding(nombreCliente).setColumnClass(String.class).setColumnName("Razon Social");
+	
 	    binVistas.addColumnBinding(motivo).setColumnClass(String.class).setColumnName("Motivo");
 	    binVistas.addColumnBinding(descripcion).setColumnClass(String.class).setColumnName("Descripcion");
 	    binVistas.addColumnBinding(valorVendedor).setColumnClass(String.class).setColumnName("Valor Vendedor");
@@ -358,21 +427,14 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 				if (e.getClickCount()==2)
 				{
 					limpiar();
-						if (vista.getComboTipoUser().getSelectedItem().equals("JefeVenta"))
-						{
-							mostrarEditarJefeVenta();
-						}
-						else//para el consecionario
-						{
-							
-						}
+					mostrarEditarUsuarios();
 				}
 			}
 		};
 	} 
 	
-	void mostrarEditarJefeVenta(){
-		mostrarEditarVentanaJefeVenta();
+	void mostrarEditarUsuarios(){ 
+		mostrarEditarUsuario();
 		for(int columna=vista.getTabla().getColumnCount()-1;columna>=0 ;columna--)
 		{
 			String campo = new String(vista.getTabla().getColumnName(columna));
@@ -388,10 +450,10 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 			break;
 			case "Ruta": ;
 			break;
-			case "Rif Cliente":
+			case "Rif":
 				try {
 						CargarInfoCliente(vista.getTabla().getValueAt(fila, columna).toString());
-						CargarInfoJefeVenta();
+						CargarInfoUsuario();
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -429,7 +491,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 				break;
 			}
 		}
-	}
+	} 
 	
 	void limpiar(){
 		vista.getLblrif().setText("");
@@ -444,7 +506,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 		vista.getLblZona().setText("");
 		}
 	
-	void mostrarEditarVentanaJefeVenta(){
+	void mostrarEditarUsuario(){
 		JFrame frame = vista.getFrame();
 		
 		vista.getPanelVisitaJefeVenta().setVisible(true);
@@ -463,17 +525,28 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 		vista.getLblDireccion().setText(cliente.getDireccion());
 		vista.getLblRuta().setText("Ruta: "+cliente.getRuta().getNombre());
 		
-	}
+	} 
 	
-	void CargarInfoJefeVenta() throws IOException{
+	void CargarInfoUsuario() throws IOException{
 		Usuario usuario = (Usuario)vista.getComboUsuario().getSelectedItem();
-		
-		JefeVenta jefeVenta = new ServicioJefeVenta().getJefeVenta(usuario.getId());
-		vista.getLbljefeVentaid().setText(jefeVenta.getId().toString());
-		vista.getLblCedula().setText(jefeVenta.getCedula());
-		vista.getLblJefeUsername().setText(jefeVenta.getUsername());
-		vista.getLblNombre().setText(jefeVenta.getNombre());
-		vista.getLblZona().setText("Zona: "+jefeVenta.getZona().getDescripcion());
+		if (vista.getComboTipoUser().getSelectedItem().equals("JefeVenta"))
+		{
+			JefeVenta jefeVenta = new ServicioJefeVenta().getJefeVenta(usuario.getId());
+			vista.getLbljefeVentaid().setText(jefeVenta.getId().toString());
+			vista.getLblCedula().setText(jefeVenta.getCedula());
+			vista.getLblJefeUsername().setText(jefeVenta.getUsername());
+			vista.getLblNombre().setText(jefeVenta.getNombre());
+			vista.getLblZona().setText("Zona: "+jefeVenta.getZona().getDescripcion());
+		}
+		else if (vista.getComboTipoUser().getSelectedItem().equals("Concesionario"))
+		{			
+			Concesionario concesionario = new ServicioConcesionario().getConcesionario(usuario.getId());
+			vista.getLbljefeVentaid().setText(concesionario.getId().toString());
+			vista.getLblCedula().setText(concesionario.getCedula());
+			vista.getLblJefeUsername().setText(concesionario.getUsername());
+			vista.getLblNombre().setText(concesionario.getNombre());
+			vista.getLblZona().setText("Zona: "+concesionario.getRuta().getZona().getDescripcion());
+		}
 		
 	}
 	
@@ -487,54 +560,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
-	public void ConsultaJefeVenta() throws NumberFormatException, IOException{
-		
-		JefeVenta jefeVentaCombo = new JefeVenta();
-		jefeVentaCombo = (JefeVenta)vista.getComboUsuario().getSelectedItem();
-		if(jefeVentaCombo!=null)
-		{
-		List<Visita> visitas = new ServicioVisita().getVisitas();
-		List<Visita> visitasAux = new ArrayList<Visita>();
-		List<Ruta> rutas = new ServicioRuta().getRutas();
-		List<Cliente> clientes = new ServicioCliente().getClientes();
-		
-		for(Ruta ruta: rutas)
-		{
-			if(ruta.getZona().getId().equals(jefeVentaCombo.getZona().getId()))
-			{
-				for(Cliente cliente: clientes)
-				{
-					if(cliente.getRuta().getId().equals(ruta.getId()))
-					{
-						Visita visita = new Visita();
-						
-						for(Visita visita1: visitas)
-						{
-							if(visita1.getCliente().getId().equals(cliente.getId())&&
-									visita1.getJefeVenta().getId().equals(jefeVentaCombo.getId()))
-							{
-								visitasAux.add(visita1);
-							}
-						}
-						visita.setCliente(cliente);
-						visita.setJefeVenta(jefeVentaCombo);
-						visita.setDescripcion("");
-						visita.setEstado(null);
-						visita.setFecha("");
-						visita.setMotivo("");
-						visita.setValorProducto(null);
-						visita.setValorVendedor(null);
-						
-						visitasAux.add(visita);
-					}
-				}
-			}
-		}
-				
-		activarBinding(visitasAux);
-		}
-	}
-
+	
 	public ActionListener ActivarGuardar() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -564,20 +590,24 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 						Visita visita = new ServicioVisita().getVisita(vista.getDateFecha().getDate(),
 								new Integer(vista.getLbljefeVentaid().getText()),
 								(new ServicioCliente().getCliente(vista.getLblrif().getText())).getId());
-						
-						Integer opt = new Integer(JOptionPane.showConfirmDialog(new JPanel(),"Esta seguro de eliminar la Visita\n"
-								+ "Id: "+visita.getId()+"\n"
-								+ "JefeVenta:"+visita.getJefeVenta().getUsername()+"\n"
-								+ "Fecha: "+visita.getFechaStr()+"\n"
-										+ "Cliente: "+visita.getCliente().getRazonsocial()));
-						
-						if (opt.equals(0))
-						{ 
-							new ServicioVisita().Eliminar(visita);
-							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-							ConsultaJefeVenta();
+						if(visita != null)
+						{
+							Integer opt = new Integer(JOptionPane.showConfirmDialog(new JPanel(),"Esta seguro de eliminar la Visita\n"
+									+ "Id: "+visita.getId()+"\n"
+									+ "Vendedor/JefeVenta:"+visita.getUsuario().getUsername()+"\n"
+									+ "Fecha: "+visita.getFechaStr()+"\n"
+											+ "Cliente: "+visita.getCliente().getRazonsocial()));
+							
+							if (opt.equals(0))
+							{ 
+								new ServicioVisita().Eliminar(visita);
+								JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+								activarBinding(new ServicioVisita().ConsultaJefeVenta((JefeVenta)vista.getComboUsuario().getSelectedItem()));
+							}
+				
 						}
-					} catch (IOException e1) {
+						else 	JOptionPane.showMessageDialog(vista,"Visita no Existente ");
+						} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
