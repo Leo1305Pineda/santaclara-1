@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
@@ -48,7 +50,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 		setContPrincipal(contPrincipal);
 		vista = new CalendarioUI(this);
 		CargarComboUsuario();
-		for(int i = 0;i<=34;i++)(vista.getBtn(i)).setBackground(Color.white);
+		for(int i = 0;i<=34;i++)(vista.getBtn(i)).setBackground(Color.lightGray);
 		dibujar(vista);
 	//	vista.quitarNuevo();
 	}
@@ -77,9 +79,8 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 	 }
 
 	@SuppressWarnings("deprecation")
-	public void activarFechas(Date date) throws NumberFormatException, IOException, ParseException {
+	public void activarFechas(Date date) throws Exception {
 		// TODO Auto-generated method stub
-		
 		mesActual = date.getMonth()+1;
 		yearActual = new Integer(new SimpleDateFormat("yyyy").format(date));
 		
@@ -93,7 +94,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 		crearCalendario(fechainicio);
 		cargarImagen();
 		
-	
+		vista.getVerFecha().setDateFormatString(new SimpleDateFormat("dd/MMyyyy").format(date));
 		
 	}
 	
@@ -123,6 +124,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 			
 			if((dateValue.getMonth()+1)!=mesActual)(vista.getBtn(i)).setEnabled(false);
 			else (vista.getBtn(i)).setEnabled(true);
+			vista.getBtn(i).setBackground(Color.LIGHT_GRAY);
 		}
 	}
 	
@@ -150,7 +152,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 		}
 	}
 	
-	void cargarImagen() throws NumberFormatException, IOException, ParseException{
+	void cargarImagen() throws Exception{
 		
 		List<List<Visita>> listaVisitas = new ServicioVisita().listaVisitas(consultaVisitas(mesActual,yearActual));
 		List<List<Visita>> listaVisitasAux =new ServicioVisita().listaVisitas(consultaVisitas(mesActual,yearActual));
@@ -183,7 +185,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 			case "JefeVenta":
 				return new ServicioVisita().ConsultaJefeVenta((JefeVenta)vista.getComboUsuario().getSelectedItem(),mes,anno);
 			case "Concesionario":
-				return new ServicioVisita().ConsultaConcesionario((Concesionario)vista.getComboUsuario().getSelectedItem());
+				return new ServicioVisita().ConsultaConcesionario((Concesionario)vista.getComboUsuario().getSelectedItem(),mes,anno);
 			default:return new ServicioVisita().getVisitas();
 		}
 	}
@@ -290,8 +292,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 							{
 								activarFechas(new Date());
 							}
-						} catch (NumberFormatException | IOException
-								| ParseException e) {
+						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
@@ -340,8 +341,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 				try {
 					activarFechas(new java.sql.Date(
 									(new SimpleDateFormat("dd/MM/yyyy").parse(15+"/"+(mesActual+1)+"/"+yearActual)).getTime()));
-				} catch (NumberFormatException | IOException
-						| ParseException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}	
@@ -360,8 +360,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 				try {
 					activarFechas(new java.sql.Date((
 							new SimpleDateFormat("dd/MM/yyyy").parse(15+"/"+(mesActual-1)+"/"+yearActual)).getTime()));
-				} catch (NumberFormatException | IOException
-						| ParseException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}	
@@ -376,124 +375,136 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				for(int i = 0;i<=34;i++)(vista.getBtn(i)).setBackground(Color.WHITE);				
-				(vista.getBtn(index)).setBackground(Color.LIGHT_GRAY); 
+				for(int i = 0;i<=34;i++)(vista.getBtn(i)).setBackground(Color.lightGray);				
+				(vista.getBtn(index)).setBackground(Color.GRAY); 
 				
 			}
 		};
 	}
 	@SuppressWarnings("resource")
-	public JPanel getPanelOption(Integer valueButton,final List<List<Visita>> listaVisitas){
+	public JPanel getPanelOption(Integer valueButton,final List<List<Visita>> listaVisitas) throws FileNotFoundException{
 		
 		JPanel panelConsultar = new JPanel();
-		panelConsultar.setBounds(2, 2, 20, 80);
-		panelConsultar.setBackground(Color.WHITE);
+		panelConsultar.setBounds(0, 4, 24, 48);
 		panelConsultar.setLayout(null);
+		panelConsultar.setBackground(Color.LIGHT_GRAY);
 		
 		final JButton button = new JButton();
 		button.setFont(new Font("Dialog", Font.BOLD, 5));
 		button.setToolTipText("Visitas Hechas el Dia:"+valueButton.toString());
-		button.setBounds(0, 0,20, 20);
-		button.setBackground(Color.white );
+		button.setBackground(panelConsultar.getBackground());
+		button.setBounds(0, 0,24, 24);
 		button.addActionListener(new ActionListener() {
-			
+				
+		List<Visita> getVisitasEstadoTrue(){
+			List<Visita> visitasAux = new ArrayList<Visita>();
+			for(int i=0; i < listaVisitas.size() ;i++)
+			{ 
+				Scanner scaner = new Scanner(button.getToolTipText().toString());
+				Scanner sc = new Scanner(scaner.skip("Visitas Hechas el Dia:").next());
+				if( new Integer(sc.nextInt()).equals(i))
+				{
+					if(listaVisitas.get(i)!=null)
+					{
+						List<Visita> visitas = listaVisitas.get(i);
+						
+						for(int j = 0; j < visitas.size() ;j++)
+						{
+							Visita value = visitas.get(j) ;
+							
+							if (value.getEstado().booleanValue()==true)
+							{
+								visitasAux.add(value);
+							}
+						}
+					}
+	
+				}
+			}
+			return visitasAux;
+		}
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Integer count = new Integer(0);
-				List<Visita> visitasAux = new ArrayList<Visita>();
-				for(int i=0; i < listaVisitas.size() ;i++)
-				{ 
-					Scanner scaner = new Scanner(button.getToolTipText().toString());
-					Scanner sc = new Scanner(scaner.skip("Visitas Hechas el Dia:").next());
-					if( new Integer(sc.nextInt()).equals(i))
-					{
-						if(listaVisitas.get(i)!=null)
+				
+					ContVisitas contVisitas;
+					try {
+						List<Visita> visitasTrue = getVisitasEstadoTrue();
+						if (visitasTrue.size()!=0)
 						{
-							List<Visita> visitas = listaVisitas.get(i);
-							
-							for(int j = 0; j < visitas.size() ;j++)
-							{
-								Visita value = visitas.get(j) ;
-								
-								if (value.getEstado().booleanValue()==true)
-								{
-									count++;
-									visitasAux.add(value);
-								}
-							}
+							contVisitas = new ContVisitas(getContPrincipal());
+							contVisitas.getComboTipoUser().setSelectedIndex(vista.getComboTipoUser().getSelectedIndex());
+							contVisitas.getComboUsuario().setSelectedIndex(vista.getComboUsuario().getSelectedIndex());//setSelectedValue(contVisitas.getComboUsuario(), visitasTrue.get(0).getUsuario().getId());
+							contVisitas.activarBinding(visitasTrue);
 						}
-		
+						else JOptionPane.showMessageDialog(new JPanel(), "No existen Visitas hechas");
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-				}
-	
-				try {
-					MostrardetalleVisita(visitasAux);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
-			
-			void MostrardetalleVisita(List<Visita> visitasAux) throws Exception{
-				ContVisitas contVisitas = new ContVisitas(getContPrincipal());
-				contVisitas.activarBinding(visitasAux);
-				}
 		});
 		
 		
 		final JButton button2 = new JButton();
 		button2.setFont(new Font("Dialog", Font.BOLD, 5));
-		button2.setBounds(0, 20,20, 20);
-		button2.setBackground(Color.white);
+		button2.setBounds(0, 24,24, 24);
+		button2.setBackground(panelConsultar.getBackground());
 		button2.setToolTipText("Visitas por Hacer para el Dia:"+valueButton.toString());
 		button2.addActionListener(new ActionListener() {
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub	
-				List<Visita> visitasAux = new ArrayList<Visita>(); 
-				for(int i=0; i < listaVisitas.size() ;i++)
-				{ 
-					Scanner scaner = new Scanner(button2.getToolTipText().toString());
-					Scanner sc = new Scanner(scaner.skip("Visitas por Hacer para el Dia:").next());
-					if( new Integer(sc.nextInt()).equals(i))
-					{				
-						if(listaVisitas.get(i)!=null)
+		List<Visita> getVisitasEstadoFalse(){
+			List<Visita> visitasAux = new ArrayList<Visita>(); 
+			for(int i=0; i < listaVisitas.size() ;i++)
+			{ 
+				Scanner scaner = new Scanner(button2.getToolTipText().toString());
+				Scanner sc = new Scanner(scaner.skip("Visitas por Hacer para el Dia:").next());
+				if( new Integer(sc.nextInt()).equals(i))
+				{				
+					if(listaVisitas.get(i)!=null)
+					{
+						List<Visita> visitas = listaVisitas.get(i);
+						for(int j = 0; j < visitas.size() ;j++)
 						{
-							List<Visita> visitas = listaVisitas.get(i);
-							for(int j = 0; j < visitas.size() ;j++)
+							Visita value = visitas.get(j) ;
+							if (value.getEstado().booleanValue()==false)
 							{
-								Visita value = visitas.get(j) ;
-								if (value.getEstado().booleanValue()==false)
-								{
-									visitasAux.add(value);
-								}
+								visitasAux.add(value);
 							}
 						}
 					}
 				}
-				
+			}
+			return visitasAux;
+		}	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub	
+					
 				try {
-					MostrardetalleVisita(visitasAux);
+					List<Visita> visitasFalse = getVisitasEstadoFalse();
+					if (visitasFalse.size()!=0)
+					{
+						ContVisitas contVisitas = new ContVisitas(getContPrincipal());
+						contVisitas.getComboTipoUser().setSelectedIndex(vista.getComboTipoUser().getSelectedIndex());
+						contVisitas.getComboUsuario().setSelectedIndex(vista.getComboUsuario().getSelectedIndex());
+						contVisitas.activarBinding(visitasFalse);
+					}
+					else JOptionPane.showMessageDialog(new JPanel(), "no existen visitas Por hacer");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
-			void MostrardetalleVisita(List<Visita> visitasAux) throws Exception{
-				ContVisitas contVisitas = new ContVisitas(getContPrincipal());
-				contVisitas.activarBinding(visitasAux);
-				}
 		});
-		setImagen(button,"18");
-		setImagen(button2,"24");
+
+		setImagen(button, "18");
+		setImagen(button2, "15");
 			
 		panelConsultar.add(button,0);
 		panelConsultar.add(button2,1);
 		
 		return panelConsultar;
 	}
-
 
 }

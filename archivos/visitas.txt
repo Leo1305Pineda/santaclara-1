@@ -126,7 +126,7 @@ idUsuario:8
 idCliente:6
 id:14
 fecha:30/08/2015
-motivo:dfgdfg
+motivo:Supervision
 descripcion:
 valorVendedor:0
 valorProducto:0

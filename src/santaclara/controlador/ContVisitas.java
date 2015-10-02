@@ -661,5 +661,12 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 	        }
 	};
 	}
-	
+	@SuppressWarnings("rawtypes")
+	public JComboBox getComboTipoUser(){
+		return vista.getComboTipoUser();
+	}
+	@SuppressWarnings("rawtypes")
+	public JComboBox getComboUsuario(){
+		return vista.getComboUsuario();
+	} 
 }

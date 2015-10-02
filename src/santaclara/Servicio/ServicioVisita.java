@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import santaclara.dao.impl.ClienteDAO;
 import santaclara.dao.impl.VisitaDAO;
 import santaclara.modelo.Cliente;
@@ -134,7 +137,6 @@ public List<Visita> ConsultaJefeVenta(JefeVenta jefeVenta, Integer mes,Integer y
 			{
 				if(cliente.getRuta().getId().equals(ruta.getId()))
 				{
-					
 					for(Visita visita1: visitas)
 					{
 						if (visita1.getUsuario() !=null)
@@ -159,9 +161,41 @@ public List<Visita> ConsultaJefeVenta(JefeVenta jefeVenta, Integer mes,Integer y
 	return null;
 }
 
+public List<Visita> ConsultaConcesionario(Concesionario concesionario, Integer mes,Integer yearActual) throws NumberFormatException, IOException{
+	
+	Concesionario  concesionarioCombo = new Concesionario(); 
+	concesionarioCombo = concesionario;
+	if(concesionarioCombo!=null)
+	{
+	List<Visita> visitas = new ServicioVisita().getVisitas();
+	List<Visita> visitasAux = new ArrayList<Visita>();
+	List<DomicilioComercio> clientes = new ServicioDomicilioComercio().getDomicilioComercios();
+	
+	for(DomicilioComercio cliente : clientes)
+	{		
+		for(Visita visita1: visitas)
+		{
+			if(visita1.getUsuario() !=null)
+			{
+				if(visita1.getCliente().getId().equals(cliente.getId())&&
+						visita1.getUsuario().getId().equals(concesionario.getId()))
+				{
+					if (((new Integer(new SimpleDateFormat("MM").format(visita1.getFecha()))).equals(mes)&&
+							((new Integer(new SimpleDateFormat("yyyy").format(visita1.getFecha()))).equals(yearActual))))
+					{
+						visitasAux.add(visita1);
+					}
+				}
+			}
+			
+		}
+	}
+		return visitasAux;	
+	}
+	return null;
+}
 
 public List<Visita> ConsultaConcesionario(Concesionario concesionario) throws NumberFormatException, IOException{
-	
 	
 	if(concesionario!=null)
 	{
@@ -202,7 +236,7 @@ public List<Visita> ConsultaConcesionario(Concesionario concesionario) throws Nu
 	return null;
 }
 
-public List<List<Visita>> listaVisitas (List<Visita> visitas){
+public List<List<Visita>> listaVisitas (List<Visita> visitas) throws Exception {
 	
 	List<List<Visita>> listaVisitas = new ArrayList<List<Visita>>(31);
 	for(int i = 30 ;i>=0;i--) listaVisitas.add(null);
@@ -213,19 +247,25 @@ public List<List<Visita>> listaVisitas (List<Visita> visitas){
 		List<Visita> visitasAux2 = new ArrayList<Visita>();
 		Visita value = visitas.remove(0);
 		visitasAux1.add(value);
-			
-		while(!visitas.isEmpty())
-		{	
-			if (new Integer(new SimpleDateFormat("dd").format(visitas.get(0).getFecha())).equals(new Integer(
-							new SimpleDateFormat("dd").format(value.getFecha()))))
-			{
-				visitasAux1.add(visitas.remove(0));//la misma fecha
+		if (value!=null)
+		{
+			while(!visitas.isEmpty())
+			{	
+				if (new Integer(new SimpleDateFormat("dd").format(visitas.get(0).getFecha())).equals(new Integer(
+								new SimpleDateFormat("dd").format(value.getFecha()))))
+				{
+					visitasAux1.add(visitas.remove(0));//la misma fecha
+				}
+				else visitasAux2.add(visitas.remove(0)); //fecha diferente
 			}
-			else visitasAux2.add(visitas.remove(0)); //fecha diferente
+			visitas = visitasAux2;
+			
+			listaVisitas.add(new Integer(new SimpleDateFormat("dd").format(value.getFecha())),visitasAux1);
 		}
-		visitas = visitasAux2;
-		
-		listaVisitas.add(new Integer(new SimpleDateFormat("dd").format(value.getFecha())),visitasAux1);
+		else 
+		{
+			throw new Exception("El usuario no tiene Visita Reguistrada"+JOptionPane.showInternalConfirmDialog(new JPanel(), "Desea Reguistrar Una Nueva Visita"));
+		}
 	}
 	return listaVisitas;
 }

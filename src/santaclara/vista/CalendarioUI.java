@@ -14,6 +14,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.border.TitledBorder;
+
+import com.toedter.calendar.JDateChooser;
+
+import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class CalendarioUI extends JPanel{
@@ -29,10 +34,12 @@ public class CalendarioUI extends JPanel{
 	private JPanel pnDia;
 	private JPanel pnlOperecion;
 	private JButton btnNuevo;
+	private JButton btnNuevo_1;
 	private JButton btnAnterior;
 	private JPanel pnlConsulta;
 	
 	private JLabel  lblFecha;
+	private JDateChooser verFecha;
 	
 	@SuppressWarnings("rawtypes")
 	private JComboBox comboTipoUser;
@@ -54,7 +61,8 @@ public class CalendarioUI extends JPanel{
 		setLayout(null);
 		
 		pnlCalendario = new JPanel();
-		pnlCalendario.setBounds(101, 12, 975, 685);
+		pnlCalendario.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 2, true), "Calendario de Visitas", TitledBorder.CENTER, TitledBorder.TOP, null, Color.WHITE));
+		pnlCalendario.setBounds(101, 12, 975, 660);
 		pnlCalendario.setBackground(Color.DARK_GRAY);
 		add(pnlCalendario);
 		pnlCalendario.setLayout(null);
@@ -317,9 +325,10 @@ public class CalendarioUI extends JPanel{
 		pnlDia.add(btn41,41);
 		
 		pnlOperecion = new JPanel();
+		pnlOperecion.setForeground(Color.GRAY);
 		pnlOperecion.setBorder(new LineBorder(new Color(196, 196, 196), 2, true));
 		pnlOperecion.setBounds(46, 51, 917, 34);
-		pnlOperecion.setBackground(Color.DARK_GRAY);
+		pnlOperecion.setBackground(Color.GRAY);
 		pnlCalendario.add(pnlOperecion);
 		pnlOperecion.setLayout(null);
 		
@@ -329,8 +338,8 @@ public class CalendarioUI extends JPanel{
 		pnlOperecion.add(btnAnterior);
 		
 		lblFecha = new JLabel("fecha");
-		lblFecha.setBounds(365, 1, 174, 22);
-		lblFecha.setFont(new Font("Century Schoolbook L", Font.BOLD, 15));
+		lblFecha.setBounds(420, 1, 174, 22);
+		lblFecha.setFont(new Font("URW Chancery L", Font.BOLD, 20));
 		lblFecha.setForeground(Color.WHITE);
 		pnlOperecion.add(lblFecha);
 		
@@ -338,35 +347,49 @@ public class CalendarioUI extends JPanel{
 		btnNuevo.addActionListener(contCalendarios.mesNuevo());
 		btnNuevo.setBounds(860, 2, 44, 22);
 		pnlOperecion.add(btnNuevo);
-		 
-		btnNuevo = new JButton("New button");
-		btnNuevo.setBounds(0, 10, 46, 34);
-		pnlCalendario.add(btnNuevo);
 		
 		pnlConsulta = new JPanel();
-		pnlConsulta.setBounds(46, 10, 917, 39);
+		pnlConsulta.setBackground(Color.DARK_GRAY);
+		pnlConsulta.setBounds(46, 15, 917, 35);
 		pnlCalendario.add(pnlConsulta);
 		pnlConsulta.setLayout(null);
 		
 		JLabel lblUsfg = new JLabel("Tipo Usuario:");
 		lblUsfg.setBounds(12, 12, 108, 15);
+		lblUsfg.setForeground(Color.WHITE);
 		pnlConsulta.add(lblUsfg);
 	
 		comboTipoUser = new JComboBox();  
+		comboTipoUser.setBounds(115, 7, 129, 24);
 		comboTipoUser.setModel(new DefaultComboBoxModel(new String[] {"JefeVenta", "Concesionario"}));
-		comboTipoUser.setBounds(127, 7, 260, 24);
 		comboTipoUser.addActionListener(contCalendarios.ActivarComboTipo());
 		pnlConsulta.add(comboTipoUser);
 		
 		JLabel lblUsuario = new JLabel("Usuario:");
-		lblUsuario.setBounds(405, 12, 108, 15);
+		lblUsuario.setBounds(256, 12, 65, 15);
+		lblUsuario.setForeground(Color.WHITE);
 		pnlConsulta.add(lblUsuario);	
 
 		comboUsuario = new JComboBox();
-		comboUsuario.setBounds(469, 7, 260, 24);
+		comboUsuario.setBounds(321, 7, 198, 24);
 		comboUsuario.addActionListener(contCalendarios.ActivarComboUsuario());
 		comboUsuario.setRenderer(contCalendarios.setRendererComboUsuario());
 		pnlConsulta.add(comboUsuario);
+		
+		JLabel lblBuscarfecha = new JLabel("BuscarFecha:");
+		lblBuscarfecha.setBounds(669, 12, 100, 15);
+		lblBuscarfecha.setForeground(Color.WHITE);
+		pnlConsulta.add(lblBuscarfecha);
+		
+		verFecha = new JDateChooser();
+		verFecha.setBounds(766, 8, 139, 19);
+		
+		btnNuevo_1 = new JButton("Activar.");
+		btnNuevo_1.setBounds(531, 9, 129, 21);
+		btnNuevo_1.setIcon(new ImageIcon("/home/leo/git/santaclara/img/calendario/9.png"));
+		btnNuevo_1.setForeground(Color.WHITE);
+		btnNuevo_1.setBackground(Color.DARK_GRAY);
+		pnlConsulta.add(btnNuevo_1);
 		
 	}
 	
@@ -747,11 +770,11 @@ public class CalendarioUI extends JPanel{
 	}
 
 	public JButton getBtnNuevo() {
-		return btnNuevo;
+		return btnNuevo_1;
 	}
 
 	public void setBtnNuevo(JButton btnNuevo) {
-		this.btnNuevo = btnNuevo;
+		this.btnNuevo_1 = btnNuevo;
 	}
 
 	public JButton getBtnAnterior() {
@@ -860,6 +883,14 @@ public class CalendarioUI extends JPanel{
 
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
+	}
+
+	public JDateChooser getVerFecha() {
+		return verFecha;
+	}
+
+	public void setVerFecha(JDateChooser verFecha) {
+		this.verFecha = verFecha;
 	}
 	
 }

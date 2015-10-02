@@ -1,0 +1,2 @@
+icoEstadoTrue:visitaTrue.png
+icoEstadoFalse:23.png
