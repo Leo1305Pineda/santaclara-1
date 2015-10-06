@@ -269,5 +269,4 @@ public List<List<Visita>> listaVisitas (List<Visita> visitas) throws Exception {
 	}
 	return listaVisitas;
 }
-
 }

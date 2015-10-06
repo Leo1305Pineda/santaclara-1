@@ -6,7 +6,12 @@ import java.util.Stack;
 
 import javax.swing.JPanel;
 
+import santaclara.modelo.Almacen;
+import santaclara.modelo.Cliente;
+import santaclara.modelo.EmpaqueProducto;
 import santaclara.modelo.Usuario;
+import santaclara.vista.IniciarSesionUI;
+import santaclara.vista.PedidosUI;
 import santaclara.vista.PrincipalUI;
 
 public  class ContPrincipal implements IContGeneral {
@@ -15,6 +20,7 @@ public  class ContPrincipal implements IContGeneral {
 	private IContGeneral controlador;
 	private Usuario		 usuario;
 	private Stack<String> cache = new Stack<String>();
+	private Stack<Object> cacheObjet = new Stack<Object>();
 	private Boolean editorActivo = new Boolean(false);
 	
 	/**
@@ -194,6 +200,10 @@ public  class ContPrincipal implements IContGeneral {
 				{
 					ActivarCalendarios();
 				}
+				else if(e.getSource().equals(vista.getMntPedidos()))
+				{
+					ActivarPedidos(null,"",null);
+				}
 			}
 		};
 	}
@@ -361,14 +371,55 @@ public  class ContPrincipal implements IContGeneral {
 		}
 	}
 	
-	public void ActivarAtras(){
+	public void ActivarPedidos(Object object,String value,Object vista) {
 		// TODO Auto-generated method stub
-		if (!cache.empty())
+		try {
+			ContPedidos contPedidos = new ContPedidos(ContPrincipal.this);
+			contPedidos.setVista((PedidosUI)vista);
+			if (value!=""){
+				
+				switch (value) {
+				case "santaclara.vista.AlmacenesUI":
+					contPedidos.setAlmacen((Almacen)object);
+					break;
+				case "santaclara.vista.ClientesUI":
+					contPedidos.setCliente((Cliente)object);
+					break;
+				case "santaclara.vista.UsuariosUI":
+					Usuario vendedor = (Usuario)object;
+					contPedidos.setVendedor(vendedor);
+					break;
+				case "santaclara.vista.EmpaqueProductosUI":
+					EmpaqueProducto empaqueProducto = (EmpaqueProducto)object;
+					contPedidos.setProducto(empaqueProducto);
+					break;
+
+				default:
+					break;
+				}
+				contPedidos.actualizarVista();
+			}
+			controlador = contPedidos;
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	public void ActivarAtras(Object object){
+		// TODO Auto-generated method stub
+		if (!cacheObjet.empty())
 		{
-			cache.pop();
+			Object vista = cacheObjet.pop();
 			
-			switch (cache.pop()) {
-			case "santaclara.IniciarSesionUI": cache.push("santaclara.IniciarSesionUI");
+			String value = new String((vista).getClass().getName());
+			
+			vista = cacheObjet.pop();
+			
+			switch (vista.getClass().getName()) {
+			case "santaclara.IniciarSesionUI": cacheObjet.push(
+							new IniciarSesionUI(null));
 			break;
 			case "santaclara.vista.ProductosUI": 		ActivarProductos();
 				break;
@@ -400,6 +451,8 @@ public  class ContPrincipal implements IContGeneral {
 			break;
 			case "santaclara.vista.CalendarioUI":	ActivarCalendarios();
 			break;
+			case "santaclara.vista.PedidosUI":	ActivarPedidos(object,value,vista);
+			break;
 
 			default:
 				break;
@@ -423,10 +476,13 @@ public  class ContPrincipal implements IContGeneral {
 		this.editorActivo = editorActivo;
 	}
 
+	public Stack<Object> getCacheObjet() {
+		return cacheObjet;
+	}
+
+	public void setCacheObjet(Stack<Object> cacheObjet) {
+		this.cacheObjet = cacheObjet;
+	}
+
 	
 }
-
-
-
-
-

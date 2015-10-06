@@ -40,17 +40,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 			 factura.setTotal(new Double(scaner.skip("total:").nextLine().trim()));
 			 factura.setSaldo(new Double(scaner.skip("saldo:").nextLine().trim()));
 			 factura.setIva(new Double(scaner.skip("iva:").nextLine().trim()));
-			 factura.setDescuento(new Double(scaner.skip("descuento:").nextLine().trim()));
-			 switch (scaner.skip("estado:").nextLine().toString().trim()) {
-			case "Pendiente":factura.setEstado(true);	
-				break;
-			case "Cancelada":factura.setEstado(false);
-				break;
-
-			default:factura.setEstado(true);
-				break;
-			}
-			 
+			 factura.setDescuento(new Double(scaner.skip("descuento:").nextLine().trim()));			 
 			 ClienteDAO clienteDAO = new ClienteDAO();
 			 factura.setCliente(
 					 clienteDAO.getCliente(
@@ -61,6 +51,22 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 					 (vendedorDAO.getVendedor(
 							 new Integer(scaner.skip("idVendedor:").nextLine().trim()))));
 			 
+			 AlmacenDAO almacenDAO = new AlmacenDAO();
+
+			 factura.setAlmacen(
+					(almacenDAO.getAlmacen(
+							new Integer(scaner.skip("idAlmacen:").nextLine().trim())))); 
+			switch (scaner.skip("estado:").nextLine().toString().trim()) {
+			case "Facturado":factura.setEstado(true);	
+				break;
+			case "Pedido":factura.setEstado(false);
+				break;
+
+			default:factura.setEstado(false);
+				break;
+			}
+ 
+			
 			 facturas.add(factura);
 		}
 		scaner.close();
@@ -98,6 +104,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 					factura1.setDescuento(factura.getDescuento());
 					factura1.setCliente(factura.getCliente());
 					factura1.setVendedor(factura.getVendedor());
+					factura1.setAlmacen(factura.getAlmacen());
 					factura1.setEstado(factura.getEstado());
 				}
 			}
@@ -141,14 +148,23 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		for(Factura factura :facturas)
 		{
 			fw.append("id:"+factura.getId().toString()+"\n");
-//			fw.append("fecha:"+(factura.getFecha().getYear()+"/"+factura.getFecha().getMonth()+"/"+factura.getFecha().getDay())+"\n");
+			fw.append("fecha:"+(factura.getFechaStr()+"\n"));
 			fw.append("total:"+factura.getTotal().toString()+"\n");
 			fw.append("saldo:"+factura.getSaldo().toString()+"\n");
 			fw.append("iva:"+factura.getIva().toString()+"\n");
 			fw.append("descuento:"+factura.getDescuento().toString()+"\n");
 			fw.append("idCliente:"+(factura.getCliente() == null ? "  ":factura.getCliente().getId().toString())+"\n");
 			fw.append("idVendedor:"+(factura.getVendedor() == null ? "  ":factura.getVendedor().getId().toString())+"\n");
-			fw.append("estado:"+(factura.getEstado() == true ? "Pendiente":"Cancelada\n"));
+			fw.append("idAlmacen:"+(factura.getAlmacen() == null ? "  ":factura.getAlmacen().getId().toString())+"\n");
+			if(factura.getEstado()==true)
+			{
+				fw.append("estado:Facturada\n");
+			}
+			else
+			{
+				fw.append("estado:Pedido\n");
+			}
+			
 		}
 		fw.close();
 	}
@@ -161,5 +177,8 @@ saldo:88200000
 iva:7261800000
 descuento:0
 idCliente:2
-idVendedor:2*/
+idVendedor:2
+idAlmacen:1
+estado:Pedido*/
+	
 }

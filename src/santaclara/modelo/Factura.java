@@ -14,6 +14,7 @@ public class Factura {
 	private Double descuento;
 	private Cliente cliente;
 	private Vendedor vendedor;
+	private Almacen almacen;
 	private Boolean estado;
 	
 	public Factura() {
@@ -21,7 +22,7 @@ public class Factura {
 		// TODO Auto-generated constructor stub
 	}
 	public Factura(Integer id, Date fecha, Double total, Double saldo,
-			Double iva, Double descuento, Cliente cliente,Vendedor vendedor,Boolean estado) {
+			Double iva, Double descuento, Cliente cliente,Vendedor vendedor,Almacen almacen,Boolean estado) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -31,6 +32,7 @@ public class Factura {
 		this.descuento = descuento;
 		this.cliente = cliente;
 		this.vendedor = vendedor;
+		this.almacen = almacen;
 		this.estado = estado;
 	}
 	
@@ -83,6 +85,13 @@ public class Factura {
 		this.vendedor = vendedor;
 	
 	}
+	
+	public Almacen getAlmacen() {
+		return almacen;
+	}
+	public void setAlmacen(Almacen almacen) {
+		this.almacen = almacen;
+	}
 	public Boolean getEstado() {
 		return estado;
 	}
@@ -129,6 +138,7 @@ public class Factura {
  *descuento:0
  *idCliente:2
  *idvendedor:2
+ *idAlmacen:2
  *estado:Pendiente
  **/	
 

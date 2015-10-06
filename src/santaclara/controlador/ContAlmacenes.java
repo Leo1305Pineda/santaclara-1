@@ -17,6 +17,12 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 	private ServicioAlmacen servicioAlmacen;
 	private AlmacenesUI vista;
 	
+	public ContAlmacenes() throws NumberFormatException, IOException{
+		servicioAlmacen = new ServicioAlmacen();
+		vista = new AlmacenesUI(this,servicioAlmacen.getAlmacenes());
+		vista.activarBinding(servicioAlmacen.getAlmacenes());
+	}
+	
 	public ContAlmacenes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
@@ -162,7 +168,18 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras();
+				try {
+					if (vista.getTable().getSelectedRow()>=0)
+					{
+						Almacen almacen = new Almacen();
+						almacen = servicioAlmacen.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						ActivarAtras(almacen);
+					}
+					else ActivarAtras(null);
+				} catch (NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		};
 	}

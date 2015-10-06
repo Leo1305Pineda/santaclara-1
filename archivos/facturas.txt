@@ -5,7 +5,8 @@ saldo:8.82E7
 iva:7.2618E9
 descuento:0.0
 idCliente:2
-idVendedor:0
+idVendedor:1
+idAlmacen:1
 estado:Pedido
 id:1
 fecha:20/09/2015
@@ -15,7 +16,8 @@ iva:7.2618E9
 descuento:0.0
 idCliente:1
 idVendedor:1
-estado:Facturada
+idAlmacen:1
+estado:Facturado
 id:2
 fecha:01/09/2015
 total:655.0
@@ -24,4 +26,5 @@ iva:655.0
 descuento:655.0
 idCliente:1
 idVendedor:1
-estado:Facturada
+idAlmacen:1
+estado:Facturado

@@ -245,7 +245,18 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-						ActivarAtras();
+				try {
+					if (vista.getTable().getSelectedRow()>=0)
+					{
+						EmpaqueProducto empaqueProducto = new EmpaqueProducto();
+						empaqueProducto = new ServicioEmpaqueProducto().buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
+						ActivarAtras(empaqueProducto);
+					}
+					else 	ActivarAtras(null);
+				} catch (NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		};
 	}

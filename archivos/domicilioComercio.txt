@@ -6,7 +6,7 @@ tipo:D
 diaVisita:42
 idCliente:5
 tipo:D
-diaVisita:106
+diaVisita:42
 idCliente:6
 tipo:C
 diaVisita:42
@@ -21,4 +21,4 @@ tipo:C
 diaVisita:42
 idCliente:11
 tipo:D
-diaVisita:0
+diaVisita:84

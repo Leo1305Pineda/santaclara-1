@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.GridLayout;
+import java.io.IOException;
 
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
@@ -13,7 +15,11 @@ import javax.swing.ImageIcon;
 import javax.swing.Box;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JLabel;
 
+import org.jdesktop.swingbinding.JTableBinding;
+
+import santaclara.controlador.ContPedidos;
 
 @SuppressWarnings("serial")
 public class PedidosUI extends JPanel{
@@ -22,6 +28,10 @@ public class PedidosUI extends JPanel{
 	private JPanel pnlOption;
 	private JPanel pnlInfo;
 	private JPanel pnlDetalle;
+	private JPanel pnlVendedor;
+	private JPanel pnlCliente;
+	private JPanel pnlTotales;
+	private JPanel pnlAlmacen;
 	
 	private JButton btnAtras;
 	private JButton btnGuardar;
@@ -35,14 +45,34 @@ public class PedidosUI extends JPanel{
 	private JButton btnGuardarFactura;
 	private JButton btnSalir;
 	
+	private JLabel lblCedulaVendedor;
+	private JLabel lblNombreVendedor;
+	private JLabel lblRif;
+	private JLabel lblRazonSocial;
+	private JLabel lblTelefono;
+	private JLabel lblDireccion;
+	private JLabel lblRuta;
+	private JLabel lblCantidadProducto;
+	private JLabel lblCantidadUnidades;
+	private JLabel lblTotalIva;
+	private JLabel lblSaldoAPagar;
+	private JLabel lblTotalSinIva;
+	private JLabel lblNumeroPedido;
+	private JLabel lblAlmacen;
+	private JLabel lblFecha;
+	private JLabel lblDescuento;
+	
 	private JScrollPane scrollPane;
 	
+	@SuppressWarnings("rawtypes")
+	private JTableBinding BinPedidos;
 	
 	private JTable table;
 	
-	public PedidosUI() {
+	public PedidosUI(ContPedidos contPedidos) throws IOException {
 		setBounds(0, 0, 800, 700);
 		setBackground(Color.DARK_GRAY);
+		setSize(1216,696);
 		setLayout(null);
 		
 		pnlPedido = new JPanel();
@@ -61,6 +91,7 @@ public class PedidosUI extends JPanel{
 		pnlOption.setLayout(null);
 		
 		btnAtras = new JButton("");
+		btnAtras.addActionListener(contPedidos.actionAtras());
 		btnAtras.setBounds(0, 0, 40, 40);
 		btnAtras.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/AtrasCurva.png"));
 		btnAtras.setForeground(Color.WHITE);
@@ -74,6 +105,7 @@ public class PedidosUI extends JPanel{
 		pnlOption.add(verticalGlue);
 		
 		btnBuscar = new JButton("");
+		btnBuscar.addActionListener(contPedidos.actionBuscarPedido());
 		btnBuscar.setBounds(50, 0, 40, 40);
 		btnBuscar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/buscar.png"));
 		btnBuscar.setBackground(Color.GRAY);
@@ -81,6 +113,7 @@ public class PedidosUI extends JPanel{
 		pnlOption.add(btnBuscar);
 		
 		btnGuardar = new JButton("");
+		btnGuardar.addActionListener(contPedidos.actionGuardarPedido());
 		btnGuardar.setBounds(95, 0, 40, 40);
 		btnGuardar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/disk.png"));
 		btnGuardar.setForeground(Color.WHITE);
@@ -88,6 +121,7 @@ public class PedidosUI extends JPanel{
 		pnlOption.add(btnGuardar);
 		
 		btnImprimir = new JButton("");
+		btnImprimir.addActionListener(contPedidos.actionImprimir());
 		btnImprimir.setBounds(140, 0, 40, 40);
 		btnImprimir.setToolTipText("Imprimir");
 		btnImprimir.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/printer.png"));
@@ -101,6 +135,7 @@ public class PedidosUI extends JPanel{
 		pnlOption.add(verticalGlue_1);
 		
 		btnAlmacen = new JButton("");
+		btnAlmacen.addActionListener(contPedidos.actionAlmacen());
 		btnAlmacen.setBounds(190, 0, 40, 40);
 		btnAlmacen.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/empresa.png"));
 		btnAlmacen.setToolTipText("Almacen");
@@ -109,6 +144,7 @@ public class PedidosUI extends JPanel{
 		pnlOption.add(btnAlmacen);
 		
 		btnCliente = new JButton("");
+		btnCliente.addActionListener(contPedidos.actionCliente());
 		btnCliente.setBounds(235, 0, 40, 40);
 		btnCliente.setToolTipText("Cliente");
 		btnCliente.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/group.png"));
@@ -117,6 +153,7 @@ public class PedidosUI extends JPanel{
 		pnlOption.add(btnCliente);
 		
 		btnVendedor = new JButton("");
+		btnVendedor.addActionListener(contPedidos.actionVendedor());
 		btnVendedor.setBounds(280, 0, 40, 40);
 		btnVendedor.setToolTipText("Vendedor");
 		btnVendedor.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/persona.png"));
@@ -125,6 +162,7 @@ public class PedidosUI extends JPanel{
 		pnlOption.add(btnVendedor);
 		
 		btnProducto = new JButton("");
+		btnProducto.addActionListener(contPedidos.actionProducto());
 		btnProducto.setBounds(325, 0, 40, 40);
 		btnProducto.setToolTipText("Producto");
 		btnProducto.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/NuevoPaquete.png"));
@@ -133,6 +171,7 @@ public class PedidosUI extends JPanel{
 		pnlOption.add(btnProducto);
 		
 		btnCatalogo = new JButton("");
+		btnCatalogo.addActionListener(contPedidos.actionCatalogo());
 		btnCatalogo.setBounds(370, 0, 40, 40);
 		btnCatalogo.setToolTipText("Catalogo de Producto");
 		btnCatalogo.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/desktop.png"));
@@ -146,6 +185,7 @@ public class PedidosUI extends JPanel{
 		pnlOption.add(verticalGlue_2);
 		
 		btnSalir = new JButton("");
+		btnSalir.addActionListener(contPedidos.actionSalir());
 		btnSalir.setBounds(711, 0, 40, 40);
 		btnSalir.setToolTipText("Salir");
 		btnSalir.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/SalirCurva.png"));
@@ -155,6 +195,7 @@ public class PedidosUI extends JPanel{
 		pnlOption.add(btnSalir);
 		
 		btnGuardarFactura = new JButton("");
+		btnGuardarFactura.addActionListener(contPedidos.actionGenerarFactura());
 		btnGuardarFactura.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/bien.png"));
 		btnGuardarFactura.setToolTipText("GenararFactura");
 		btnGuardarFactura.setForeground(Color.WHITE);
@@ -170,23 +211,73 @@ public class PedidosUI extends JPanel{
 		pnlPedido.add(pnlInfo);
 		pnlInfo.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.GRAY);
-		panel.setBorder(new TitledBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(192, 192, 192)), "Almacen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
-		panel.setBounds(12, 24, 298, 23);
-		pnlInfo.add(panel);
+		pnlAlmacen = new JPanel();
+		pnlAlmacen.setBackground(Color.GRAY);
+		pnlAlmacen.setBorder(new TitledBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(192, 192, 192)), "Almacen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		pnlAlmacen.setBounds(12, 24, 250, 30);
+		pnlInfo.add(pnlAlmacen);
+		pnlAlmacen.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Vendedor", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
-		panel_1.setBackground(Color.GRAY);
-		panel_1.setBounds(12, 60, 298, 46);
-		pnlInfo.add(panel_1);
+		lblAlmacen = new JLabel("Ubicacion:");
+		lblAlmacen.setForeground(Color.WHITE);
+		pnlAlmacen.add(lblAlmacen);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
-		panel_2.setBackground(Color.GRAY);
-		panel_2.setBounds(319, 24, 298, 82);
-		pnlInfo.add(panel_2);
+		pnlVendedor = new JPanel();
+		pnlVendedor.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Vendedor", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		pnlVendedor.setBackground(Color.GRAY);
+		pnlVendedor.setBounds(12, 60, 250, 46);
+		pnlInfo.add(pnlVendedor);
+		pnlVendedor.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		lblCedulaVendedor = new JLabel("Cedula:");
+		lblCedulaVendedor.setForeground(Color.WHITE);
+		pnlVendedor.add(lblCedulaVendedor);
+		
+		lblNombreVendedor = new JLabel("Nombre:");
+		lblNombreVendedor.setForeground(Color.WHITE);
+		pnlVendedor.add(lblNombreVendedor);
+		
+		pnlCliente = new JPanel();
+		pnlCliente.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		pnlCliente.setBackground(Color.GRAY);
+		pnlCliente.setBounds(270, 24, 250, 82);
+		pnlInfo.add(pnlCliente);
+		pnlCliente.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		lblRif = new JLabel("Rif:");
+		lblRif.setForeground(Color.WHITE);
+		pnlCliente.add(lblRif);
+		
+		lblRazonSocial = new JLabel("Razon Social:");
+		lblRazonSocial.setForeground(Color.WHITE);
+		pnlCliente.add(lblRazonSocial);
+		
+		lblTelefono = new JLabel("Telefono:");
+		lblTelefono.setForeground(Color.WHITE);
+		pnlCliente.add(lblTelefono);
+		
+		lblDireccion = new JLabel("Direccion:");
+		lblDireccion.setForeground(Color.WHITE);
+		pnlCliente.add(lblDireccion);
+		
+		lblRuta = new JLabel("Ruta:");
+		lblRuta.setForeground(Color.WHITE);
+		pnlCliente.add(lblRuta);
+		
+		lblNumeroPedido = new JLabel("Numero:");
+		lblNumeroPedido.setForeground(Color.WHITE);
+		lblNumeroPedido.setBounds(527, 38, 192, 10);
+		pnlInfo.add(lblNumeroPedido);
+		
+		lblFecha = new JLabel("Fecha:");
+		lblFecha.setForeground(Color.WHITE);
+		lblFecha.setBounds(527, 60, 192, 10);
+		pnlInfo.add(lblFecha);
+		
+		lblDescuento = new JLabel("Descuento:");
+		lblDescuento.setForeground(Color.WHITE);
+		lblDescuento.setBounds(527, 82, 192, 10);
+		pnlInfo.add(lblDescuento);
 		
 		pnlDetalle = new JPanel();
 		pnlDetalle.setForeground(Color.WHITE);
@@ -202,6 +293,38 @@ public class PedidosUI extends JPanel{
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		
+		pnlTotales = new JPanel();
+		pnlTotales.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 2, true), "Totales", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		pnlTotales.setBackground(Color.DARK_GRAY);
+		pnlTotales.setBounds(25, 599, 763, 89);
+		pnlPedido.add(pnlTotales);
+		pnlTotales.setLayout(null);
+		
+		lblCantidadProducto = new JLabel("Cantidad Producto:");
+		lblCantidadProducto.setForeground(Color.WHITE);
+		lblCantidadProducto.setBounds(12, 24, 244, 10);
+		pnlTotales.add(lblCantidadProducto);
+		
+		lblCantidadUnidades = new JLabel("Cantidad Unidades:");
+		lblCantidadUnidades.setForeground(Color.WHITE);
+		lblCantidadUnidades.setBounds(12, 46, 244, 10);
+		pnlTotales.add(lblCantidadUnidades);
+		
+		lblTotalSinIva = new JLabel("Total Sin Iva:");
+		lblTotalSinIva.setForeground(Color.WHITE);
+		lblTotalSinIva.setBounds(328, 22, 244, 10);
+		pnlTotales.add(lblTotalSinIva);
+		
+		lblTotalIva = new JLabel("Total Iva:");
+		lblTotalIva.setForeground(Color.WHITE);
+		lblTotalIva.setBounds(328, 44, 244, 10);
+		pnlTotales.add(lblTotalIva);
+		
+		lblSaldoAPagar = new JLabel("Saldo a Pagar:");
+		lblSaldoAPagar.setForeground(Color.WHITE);
+		lblSaldoAPagar.setBounds(328, 66, 244, 10);
+		pnlTotales.add(lblSaldoAPagar);
 	}
 
 	public JPanel getPnlPedido() {
@@ -339,4 +462,176 @@ public class PedidosUI extends JPanel{
 	public void setTable(JTable table) {
 		this.table = table;
 	}
+
+	public JPanel getPnlVendedor() {
+		return pnlVendedor;
+	}
+
+	public void setPnlVendedor(JPanel pnlVendedor) {
+		this.pnlVendedor = pnlVendedor;
+	}
+
+	public JPanel getPnlCliente() {
+		return pnlCliente;
+	}
+
+	public void setPnlCliente(JPanel pnlCliente) {
+		this.pnlCliente = pnlCliente;
+	}
+
+	public JPanel getPnlTotales() {
+		return pnlTotales;
+	}
+
+	public void setPnlTotales(JPanel pnlTotales) {
+		this.pnlTotales = pnlTotales;
+	}
+
+	public JPanel getPnlAlmacen() {
+		return pnlAlmacen;
+	}
+
+	public void setPnlAlmacen(JPanel pnlAlmacen) {
+		this.pnlAlmacen = pnlAlmacen;
+	}
+
+	public JLabel getLblCedulaVendedor() {
+		return lblCedulaVendedor;
+	}
+
+	public void setLblCedulaVendedor(JLabel lblCedulaVendedor) {
+		this.lblCedulaVendedor = lblCedulaVendedor;
+	}
+
+	public JLabel getLblNombreVendedor() {
+		return lblNombreVendedor;
+	}
+
+	public void setLblNombreVendedor(JLabel lblNombreVendedor) {
+		this.lblNombreVendedor = lblNombreVendedor;
+	}
+
+	public JLabel getLblRif() {
+		return lblRif;
+	}
+
+	public void setLblRif(JLabel lblRif) {
+		this.lblRif = lblRif;
+	}
+
+	public JLabel getLblRazonSocial() {
+		return lblRazonSocial;
+	}
+
+	public void setLblRazonSocial(JLabel lblRazonSocial) {
+		this.lblRazonSocial = lblRazonSocial;
+	}
+
+	public JLabel getLblTelefono() {
+		return lblTelefono;
+	}
+
+	public void setLblTelefono(JLabel lblTelefono) {
+		this.lblTelefono = lblTelefono;
+	}
+
+	public JLabel getLblDireccion() {
+		return lblDireccion;
+	}
+
+	public void setLblDireccion(JLabel lblDireccion) {
+		this.lblDireccion = lblDireccion;
+	}
+
+	public JLabel getLblRuta() {
+		return lblRuta;
+	}
+
+	public void setLblRuta(JLabel lblRuta) {
+		this.lblRuta = lblRuta;
+	}
+
+	public JLabel getLblCantidadProducto() {
+		return lblCantidadProducto;
+	}
+
+	public void setLblCantidadProducto(JLabel lblCantidadProducto) {
+		this.lblCantidadProducto = lblCantidadProducto;
+	}
+
+	public JLabel getLblCantidadUnidades() {
+		return lblCantidadUnidades;
+	}
+
+	public void setLblCantidadUnidades(JLabel lblCantidadUnidades) {
+		this.lblCantidadUnidades = lblCantidadUnidades;
+	}
+
+	public JLabel getLblTotalIva() {
+		return lblTotalIva;
+	}
+
+	public void setLblTotalIva(JLabel lblTotalIva) {
+		this.lblTotalIva = lblTotalIva;
+	}
+
+	public JLabel getLblSaldoAPagar() {
+		return lblSaldoAPagar;
+	}
+
+	public void setLblSaldoAPagar(JLabel lblSaldoAPagar) {
+		this.lblSaldoAPagar = lblSaldoAPagar;
+	}
+
+	public JLabel getLblTotalSinIva() {
+		return lblTotalSinIva;
+	}
+
+	public void setLblTotalSinIva(JLabel lblTotalSinIva) {
+		this.lblTotalSinIva = lblTotalSinIva;
+	}
+
+	public JLabel getLblNumeroPedido() {
+		return lblNumeroPedido;
+	}
+
+	public void setLblNumeroPedido(JLabel lblNumeroPedido) {
+		this.lblNumeroPedido = lblNumeroPedido;
+	}
+
+	public JLabel getLblAlmacen() {
+		return lblAlmacen;
+	}
+
+	public void setLblAlmacen(JLabel lblAlmacen) {
+		this.lblAlmacen = lblAlmacen;
+	}
+
+	public JLabel getLblFecha() {
+		return lblFecha;
+	}
+
+	public void setLblFecha(JLabel lblFecha) {
+		this.lblFecha = lblFecha;
+	}
+
+	public JLabel getLblDescuento() {
+		return lblDescuento;
+	}
+
+	public void setLblDescuento(JLabel lblDescuento) {
+		this.lblDescuento = lblDescuento;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public JTableBinding getBinPedidos() {
+		return BinPedidos;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public void setBinPedidos(JTableBinding binPedidos) {
+		BinPedidos = binPedidos;
+	}
+	
+	
 }

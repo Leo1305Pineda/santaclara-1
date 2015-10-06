@@ -52,7 +52,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 		CargarComboUsuario();
 		for(int i = 0;i<=34;i++)(vista.getBtn(i)).setBackground(Color.lightGray);
 		dibujar(vista);
-	//	vista.quitarNuevo();
+		vista.quitarNuevo();
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 		crearCalendario(fechainicio);
 		cargarImagen();
 		
-		vista.getVerFecha().setDateFormatString(new SimpleDateFormat("dd/MMyyyy").format(date));
+		vista.getVerFecha().setDateFormatString(new SimpleDateFormat("dd/MM/yyyy").format(date));
 		
 	}
 	
@@ -307,7 +307,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras();
+				ActivarAtras(null);
 			}
 		};
 	}
@@ -426,15 +426,15 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-					ContVisitas contVisitas;
 					try {
 						List<Visita> visitasTrue = getVisitasEstadoTrue();
 						if (visitasTrue.size()!=0)
 						{
+							ContVisitas contVisitas;
 							contVisitas = new ContVisitas(getContPrincipal());
 							contVisitas.getComboTipoUser().setSelectedIndex(vista.getComboTipoUser().getSelectedIndex());
-							contVisitas.getComboUsuario().setSelectedIndex(vista.getComboUsuario().getSelectedIndex());//setSelectedValue(contVisitas.getComboUsuario(), visitasTrue.get(0).getUsuario().getId());
+							contVisitas.getComboUsuario().setSelectedIndex(vista.getComboUsuario().getSelectedIndex());
+							//setSelectedValue(contVisitas.getComboUsuario(), visitasTrue.get(0).getUsuario().getId());
 							contVisitas.activarBinding(visitasTrue);
 						}
 						else JOptionPane.showMessageDialog(new JPanel(), "No existen Visitas hechas");

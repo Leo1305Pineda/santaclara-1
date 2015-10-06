@@ -318,7 +318,20 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras();
+				try {
+					if (vista.getTable().getSelectedRow()>=0)
+					{
+						Cliente cliente = new Cliente();
+						cliente = new ServicioCliente().buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						ActivarAtras(cliente);
+					}
+					else ActivarAtras(null);
+					
+				} catch (NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 		};
 	}
