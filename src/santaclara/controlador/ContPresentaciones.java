@@ -26,8 +26,7 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 		servicioPresentacion = new ServicioPresentacion();
 		vista = new PresentacionesUI(this,servicioPresentacion.getPresentaciones());
 		vista.activarBinding(servicioPresentacion.getPresentaciones());
-		dibujar(vista);
-		vista.quitarNuevo();
+		dibujar(vista,this);
 	}
 
 	@Override
@@ -167,7 +166,7 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras();
+				ActivarAtras(null);
 			}
 		};
 	}

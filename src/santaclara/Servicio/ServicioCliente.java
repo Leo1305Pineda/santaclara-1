@@ -3,6 +3,7 @@ package santaclara.Servicio;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.impl.ClienteDAO;
@@ -58,5 +59,14 @@ public class ServicioCliente {
 	public Cliente getCliente(String rif) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		return clienteDAO.getCliente(rif);
+	}
+	public List<Cliente> getClientes(Ruta ruta) throws FileNotFoundException{
+		List<Cliente> clientes = new ClienteDAO().getClientes();
+		List<Cliente> clientes2 = new ArrayList<Cliente>();
+		for(Cliente cliente : clientes)
+		{
+			if (cliente.getRuta().getId().equals(ruta.getId())) clientes2.add(cliente);
+		}
+		return clientes2;
 	}
 }

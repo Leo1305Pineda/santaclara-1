@@ -34,7 +34,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 					servicioProducto.getCapacidades(),
 					servicioProducto.getSabores(),presentacionDAO.getPresentaciones());
 		vista.activarBinding(servicioProducto.getProductos());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 
@@ -320,7 +320,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras();
+				ActivarAtras(null);
 			}
 		};
 	}	

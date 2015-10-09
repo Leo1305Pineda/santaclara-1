@@ -30,6 +30,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 			 DomicilioComercio domicilioComercio = new DomicilioComercio();
 			 domicilioComercio.setId(new Integer(scaner.skip("idCliente:").nextLine()));
 			 domicilioComercio.setTipo(scaner.skip("tipo:").nextLine().toString().trim());
+			 domicilioComercio.setDiaVisita(new Integer(scaner.skip("diaVisita:").nextLine().trim()));
 			 domicilioComercios.add(domicilioComercio);
 		}
 		//Cargo la info de Cliente
@@ -104,11 +105,12 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 				if(domicilioComercio1.getId().equals(domicilioComercio.getId()))
 				{ 
 					domicilioComercio1.setTipo(domicilioComercio.getTipo());
+					domicilioComercio1.setDiaVisita(domicilioComercio.getDiaVisita());
 				}
 			}
 		}
 		guardarTodo(domicilioComercios);
-
+ 
 	}
 
 	@Override
@@ -150,6 +152,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 					? "  ":domicilioComercio.getId().toString())+"\n");
 			
 			fw.append("tipo:"+domicilioComercio.getTipo().toString()+"\n");
+			fw.append("diaVisita:"+domicilioComercio.getDiaVisita().toString()+"\n");
 			
 		}
 		fw.close();
@@ -161,6 +164,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
  	La Estructura de los Archivos sera la Siguiente 
 idCliente:1
 tipo:C
+diaVisita:37
 * */
 	
 } 

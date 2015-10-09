@@ -26,7 +26,7 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 		servicioCamion = new ServicioCamion();
 		vista = new CamionesUI(this, servicioCamion.getCamiones());
 		vista.activarBinding(servicioCamion.getCamiones());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 
@@ -179,7 +179,7 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras();
+				ActivarAtras(null);
 			}
 		};
 	}

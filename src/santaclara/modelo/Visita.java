@@ -11,12 +11,12 @@ public class Visita {
 	private Integer valorVendedor;
 	private Integer valorProducto;
 	private Boolean estado;
-	private JefeVenta jefeVenta;
+	private Usuario usuario;
 	private Cliente cliente;
 	
 	public Visita(Integer id, Date fecha, String motivo, String descripcion,
 			Integer valorVendedor, Integer valorProducto, Boolean estado,
-			JefeVenta jefeVenta,Cliente cliente) {
+			Usuario jefeVenta,Cliente cliente) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -25,7 +25,7 @@ public class Visita {
 		this.valorVendedor = valorVendedor;
 		this.valorProducto = valorProducto;
 		this.estado = estado;
-		this.jefeVenta = jefeVenta;
+		this.usuario = jefeVenta;
 		this.cliente = cliente;
 	}
 	public Visita() {
@@ -44,10 +44,19 @@ public class Visita {
 	public String getFechaStr() {
 		if (fecha==null)return "";
 		else{
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			return sdf.format(fecha);
 		} 
 	}
+	
+	public String getFechaStr(Date fecha) {
+		if (fecha==null)return "";
+		else{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			return sdf.format(fecha);
+		} 
+	}
+	
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
@@ -95,11 +104,11 @@ public class Visita {
 	public void setEstado(Boolean estado) {
 		this.estado = estado;
 	}
-	public JefeVenta getJefeVenta() {
-		return jefeVenta;
+	public Usuario getUsuario() {
+		return usuario;
 	}
-	public void setJefeVenta(JefeVenta jefeVenta) {
-		this.jefeVenta = jefeVenta;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	public Cliente getCliente() {
 		return cliente;
@@ -110,7 +119,7 @@ public class Visita {
 	
 	public void setFecha(String cadena) {
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			this.fecha = sdf.parse(cadena);
 		} catch (Exception e) {
 			// TODO: handle exception

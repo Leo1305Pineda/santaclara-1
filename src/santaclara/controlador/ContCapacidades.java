@@ -26,7 +26,7 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 		servicioCapacidad = new ServicioCapacidad();
 		vista = new CapacidadesUI(this,servicioCapacidad.getCapacidades());
 		vista.activarBinding(servicioCapacidad.getCapacidades());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 
@@ -167,7 +167,7 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras();
+				ActivarAtras(null);
 			}
 		};
 	}

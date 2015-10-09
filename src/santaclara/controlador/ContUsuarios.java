@@ -53,7 +53,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 						servicioRuta.getRutas(),servicioZona.getZonas(),
 						servicioCamion.getCamiones());
 		vista.activarBinding(servicioUsuario.getUsuarios());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 
@@ -61,6 +61,10 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 	public JPanel getVista() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public UsuariosUI getVistaUsuario(){
+		return vista;
 	}
 	
 	public ActionListener nuevo(){
@@ -295,7 +299,20 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras();
+				try {
+					if (vista.getTable().getSelectedRow()>=0)
+					{
+						Usuario usuario  = new Usuario();
+						usuario = servicioUsuario.buscar(
+								new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						ActivarAtras(usuario);
+					}
+ 					else ActivarAtras(null);
+				} catch (NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 		};
 	}
@@ -508,4 +525,38 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 				}
 			};
 	}
+
+	public ServicioUsuario getServicioUsuario() {
+		return servicioUsuario;
+	}
+
+	public void setServicioUsuario(ServicioUsuario servicioUsuario) {
+		this.servicioUsuario = servicioUsuario;
+	}
+
+	public ServicioRuta getServicioRuta() {
+		return servicioRuta;
+	}
+
+	public void setServicioRuta(ServicioRuta servicioRuta) {
+		this.servicioRuta = servicioRuta;
+	}
+
+	public ServicioZona getServicioZona() {
+		return servicioZona;
+	}
+
+	public void setServicioZona(ServicioZona servicioZona) {
+		this.servicioZona = servicioZona;
+	}
+
+	public ServicioCamion getServicioCamion() {
+		return servicioCamion;
+	}
+
+	public void setServicioCamion(ServicioCamion servicioCamion) {
+		this.servicioCamion = servicioCamion;
+	}
+	
+	
 }

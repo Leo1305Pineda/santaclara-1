@@ -1,6 +1,7 @@
 package santaclara.Servicio;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.impl.AlmacenDAO;
@@ -71,4 +72,18 @@ public class ServicioProductoAlmacen {
 	public ProductoAlmacen getProductoAlmacen(Integer idEmpaqueProducto,Integer idAlmacen)throws IOException{
 		return productoAlmacenDAO.getProductoAlmacen(idEmpaqueProducto, idAlmacen);
 	}
+	
+	public List<ProductoAlmacen> getProductoAlmacenes(Integer idAlmacen) throws Exception
+	{
+		List<ProductoAlmacen> productoAlmacensAux = new ArrayList<ProductoAlmacen>();
+		for(ProductoAlmacen productoAlmacen : getProductoAlmacenes())
+		{
+			if(productoAlmacen.getAlmacen().getId().equals(idAlmacen))
+			{
+				productoAlmacensAux.add(productoAlmacen);
+			}
+		}
+		return productoAlmacensAux;	
+	}
+
 }

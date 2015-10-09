@@ -1,12 +1,12 @@
 idFactura:1
 idProducto:1
 cantidad:73500
-precio:100000
+precio:100000.0
 iva:0.12
-total:7350000000
+total:7.35
 idFactura:2
-idProducto:2
+idProducto:  
 cantidad:500
-precio:16000
+precio:16000.0
 iva:0.12
-total:30000000	
+total:3.00

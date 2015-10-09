@@ -26,7 +26,7 @@ public class ContSabores extends ContGeneral implements IContGeneral{
 		servicioSabor = new ServicioSabor();
 		vista = new SaboresUI(this,servicioSabor.getSabores());
 		vista.activarBinding(servicioSabor.getSabores());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 
@@ -166,7 +166,7 @@ public class ContSabores extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras();
+				ActivarAtras(null);
 			}
 		};
 	}

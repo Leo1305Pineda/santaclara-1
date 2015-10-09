@@ -62,8 +62,5 @@ public class Cliente {
 		this.telefono = telefono;
 		this.ruta = ruta;
 	}
-	
-	
 
-	
 }

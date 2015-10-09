@@ -42,16 +42,16 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 				 ProductoDAO productoDAO = new ProductoDAO();
 				 detalleFactura.setProducto(productoDAO.getProducto(new Integer(linea)));
 			 }
-			 detalleFactura.setCantidad(new Integer(scaner.skip("cantidad:").nextLine()));
-			 detalleFactura.setPrecio(new Double(scaner.skip("precio:").nextLine()));
-			 detalleFactura.setIva(new Double(scaner.skip("iva:").nextLine()));
-			 detalleFactura.setTotal(new Double(scaner.skip("total:").nextLine()));
+			 detalleFactura.setCantidad(new Integer(scaner.skip("cantidad:").nextLine().trim()));
+			 detalleFactura.setPrecio(new Double(scaner.skip("precio:").nextLine().trim()));
+			 detalleFactura.setIva(new Double(scaner.skip("iva:").nextLine().trim()));
+			 detalleFactura.setTotal(new Double(scaner.skip("total:").nextLine().trim()));
 			 
 			 
 			 detalleFacturas.add(detalleFactura); 
 		}
 		scaner.close();
-		return null;
+		return detalleFacturas;
 
 	}
 
@@ -69,6 +69,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 					detalleFactura1.setTotal(detalleFactura.getTotal());
 					detalleFactura1.setIva(detalleFactura.getIva());
 					detalleFactura1.setPrecio(detalleFactura.getPrecio());
+					//Error al cargar el detalle
 				}
 			}
 		guardarTodo(detalleFacturas);

@@ -3,9 +3,10 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import santaclara.Servicio.ServicioDomicilioComercio;
@@ -23,6 +24,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	private ServicioCliente servicioCliente = new ServicioCliente();
 	private ServicioRuta servicioRuta = new ServicioRuta();
 	private ClientesUI vista ;
+	private List<Ruta> rutas  = new ArrayList<Ruta>();
 	
 	public ContClientes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -32,14 +34,16 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		servicioRuta = new ServicioRuta();
 		vista = new ClientesUI(this, servicioCliente.getClientes(),servicioRuta.getRutas());
 		vista.activarBindingSalp(new ServicioSalp().getSalps());
-		dibujar(vista);
+		vista.getPnCheckDia().setVisible(false);
+		vista.getLblDiaVisita().setVisible(false);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 
 	@Override
-	public JPanel getVista() {
+	public ClientesUI getVista() {
 		// TODO Auto-generated method stub
-		return null;
+		return vista;
 	}
 	
 	public ActionListener nuevo(){
@@ -63,36 +67,97 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (vista.getTable().getSelectedRow()>=0)
-				{
 					if (vista.getTable().getSelectedRow()>=0)
 					{	
 							Cliente cliente  = new Cliente();
 							try {
 								cliente = new ServicioCliente().buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-							} catch (NumberFormatException | IOException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-							if (cliente != null)
-							{
-								vista.activarNuevo();
-								vista.getTxtId().setText(cliente.getId().toString());
-								vista.getTxtDireccion().setText(cliente.getDireccion());
-								vista.getTxtRazonSocial().setText(cliente.getRazonsocial());
-								vista.getTxtRif().setText(cliente.getRif());
-								vista.getTxtRif().setEnabled(false);
-								vista.getTxtTelefono().setText(cliente.getTelefono());
-								vista.setSelectedValueRuta(cliente.getRuta().getId());
-							}
+								if (cliente != null)
+								{
+									vista.activarNuevo();
+									vista.getTxtId().setText(cliente.getId().toString());
+									vista.getTxtDireccion().setText(cliente.getDireccion());
+									vista.getTxtRazonSocial().setText(cliente.getRazonsocial());
+									vista.getTxtRif().setText(cliente.getRif());
+									vista.getTxtRif().setEnabled(false);
+									vista.getTxtTelefono().setText(cliente.getTelefono());
+									vista.setSelectedValueRuta(cliente.getRuta().getId());
+									mostrarDiaVisita(cliente.getId());
+								}
+								} catch (NumberFormatException | IOException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 					}
-				}
-				else JOptionPane.showMessageDialog(vista,"Seleccione la fila");
-			}
-				
+					else JOptionPane.showMessageDialog(vista,"Seleccione la fila");
 			};
+		};
+	}
+	
+	public void mostrarDiaVisita(Integer id) throws IOException{
+		if (vista.getCmbTipoCliente().getSelectedItem().equals("Domicilio") || 
+				vista.getCmbTipoCliente().getSelectedItem().equals("Comercial"))
+		{
+			vista.getPnCheckDia().setVisible(true);
+			vista.getLblDiaVisita().setVisible(true);
+			setCkeckDiaVisita((new ServicioDomicilioComercio().getdDomicilioComercio(id)).getDiaVisita());	
 		}
+		else 
+		{
+			vista.getPnCheckDia().setVisible(false);
+			vista.getLblDiaVisita().setVisible(false);
+		}
+	}
+	
+	public void setCkeckDiaVisita(Integer numero){
+		 Integer exp, digito;
+	        Double binario;
+	        
+	        exp= new Integer(0);
+	        binario= new Double(0);
+	        while(numero!=0){
+	                digito = numero % 2;           
+	                binario = binario + digito * Math.pow(10, exp);
+	               
+	                switch (exp) {
+					case 0:
+						if (new Integer((int) (digito * Math.pow(10, exp))).equals(1)) //si se asigna el domingo;
+						break;
+					case 1:if (new Integer((int) (digito * Math.pow(10, exp))).equals(10)) vista.getCheckLune().setSelected(true);
+					break;
+					case 2:if (new Integer((int) (digito * Math.pow(10, exp))).equals(100)) vista.getCheckMarte().setSelected(true);
+					break;
+					case 3:if (new Integer((int) (digito * Math.pow(10, exp))).equals(1000)) vista.getCheckMiercole().setSelected(true);
+					break;
+					case 4:if (new Integer((int) (digito * Math.pow(10, exp))).equals(10000)) vista.getCheckJueve().setSelected(true);
+					break;
+					case 5:if (new Integer((int) (digito * Math.pow(10, exp))).equals(100000)) vista.getCheckVierne().setSelected(true);
+					break;
+					case 6:if (new Integer((int) (digito * Math.pow(10, exp))).equals(1000000)) vista.getCheckSabado().setSelected(true);
+					break;
 
+					default:
+						break;
+					}
+	      
+	                exp++;
+	                numero = numero/2;
+	        }
+	}
+
+	public Integer getCheckDiaVisita(Boolean getCheckDomingo,Boolean getCheckLune,
+			Boolean getCheckMarte,Boolean getCheckMiercole,Boolean getCheckJueve,Boolean getCheckVierne,Boolean getCheckSabado){
+		Integer decimal = new Integer(0);
+		if(getCheckDomingo.booleanValue()) decimal = decimal + (int) Math.pow(2,0);
+		if(getCheckLune.booleanValue()) decimal = decimal + (int) Math.pow(2,1);
+		if(getCheckMarte.booleanValue()) decimal = decimal + (int) Math.pow(2,2);
+		if(getCheckMiercole.booleanValue()) decimal = decimal + (int) Math.pow(2,3);
+		if(getCheckJueve.booleanValue()) decimal = decimal + (int) Math.pow(2,4);
+		if(getCheckVierne.booleanValue()) decimal = decimal + (int) Math.pow(2,5);
+		if(getCheckSabado.booleanValue()) decimal = decimal + (int) Math.pow(2,6);
+		return decimal;
+
+	}
 	
 	public ActionListener guardar() {
 		// TODO Auto-generated method stub
@@ -141,6 +206,10 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 						{
 							domicilioComercio.setTipo("C");
 						}
+						domicilioComercio.setDiaVisita(getCheckDiaVisita(false, vista.getCheckLune().isSelected(),
+								vista.getCheckMarte().isSelected(), vista.getCheckMiercole().isSelected(),
+								vista.getCheckJueve().isSelected(), vista.getCheckVierne().isSelected(),
+								vista.getCheckSabado().isSelected()));
 						new ServicioDomicilioComercio().guardar(domicilioComercio);
 						vista.getBinClientes().unbind();
 						vista.getBinClientes().bind();
@@ -251,7 +320,20 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras();
+				try {
+					if (vista.getTable().getSelectedRow()>=0)
+					{
+						Cliente cliente = new Cliente();
+						cliente = new ServicioCliente().buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						ActivarAtras(cliente);
+					}
+					else ActivarAtras(null);
+					
+				} catch (NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 		};
 	}
@@ -338,8 +420,14 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 						else if(vista.getCmbTipoCliente().getSelectedItem().equals("Domicilio")||
 								vista.getCmbTipoCliente().getSelectedItem().equals("Comercial")){
 	
-							vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());
-	
+							if(rutas.isEmpty())
+							{
+								vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());
+							}
+							else
+							{
+								vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios(rutas));	
+							}
 						}
 					} catch (NumberFormatException | IOException e) {
 						// TODO Auto-generated catch block
@@ -348,6 +436,30 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 				vista.quitarNuevo();
 			}
 		};
+	}
+
+	public ServicioCliente getServicioCliente() {
+		return servicioCliente;
+	}
+
+	public void setServicioCliente(ServicioCliente servicioCliente) {
+		this.servicioCliente = servicioCliente;
+	}
+
+	public ServicioRuta getServicioRuta() {
+		return servicioRuta;
+	}
+
+	public void setServicioRuta(ServicioRuta servicioRuta) {
+		this.servicioRuta = servicioRuta;
+	}
+
+	public List<Ruta> getRutas() {
+		return rutas;
+	}
+
+	public void setRutas(List<Ruta> rutas) {
+		this.rutas = rutas;
 	}
 	
 	

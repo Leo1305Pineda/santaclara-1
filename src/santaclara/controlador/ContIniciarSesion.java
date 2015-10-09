@@ -65,7 +65,7 @@ public class ContIniciarSesion extends ContGeneral implements IContGeneral     {
 		super();
 		setContPrincipal(contPrincipal);
 		vista = new IniciarSesionUI(this);
-		dibujar(vista);
+		dibujar(vista,ContIniciarSesion.this);
 	}
 
 

@@ -26,7 +26,7 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 		servicioZona = new ServicioZona();
 		vista = new ZonasUI(this,servicioZona.getZonas());
 		vista.activarBinding(servicioZona.getZonas());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 
@@ -167,7 +167,7 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras();
+				ActivarAtras(null);
 			}
 		};
 	}

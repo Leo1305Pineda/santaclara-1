@@ -1,5 +1,7 @@
 package santaclara.modelo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Factura {
@@ -11,7 +13,8 @@ public class Factura {
 	private Double iva;
 	private Double descuento;
 	private Cliente cliente;
-	private Vendedor vendedor;
+	private Usuario vendedor;
+	private Almacen almacen;
 	private Boolean estado;
 	
 	public Factura() {
@@ -19,7 +22,7 @@ public class Factura {
 		// TODO Auto-generated constructor stub
 	}
 	public Factura(Integer id, Date fecha, Double total, Double saldo,
-			Double iva, Double descuento, Cliente cliente,Vendedor vendedor,Boolean estado) {
+			Double iva, Double descuento, Cliente cliente,Usuario vendedor,Almacen almacen,Boolean estado) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -29,6 +32,7 @@ public class Factura {
 		this.descuento = descuento;
 		this.cliente = cliente;
 		this.vendedor = vendedor;
+		this.almacen = almacen;
 		this.estado = estado;
 	}
 	
@@ -74,12 +78,19 @@ public class Factura {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	public Vendedor getVendedor() {
+	public Usuario getVendedor() {
 		return vendedor;
 	}
-	public void setVendedor(Vendedor vendedor) {
+	public void setVendedor(Usuario vendedor) {
 		this.vendedor = vendedor;
 	
+	}
+	
+	public Almacen getAlmacen() {
+		return almacen;
+	}
+	public void setAlmacen(Almacen almacen) {
+		this.almacen = almacen;
 	}
 	public Boolean getEstado() {
 		return estado;
@@ -87,7 +98,37 @@ public class Factura {
 	public void setEstado(Boolean estado) {
 		this.estado = estado;
 	}
+	
+	public String getEstadoStr() {
+		if (estado == null) return "";
+		if (getEstado().equals(true))return "Cancelada";
+		else return "Pendiente";
+		
+	}
 
+	public void setFecha(String cadena) throws ParseException {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			this.fecha = sdf.parse(cadena);
+	}
+		
+		public String getFechaStr(Date fecha) {
+			if (fecha==null)return "";
+			else{
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				return sdf.format(fecha);
+			} 
+		}
+		
+		public String getFechaStr() {
+			if (fecha==null)return "";
+			else{
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				return sdf.format(fecha);
+			} 
+		}
+		
+	
+	
 /*
  * Estructura
  * 
@@ -99,6 +140,7 @@ public class Factura {
  *descuento:0
  *idCliente:2
  *idvendedor:2
+ *idAlmacen:2
  *estado:Pendiente
  **/	
 

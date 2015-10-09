@@ -48,13 +48,14 @@ public class PrincipalUI {
 	private 	JMenuItem mntVendedores;
 	private 	JMenuItem mntVisitas;
 	private 	JMenuItem mntZonas;
+	private 	JMenuItem mntCalendarios;
+	private     JMenuItem mntPedidos;
 	
 	private 	JMenu mnReportes;
 	private 	JMenu mnConsulta;
 	private 	JMenu mnSalir;
 	private 	JMenuItem mntCerrar;
 
-	
 	
 	/**
 	 * Launch the application.
@@ -103,7 +104,7 @@ public class PrincipalUI {
 
 		menuBar.setToolTipText("Manu");
 		frame.setJMenuBar(menuBar);
-		JMenu mnCatalogo = new JMenu("Catalogo");
+	    mnCatalogo = new JMenu("Catalogo");
 		menuBar.add(mnCatalogo);
 		
 		mntAlmacen = new JMenuItem("Almacenes");
@@ -113,6 +114,10 @@ public class PrincipalUI {
 		mntCamiones = new JMenuItem("Camiones");
 		mnCatalogo.add(mntCamiones);
 		mntCamiones.addActionListener(controlador.activarMenu());
+		
+		mntCalendarios = new JMenuItem("Calendario");
+		mnCatalogo.add(mntCalendarios);
+		mntCalendarios.addActionListener(controlador.activarMenu());
 		
 		mntCapacidades = new JMenuItem("Capacidades");
 		mnCatalogo.add(mntCapacidades);
@@ -181,6 +186,10 @@ public class PrincipalUI {
 		mntZonas = new JMenuItem("Zonas");
 		mnCatalogo.add(mntZonas);
 		mntZonas.addActionListener(controlador.activarMenu());
+		
+		mntPedidos = new JMenuItem("Pedidos");
+		mntPedidos.addActionListener(controlador.activarMenu());
+		mnFacturacion.add(mntPedidos);
 		
 		mntConcesionarios = new JMenuItem("Consesionarios");
 		mnCatalogo.add(mntConcesionarios);
@@ -474,4 +483,23 @@ public class PrincipalUI {
 	public void setMntZonas(JMenuItem mntZonas) {
 		this.mntZonas = mntZonas;
 	}
+
+	public JMenuItem getMntCalendarios() {
+		return mntCalendarios;
+	}
+
+	public void setMntCalendarios(JMenuItem mntCalendarios) {
+		this.mntCalendarios = mntCalendarios;
+	}
+
+	public JMenuItem getMntPedidos() {
+		return mntPedidos;
+	}
+
+	public void setMntPedidos(JMenuItem mntPedido) {
+		this.mntPedidos = mntPedido;
+	}
+
+	
+	
 }

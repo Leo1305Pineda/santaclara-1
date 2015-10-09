@@ -9,25 +9,40 @@ public abstract class ContGeneral implements IContGeneral {
 	
 	private ContPrincipal 	 contPrincipal;
 		
-	public void dibujar(JPanel vista)
+	public void dibujar(JPanel vista,Object cacheobject)
 	{
 		contPrincipal.agregarPanel(vista);
-		this.contPrincipal.getCache().push(vista.getClass().getName());
+		if(!this.contPrincipal.getCacheObjet().empty())
+		{
+			Object object = this.contPrincipal.getCacheObjet().pop();
+			if (object.equals(cacheobject))
+			{
+				this.contPrincipal.getCacheObjet().push(object);
+			}
+			else
+			{
+				this.contPrincipal.getCacheObjet().push(object);
+				this.contPrincipal.getCacheObjet().push(cacheobject);
+			}
+		}
+		else this.contPrincipal.getCacheObjet().push(cacheobject);
 	}
 	
 	public void qutarVista(){//btnSalir
 		contPrincipal.quitarPanel();
-		if (!this.contPrincipal.getCache().empty())
-		{
-			this.contPrincipal.getCache().clear();
-			this.contPrincipal.getCache().push("santaclara.IniciarSesionUI");
-		}
 		
+		if (!this.contPrincipal.getCacheObjet().empty())
+		{
+			while(this.contPrincipal.getCacheObjet().size()>1)
+			{
+				this.contPrincipal.getCacheObjet().pop();
+			}
+		}
 	}
 	
-	public void ActivarAtras() {//btnAtras
+	public void ActivarAtras(Object object) {//btnAtras
 		
-		if(this.contPrincipal.getCache().size()>1)	this.contPrincipal.ActivarAtras();
+		if(this.contPrincipal.getCacheObjet().size()>1)	this.contPrincipal.ActivarAtras(object);
 		else qutarVista();
 	}
 
@@ -49,4 +64,13 @@ public abstract class ContGeneral implements IContGeneral {
 		
 	}
 	
+	public Stack<Object> getCacheObjet() {
+		return this.contPrincipal.getCacheObjet();
+	}
+
+	public void setCacheObjet(Stack<Object> cacheObject) {
+		this.contPrincipal.setCacheObjet(cacheObject);
+		
+	}
+
 }
