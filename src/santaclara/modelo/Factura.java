@@ -13,7 +13,7 @@ public class Factura {
 	private Double iva;
 	private Double descuento;
 	private Cliente cliente;
-	private Vendedor vendedor;
+	private Usuario vendedor;
 	private Almacen almacen;
 	private Boolean estado;
 	
@@ -22,7 +22,7 @@ public class Factura {
 		// TODO Auto-generated constructor stub
 	}
 	public Factura(Integer id, Date fecha, Double total, Double saldo,
-			Double iva, Double descuento, Cliente cliente,Vendedor vendedor,Almacen almacen,Boolean estado) {
+			Double iva, Double descuento, Cliente cliente,Usuario vendedor,Almacen almacen,Boolean estado) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -78,10 +78,10 @@ public class Factura {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	public Vendedor getVendedor() {
+	public Usuario getVendedor() {
 		return vendedor;
 	}
-	public void setVendedor(Vendedor vendedor) {
+	public void setVendedor(Usuario vendedor) {
 		this.vendedor = vendedor;
 	
 	}
@@ -126,6 +126,8 @@ public class Factura {
 				return sdf.format(fecha);
 			} 
 		}
+		
+	
 	
 /*
  * Estructura

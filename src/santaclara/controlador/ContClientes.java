@@ -3,9 +3,10 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import santaclara.Servicio.ServicioDomicilioComercio;
@@ -23,6 +24,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	private ServicioCliente servicioCliente = new ServicioCliente();
 	private ServicioRuta servicioRuta = new ServicioRuta();
 	private ClientesUI vista ;
+	private List<Ruta> rutas  = new ArrayList<Ruta>();
 	
 	public ContClientes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -34,14 +36,14 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		vista.activarBindingSalp(new ServicioSalp().getSalps());
 		vista.getPnCheckDia().setVisible(false);
 		vista.getLblDiaVisita().setVisible(false);
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 
 	@Override
-	public JPanel getVista() {
+	public ClientesUI getVista() {
 		// TODO Auto-generated method stub
-		return null;
+		return vista;
 	}
 	
 	public ActionListener nuevo(){
@@ -418,8 +420,14 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 						else if(vista.getCmbTipoCliente().getSelectedItem().equals("Domicilio")||
 								vista.getCmbTipoCliente().getSelectedItem().equals("Comercial")){
 	
-							vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());
-	
+							if(rutas.isEmpty())
+							{
+								vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());
+							}
+							else
+							{
+								vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios(rutas));	
+							}
 						}
 					} catch (NumberFormatException | IOException e) {
 						// TODO Auto-generated catch block
@@ -428,6 +436,30 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 				vista.quitarNuevo();
 			}
 		};
+	}
+
+	public ServicioCliente getServicioCliente() {
+		return servicioCliente;
+	}
+
+	public void setServicioCliente(ServicioCliente servicioCliente) {
+		this.servicioCliente = servicioCliente;
+	}
+
+	public ServicioRuta getServicioRuta() {
+		return servicioRuta;
+	}
+
+	public void setServicioRuta(ServicioRuta servicioRuta) {
+		this.servicioRuta = servicioRuta;
+	}
+
+	public List<Ruta> getRutas() {
+		return rutas;
+	}
+
+	public void setRutas(List<Ruta> rutas) {
+		this.rutas = rutas;
 	}
 	
 	

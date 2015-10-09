@@ -54,4 +54,24 @@ public class ServicioDomicilioComercio {
 		}
 		return domicilioComercios2;
 	}
+	
+	public List<DomicilioComercio> getDomicilioComercios(List<Ruta> rutas) throws NumberFormatException, IOException{
+		// TODO Auto-generated method stub
+		if (rutas == null)
+		{
+			return null;
+		}
+		List<DomicilioComercio> domicilioComercios = new ArrayList<DomicilioComercio>();
+		for(DomicilioComercio cliente : getDomicilioComercios()){
+			for(Ruta ruta : rutas){
+				if (cliente.getRuta().getId().equals(ruta.getId()))
+				{
+					domicilioComercios.add(cliente);
+				}
+			}
+		}
+		
+		return domicilioComercios; 
+	}
+
 }

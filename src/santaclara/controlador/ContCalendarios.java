@@ -51,7 +51,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 		vista = new CalendarioUI(this);
 		CargarComboUsuario();
 		for(int i = 0;i<=34;i++)(vista.getBtn(i)).setBackground(Color.lightGray);
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 

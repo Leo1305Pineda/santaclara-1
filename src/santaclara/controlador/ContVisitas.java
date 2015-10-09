@@ -60,7 +60,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 		vista.getScrollPanel().setBounds(12, 85, 1154, 600);
 		CargarComboUsuario();
 		activarBinding(new ServicioVisita().ConsultaJefeVenta((JefeVenta)vista.getComboUsuario().getSelectedItem()));
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 

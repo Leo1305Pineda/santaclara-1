@@ -110,4 +110,18 @@ public class ServicioConcesionario {
 		if  (concesionarioDAO.getConcesionario(id)!=null) return true;
 		return false;
 	}
+	
+	public List<Concesionario> getConcecionarios(Integer idRuta) throws NumberFormatException, IOException{
+		// TODO Auto-generated method stub
+		List<Concesionario> concesionariosAux = new ArrayList<Concesionario>();
+		for (Concesionario concesionario : getConcecionarios() )
+		{
+			if (concesionario.getRuta().getId().equals(idRuta))
+			{
+				concesionariosAux.add(concesionario);
+			}
+		}
+		
+		return concesionariosAux;
+	}
 }

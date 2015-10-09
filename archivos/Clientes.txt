@@ -64,3 +64,9 @@ razonsocial:RamonCastro
 direccion:Carrera 5 esquina calle 30
 telefono:0424-8363325
 ruta:6
+id:12
+rif:V-5432765
+razonsocial:Dario Fernadez
+direccion:Carrera 3 con calle 5 y 6
+telefono:02512373498
+ruta:2

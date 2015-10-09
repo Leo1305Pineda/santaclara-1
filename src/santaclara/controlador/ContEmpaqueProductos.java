@@ -26,7 +26,7 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 		setContPrincipal(contPrincipal);
 		vista = new EmpaqueProductosUI(this, servicioEmpaqueProducto.getEmpaqueProductos(), servicioEmpaqueProducto.getProductos());
 		vista.activarBinding(servicioEmpaqueProducto.getEmpaqueProductos());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 

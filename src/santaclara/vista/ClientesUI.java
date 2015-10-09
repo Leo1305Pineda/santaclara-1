@@ -42,6 +42,7 @@ import javax.swing.JCheckBox;
 @SuppressWarnings("serial")
 public class ClientesUI extends JPanel {
 	
+	protected static final String JOptionPane = null;
 	private JPanel pnOpciones;
 	private JPanel panel;
 	private JPanel pnClientes;

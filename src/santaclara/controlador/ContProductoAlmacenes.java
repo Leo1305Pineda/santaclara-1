@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import santaclara.Servicio.ServicioAlmacen;
@@ -31,12 +30,12 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 				servicioEmpaqueProducto.getEmpaqueProductos(),servicioAlmacen.getAlmacenes());
 	
 		vista.activarBinding(servicioProductoAlmacen.getProductoAlmacenes());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 
 	@Override
-	public JPanel getVista() {
+	public ProductoAlmacenesUI getVista() {
 		// TODO Auto-generated method stub
 		return vista;
 	}
@@ -240,7 +239,20 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras(null);
+				try {
+					if (vista.getTable().getSelectedRow()>=0)
+					{
+						ProductoAlmacen productoAlmacen = new ProductoAlmacen();
+						productoAlmacen = servicioProductoAlmacen.getProductoAlmacen(
+								new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),2).toString()),
+								new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
+						ActivarAtras(productoAlmacen);
+					}
+					else ActivarAtras(null);
+				} catch (NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		};
 	}

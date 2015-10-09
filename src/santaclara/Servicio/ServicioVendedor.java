@@ -2,6 +2,7 @@ package santaclara.Servicio;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.impl.RutaDAO;
@@ -55,5 +56,18 @@ public class ServicioVendedor {
 	public void eliminar(Vendedor vendedor) throws IOException {
 		// TODO Auto-generated method stub
 		vendedorDAO.eliminar(vendedor);
-	}	
+	}
+	
+	public List<Vendedor>  getVendedores(Integer idRuta) throws IOException
+	{	
+		List<Vendedor> vendedors = new ArrayList<Vendedor>();
+		for(Vendedor vendedor:getVendedores()){
+			for(Ruta ruta : vendedor.getRutas())
+				if (ruta.getId().equals(idRuta)){
+					vendedors.add(vendedor);
+				}
+		}
+		return vendedors;
+	}
+
 }

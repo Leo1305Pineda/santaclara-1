@@ -35,12 +35,12 @@ public class PedidosUI extends JPanel{
 	
 	private JButton btnAtras;
 	private JButton btnGuardar;
-	private JButton btnImprimir;
+	private JButton btnNuevo;
 	private JButton btnCliente;
 	private JButton btnAlmacen;
 	private JButton btnProducto;
 	private JButton btnVendedor;
-	private JButton btnCatalogo;
+	private JButton btnQuitarProducto;
 	private JButton btnBuscar;
 	private JButton btnGuardarFactura;
 	private JButton btnSalir;
@@ -52,8 +52,6 @@ public class PedidosUI extends JPanel{
 	private JLabel lblTelefono;
 	private JLabel lblDireccion;
 	private JLabel lblRuta;
-	private JLabel lblCantidadProducto;
-	private JLabel lblCantidadUnidades;
 	private JLabel lblTotalIva;
 	private JLabel lblSaldoAPagar;
 	private JLabel lblTotalSinIva;
@@ -61,6 +59,7 @@ public class PedidosUI extends JPanel{
 	private JLabel lblAlmacen;
 	private JLabel lblFecha;
 	private JLabel lblDescuento;
+	private JLabel lblTotalDescuento;
 	
 	private JScrollPane scrollPane;
 	
@@ -114,20 +113,20 @@ public class PedidosUI extends JPanel{
 		
 		btnGuardar = new JButton("");
 		btnGuardar.addActionListener(contPedidos.actionGuardarPedido());
-		btnGuardar.setBounds(95, 0, 40, 40);
+		btnGuardar.setBounds(140, 0, 40, 40);
 		btnGuardar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/disk.png"));
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.GRAY);
 		pnlOption.add(btnGuardar);
 		
-		btnImprimir = new JButton("");
-		btnImprimir.addActionListener(contPedidos.actionImprimir());
-		btnImprimir.setBounds(140, 0, 40, 40);
-		btnImprimir.setToolTipText("Imprimir");
-		btnImprimir.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/printer.png"));
-		btnImprimir.setForeground(Color.WHITE);
-		btnImprimir.setBackground(Color.GRAY);
-		pnlOption.add(btnImprimir);
+		btnNuevo = new JButton("");
+		btnNuevo.addActionListener(contPedidos.actionNuevo());
+		btnNuevo.setBounds(95, 0, 40, 40);
+		btnNuevo.setToolTipText("Nuevo");
+		btnNuevo.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/add.png"));
+		btnNuevo.setForeground(Color.WHITE);
+		btnNuevo.setBackground(Color.GRAY);
+		pnlOption.add(btnNuevo);
 		
 		Component verticalGlue_1 = Box.createVerticalGlue();
 		verticalGlue_1.setBackground(Color.LIGHT_GRAY);
@@ -156,7 +155,7 @@ public class PedidosUI extends JPanel{
 		btnVendedor.addActionListener(contPedidos.actionVendedor());
 		btnVendedor.setBounds(280, 0, 40, 40);
 		btnVendedor.setToolTipText("Vendedor");
-		btnVendedor.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/persona.png"));
+		btnVendedor.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/user.png"));
 		btnVendedor.setBackground(Color.GRAY);
 		btnVendedor.setForeground(Color.WHITE);
 		pnlOption.add(btnVendedor);
@@ -164,20 +163,20 @@ public class PedidosUI extends JPanel{
 		btnProducto = new JButton("");
 		btnProducto.addActionListener(contPedidos.actionProducto());
 		btnProducto.setBounds(325, 0, 40, 40);
-		btnProducto.setToolTipText("Producto");
+		btnProducto.setToolTipText("Agregar Producto");
 		btnProducto.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/NuevoPaquete.png"));
 		btnProducto.setBackground(Color.GRAY);
 		btnProducto.setForeground(Color.WHITE);
 		pnlOption.add(btnProducto);
 		
-		btnCatalogo = new JButton("");
-		btnCatalogo.addActionListener(contPedidos.actionCatalogo());
-		btnCatalogo.setBounds(370, 0, 40, 40);
-		btnCatalogo.setToolTipText("Catalogo de Producto");
-		btnCatalogo.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/desktop.png"));
-		btnCatalogo.setBackground(Color.GRAY);
-		btnCatalogo.setForeground(Color.WHITE);
-		pnlOption.add(btnCatalogo);
+		btnQuitarProducto = new JButton("");
+		btnQuitarProducto.addActionListener(contPedidos.actionQuitarProductoDetalle());
+		btnQuitarProducto.setBounds(370, 0, 40, 40);
+		btnQuitarProducto.setToolTipText("Quitar Producto");
+		btnQuitarProducto.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/desktop.png"));
+		btnQuitarProducto.setBackground(Color.GRAY);
+		btnQuitarProducto.setForeground(Color.WHITE);
+		pnlOption.add(btnQuitarProducto);
 		
 		Component verticalGlue_2 = Box.createVerticalGlue();
 		verticalGlue_2.setBackground(Color.LIGHT_GRAY);
@@ -207,7 +206,7 @@ public class PedidosUI extends JPanel{
 		pnlInfo.setBackground(Color.GRAY);
 		pnlInfo.setForeground(Color.WHITE);
 		pnlInfo.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 3, true), "Informacion del Pedido", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		pnlInfo.setBounds(25, 77, 763, 118);
+		pnlInfo.setBounds(25, 77, 763, 135);
 		pnlPedido.add(pnlInfo);
 		pnlInfo.setLayout(null);
 		
@@ -277,18 +276,19 @@ public class PedidosUI extends JPanel{
 		lblDescuento = new JLabel("Descuento:");
 		lblDescuento.setForeground(Color.WHITE);
 		lblDescuento.setBounds(527, 82, 192, 10);
+		lblDescuento.setVisible(false);
 		pnlInfo.add(lblDescuento);
 		
 		pnlDetalle = new JPanel();
 		pnlDetalle.setForeground(Color.WHITE);
 		pnlDetalle.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 3, true), "Detalle", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
 		pnlDetalle.setBackground(Color.GRAY);
-		pnlDetalle.setBounds(25, 207, 763, 384);
+		pnlDetalle.setBounds(25, 220, 763, 371);
 		pnlPedido.add(pnlDetalle);
 		pnlDetalle.setLayout(null);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(14, 14, 737, 358);
+		scrollPane.setBounds(14, 14, 737, 347);
 		pnlDetalle.add(scrollPane);
 		
 		table = new JTable();
@@ -297,34 +297,29 @@ public class PedidosUI extends JPanel{
 		pnlTotales = new JPanel();
 		pnlTotales.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 2, true), "Totales", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnlTotales.setBackground(Color.DARK_GRAY);
-		pnlTotales.setBounds(25, 599, 763, 89);
+		pnlTotales.setBounds(534, 590, 254, 100);
 		pnlPedido.add(pnlTotales);
 		pnlTotales.setLayout(null);
 		
-		lblCantidadProducto = new JLabel("Cantidad Producto:");
-		lblCantidadProducto.setForeground(Color.WHITE);
-		lblCantidadProducto.setBounds(12, 24, 244, 10);
-		pnlTotales.add(lblCantidadProducto);
-		
-		lblCantidadUnidades = new JLabel("Cantidad Unidades:");
-		lblCantidadUnidades.setForeground(Color.WHITE);
-		lblCantidadUnidades.setBounds(12, 46, 244, 10);
-		pnlTotales.add(lblCantidadUnidades);
-		
 		lblTotalSinIva = new JLabel("Total Sin Iva:");
 		lblTotalSinIva.setForeground(Color.WHITE);
-		lblTotalSinIva.setBounds(328, 22, 244, 10);
+		lblTotalSinIva.setBounds(12, 18, 244, 10);
 		pnlTotales.add(lblTotalSinIva);
 		
 		lblTotalIva = new JLabel("Total Iva:");
 		lblTotalIva.setForeground(Color.WHITE);
-		lblTotalIva.setBounds(328, 44, 244, 10);
+		lblTotalIva.setBounds(12, 36, 244, 10);
 		pnlTotales.add(lblTotalIva);
 		
 		lblSaldoAPagar = new JLabel("Saldo a Pagar:");
 		lblSaldoAPagar.setForeground(Color.WHITE);
-		lblSaldoAPagar.setBounds(328, 66, 244, 10);
+		lblSaldoAPagar.setBounds(12, 77, 244, 10);
 		pnlTotales.add(lblSaldoAPagar);
+		
+		lblTotalDescuento = new JLabel("Total Descuento:");
+		lblTotalDescuento.setForeground(Color.WHITE);
+		lblTotalDescuento.setBounds(12, 55, 244, 10);
+		pnlTotales.add(lblTotalDescuento);
 	}
 
 	public JPanel getPnlPedido() {
@@ -376,11 +371,11 @@ public class PedidosUI extends JPanel{
 	}
 
 	public JButton getBtnImprimir() {
-		return btnImprimir;
+		return btnNuevo;
 	}
 
 	public void setBtnImprimir(JButton btnImprimir) {
-		this.btnImprimir = btnImprimir;
+		this.btnNuevo = btnImprimir;
 	}
 
 	public JButton getBtnCliente() {
@@ -416,11 +411,11 @@ public class PedidosUI extends JPanel{
 	}
 
 	public JButton getBtnCatalogo() {
-		return btnCatalogo;
+		return btnQuitarProducto;
 	}
 
 	public void setBtnCatalogo(JButton btnCatalogo) {
-		this.btnCatalogo = btnCatalogo;
+		this.btnQuitarProducto = btnCatalogo;
 	}
 
 	public JButton getBtnBuscar() {
@@ -551,22 +546,6 @@ public class PedidosUI extends JPanel{
 		this.lblRuta = lblRuta;
 	}
 
-	public JLabel getLblCantidadProducto() {
-		return lblCantidadProducto;
-	}
-
-	public void setLblCantidadProducto(JLabel lblCantidadProducto) {
-		this.lblCantidadProducto = lblCantidadProducto;
-	}
-
-	public JLabel getLblCantidadUnidades() {
-		return lblCantidadUnidades;
-	}
-
-	public void setLblCantidadUnidades(JLabel lblCantidadUnidades) {
-		this.lblCantidadUnidades = lblCantidadUnidades;
-	}
-
 	public JLabel getLblTotalIva() {
 		return lblTotalIva;
 	}
@@ -632,6 +611,29 @@ public class PedidosUI extends JPanel{
 	public void setBinPedidos(JTableBinding binPedidos) {
 		BinPedidos = binPedidos;
 	}
-	
+
+	public JButton getBtnNuevo() {
+		return btnNuevo;
+	}
+
+	public void setBtnNuevo(JButton btnNuevo) {
+		this.btnNuevo = btnNuevo;
+	}
+
+	public JButton getBtnQuitarProducto() {
+		return btnQuitarProducto;
+	}
+
+	public void setBtnQuitarProducto(JButton btnQuitarProducto) {
+		this.btnQuitarProducto = btnQuitarProducto;
+	}
+
+	public JLabel getLblTotalDescuento() {
+		return lblTotalDescuento;
+	}
+
+	public void setLblTotalDescuento(JLabel lblTotalDescuento) {
+		this.lblTotalDescuento = lblTotalDescuento;
+	}
 	
 }

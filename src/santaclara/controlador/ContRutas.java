@@ -26,7 +26,7 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 		servicioRuta = new ServicioRuta();
 		vista = new RutasUI(this,servicioRuta.getRutas(),servicioRuta.getZonas());
 		vista.activarBinding(servicioRuta.getRutas());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 

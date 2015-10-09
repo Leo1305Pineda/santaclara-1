@@ -29,7 +29,7 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 		servicioAlmacen = new ServicioAlmacen();
 		vista = new AlmacenesUI(this,servicioAlmacen.getAlmacenes());
 		vista.activarBinding(servicioAlmacen.getAlmacenes());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 

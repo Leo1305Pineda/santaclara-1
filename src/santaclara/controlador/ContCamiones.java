@@ -26,7 +26,7 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 		servicioCamion = new ServicioCamion();
 		vista = new CamionesUI(this, servicioCamion.getCamiones());
 		vista.activarBinding(servicioCamion.getCamiones());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 

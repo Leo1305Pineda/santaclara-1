@@ -53,7 +53,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 						servicioRuta.getRutas(),servicioZona.getZonas(),
 						servicioCamion.getCamiones());
 		vista.activarBinding(servicioUsuario.getUsuarios());
-		dibujar(vista);
+		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
 

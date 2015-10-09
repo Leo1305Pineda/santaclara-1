@@ -9,10 +9,23 @@ public abstract class ContGeneral implements IContGeneral {
 	
 	private ContPrincipal 	 contPrincipal;
 		
-	public void dibujar(JPanel vista)
+	public void dibujar(JPanel vista,Object cacheobject)
 	{
 		contPrincipal.agregarPanel(vista);
-		this.contPrincipal.getCacheObjet().push(vista);
+		if(!this.contPrincipal.getCacheObjet().empty())
+		{
+			Object object = this.contPrincipal.getCacheObjet().pop();
+			if (object.equals(cacheobject))
+			{
+				this.contPrincipal.getCacheObjet().push(object);
+			}
+			else
+			{
+				this.contPrincipal.getCacheObjet().push(object);
+				this.contPrincipal.getCacheObjet().push(cacheobject);
+			}
+		}
+		else this.contPrincipal.getCacheObjet().push(cacheobject);
 	}
 	
 	public void qutarVista(){//btnSalir

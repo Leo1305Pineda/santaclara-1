@@ -1,8 +1,10 @@
 package santaclara.Servicio;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import santaclara.modelo.Ruta;
 import santaclara.modelo.Salp;
 import santaclara.dao.impl.SalpDAO;
 
@@ -44,4 +46,17 @@ public class ServicioSalp {
 		salpDAO.eliminar(salp);
 	}
 	
+	public List<Salp> getSalps(List<Ruta> rutas) throws NumberFormatException, IOException{
+		// TODO Auto-generated method stub
+		List<Salp> salps = new ArrayList<Salp>();
+		for(Salp cliente : getSalps()){
+			for(Ruta ruta : rutas){
+				if (cliente.getRuta().getId().equals(ruta.getId()))
+				{
+					salps.add(cliente);
+				}
+			}
+		}
+		return salps;
+	}
 }
