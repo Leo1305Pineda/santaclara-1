@@ -291,5 +291,6 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 		};
 	}
 
+	
 }
 

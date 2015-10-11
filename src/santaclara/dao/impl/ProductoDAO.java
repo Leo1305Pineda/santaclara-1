@@ -44,6 +44,14 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 			 producto.setNombre(scaner.skip("nombre:").nextLine());
 			 producto.setPrecio(new Double(scaner.skip("precio:").nextLine().trim()));
 			 
+			 producto.setDescuento(new Double(scaner.skip("descuento:").nextLine().trim()));
+			 
+			 String linea = new String(scaner.skip("estadoIva:").nextLine().trim());
+			 
+			 if(linea.equals("exento"))
+			 producto.setIva(true);
+			 else  if(linea.equals("gravado")) producto.setIva(false);
+			 
 			 productos.add(producto);
 		}
 		return productos;
@@ -80,6 +88,8 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 					producto1.setSabor(producto.getSabor());
 					producto1.setNombre(producto.getNombre());
 					producto1.setPrecio(producto.getPrecio());
+					producto1.setDescuento(producto.getDescuento());
+					producto1.setIva(producto.getIva());
 				}
 			}
 		}
@@ -98,7 +108,6 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 				break;
 			}
 		}
-		///guardar Todo 
 		guardarTodo(productos);
 		
 	}
@@ -145,6 +154,10 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 			
 			fw.append("nombre:"+producto.getNombre()+"\n");
 			fw.append("precio:"+producto.getPrecio()+"\n");
+			fw.append("descuento:"+producto.getPrecio()+"\n");
+			if(producto.getIva().booleanValue()==true) fw.append("estadoIva:exento\n");
+			else if(producto.getIva().booleanValue()==false) fw.append("estadoIva:gravado\n");
+			
 		}
 		fw.close();
 	}
@@ -157,6 +170,8 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 	idSabor:3
 	nombre:CocaCola
 	precio:500
+	descuento:0.0
+	estadoIva:gravado
 
   * */
 	

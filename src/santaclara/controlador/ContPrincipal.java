@@ -6,9 +6,6 @@ import java.util.Stack;
 
 import javax.swing.JPanel;
 
-import santaclara.modelo.Almacen;
-import santaclara.modelo.Cliente;
-import santaclara.modelo.ProductoAlmacen;
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
 
@@ -374,57 +371,14 @@ public  class ContPrincipal implements IContGeneral {
 		try {
 			ContPedidos contPedidos = new ContPedidos(ContPrincipal.this);
 			if(objetContCache!=null)
-			{
-					/*Nota: objetContCacheAux =
-					 *  corresponde a la clase controlador de pedido 
-					 *  que se almaceno en el cache*/
-					
-					//carga la vista Previa almacenada en al cache de objet Controlador
-					
-					contPedidos.setAlmacen(((ContPedidos)objetContCache).getAlmacen());
-					contPedidos.setVendedor(((ContPedidos)objetContCache).getVendedor());
-		 			contPedidos.setCliente(((ContPedidos)objetContCache).getCliente());
-		 			contPedidos.setFactura(((ContPedidos)objetContCache).getFactura());
-		 			contPedidos.setDetalleFacturas(((ContPedidos)objetContCache).getDetalleFactura());
-		 			contPedidos.actualizarVista();
-		 			//contPedidos.setVista(((ContPedidos)objetContCache).getVista());
+			{	
+				contPedidos.cargarVistaPrevia(((ContPedidos)objetContCache).getAlmacen(),
+						((ContPedidos)objetContCache).getVendedor(), ((ContPedidos)objetContCache).getCliente(), 
+						((ContPedidos)objetContCache).getFactura(), ((ContPedidos)objetContCache).getDetalleFactura());
 			} 
 		 	if(objetContCachePresente!=null)
-		 	{
-		 			// Actualiza con el cambio nuevo
-		 			/*Nota: objetContCache =
-					 *  corresponde a la clase modelo  
-					 *  que se almaceno en el cache*/
-		 			
-					switch (objetContCachePresente.getClass().getName()) {
-					case "santaclara.controlador.ContAlmacenes":
-						if (objetClassVista == null)contPedidos.setAlmacen(null);
-						else contPedidos.setAlmacen((Almacen)objetClassVista);
-						break;
-					case "santaclara.controlador.ContClientes":
-						if (objetClassVista == null)	contPedidos.setCliente(null);
-						else 	contPedidos.setCliente((Cliente)objetClassVista);
-						break;
-					case "santaclara.controlador.ContUsuarios":
-						if (objetClassVista == null)contPedidos.setVendedor(null);
-						else
-						{
-							Usuario vendedor = (Usuario)objetClassVista;
-							contPedidos.setVendedor(vendedor); 
-						}
-						break;
-					case "santaclara.controlador.ContProductoAlmacenes":
-						if (objetClassVista == null) contPedidos.setProductoAlDetalleFactura(null);
-						else
-						{
-							ProductoAlmacen productoAlmacen = (ProductoAlmacen)objetClassVista; 
-							contPedidos.setProductoAlDetalleFactura(productoAlmacen);
-						}
-						break;
-
-					default:
-						break;
-				}
+		 	{		
+		 		contPedidos.actualizarContPedido(objetContCachePresente,objetClassVista);
 			}
 			controlador = contPedidos;
 		}

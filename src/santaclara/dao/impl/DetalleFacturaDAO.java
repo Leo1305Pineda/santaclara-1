@@ -22,7 +22,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		while(scaner.hasNext())
 		{
 			DetalleFactura detalleFactura = new DetalleFactura();
-			linea = scaner.skip("idFactura:").nextLine();
+			linea = scaner.skip("idFactura:").nextLine().trim();
 			 if(linea.trim().length() == 0)
 			 {
 				 detalleFactura.setFactura(null);
@@ -32,7 +32,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 				 FacturaDAO facturaDAO = new FacturaDAO();
 				 detalleFactura.setFactura(facturaDAO.getFactura(new Integer(linea)));
 			 }
-			 linea = scaner.skip("idProducto:").nextLine();
+			 linea = scaner.skip("idProducto:").nextLine().trim();
 			 if(linea.trim().length() == 0)
 			 {
 				 detalleFactura.setProducto(null);
@@ -44,6 +44,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 			 }
 			 detalleFactura.setCantidad(new Integer(scaner.skip("cantidad:").nextLine().trim()));
 			 detalleFactura.setPrecio(new Double(scaner.skip("precio:").nextLine().trim()));
+			 detalleFactura.setPrecio(new Double(scaner.skip("desc:").nextLine().trim()));
 			 detalleFactura.setIva(new Double(scaner.skip("iva:").nextLine().trim()));
 			 detalleFactura.setTotal(new Double(scaner.skip("total:").nextLine().trim()));
 			 
@@ -54,26 +55,33 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		return detalleFacturas;
 
 	}
-
+	
 	@Override
 	public void guardar(DetalleFactura detalleFactura) throws IOException {
 		// TODO Auto-generated method stub
-		List<DetalleFactura> detalleFacturas = getDetalleFacturas(); 
 		
-			for(DetalleFactura detalleFactura1 :detalleFacturas)
+		List<DetalleFactura> detalleFacturas = getDetalleFacturas();
+	
+			Boolean enc = new Boolean(false);
+			if(detalleFacturas != null)
 			{
-				if(detalleFactura1.getFactura().getId().equals(detalleFactura.getFactura().getId()) 
-						&& detalleFactura1.getProducto().getId().equals(detalleFactura.getProducto().getId()) )
-				{ 
-					detalleFactura1.setCantidad(detalleFactura.getCantidad());
-					detalleFactura1.setTotal(detalleFactura.getTotal());
-					detalleFactura1.setIva(detalleFactura.getIva());
-					detalleFactura1.setPrecio(detalleFactura.getPrecio());
-					//Error al cargar el detalle
+				for(DetalleFactura detalleFactura1 : detalleFacturas)
+				{
+					if(detalleFactura1.getFactura().getId().equals(detalleFactura.getFactura().getId()) &&
+							detalleFactura1.getProducto().getId().equals(detalleFactura.getProducto().getId()))
+					{ 
+						detalleFactura1.setCantidad(detalleFactura1.getCantidad());
+						detalleFactura1.setTotal(detalleFactura1.getTotal());
+						detalleFactura1.setIva(detalleFactura1.getIva()); 
+						detalleFactura1.setPrecio(detalleFactura1.getPrecio());
+						detalleFactura1.setDescuento(detalleFactura1.getDescuento());
+						enc = true;
+						break;
+					}
 				}
 			}
-		guardarTodo(detalleFacturas);
-
+			if(enc==false) detalleFacturas.add(detalleFactura);
+			guardarTodo(detalleFacturas);
 	}
 
 	@Override
@@ -114,10 +122,11 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		{
 			fw.append("idFactura:"+(detalleFactura.getFactura() == null ? "  ":detalleFactura.getFactura().getId())+"\n");
 			fw.append("idProducto:"+(detalleFactura.getProducto() == null ? "  ":detalleFactura.getProducto().getId())+"\n");
-			fw.append("cantidad:"+detalleFactura.getCantidad()+"\n");
-			fw.append("precio:"+detalleFactura.getPrecio()+"\n");
-			fw.append("iva:"+detalleFactura.getIva()+"\n");
-			fw.append("total:"+detalleFactura.getTotal()+"\n");
+			fw.append("cantidad:"+detalleFactura.getCantidad().toString()+"\n");
+			fw.append("precio:"+detalleFactura.getPrecio().toString()+"\n");
+			fw.append("desc:"+detalleFactura.getPrecio().toString()+"\n");
+			fw.append("iva:"+detalleFactura.getIva().toString()+"\n");
+			fw.append("total:"+detalleFactura.getTotal().toString()+"\n");
 		}
 		fw.close();
 	}
@@ -127,6 +136,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 idProducto:1
 cantidad:73500
 precio:100000
+desc:0.0
 iva:0.12
 total:7350000000
 */

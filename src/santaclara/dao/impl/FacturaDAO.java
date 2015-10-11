@@ -90,6 +90,18 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		return facturas;
 	}
 
+	public Integer ultimaFactura() throws FileNotFoundException{
+		int i = 0;
+		for(Factura factura1 : getFacturas())
+		{
+			if(factura1.getId()> i )
+			{
+				i = factura1.getId();
+			}
+		}
+		return i;
+	}
+	
 	@Override
 	public void guardar(Factura factura) throws IOException {
 		// TODO Auto-generated method stub
@@ -97,15 +109,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		//buscar codigo el ultimo codigo Asignado 
 		if(factura.getId() == null )
 		{
-			int i = 0;
-			for(Factura factura1 : facturas)
-			{
-				if(factura1.getId()> i )
-				{
-					i = factura1.getId();
-				}
-			}
-			factura.setId(i+1);
+			factura.setId(ultimaFactura()+1);
 			facturas.add(factura);
 		}
 		else

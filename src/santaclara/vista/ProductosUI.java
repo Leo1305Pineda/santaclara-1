@@ -44,11 +44,13 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
+import javax.swing.JCheckBox;
 
 @SuppressWarnings("serial")
 public class ProductosUI extends JPanel {
 
 	private JPanel botones;
+	private JPanel panelProducto;
 	private JTable table;
 	
 	private JScrollPane scrollPanel; 
@@ -66,13 +68,17 @@ public class ProductosUI extends JPanel {
 	private JComboBox<Sabor> cmbSabor;
     private JComboBox<Presentacion> cmbPresentacion;
     private JComboBox<Capacidad> cmbCapacidad;
-    private JButton btnGuardar;
 
     private JTextField 			txtNombre;
     private JTextField  txtId;
-	private JSpinner			 txtPrecio; 
-	private JPanel 	  			 panelProducto;
+    private JTextField txtABuscar;
+    
+	private JSpinner			 txtPrecio;
+	private JSpinner txtDescuento;
 	
+	private JCheckBox chckbxExentoDelIva;
+	
+	private JButton btnGuardar;
 	private JButton btnNuevo;
 	private JButton	btnModificar;
 	private JButton btnEliminar;
@@ -81,7 +87,9 @@ public class ProductosUI extends JPanel {
 	private JButton btnPresentacion;
 	private JButton btnCapacidades;
 	
-	private JTextField txtABuscar;
+	private JLabel lblPresentacion;
+	private JLabel lblCapacidad;
+	private JLabel lblSabor;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ProductosUI(ContProductos contProductos, List<Producto> productos,List<Capacidad> capacidades, 
@@ -197,7 +205,7 @@ public class ProductosUI extends JPanel {
 		botones.add(btnSalir);
 		
 		panelProducto = new JPanel();
-		panelProducto.setBounds(12, 286, 954, 40);
+		panelProducto.setBounds(12, 296, 954, 150);
 		pnProductos.add(panelProducto);
 		panelProducto.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Editar Producto", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		panelProducto.setBackground(Color.DARK_GRAY);
@@ -205,19 +213,19 @@ public class ProductosUI extends JPanel {
 		panelProducto.setLayout(null);
 		
 		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setBounds(92, 11, 69, 25);
+		lblNombre.setBounds(12, 89, 69, 25);
 		lblNombre.setForeground(Color.WHITE);
 		lblNombre.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
 		panelProducto.add(lblNombre);
 
 		txtNombre = new JTextField();
-		txtNombre.setBounds(155, 15, 121, 16);
+		txtNombre.setBounds(140, 93, 150, 16);
 		panelProducto.add(txtNombre);
 		txtNombre.setColumns(10);
 		
 		
 		cmbPresentacion = new JComboBox<Presentacion>();
-		cmbPresentacion.setBounds(460, 15, 150,16);
+		cmbPresentacion.setBounds(140, 61, 150,16);
 		cmbPresentacion.setBackground(SystemColor.controlHighlight);
 		cmbPresentacion.setForeground(Color.BLACK);
 		cmbPresentacion.setRenderer(new ListCellRenderer() {
@@ -234,7 +242,7 @@ public class ProductosUI extends JPanel {
 		panelProducto.add(cmbPresentacion);
 
 		cmbCapacidad = new JComboBox<Capacidad>();
-		cmbCapacidad.setBounds(615, 15, 130,16);
+		cmbCapacidad.setBounds(410, 61, 130,16);
 		cmbCapacidad.setBackground(SystemColor.controlHighlight);
 		cmbCapacidad.setRenderer(new ListCellRenderer() {
 			@Override
@@ -249,7 +257,7 @@ public class ProductosUI extends JPanel {
 		panelProducto.add(cmbCapacidad);
 				
 		cmbSabor = new JComboBox<Sabor>();
-		cmbSabor.setBounds(750, 15, 100,16);
+		cmbSabor.setBounds(670, 61, 130,16);
 		cmbSabor.setBackground(SystemColor.controlHighlight);
 		cmbSabor.setRenderer(new ListCellRenderer() {
 			@Override
@@ -263,22 +271,27 @@ public class ProductosUI extends JPanel {
 		panelProducto.add(cmbSabor);
 				
 		JLabel lblPrecio = new JLabel("Precio:");
-		lblPrecio.setBounds(280, 12,  54,25);
+		lblPrecio.setBounds(312, 89,  54,25);
 		lblPrecio.setBackground(SystemColor.controlHighlight);
 		lblPrecio.setForeground(Color.WHITE);
 		panelProducto.add(lblPrecio);
 				
 		txtPrecio = new JSpinner(new SpinnerNumberModel(1.0,1.0,Double.MAX_VALUE,1.0));
-		txtPrecio.setBounds(328, 15, 121,16);
+		txtPrecio.setBounds(410, 92, 130,16);
 		((JSpinner.NumberEditor)txtPrecio.getEditor()).getFormat().setMinimumFractionDigits(2);
 		panelProducto.add(txtPrecio);
 		
+		txtDescuento = new JSpinner(new SpinnerNumberModel(0,0,100,1));
+		txtDescuento.setBounds(670, 93, 130, 16);
+		((JSpinner.NumberEditor)txtPrecio.getEditor()).getFormat().setMinimumFractionDigits(1);
+		panelProducto.add(txtDescuento);
+		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(5, 152, 844, 12);
+		separator.setBounds(5, 43, 943, 2);
 		panelProducto.add(separator);
 		
 		btnGuardar = new JButton("Guardar");
-		btnGuardar.setBounds(855, 15, 93, 16);
+		btnGuardar.setBounds(175, 15, 130, 16);
 		panelProducto.add(btnGuardar);
 		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
 		btnGuardar.setBackground(Color.DARK_GRAY);
@@ -286,7 +299,7 @@ public class ProductosUI extends JPanel {
 		btnGuardar.addActionListener(contProductos.guardar());
 		
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(5, 15, 85, 16);
+		btnCancelar.setBounds(24, 15, 130, 16);
 		panelProducto.add(btnCancelar);
 		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
 		btnCancelar.addActionListener(new ActionListener() {
@@ -302,6 +315,37 @@ public class ProductosUI extends JPanel {
 		txtId.setBounds(460, 12, 44, 19);
 		panelProducto.add(txtId);
 		txtId.setColumns(10);
+		
+		lblPresentacion = new JLabel("Presentacion:");
+		lblPresentacion.setForeground(Color.WHITE);
+		lblPresentacion.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+		lblPresentacion.setBounds(15, 58, 116, 25);
+		panelProducto.add(lblPresentacion);
+		
+		lblCapacidad = new JLabel("Capacidad:");
+		lblCapacidad.setForeground(Color.WHITE);
+		lblCapacidad.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+		lblCapacidad.setBounds(315, 58, 108, 25);
+		panelProducto.add(lblCapacidad);
+		
+		lblSabor = new JLabel("Sabor:");
+		lblSabor.setForeground(Color.WHITE);
+		lblSabor.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+		lblSabor.setBounds(574, 57, 69, 25);
+		panelProducto.add(lblSabor);
+		
+		chckbxExentoDelIva = new JCheckBox("Exento del Iva");
+		chckbxExentoDelIva.setForeground(Color.WHITE);
+		chckbxExentoDelIva.setBackground(Color.DARK_GRAY);
+		chckbxExentoDelIva.setBounds(806, 90, 129, 23);
+		panelProducto.add(chckbxExentoDelIva);
+		
+		JLabel lblDescuento = new JLabel("% Descuento:");
+		lblDescuento.setForeground(Color.WHITE);
+		lblDescuento.setBackground(SystemColor.controlHighlight);
+		lblDescuento.setBounds(570, 89, 97, 25);
+		panelProducto.add(lblDescuento);
+		
 		txtId.setVisible(false);
 		
 		JPanel panel = new JPanel();
@@ -519,7 +563,7 @@ public class ProductosUI extends JPanel {
 	public void activarNuevoProducto() {
 		// TODO Auto-generated method stub
 		panelProducto.setVisible(true);
-		panelProducto.setBounds(12, 96, 953, 40);
+		panelProducto.setBounds(12, 96, 953, 150);
 		txtId.setText("");
 		txtNombre.setText("");
 		txtPrecio.setValue(1.0);
@@ -545,6 +589,92 @@ public class ProductosUI extends JPanel {
 	public void setTxtABuscar(String txtABuscar) {
 		this.txtABuscar.setText(txtABuscar);
 	}
+
+	public JPanel getBotones() {
+		return botones;
+	}
+
+	public void setBotones(JPanel botones) {
+		this.botones = botones;
+	}
+
+	public JSpinner getTxtDescuento() {
+		return txtDescuento;
+	}
+
+	public void setTxtDescuento(JSpinner txtDescuento) {
+		this.txtDescuento = txtDescuento;
+	}
+
+	public JCheckBox getChckbxExentoDelIva() {
+		return chckbxExentoDelIva;
+	}
+
+	public void setChckbxExentoDelIva(JCheckBox chckbxExentoDelIva) {
+		this.chckbxExentoDelIva = chckbxExentoDelIva;
+	}
+
+	public JButton getBtnSabor() {
+		return btnSabor;
+	}
+
+	public void setBtnSabor(JButton btnSabor) {
+		this.btnSabor = btnSabor;
+	}
+
+	public JButton getBtnSalir() {
+		return btnSalir;
+	}
+
+	public void setBtnSalir(JButton btnSalir) {
+		this.btnSalir = btnSalir;
+	}
+
+	public JButton getBtnPresentacion() {
+		return btnPresentacion;
+	}
+
+	public void setBtnPresentacion(JButton btnPresentacion) {
+		this.btnPresentacion = btnPresentacion;
+	}
+
+	public JButton getBtnCapacidades() {
+		return btnCapacidades;
+	}
+
+	public void setBtnCapacidades(JButton btnCapacidades) {
+		this.btnCapacidades = btnCapacidades;
+	}
+
+	public JLabel getLblPresentacion() {
+		return lblPresentacion;
+	}
+
+	public void setLblPresentacion(JLabel lblPresentacion) {
+		this.lblPresentacion = lblPresentacion;
+	}
+
+	public JLabel getLblCapacidad() {
+		return lblCapacidad;
+	}
+
+	public void setLblCapacidad(JLabel lblCapacidad) {
+		this.lblCapacidad = lblCapacidad;
+	}
+
+	public JLabel getLblSabor() {
+		return lblSabor;
+	}
+
+	public void setLblSabor(JLabel lblSabor) {
+		this.lblSabor = lblSabor;
+	}
+
+	public void setTxtABuscar(JTextField txtABuscar) {
+		this.txtABuscar = txtABuscar;
+	}
+	
+	
 }
 
 

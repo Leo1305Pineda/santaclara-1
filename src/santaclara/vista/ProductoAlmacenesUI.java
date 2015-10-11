@@ -363,23 +363,24 @@ public class ProductoAlmacenesUI extends JPanel {
 		BeanProperty nombreAlmacen = BeanProperty.create("ubicacion");
 		
 		BeanProperty idEmpaqueProducto = BeanProperty.create("empaqueProducto.id");
-	    BeanProperty nombreProducto = BeanProperty.create("empaqueProducto.producto.nombre");
-	    BeanProperty presentacionProducto = BeanProperty.create("empaqueProducto.producto.presentacion.material");
-	    BeanProperty capacidadProducto = BeanProperty.create("empaqueProducto.producto.capacidad.volumen");
-	    BeanProperty saborProducto = BeanProperty.create("empaqueProducto.producto.sabor.sabor");
+	    BeanProperty descripcionProducto = BeanProperty.create("empaqueProducto.descripcionEmpaque");
 	    
 	    BeanProperty stockProductAlmacen = BeanProperty.create("stock");
 	    BeanProperty stockMinProductoAlmacen = BeanProperty.create("stockMin");
 	    BeanProperty existenciaProductoAlmacen = BeanProperty.create("existencia");
+	    BeanProperty precio = BeanProperty.create("empaqueProducto.producto.precioStr");
+	    BeanProperty descuento = BeanProperty.create("empaqueProducto.producto.descuentoStr");
+	    BeanProperty ivaExento = BeanProperty.create("empaqueProducto.producto.ivaStr");
 
 	    binProductoAlmacenes.addColumnBinding(idAlmacen).setColumnClass(String.class).setColumnName("Id");
 	    binProductoAlmacenes.addColumnBinding(nombreAlmacen).setColumnClass(String.class).setColumnName("Ubicacion del Almacen");
 	    
 	    binProductoAlmacenes.addColumnBinding(idEmpaqueProducto).setColumnClass(String.class).setColumnName("Id");
-	    binProductoAlmacenes.addColumnBinding(nombreProducto).setColumnClass(String.class).setColumnName("Producto");
-	    binProductoAlmacenes.addColumnBinding(presentacionProducto).setColumnClass(String.class).setColumnName("Presentacion");
-	    binProductoAlmacenes.addColumnBinding(capacidadProducto).setColumnClass(String.class).setColumnName("Capacidad");
-	    binProductoAlmacenes.addColumnBinding(saborProducto).setColumnClass(String.class).setColumnName("Sabor");
+	    binProductoAlmacenes.addColumnBinding(descripcionProducto).setColumnClass(String.class).setColumnName("Producto");
+	    binProductoAlmacenes.addColumnBinding(precio).setColumnClass(String.class).setColumnName("Precio");
+	    binProductoAlmacenes.addColumnBinding(descuento).setColumnClass(String.class).setColumnName("Descuento");
+		binProductoAlmacenes.addColumnBinding(ivaExento).setColumnClass(String.class).setColumnName("Iva");
+	
 	    
 	    binProductoAlmacenes.addColumnBinding(stockProductAlmacen).setColumnClass(String.class).setColumnName("Stock");
 	    binProductoAlmacenes.addColumnBinding(stockMinProductoAlmacen).setColumnClass(String.class).setColumnName("Stock Minimo");

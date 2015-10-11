@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import org.jdesktop.swingbinding.JTableBinding;
 
 import santaclara.controlador.ContPedidos;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class PedidosUI extends JPanel{
@@ -44,22 +45,20 @@ public class PedidosUI extends JPanel{
 	private JButton btnBuscar;
 	private JButton btnGuardarFactura;
 	private JButton btnSalir;
-	
-	private JLabel lblCedulaVendedor;
 	private JLabel lblNombreVendedor;
 	private JLabel lblRif;
 	private JLabel lblRazonSocial;
 	private JLabel lblTelefono;
 	private JLabel lblDireccion;
 	private JLabel lblRuta;
-	private JLabel lblTotalIva;
-	private JLabel lblSaldoAPagar;
-	private JLabel lblTotalSinIva;
+	private JLabel lblIvaSobreBs;
+	private JLabel lblTotalAPagar;
+	private JLabel lblDesc;
 	private JLabel lblNumeroPedido;
 	private JLabel lblAlmacen;
 	private JLabel lblFecha;
-	private JLabel lblDescuento;
-	private JLabel lblTotalDescuento;
+	private JLabel lblIva;
+	private JLabel lblCondicion;
 	
 	private JScrollPane scrollPane;
 	
@@ -67,6 +66,9 @@ public class PedidosUI extends JPanel{
 	private JTableBinding BinPedidos;
 	
 	private JTable table;
+	private JLabel lblDomicilioFiscal;
+	private JLabel lblSubtotalGravado;
+	private JLabel lblSubtotalExento;
 	
 	public PedidosUI(ContPedidos contPedidos) throws IOException {
 		setBounds(0, 0, 800, 700);
@@ -206,14 +208,14 @@ public class PedidosUI extends JPanel{
 		pnlInfo.setBackground(Color.GRAY);
 		pnlInfo.setForeground(Color.WHITE);
 		pnlInfo.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 3, true), "Informacion del Pedido", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		pnlInfo.setBounds(25, 77, 763, 135);
+		pnlInfo.setBounds(25, 70, 763, 145);
 		pnlPedido.add(pnlInfo);
 		pnlInfo.setLayout(null);
 		
 		pnlAlmacen = new JPanel();
 		pnlAlmacen.setBackground(Color.GRAY);
 		pnlAlmacen.setBorder(new TitledBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(192, 192, 192)), "Almacen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
-		pnlAlmacen.setBounds(12, 24, 250, 30);
+		pnlAlmacen.setBounds(500, 25, 250, 35);
 		pnlInfo.add(pnlAlmacen);
 		pnlAlmacen.setLayout(new GridLayout(0, 1, 0, 0));
 		
@@ -224,26 +226,23 @@ public class PedidosUI extends JPanel{
 		pnlVendedor = new JPanel();
 		pnlVendedor.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Vendedor", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
 		pnlVendedor.setBackground(Color.GRAY);
-		pnlVendedor.setBounds(12, 60, 250, 46);
+		pnlVendedor.setBounds(500, 100, 250, 35);
 		pnlInfo.add(pnlVendedor);
 		pnlVendedor.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		lblCedulaVendedor = new JLabel("Cedula:");
-		lblCedulaVendedor.setForeground(Color.WHITE);
-		pnlVendedor.add(lblCedulaVendedor);
-		
-		lblNombreVendedor = new JLabel("Nombre:");
+		lblNombreVendedor = new JLabel("");
 		lblNombreVendedor.setForeground(Color.WHITE);
 		pnlVendedor.add(lblNombreVendedor);
 		
 		pnlCliente = new JPanel();
 		pnlCliente.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
 		pnlCliente.setBackground(Color.GRAY);
-		pnlCliente.setBounds(270, 24, 250, 82);
+		pnlCliente.setBounds(15, 15, 480, 120);
 		pnlInfo.add(pnlCliente);
 		pnlCliente.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		lblRif = new JLabel("Rif:");
+		lblRif.setFont(new Font("Dialog", Font.BOLD, 12));
 		lblRif.setForeground(Color.WHITE);
 		pnlCliente.add(lblRif);
 		
@@ -251,13 +250,17 @@ public class PedidosUI extends JPanel{
 		lblRazonSocial.setForeground(Color.WHITE);
 		pnlCliente.add(lblRazonSocial);
 		
+		lblDomicilioFiscal = new JLabel("Domicilio Fiscal:");
+		lblDomicilioFiscal.setForeground(Color.WHITE);
+		pnlCliente.add(lblDomicilioFiscal);
+		
+		lblDireccion = new JLabel("");
+		lblDireccion.setForeground(Color.WHITE);
+		pnlCliente.add(lblDireccion);
+		
 		lblTelefono = new JLabel("Telefono:");
 		lblTelefono.setForeground(Color.WHITE);
 		pnlCliente.add(lblTelefono);
-		
-		lblDireccion = new JLabel("Direccion:");
-		lblDireccion.setForeground(Color.WHITE);
-		pnlCliente.add(lblDireccion);
 		
 		lblRuta = new JLabel("Ruta:");
 		lblRuta.setForeground(Color.WHITE);
@@ -265,30 +268,29 @@ public class PedidosUI extends JPanel{
 		
 		lblNumeroPedido = new JLabel("Numero:");
 		lblNumeroPedido.setForeground(Color.WHITE);
-		lblNumeroPedido.setBounds(527, 38, 192, 10);
+		lblNumeroPedido.setBounds(500, 15, 250, 10);
 		pnlInfo.add(lblNumeroPedido);
 		
 		lblFecha = new JLabel("Fecha:");
 		lblFecha.setForeground(Color.WHITE);
-		lblFecha.setBounds(527, 60, 192, 10);
+		lblFecha.setBounds(500, 70, 250, 10);
 		pnlInfo.add(lblFecha);
 		
-		lblDescuento = new JLabel("Descuento:");
-		lblDescuento.setForeground(Color.WHITE);
-		lblDescuento.setBounds(527, 82, 192, 10);
-		lblDescuento.setVisible(false);
-		pnlInfo.add(lblDescuento);
+		lblCondicion = new JLabel("Condicion:");
+		lblCondicion.setForeground(Color.WHITE);
+		lblCondicion.setBounds(500, 85, 250, 10);
+		pnlInfo.add(lblCondicion);
 		
 		pnlDetalle = new JPanel();
 		pnlDetalle.setForeground(Color.WHITE);
 		pnlDetalle.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 3, true), "Detalle", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
 		pnlDetalle.setBackground(Color.GRAY);
-		pnlDetalle.setBounds(25, 220, 763, 371);
+		pnlDetalle.setBounds(25, 220, 763, 330);
 		pnlPedido.add(pnlDetalle);
 		pnlDetalle.setLayout(null);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(14, 14, 737, 347);
+		scrollPane.setBounds(14, 14, 737, 300);
 		pnlDetalle.add(scrollPane);
 		
 		table = new JTable();
@@ -297,29 +299,39 @@ public class PedidosUI extends JPanel{
 		pnlTotales = new JPanel();
 		pnlTotales.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 2, true), "Totales", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnlTotales.setBackground(Color.DARK_GRAY);
-		pnlTotales.setBounds(534, 590, 254, 100);
+		pnlTotales.setBounds(530, 550, 254, 140);
 		pnlPedido.add(pnlTotales);
-		pnlTotales.setLayout(null);
+		pnlTotales.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		lblTotalSinIva = new JLabel("Total Sin Iva:");
-		lblTotalSinIva.setForeground(Color.WHITE);
-		lblTotalSinIva.setBounds(12, 18, 244, 10);
-		pnlTotales.add(lblTotalSinIva);
+		lblSubtotalExento = new JLabel("SUBTOTAL EXENTO:");
+		lblSubtotalExento.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblSubtotalExento.setForeground(Color.WHITE);
+		pnlTotales.add(lblSubtotalExento);
 		
-		lblTotalIva = new JLabel("Total Iva:");
-		lblTotalIva.setForeground(Color.WHITE);
-		lblTotalIva.setBounds(12, 36, 244, 10);
-		pnlTotales.add(lblTotalIva);
+		lblSubtotalGravado = new JLabel("SUBTOTAL GRAVADO:");
+		lblSubtotalGravado.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblSubtotalGravado.setForeground(Color.WHITE);
+		pnlTotales.add(lblSubtotalGravado);
 		
-		lblSaldoAPagar = new JLabel("Saldo a Pagar:");
-		lblSaldoAPagar.setForeground(Color.WHITE);
-		lblSaldoAPagar.setBounds(12, 77, 244, 10);
-		pnlTotales.add(lblSaldoAPagar);
+		lblDesc = new JLabel("%DESC.:");
+		lblDesc.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblDesc.setForeground(Color.WHITE);
+		pnlTotales.add(lblDesc);
 		
-		lblTotalDescuento = new JLabel("Total Descuento:");
-		lblTotalDescuento.setForeground(Color.WHITE);
-		lblTotalDescuento.setBounds(12, 55, 244, 10);
-		pnlTotales.add(lblTotalDescuento);
+		lblIvaSobreBs = new JLabel("I.V.A. SOBRE Bs.:");
+		lblIvaSobreBs.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblIvaSobreBs.setForeground(Color.WHITE);
+		pnlTotales.add(lblIvaSobreBs);
+		
+		lblIva = new JLabel("I.V.A: 12.00  %");
+		lblIva.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblIva.setForeground(Color.WHITE);
+		pnlTotales.add(lblIva);
+		
+		lblTotalAPagar = new JLabel("TOTAL A PAGAR:");
+		lblTotalAPagar.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblTotalAPagar.setForeground(Color.WHITE);
+		pnlTotales.add(lblTotalAPagar);
 	}
 
 	public JPanel getPnlPedido() {
@@ -490,14 +502,6 @@ public class PedidosUI extends JPanel{
 		this.pnlAlmacen = pnlAlmacen;
 	}
 
-	public JLabel getLblCedulaVendedor() {
-		return lblCedulaVendedor;
-	}
-
-	public void setLblCedulaVendedor(JLabel lblCedulaVendedor) {
-		this.lblCedulaVendedor = lblCedulaVendedor;
-	}
-
 	public JLabel getLblNombreVendedor() {
 		return lblNombreVendedor;
 	}
@@ -546,30 +550,6 @@ public class PedidosUI extends JPanel{
 		this.lblRuta = lblRuta;
 	}
 
-	public JLabel getLblTotalIva() {
-		return lblTotalIva;
-	}
-
-	public void setLblTotalIva(JLabel lblTotalIva) {
-		this.lblTotalIva = lblTotalIva;
-	}
-
-	public JLabel getLblSaldoAPagar() {
-		return lblSaldoAPagar;
-	}
-
-	public void setLblSaldoAPagar(JLabel lblSaldoAPagar) {
-		this.lblSaldoAPagar = lblSaldoAPagar;
-	}
-
-	public JLabel getLblTotalSinIva() {
-		return lblTotalSinIva;
-	}
-
-	public void setLblTotalSinIva(JLabel lblTotalSinIva) {
-		this.lblTotalSinIva = lblTotalSinIva;
-	}
-
 	public JLabel getLblNumeroPedido() {
 		return lblNumeroPedido;
 	}
@@ -592,14 +572,6 @@ public class PedidosUI extends JPanel{
 
 	public void setLblFecha(JLabel lblFecha) {
 		this.lblFecha = lblFecha;
-	}
-
-	public JLabel getLblDescuento() {
-		return lblDescuento;
-	}
-
-	public void setLblDescuento(JLabel lblDescuento) {
-		this.lblDescuento = lblDescuento;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -628,12 +600,70 @@ public class PedidosUI extends JPanel{
 		this.btnQuitarProducto = btnQuitarProducto;
 	}
 
-	public JLabel getLblTotalDescuento() {
-		return lblTotalDescuento;
+	public JLabel getLblCondicion() {
+		return lblCondicion;
 	}
 
-	public void setLblTotalDescuento(JLabel lblTotalDescuento) {
-		this.lblTotalDescuento = lblTotalDescuento;
+	public void setLblCondicion(JLabel lblCondicion) {
+		this.lblCondicion = lblCondicion;
+	}
+
+	public JLabel getLblIvaSobreBs() {
+		return lblIvaSobreBs;
+	}
+
+	public void setLblIvaSobreBs(JLabel lblIvaSobreBs) {
+		this.lblIvaSobreBs = lblIvaSobreBs;
+	}
+
+	public JLabel getLblTotalAPagar() {
+		return lblTotalAPagar;
+	}
+
+	public void setLblTotalAPagar(JLabel lblTotalAPagar) {
+		this.lblTotalAPagar = lblTotalAPagar;
+	}
+
+	public JLabel getLblDesc() {
+		return lblDesc;
+	}
+
+	public void setLblDesc(JLabel lblDesc) {
+		this.lblDesc = lblDesc;
+	}
+
+	public JLabel getLblIva() {
+		return lblIva;
+	}
+
+	public void setLblIva(JLabel lblIva) {
+		this.lblIva = lblIva;
+	}
+
+	public JLabel getLblDomicilioFiscal() {
+		return lblDomicilioFiscal;
+	}
+
+	public void setLblDomicilioFiscal(JLabel lblDomicilioFiscal) {
+		this.lblDomicilioFiscal = lblDomicilioFiscal;
+	}
+
+	public JLabel getLblSubtotalGravado() {
+		return lblSubtotalGravado;
+	}
+
+	public void setLblSubtotalGravado(JLabel lblSubtotalGravado) {
+		this.lblSubtotalGravado = lblSubtotalGravado;
+	}
+
+	public JLabel getLblSubtotalExento() {
+		return lblSubtotalExento;
+	}
+
+	public void setLblSubtotalExento(JLabel lblSubtotalExento) {
+		this.lblSubtotalExento = lblSubtotalExento;
 	}
 	
+	
 }
+

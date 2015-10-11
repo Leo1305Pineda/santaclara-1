@@ -45,10 +45,14 @@ public class EmpaqueProducto {
 	}
 	
 	public String getDescripcionEmpaque(){
-		return producto.getNombre()+
-				producto.getPresentacion().getMaterial()+
-				producto.getCapacidad().getVolumenStr()+
-				producto.getSabor().getSabor()+producto.getPrecio();
+		return  producto.getId()+"  "+
+				producto.getNombre()+"  "+
+				producto.getPresentacion().getMaterial()+"  "+
+				producto.getCapacidad().getVolumenStr();
 	}
 
+	
+	public Double getPrecioEmpaque(){
+		return producto.getPrecio()*cantidad;
+	}
 }

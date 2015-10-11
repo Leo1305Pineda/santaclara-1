@@ -2,12 +2,14 @@ package santaclara.modelo;
 
 public class DetalleFactura {
 	
+	private Factura factura;
 	private Producto producto;
 	private Integer cantidad;
 	private Double precio;
-	private Factura factura;
-	private Double iva; 
+	private Double descuento;
 	private Double total;
+	private Double iva; 
+	
 
 	
 	public DetalleFactura() {
@@ -60,6 +62,12 @@ public class DetalleFactura {
 	}
 	public void setProducto(Producto producto) {
 		this.producto = producto;
+	}
+	public Double getDescuento() {
+		return descuento;
+	}
+	public void setDescuento(Double descuento) {
+		this.descuento = descuento;
 	}
 
 	

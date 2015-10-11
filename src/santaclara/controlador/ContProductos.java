@@ -33,6 +33,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 		vista = new ProductosUI(this,servicioProducto.getProductos(),
 					servicioProducto.getCapacidades(),
 					servicioProducto.getSabores(),presentacionDAO.getPresentaciones());
+		vista.getChckbxExentoDelIva().setSelected(false);
 		vista.activarBinding(servicioProducto.getProductos());
 		dibujar(vista,this);
 		vista.quitarNuevo();
@@ -61,6 +62,9 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 				
 					producto.setNombre(vista.getTxtNombre().getText());			
 					producto.setPrecio((Double) vista.getTxtPrecio().getValue());
+					producto.setDescuento((Double) vista.getTxtDescuento().getValue());
+					producto.setIva(vista.getChckbxExentoDelIva().isSelected());
+					
 					producto.setCapacidad((Capacidad) vista.getCmbCapacidad().getSelectedItem());
 					producto.setPresentacion((Presentacion)vista.getCmbPresentacion().getSelectedItem());
 					producto.setSabor((Sabor)vista.getCmbSabor().getSelectedItem());
@@ -219,6 +223,8 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 								vista.getTxtId().setText(producto.getId().toString());
 								vista.getTxtNombre().setText(producto.getNombre());
 								vista.getTxtPrecio().setValue(producto.getPrecio());
+								vista.getTxtDescuento().setValue(producto.getDescuento());
+								vista.getChckbxExentoDelIva().setSelected(producto.getIva());;
 								setSelectedValue(vista.getCmbPresentacion(),producto.getPresentacion().getId());
 								setSelectedValue(vista.getCmbCapacidad(),producto.getCapacidad().getId());
 								setSelectedValue(vista.getCmbSabor(),producto.getSabor().getId());
