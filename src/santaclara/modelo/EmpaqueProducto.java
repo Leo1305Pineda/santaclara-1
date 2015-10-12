@@ -3,13 +3,13 @@ package santaclara.modelo;
 public class EmpaqueProducto {
 	private Integer id;
 	private Producto producto;
-	private Integer cantidad;
+	private Integer unidades;
 	
 	public EmpaqueProducto(Integer id, Producto producto, Integer cantidad) {
 		super();
 		this.id = id;
 		this.producto = producto;
-		this.cantidad = cantidad;
+		this.unidades = cantidad;
 	}
 	
 	public Integer getId() {
@@ -29,19 +29,19 @@ public class EmpaqueProducto {
 	}
 
 	public Integer getCantidad() {
-		return cantidad;
+		return unidades;
 	}
 
 	public void setCantidad(Integer cantidad) {
-		this.cantidad = cantidad;
+		this.unidades = cantidad;
 	}
 
 	public EmpaqueProducto() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public String getCantidadStr() {
-		return cantidad.toString();
+	public String getUnidadesStr() {
+		return unidades.toString().concat(" Un.xCAJ."); 
 	}
 	
 	public String getDescripcionEmpaque(){
@@ -53,6 +53,10 @@ public class EmpaqueProducto {
 
 	
 	public Double getPrecioEmpaque(){
-		return producto.getPrecio()*cantidad;
+		return (producto.getPrecio()*unidades);
+	}
+	
+	public String  getPrecioEmpaqueStr() {
+	return (producto.getPrecio()*unidades)+" BsF.";
 	}
 }

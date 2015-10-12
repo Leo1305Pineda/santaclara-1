@@ -127,7 +127,7 @@ public class ServicioFactura {
 				if(mes.equals(factura2.getFecha().getMonth())){
 					//Cambia a true si al menos hay una factura en el mes
 					enc = true;
-					acumMont = acumMont + factura2.getTotal();
+					acumMont = acumMont + factura2.getTotalAPagar();
 				}
 			}
 			if(enc==false) break;

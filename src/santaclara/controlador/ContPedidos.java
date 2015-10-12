@@ -83,7 +83,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		else
 		{
 			vista.getLblRif().setText("Rif: "+cliente.getRif());
-			vista.getLblRazonSocial().setText("Razon Social: "+cliente.getRazonsocial());
+			vista.getLblRazonSocial().setText("Nombre o Razon Social: "+cliente.getId()+"-> "+cliente.getRazonsocial());
 			vista.getLblTelefono().setText("Telefono: "+cliente.getTelefono());
 			vista.getLblDireccion().setText("-> "+cliente.getDireccion());
 			vista.getLblRuta().setText("Ruta: "+cliente.getRutaNombre());
@@ -123,7 +123,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 	
 	public void limpiarlblFactura(){
 		vista.getLblNumeroPedido().setText("Numero:      AutoGenerado");
-		vista.getLblFecha().setText("Fecha:       "+new Date());
+		vista.getLblFecha().setText("Fecha:       "+new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
 		vista.getLblCondicion().setText("Condicion: ");
 		vista.getLblSubtotalExento().setText("SUBTOTAL EXENTO:    ");
 		vista.getLblSubtotalGravado().setText("SUBTOTAL GRAVADO:   ");
@@ -160,89 +160,69 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 	{
 		vista.getLblCondicion().setText("Condicion: CREDITO");
 	}
-	Integer countCajaPorFactura = new Integer(0);
-	Double subTotalExento = new Double(0);
-	Double subTotalGravado = new Double(0);
-	Double desc = new Double(0);
-	Double totalAPagar = new Double(0);
-		
-		for (DetalleFactura detalleFactura : detalleFacturas)
-		{
-			if(detalleFactura != null)
+	
+	if(!detalleFacturas.isEmpty())
+	{
+		Integer countCajaPorFactura = new Integer(0);
+		Double subTotalExento = new Double(0);
+		Double subTotalGravado = new Double(0);
+		Double desc = new Double(0);
+		Double totalAPagar = new Double(0);
+			
+			for (DetalleFactura detalleFactura : detalleFacturas)
 			{
-				if(detalleFactura.getIva()==0.0)
+				if(detalleFactura != null)
 				{
-					subTotalExento = subTotalExento + (detalleFactura.getTotal());
+					if(detalleFactura.getIva()==0.0)
+					{
+						subTotalExento = subTotalExento + (detalleFactura.getTotal());
+					}
+					else
+					{
+						subTotalGravado = subTotalGravado + (detalleFactura.getTotal());
+					}
+					countCajaPorFactura = countCajaPorFactura + detalleFactura.getCantidad();
 				}
-				else
-				{
-					subTotalGravado = subTotalGravado + (detalleFactura.getTotal());
-				}
-				countCajaPorFactura = countCajaPorFactura + detalleFactura.getCantidad();
 			}
-		}
-		
-		if(countCajaPorFactura >=10 && countCajaPorFactura <=20)
-		{
-			desc = 5.0;
-		}
-		else if(countCajaPorFactura >=21 && countCajaPorFactura <=35)
-		{
-			desc = 10.0;
-		}
-		else if(countCajaPorFactura >=35)
-		{
-			desc = 15.0;
-		}
 	
-	totalAPagar = (subTotalExento + subTotalGravado) * desc + 
-					(subTotalExento + subTotalGravado) * IVA + 
+			if(countCajaPorFactura >=10 && countCajaPorFactura <=20)
+			{
+				desc = 5.0;
+			}
+			else if(countCajaPorFactura >=21 && countCajaPorFactura <=35)
+			{
+				desc = 10.0;
+			}
+			else if(countCajaPorFactura >=35)
+			{
+				desc = 15.0;
+			}
+			else 
+			{
+				desc = 0.00;
+			}
+			
+		totalAPagar =  	(subTotalGravado * IVA) + 
 						(subTotalExento + subTotalGravado);
-	
-
-	vista.getLblSubtotalExento().setText("SUBTOTAL EXENTO:    "+subTotalExento);
-	vista.getLblSubtotalGravado().setText("SUBTOTAL GRAVADO:  "+subTotalGravado);
-	vista.getLblDesc().setText(desc+"% DESCUENTO.:  "+((subTotalExento + subTotalGravado) * desc));
-	vista.getLblIvaSobreBs().setText("I.V.A. SOBRE Bs.    "+(subTotalExento + subTotalGravado));
-	vista.getLblIva().setText("I.V.A. 12.00  %     "+(subTotalExento + subTotalGravado) * IVA);
-	vista.getLblTotalAPagar().setText("TOTAL A PAGAR:      "+totalAPagar);
-	
-	factura.setTotal(totalAPagar);
-	factura.setIva((subTotalExento + subTotalGravado) * IVA);
-	factura.setSaldo(subTotalExento);
-	factura.setDescuento(desc);
-	
-	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void activarBinding(List<DetalleFactura> detalleFacturas ){
-		vista.getScrollPane().setViewportView(vista.getTable());
-		JTableBinding binVistas = vista.getBinPedidos();
 		
-		 binVistas= SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
-    		detalleFacturas,vista.getTable());
-	  
-		BeanProperty nombreProducto  = BeanProperty.create("producto.nombre");
-		BeanProperty cantidad  = BeanProperty.create("cantidad");
-		BeanProperty precio = BeanProperty.create("precio");
-		BeanProperty iva = BeanProperty.create("iva");
-		BeanProperty total = BeanProperty.create("total");
-	    
-	    binVistas.addColumnBinding(nombreProducto).setColumnClass(String.class).setColumnName("Producto");
-	    binVistas.addColumnBinding(cantidad).setColumnClass(String.class).setColumnName("Cantidad");
-	    binVistas.addColumnBinding(precio).setColumnClass(String.class).setColumnName("precio");
-	
-	    binVistas.addColumnBinding(iva).setColumnClass(String.class).setColumnName("iva");
-	    binVistas.addColumnBinding(total).setColumnClass(String.class).setColumnName("total");
-	    
-	    binVistas.bind();
+		factura.setSubTotalExento(subTotalExento);
+		factura.setSubTotalGravado(subTotalGravado);
+		factura.setDescuento(desc);
+		factura.setIvaSobreBs(subTotalGravado);
+		factura.setIva(subTotalGravado * IVA);
+		factura.setTotalAPagar(totalAPagar-((subTotalExento + subTotalGravado) * desc/100));
+
+		vista.getLblSubtotalExento().setText("SUBTOTAL EXENTO:      "+factura.getSubTotalExento());
+		vista.getLblSubtotalGravado().setText("SUBTOTAL GRAVADO:    "+factura.getSubTotalGravado());
+		vista.getLblDesc().setText(desc+"% DESCUENTO.:       "+
+		(factura.getSubTotalExento()+factura.getSubTotalGravado())*factura.getDescuento()/100);
+		vista.getLblIvaSobreBs().setText("I.V.A. SOBRE Bs.         "+factura.getIvaSobreBs());
+		vista.getLblIva().setText("I.V.A. 12.00  %             "+factura.getIva());
+		vista.getLblTotalAPagar().setText("TOTAL A PAGAR:        "+factura.getTotalAPagar());
 
 	}
-	public void cargarDetalleFarcturalbl() throws NumberFormatException, IOException{
 		
-		activarBinding(new ServicioDetalleFactura().getDetalleFacturas(this.factura));
-		
-		}
+	}
 	
 	public ActionListener actionCliente(){
 		return new ActionListener() {
@@ -375,78 +355,88 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e){
 				// TODO Auto-generated method stub
-				
-						try {
-							validarFactura();
-							factura.setEstado(null);
-							if(factura.getAlmacen() != null && 
-									factura.getVendedor() != null &&
-									factura.getCliente() != null &&
-									detalleFacturas.isEmpty()==false)
+				try {
+					validarFactura();
+					validarDetalle();
+					factura.setEstado(null);
+					new ServicioFactura().guardar(factura);//guarda la factura
+					if (factura.getId()==null) factura.setId(new ServicioFactura().ultimaFactura()+1);
+			
+					for(DetalleFactura detalleFactura : detalleFacturas) detalleFactura.setFactura(factura);
+					
+					new ServicioDetalleFactura().guardar(detalleFacturas);//guarda su detalle
+					
+					detalleFacturas = new ServicioDetalleFactura().getDetalleFacturas(factura);
+						
+					actualizarVista();
+					JOptionPane.showMessageDialog(vista,"Guardado el Pedido Exitosamente");
+					
+					
+				} catch (Exception exe) {
+					// TODO Auto-generated catch block
+					if(exe.getMessage()==null)exe.printStackTrace();
+						Integer opt = new Integer(0);
+						switch (exe.getMessage()) {
+						case "Almacen":
+							opt = new Integer(	JOptionPane.showConfirmDialog(vista,"Cargar la Informacion del "+exe.getMessage()));
+							if (opt==0)
 							{
-								new ServicioFactura().guardar(factura);//guarda la factura
-								
-								new ServicioDetalleFactura().guardar(detalleFacturas);//guarda su detalle
-								detalleFacturas = new ServicioDetalleFactura().getDetalleFacturas(factura);
-								
-								if (factura.getId()==null)
-								{
-									factura.setId(new ServicioFactura().ultimaFactura()+1);  
-								}
-								vista.getLblNumeroPedido().setText("Numero: "+factura.getId());	
-								
-								JOptionPane.showMessageDialog(vista,"Guardado el Pedido Exitosamente");
-								actualizarVista();
+								vista.getBtnAlmacen().doClick();
 							}
-							
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							break;
+						case "Cliente":
+							opt = new Integer(	JOptionPane.showConfirmDialog(vista,"Cargar la Informacion del "+exe.getMessage()));
+							if (opt==0)
+							{
+								vista.getBtnCliente().doClick();
+							}
+							break;
+						case "Vendedor":
+							opt = new Integer(	JOptionPane.showConfirmDialog(vista,"Cargar la Informacion del "+exe.getMessage()));
+							if (opt==0)
+							{
+								vista.getBtnVendedor().doClick();
+							}
+							break;
+						case "Detalle":
+							opt = new Integer(	JOptionPane.showConfirmDialog(vista,"Cargar la Informacion del "+exe.getMessage()));
+							if (opt==0)
+							{
+								vista.getBtnProducto().doClick();
+							}
+						break;
+
+						default:
+							break;
 						}
+					}
+						
 			}
 		};	
 	}
+	protected void validarDetalle()throws Exception{
+		
+			if (detalleFacturas.isEmpty())
+			{
+				throw new Exception("Detalle");
+			}
+	}
+	
 	protected void validarFactura() throws Exception {
 		// TODO Auto-generated method stub
-		try {
-				if (factura.getAlmacen() == null) {
+				if (factura.getAlmacen() == null) 
+				{
 					throw new Exception("Almacen");
 				}
 				if (factura.getVendedor() == null)
 				{
 					throw new Exception("Vendedor");
 				}
-				if (factura.getCliente() == null){
+				if (factura.getCliente() == null)
+				{
 					throw new Exception("Cliente");
 				}
-				if (detalleFacturas.isEmpty()){
-					throw new Exception("Detalle");
-				}
-				
-
-			} catch (Exception exe) {
-				// TODO Auto-generated catch block
-				Integer opt = new Integer(	JOptionPane.showConfirmDialog(vista,"Cargar la Informacion del "+exe.getMessage()));
-				if (opt==0)
-				{
-					switch (exe.getMessage()) {
-					case "Almacen":vista.getBtnAlmacen().doClick();
-						break;
-					case "Cliente":vista.getBtnCliente().doClick();
-						break;
-					case "Vendedor":vista.getBtnVendedor().doClick();
-						break;
-					case "Detalle":vista.getBtnProducto().doClick();
-					break;
-
-					default:
-						break;
-					}
-
-				}
-
-				}
-					}
+	}
 
 	public ActionListener actionBuscarPedido(){
 		return new ActionListener() {
@@ -456,6 +446,8 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 				// TODO Auto-generated method stub
 				 try {
 					validarFactura();
+					
+					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -472,100 +464,124 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 				// TODO Auto-generated method stub
 				try {
 					validarFactura();
-					if(factura.getAlmacen() != null && 
-							factura.getVendedor() != null &&
-							factura.getCliente() != null &&
-							detalleFacturas.isEmpty()==false)
+					validarDetalle();
+					Factura facturaAux =new ServicioFactura().getFactura(factura.getId()); 
+					//Existe la Factura 
+					if(facturaAux==null) throw new Exception("Guardar Pedido");
+					//y ademas no se a Facturado estado null o en Pedido
+					if(facturaAux.getEstado()!=null) throw new Exception("Factura Existente");
+							
+					Integer opt = new Integer(JOptionPane.showInputDialog(vista,"Ingrese la Condicion de Pago \n"
+							+ "1 = Contado -- ó -- 2 = Credito","Seleccione la Opcion",2));
+					if (opt.equals(1))
 					{
-						Factura facturaAux =new ServicioFactura().getFactura(factura.getId()); 
-						//Existe la Factura 
-						if(facturaAux!=null)
-						{	//y ademas no se a Facturado estado null o en Pedido
-							if(facturaAux.getEstado()==null)
-							{
-									Integer opt = new Integer(JOptionPane.showInputDialog(vista,"Ingrese la Condicion de Pago \n"
-											+ "1 = Contado -- ó -- 2 = Credito","Seleccione la Opcion",2));
-									if (opt.equals(1))
-									{
-										factura.setEstado(true);
-									}
-									else if(opt.equals(2))
-									{
-										if((new ServicioSalp().getSalp(factura.getCliente().getId()))!=null)
-										{
-											if (new ServicioFactura().isCredito(factura)) factura.setEstado(false);
-											else throw new Exception("noCredito");
-										}
-										else throw new Exception("Cliente Salp");
-									}
-									else 
-									{
-										factura.setEstado(null);
-										throw new Exception("Opcion invalida ");
-									}
-									
-								
-								new ServicioFactura().guardar(factura);
-								new ServicioDetalleFactura().guardar(detalleFacturas);
-								
-								actualizarVista();
-								JOptionPane.showMessageDialog(vista,"Generada la Factura Exitosamente");
-							}
-							else
-							{
-								Integer opt = new Integer(JOptionPane.showConfirmDialog(vista,"La Factura ya Existe \n "
-										+ "no se puede Eliminar ni Modificar desea Generar una nueva Factura \n"+
-										"Crear una Nueva Factura \n "	,"Seleccione la Opcion",2));
-								if (opt.equals(0))
-								{
-									factura.setId(null);
-									new ServicioFactura().guardar(factura);
-									factura.setId(new ServicioFactura().ultimaFactura()+1);
-				
-									for(DetalleFactura detalleFactura : detalleFacturas)
-									{ 
-										detalleFactura.getFactura().setId(factura.getId());
-									}
-									new ServicioDetalleFactura().guardar(detalleFacturas);
-									
-									JOptionPane.showMessageDialog(vista,"Generada la Nueva Factura Exitosamente");
-								}
-							}
-						}
-						else throw new Exception("Guardar Pedido");
+						factura.setEstado(true);
 					}
+					else if(opt.equals(2))
+					{
+						if((new ServicioSalp().getSalp(factura.getCliente().getId()))!=null)
+						{
+							if (new ServicioFactura().isCredito(factura)) factura.setEstado(false);
+							else throw new Exception("noCredito");
+						}
+						else throw new Exception("Cliente Salp");
+					}
+					else 
+					{
+						factura.setEstado(null);
+						throw new Exception("Opcion invalida ");
+					}
+					
+					new ServicioFactura().guardar(factura);
+					new ServicioDetalleFactura().guardar(detalleFacturas);
+				
+					actualizarVista();
+					JOptionPane.showMessageDialog(vista,"Generada la Factura Exitosamente");		
+
 				} catch (Exception exe) {
 					// TODO Auto-generated catch block
+					Integer opt = new Integer(0);
 					switch (exe.getMessage()) {
 					case "Guardar Pedido":
-						Integer opt = new Integer(JOptionPane.showConfirmDialog(vista, exe.getMessage(),"Seleccione la Opcion",2));
+						opt = new Integer(JOptionPane.showConfirmDialog(vista, exe.getMessage(),"Seleccione la Opcion",2));
 						if(opt==0){
 					          vista.getBtnGuardar().doClick();	
 					          vista.getBtnGuardarFactura().setBackground(Color.GREEN);
 						}
 						break;
 					case "Opcion invalida": 
-						Integer opt2 = new Integer(JOptionPane.showConfirmDialog(vista, exe.getMessage().concat(
+						opt = new Integer(JOptionPane.showConfirmDialog(vista, exe.getMessage().concat(
 								"Desea Continuar"),"Seleccione la Opcion",2));
-						if(opt2==0){
+						if(opt==0){
 							vista.getBtnGuardarFactura().doClick();
 						}
 						break;
 					case "Cliente Salp":
-						Integer opt3 = new Integer(JOptionPane.showConfirmDialog(vista,"Los Credito se le asignan solo a los "+ exe.getMessage().concat(
+						opt = new Integer(JOptionPane.showConfirmDialog(vista,"Los Credito se le asignan solo a los "+ exe.getMessage().concat(
 								"Desea Continuar"),"Seleccione la Opcion",2));
-						if(opt3==0){
+						if(opt==0){
 							vista.getBtnGuardarFactura().doClick();
 						}
 						break;
 					case "noCredito":
-						Integer opt4 = new Integer(JOptionPane.showConfirmDialog(vista,"el Cliente Salp no puede obtar por el credito".concat(
+						opt = new Integer(JOptionPane.showConfirmDialog(vista,"el Cliente Salp no puede obtar por el credito".concat(
 								"Desea Continuar"),"Seleccione la Opcion",2));
-						if(opt4==0){
+						if(opt==0){
 							vista.getBtnGuardarFactura().doClick();
 						}
 						break;
-					default:
+					case "Almacen":
+						opt = new Integer(	JOptionPane.showConfirmDialog(vista,"Cargar la Informacion del "+exe.getMessage()));
+						if (opt==0)
+						{
+							vista.getBtnAlmacen().doClick();
+						}
+						break;
+					case "Cliente":
+						opt = new Integer(	JOptionPane.showConfirmDialog(vista,"Cargar la Informacion del "+exe.getMessage()));
+						if (opt==0)
+						{
+							vista.getBtnCliente().doClick();
+						}
+						break;
+					case "Vendedor":
+						opt = new Integer(	JOptionPane.showConfirmDialog(vista,"Cargar la Informacion del "+exe.getMessage()));
+						if (opt==0)
+						{
+							vista.getBtnVendedor().doClick();
+						}
+						break;
+					case "Detalle":
+						opt = new Integer(	JOptionPane.showConfirmDialog(vista,"Cargar la Informacion del "+exe.getMessage()));
+						if (opt==0)
+						{
+							vista.getBtnProducto().doClick();
+						}
+					break;
+					case "Factura Existente":
+						opt = new Integer(JOptionPane.showConfirmDialog(vista,exe.getMessage()
+								+ "no se puede Eliminar ni Modificar \n"
+								+ "desea Generar un Nuevo Pedido\n",".:: Aviso ::.",2));
+						if (opt.equals(0))
+						{
+							try {
+								factura.setId(null);
+								factura.setEstado(null);
+								new ServicioFactura().guardar(factura);
+								factura.setId(new ServicioFactura().ultimaFactura()+1);
+								for(DetalleFactura detalleFactura : detalleFacturas)detalleFactura.setFactura(factura);
+								new ServicioDetalleFactura().guardar(detalleFacturas);
+							
+								JOptionPane.showMessageDialog(vista,"Generado el Pedido Exitosamente \n"
+										+ "Ya Puede Procedar a Generar La Factura");
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+						break;
+						
+					default:exe.printStackTrace();
 						break;
 					}
 				}
@@ -642,16 +658,18 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
+					if(factura.getEstado()!=null) throw new Exception("Aviso"); 
 					if(vista.getTable().getSelectedRow()>=0 && !detalleFacturas.isEmpty())
 					{
 						for(DetalleFactura detalleFactura1 :  detalleFacturas){
-							if (detalleFactura1.getProducto().getId().equals(
+							if (detalleFactura1.getEmpaqueProducto().getId().equals(
 									new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim())))
 							{
 								detalleFacturas.remove(detalleFactura1);
 								if(factura.getId()!=null)
 								{
 									new ServicioDetalleFactura().eliminar(detalleFactura1);
+									new ServicioFactura().guardar(factura);
 								}
 								break;
 							}
@@ -663,9 +681,26 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 						JOptionPane.showMessageDialog(vista,"Seleccione la fila en la tabla");
 					}
 			
-				} catch (Exception e1) {
+				} catch (Exception exe) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Integer opt = new Integer(0);
+					switch (exe.getMessage()) {
+					case "Aviso":
+						opt = new Integer(	JOptionPane.showConfirmDialog(vista,"Operacion Invalida\n"
+								+ "El Pedido ya esta Facturado\n"
+								+ "Desea generar un nuevo Pedido ",exe.getMessage(),2));
+					if (opt==0)
+					{
+						factura.setId(null);
+						for(DetalleFactura detalleFactura : detalleFacturas) detalleFactura.setFactura(factura);
+						vista.getBtnGuardar().doClick();
+					}	
+						break;
+
+					default:
+						break;
+					}
+					exe.printStackTrace();
 				}
 		
 			}
@@ -678,11 +713,21 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				factura.setAlmacen(null);
+				factura.setCliente(null);
+				factura.setVendedor(null);
+				
 				limpiarlbAlmacen();
 				limpiarlblCliente();
 				limpiarlblFactura();
 				limpiarlblVendedor();
 				detalleFacturas.clear();
+				try {
+					actualizarVista();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		};
 	}
@@ -721,21 +766,23 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		binDetalleFactura = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
     			detalleFacturas,vista.getTable());
 		
-		BeanProperty codigoProducto = BeanProperty.create("producto.id");
-		BeanProperty descripcionProducto = BeanProperty.create("producto.descripcion");
+		BeanProperty codigoProducto = BeanProperty.create("codigoStr");
+		BeanProperty descripcionProducto = BeanProperty.create("descripcion");
+		BeanProperty cantidadxEmpaque = BeanProperty.create("unidadesStr");
 	    BeanProperty cantidad = BeanProperty.create("cantidad");
 	    BeanProperty precio = BeanProperty.create("precio");
-	    BeanProperty descuento = BeanProperty.create("descuentoStr");
-	    BeanProperty iva = BeanProperty.create("iva");
+	   // BeanProperty descuento = BeanProperty.create("descuentoStr");
+	    BeanProperty iva = BeanProperty.create("ivaStr");
 	    BeanProperty total = BeanProperty.create("total");
 	    
-	    binDetalleFactura.addColumnBinding(codigoProducto).setColumnClass(String.class).setColumnName("Codigo");
-	    binDetalleFactura.addColumnBinding(descripcionProducto).setColumnClass(String.class).setColumnName("Descripcion");
-	    binDetalleFactura.addColumnBinding(cantidad).setColumnClass(String.class).setColumnName("Cantidad");
-	    binDetalleFactura.addColumnBinding(precio).setColumnClass(String.class).setColumnName("precio");
-	    binDetalleFactura.addColumnBinding(descuento).setColumnClass(String.class).setColumnName("% Desc");
-	    binDetalleFactura.addColumnBinding(total).setColumnClass(String.class).setColumnName("total");
-	    binDetalleFactura.addColumnBinding(iva).setColumnClass(String.class).setColumnName("%iva");
+	    binDetalleFactura.addColumnBinding(codigoProducto).setColumnClass(String.class).setColumnName("CODIGO");
+	    binDetalleFactura.addColumnBinding(descripcionProducto).setColumnClass(String.class).setColumnName("DESCRIPCION");
+	    binDetalleFactura.addColumnBinding(cantidadxEmpaque).setColumnClass(String.class).setColumnName("UNIDAD");
+	    binDetalleFactura.addColumnBinding(cantidad).setColumnClass(String.class).setColumnName("CANTIDAD");
+	    binDetalleFactura.addColumnBinding(precio).setColumnClass(String.class).setColumnName("PRECIO");
+	    //binDetalleFactura.addColumnBinding(descuento).setColumnClass(String.class).setColumnName("% DESC");
+	    binDetalleFactura.addColumnBinding(total).setColumnClass(String.class).setColumnName("TOTAL");
+	    binDetalleFactura.addColumnBinding(iva).setColumnClass(String.class).setColumnName("% I.V.A. ");
 
 	    binDetalleFactura.bind();
 
@@ -786,14 +833,16 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 	
 	public void setProductoAlDetalleFactura(ProductoAlmacen producto) throws Exception {
 		
-		if(producto != null)
-		{
+		try {
+		
+			if(producto == null) throw new Exception("Producto");
+		
 			DetalleFactura detalleFactura = new DetalleFactura();
 			detalleFactura.setFactura(getFactura());
-			detalleFactura.setProducto(producto.getEmpaqueProducto().getProducto());
+			detalleFactura.setEmpaqueProducto(producto.getEmpaqueProducto());
 			
 			Integer cantidad = new Integer(0);
-			try {
+			
 				cantidad = new Integer(JOptionPane.showInputDialog(vista, "Ingrese la Cantidad de Producto a Pedir \n"
 						+ "Numero en Existencia = "+producto.getExistencia()));
 		
@@ -806,25 +855,11 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 					throw new Exception("Cantidad>Existencia");
 				}
 				detalleFactura.setCantidad(cantidad);
+			
 				
-			} catch (Exception exe) {
-				// TODO: handle exception
-				switch (exe.getMessage()) {
-				case "Cantidad<": JOptionPane.showMessageDialog(vista,"Asigne una Cantidad Mayo O igual a 1");
-					break;
-				case "Cantidad>Existencia": JOptionPane.showMessageDialog(vista,"Asigne una Cantidad Menor O igual al Numero en Existencia");
-					break;
-
-				default:
-					exe.printStackTrace();
-					JOptionPane.showMessageDialog(vista,exe.getMessage());
-					break;
-				}
-				
-			}
 			detalleFactura.setPrecio(producto.getEmpaqueProducto().getPrecioEmpaque());
 			detalleFactura.setDescuento(producto.getEmpaqueProducto().getProducto().getDescuento());
-			detalleFactura.setTotal(detalleFactura.getPrecio()*cantidad);
+			detalleFactura.setTotal(detalleFactura.getPrecio()*detalleFactura.getCantidad());
 			
 			if(producto.getEmpaqueProducto().getProducto().getIva()==true)
 			{
@@ -835,22 +870,34 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 				detalleFactura.setIva(12.000);
 			}
 			
-			Boolean enc = new Boolean(false);
 			for(DetalleFactura detalleFactura2 : detalleFacturas)
 			{
-				if(detalleFactura2.getProducto().getId().equals(detalleFactura.getProducto().getId()))
+				if(detalleFactura2.getEmpaqueProducto().getId().equals(detalleFactura.getEmpaqueProducto().getId()))
 				{
-					detalleFactura2.setCantidad(detalleFactura.getCantidad());
-					enc=true;
+					detalleFacturas.remove(detalleFactura2);
 					break;
 				}
-			}
-			if(enc==false)
-			{
-				this.detalleFacturas.add(detalleFactura);
+			}			
+		detalleFacturas.add(detalleFactura);
+		
+		actualizarVista();
+	
+		} catch (Exception exe) {
+			// TODO: handle exception
+			switch (exe.getMessage()) {
+			case "Cantidad<": JOptionPane.showMessageDialog(vista,"Asigne una Cantidad Mayo O igual a 1");
+			break;
+			case "Cantidad>Existencia": JOptionPane.showMessageDialog(vista,"Asigne una Cantidad Menor O igual al Numero en Existencia");
+			break;
+			case "Producto": actualizarVista();
+			break;
+			
+			default:
+				exe.printStackTrace();
+				JOptionPane.showMessageDialog(vista,exe.getMessage());
+				break;
 			}
 		}
-		actualizarVista();
 	}
 
 	public void setVista(PedidosUI vista) {

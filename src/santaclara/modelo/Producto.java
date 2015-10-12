@@ -84,6 +84,7 @@ public class Producto {
 	}
 	
 	public String getDescuentoStr() {
+		
 		return "%  "+descuento;
 	}
 	
@@ -101,7 +102,7 @@ public class Producto {
 	
 	public String getIvaStr() {
 		if (iva.booleanValue()==true) return "Exento";
-		else if (iva.booleanValue()==false) return "gravado";
+		else if (iva.booleanValue()==false) return "12.000";
 		else return "";
 	}
 	

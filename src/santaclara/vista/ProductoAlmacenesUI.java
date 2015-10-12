@@ -276,7 +276,7 @@ public class ProductoAlmacenesUI extends JPanel {
 			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getCapacidad().getVolumenStr()));
 			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getSabor().getSabor()));
 			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getPrecioStr()));
-			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getCantidadStr()));
+			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getUnidadesStr()));
 			pnEmpaqueProducto.setLayout(new GridLayout(1, 0, 0, 0));
 												
 			return pnEmpaqueProducto;
@@ -365,25 +365,24 @@ public class ProductoAlmacenesUI extends JPanel {
 		BeanProperty idEmpaqueProducto = BeanProperty.create("empaqueProducto.id");
 	    BeanProperty descripcionProducto = BeanProperty.create("empaqueProducto.descripcionEmpaque");
 	    
-	    BeanProperty stockProductAlmacen = BeanProperty.create("stock");
-	    BeanProperty stockMinProductoAlmacen = BeanProperty.create("stockMin");
+	    BeanProperty precioUnitario = BeanProperty.create("empaqueProducto.producto.precioStr");
+	    BeanProperty unidades = BeanProperty.create("empaqueProducto.unidadesStr");
 	    BeanProperty existenciaProductoAlmacen = BeanProperty.create("existencia");
-	    BeanProperty precio = BeanProperty.create("empaqueProducto.producto.precioStr");
-	    BeanProperty descuento = BeanProperty.create("empaqueProducto.producto.descuentoStr");
+	    BeanProperty precioCaja = BeanProperty.create("empaqueProducto.precioEmpaqueStr");
+	//    BeanProperty descuento = BeanProperty.create("empaqueProducto.producto.descuentoStr");
 	    BeanProperty ivaExento = BeanProperty.create("empaqueProducto.producto.ivaStr");
 
 	    binProductoAlmacenes.addColumnBinding(idAlmacen).setColumnClass(String.class).setColumnName("Id");
 	    binProductoAlmacenes.addColumnBinding(nombreAlmacen).setColumnClass(String.class).setColumnName("Ubicacion del Almacen");
 	    
-	    binProductoAlmacenes.addColumnBinding(idEmpaqueProducto).setColumnClass(String.class).setColumnName("Id");
+	    binProductoAlmacenes.addColumnBinding(idEmpaqueProducto).setColumnClass(String.class).setColumnName("Id Empaque");
 	    binProductoAlmacenes.addColumnBinding(descripcionProducto).setColumnClass(String.class).setColumnName("Producto");
-	    binProductoAlmacenes.addColumnBinding(precio).setColumnClass(String.class).setColumnName("Precio");
-	    binProductoAlmacenes.addColumnBinding(descuento).setColumnClass(String.class).setColumnName("Descuento");
-		binProductoAlmacenes.addColumnBinding(ivaExento).setColumnClass(String.class).setColumnName("Iva");
+	    binProductoAlmacenes.addColumnBinding(unidades).setColumnClass(String.class).setColumnName("Unidades X Caja");
+	    binProductoAlmacenes.addColumnBinding(precioUnitario).setColumnClass(String.class).setColumnName("Precio Unitario");
+	    binProductoAlmacenes.addColumnBinding(precioCaja).setColumnClass(String.class).setColumnName("Precio X Caja");
+	  //  binProductoAlmacenes.addColumnBinding(descuento).setColumnClass(String.class).setColumnName("Descuento");
+		binProductoAlmacenes.addColumnBinding(ivaExento).setColumnClass(String.class).setColumnName("% I.V.A.");
 	
-	    
-	    binProductoAlmacenes.addColumnBinding(stockProductAlmacen).setColumnClass(String.class).setColumnName("Stock");
-	    binProductoAlmacenes.addColumnBinding(stockMinProductoAlmacen).setColumnClass(String.class).setColumnName("Stock Minimo");
 	    binProductoAlmacenes.addColumnBinding(existenciaProductoAlmacen).setColumnClass(String.class).setColumnName("Existencia");
 
 	    binProductoAlmacenes.bind();

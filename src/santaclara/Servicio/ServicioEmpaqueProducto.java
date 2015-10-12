@@ -27,6 +27,17 @@ public class ServicioEmpaqueProducto {
 	public Producto getProducto(Integer id) throws IOException{
 		return productoDAO.getProducto(id);
 	}
+	public EmpaqueProducto getEmpaqueProducto(Integer idEmpaqueProducto)throws IOException{
+		
+		for(EmpaqueProducto empaqueProducto : getEmpaqueProductos()){
+			if(empaqueProducto.getId().equals(idEmpaqueProducto)){
+				return empaqueProducto;
+			}
+		}
+		return null; 
+		
+	}
+	
 	
 	public String guardar(EmpaqueProducto empaqueProducto) throws IOException {
 		// TODO Auto-generated method stub

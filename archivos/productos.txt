@@ -19,7 +19,7 @@ idCapacidad:0
 idPresentacion:0
 idSabor:0
 nombre:pepe
-precio:30.0
+precio:25.0
 descuento:0.0
 estadoIva:gravado
 id:10

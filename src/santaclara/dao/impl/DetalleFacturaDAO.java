@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import santaclara.Servicio.ServicioEmpaqueProducto;
 import santaclara.dao.IDetalleFacturaDAO;
 import santaclara.modelo.DetalleFactura;
 
@@ -32,15 +33,14 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 				 FacturaDAO facturaDAO = new FacturaDAO();
 				 detalleFactura.setFactura(facturaDAO.getFactura(new Integer(linea)));
 			 }
-			 linea = scaner.skip("idProducto:").nextLine().trim();
+			 linea = scaner.skip("idEmpaqueProducto:").nextLine().trim();
 			 if(linea.trim().length() == 0)
 			 {
-				 detalleFactura.setProducto(null);
+				 detalleFactura.setEmpaqueProducto(null);
 			 }
 			 else
 			 {
-				 ProductoDAO productoDAO = new ProductoDAO();
-				 detalleFactura.setProducto(productoDAO.getProducto(new Integer(linea)));
+				 detalleFactura.setEmpaqueProducto(new ServicioEmpaqueProducto().getEmpaqueProducto(new Integer(linea)));
 			 }
 			 detalleFactura.setCantidad(new Integer(scaner.skip("cantidad:").nextLine().trim()));
 			 detalleFactura.setPrecio(new Double(scaner.skip("precio:").nextLine().trim()));
@@ -68,13 +68,13 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 				for(DetalleFactura detalleFactura1 : detalleFacturas)
 				{
 					if(detalleFactura1.getFactura().getId().equals(detalleFactura.getFactura().getId()) &&
-							detalleFactura1.getProducto().getId().equals(detalleFactura.getProducto().getId()))
+							detalleFactura1.getEmpaqueProducto().getId().equals(detalleFactura.getEmpaqueProducto().getId()))
 					{ 
-						detalleFactura1.setCantidad(detalleFactura1.getCantidad());
-						detalleFactura1.setTotal(detalleFactura1.getTotal());
-						detalleFactura1.setIva(detalleFactura1.getIva()); 
-						detalleFactura1.setPrecio(detalleFactura1.getPrecio());
-						detalleFactura1.setDescuento(detalleFactura1.getDescuento());
+						detalleFactura1.setCantidad(detalleFactura.getCantidad());
+						detalleFactura1.setTotal(detalleFactura.getTotal());
+						detalleFactura1.setIva(detalleFactura.getIva()); 
+						detalleFactura1.setPrecio(detalleFactura.getPrecio());
+						detalleFactura1.setDescuento(detalleFactura.getDescuento());
 						enc = true;
 						break;
 					}
@@ -91,7 +91,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		for(DetalleFactura detalleFactura1 :detalleFacturas)
 		{
 			if(detalleFactura1.getFactura().getId().equals(detalleFactura.getFactura().getId()) 
-						&& detalleFactura1.getProducto().getId().equals(detalleFactura.getProducto().getId()) )
+						&& detalleFactura1.getEmpaqueProducto().getId().equals(detalleFactura.getEmpaqueProducto().getId()) )
 			{
 				detalleFacturas.remove(detalleFactura1);
 				break;
@@ -108,7 +108,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		for(DetalleFactura detalleFactura1 :detalleFacturas)
 		{
 			if(detalleFactura1.getFactura().getId().equals(idFactura) 
-						&& detalleFactura1.getProducto().getId().equals(idProducto) )
+						&& detalleFactura1.getEmpaqueProducto().getId().equals(idProducto) )
 			{
 				return detalleFactura1;
 			}
@@ -121,7 +121,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		for(DetalleFactura detalleFactura :detalleFacturas)
 		{
 			fw.append("idFactura:"+(detalleFactura.getFactura() == null ? "  ":detalleFactura.getFactura().getId())+"\n");
-			fw.append("idProducto:"+(detalleFactura.getProducto() == null ? "  ":detalleFactura.getProducto().getId())+"\n");
+			fw.append("idEmpaqueProducto:"+(detalleFactura.getEmpaqueProducto() == null ? "  ":detalleFactura.getEmpaqueProducto().getId())+"\n");
 			fw.append("cantidad:"+detalleFactura.getCantidad().toString()+"\n");
 			fw.append("precio:"+detalleFactura.getPrecio().toString()+"\n");
 			fw.append("desc:"+detalleFactura.getPrecio().toString()+"\n");
