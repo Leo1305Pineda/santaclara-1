@@ -29,7 +29,7 @@ public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 			 presentacion.setMaterial(scaner.skip("material:").nextLine().toString());
 			 presentaciones.add(presentacion);
 		}
-		
+		scaner.close();
 		return presentaciones;
 	}
 
