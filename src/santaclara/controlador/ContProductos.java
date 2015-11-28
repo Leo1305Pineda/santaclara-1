@@ -33,9 +33,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 		vista = new ProductosUI(this,servicioProducto.getProductos(),
 					servicioProducto.getCapacidades(),
 					servicioProducto.getSabores(),presentacionDAO.getPresentaciones());
-		vista.activarBinding(servicioProducto.getProductos());
 		dibujar(vista,this);
-		vista.quitarNuevo();
 	}
 
 	@Override
@@ -89,7 +87,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 		{
 			throw new Exception("Ingrese nombre ");
 		}
-		if( (Double)(vista.getTxtPrecio().getValue()) <= 1.0 )
+		if( (Double)(vista.getTxtPrecio().getValue()) <= 0.0 )
 		{
 			throw new Exception("Ingrese un monto superior a 1 Bsf. ");
 		}
@@ -132,7 +130,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (vista.getTable().getSelectedRow()>=0)
+				if (vista.getTable().getSelectedRow()>0)
 				{
 					try {
 						Producto producto;
@@ -160,7 +158,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 							vista.quitarNuevo();
 						}
 						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
-								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: EmpaqueProducto");
+								" Este producto esta siendo utilizado en otra clase ");
 		
 					} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -196,7 +194,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				qutarVista();
+				quitarVista();
 			}
 		};
 	}
@@ -296,6 +294,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 		};
 	}
 
+
 	public ActionListener AbrirSabor() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -321,6 +320,15 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ActivarAtras(null);
+			}
+		};
+	}
+
+	public ActionListener quitarNuevo() {
+		// TODO Auto-generated method stub
+		return new  ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				vista.quitarNuevo();
 			}
 		};
 	}	
