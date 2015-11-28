@@ -17,34 +17,32 @@ import santaclara.modelo.Visita;
 public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 
 	private String ruta = "archivos/visitas.txt";
-	private Scanner scaner;
-
 	@Override
 	public List<Visita> getVisitas() throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<Visita> visitas = new ArrayList<Visita>();
 		File file = new File(ruta);
- 		scaner = new Scanner(file);
+ 		Scanner scanner = new Scanner(file);
  		String linea;
-		while(scaner.hasNext())
+		while(scanner.hasNext())
 		{
 			 Visita visita = new Visita();
-			 visita.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 visita.setId(new Integer(scanner.skip("id:").nextLine().trim()));
 			 Date fecha = new Date();
 			try {
-				fecha = new SimpleDateFormat("dd/MM/yyyy").parse(scaner.skip("fecha:").nextLine().toString().trim());
+				fecha = new SimpleDateFormat("dd/MM/yyyy").parse(scanner.skip("fecha:").nextLine().toString().trim());
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			 visita.setFecha(fecha);
 			 
-			 visita.setMotivo(scaner.skip("motivo:").nextLine());
-			 visita.setDescripcion(scaner.skip("descripcion:").nextLine());
-			 visita.setValorVendedor(new Integer(scaner.skip("valorVendedor:").nextLine().trim()));
-			 visita.setValorProducto(new Integer(scaner.skip("valorProducto:").nextLine().trim()));
+			 visita.setMotivo(scanner.skip("motivo:").nextLine());
+			 visita.setDescripcion(scanner.skip("descripcion:").nextLine());
+			 visita.setValorVendedor(new Integer(scanner.skip("valorVendedor:").nextLine().trim()));
+			 visita.setValorProducto(new Integer(scanner.skip("valorProducto:").nextLine().trim()));
 			 linea = new String();
-			 linea = scaner.skip("estado:").nextLine().trim();
+			 linea = scanner.skip("estado:").nextLine().trim();
 			 if (linea.toString().equals("hecho"))
 				 {
 				 visita.setEstado(true);
@@ -54,12 +52,12 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 				  visita.setEstado(false);
 				 }
 			 
-			 linea =scaner.skip("idUsuario:").nextLine().trim();
+			 linea =scanner.skip("idUsuario:").nextLine().trim();
 			 
 			 if(linea.trim().length() == 0) visita.setUsuario(null);
 			 else visita.setUsuario(new UsuarioDAO().getUsuario((new Integer(linea))));
 			 
-			 linea =scaner.skip("idCliente:").nextLine().trim();
+			 linea =scanner.skip("idCliente:").nextLine().trim();
 			 if(linea.trim().length() == 0)
 			 {
 				 visita.setCliente(null);
@@ -72,7 +70,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 			 
 			 visitas.add(visita); 
 		}
-		
+		scanner.close();
 		return visitas;
 
 	}

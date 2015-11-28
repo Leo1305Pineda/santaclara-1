@@ -17,12 +17,12 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		// TODO Auto-generated method stub
 		List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();		
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
+ 		Scanner scanner = new Scanner(file);
  		String linea = new String();
-		while(scaner.hasNext())
+		while(scanner.hasNext())
 		{
 			DetalleFactura detalleFactura = new DetalleFactura();
-			linea = scaner.skip("idFactura:").nextLine();
+			linea = scanner.skip("idFactura:").nextLine();
 			 if(linea.trim().length() == 0)
 			 {
 				 detalleFactura.setFactura(null);
@@ -32,7 +32,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 				 FacturaDAO facturaDAO = new FacturaDAO();
 				 detalleFactura.setFactura(facturaDAO.getFactura(new Integer(linea)));
 			 }
-			 linea = scaner.skip("idProducto:").nextLine();
+			 linea = scanner.skip("idProducto:").nextLine();
 			 if(linea.trim().length() == 0)
 			 {
 				 detalleFactura.setProducto(null);
@@ -42,15 +42,15 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 				 ProductoDAO productoDAO = new ProductoDAO();
 				 detalleFactura.setProducto(productoDAO.getProducto(new Integer(linea)));
 			 }
-			 detalleFactura.setCantidad(new Integer(scaner.skip("cantidad:").nextLine().trim()));
-			 detalleFactura.setPrecio(new Double(scaner.skip("precio:").nextLine().trim()));
-			 detalleFactura.setIva(new Double(scaner.skip("iva:").nextLine().trim()));
-			 detalleFactura.setTotal(new Double(scaner.skip("total:").nextLine().trim()));
+			 detalleFactura.setCantidad(new Integer(scanner.skip("cantidad:").nextLine().trim()));
+			 detalleFactura.setPrecio(new Double(scanner.skip("precio:").nextLine().trim()));
+			 detalleFactura.setIva(new Double(scanner.skip("iva:").nextLine().trim()));
+			 detalleFactura.setTotal(new Double(scanner.skip("total:").nextLine().trim()));
 			 
 			 
 			 detalleFacturas.add(detalleFactura); 
 		}
-		scaner.close();
+		scanner.close();
 		return detalleFacturas;
 
 	}

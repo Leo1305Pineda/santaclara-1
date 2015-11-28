@@ -14,21 +14,21 @@ import santaclara.modelo.Capacidad;
 public class CapacidadDAO extends GenericoDAO implements ICapacidadDAO{
 	
 	private String ruta = "archivos/capacidades.txt";
-	private Scanner scaner;
 
 	@Override
 	public List<Capacidad> getCapacidades() throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<Capacidad> capacidades = new ArrayList<Capacidad>();
 		File file = new File(ruta);
- 		scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			 Capacidad capacidad = new Capacidad();
-			 capacidad.setId(new Integer(scaner.skip("id:").nextLine().trim()));
-			 capacidad.setVolumen(new Double(scaner.skip("volumen:").nextLine().trim()));
+			 capacidad.setId(new Integer(scanner.skip("id:").nextLine().trim()));
+			 capacidad.setVolumen(new Double(scanner.skip("volumen:").nextLine().trim()));
 			 capacidades.add(capacidad);
 		}
+		scanner.close();
 		return capacidades;
 	}
 

@@ -22,22 +22,22 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 		// TODO Auto-generated method stub
 		List<JefeVenta> jefeVentas = new ArrayList<JefeVenta>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			 JefeVenta jefeVenta = new JefeVenta();
 			 
 			 UsuarioDAO usuarioDAO = new UsuarioDAO();
 			 
 			 jefeVenta = getJefeVenta(usuarioDAO.getUsuario(
-					 new Integer(scaner.skip("id:").nextLine().toString().trim())));
+					 new Integer(scanner.skip("id:").nextLine().toString().trim())));
 		
 			 ZonaDAO zonaDAO = new ZonaDAO();
-			 jefeVenta.setZona(zonaDAO.getZona(new Integer(scaner.skip("idZona:").nextLine().toString().trim())));
+			 jefeVenta.setZona(zonaDAO.getZona(new Integer(scanner.skip("idZona:").nextLine().toString().trim())));
 			 			 
 			 jefeVentas.add(jefeVenta); 
 		}
-		scaner.close();
+		scanner.close();
 		//guardar demas datos del vendedor
 		List<Usuario> usuarios;
 		UsuarioDAO usuarioDAO = new UsuarioDAO();

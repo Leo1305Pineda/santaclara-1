@@ -17,7 +17,6 @@ import santaclara.modelo.Salp;
 public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 
 	private String ruta = "archivos/salps.txt";
-	private Scanner scaner;
 
 	@Override
 	public List<Salp> getSalps() throws FileNotFoundException {
@@ -25,13 +24,14 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 		List<Salp> salps = new ArrayList<Salp>();
 		ClienteDAO clienteDAO = new ClienteDAO();
 		File file = new File(ruta);
- 		scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			 Salp salp = new Salp();
-			 salp.setId(new Integer(scaner.skip("idCliente:").nextLine()));
+			 salp.setId(new Integer(scanner.skip("idCliente:").nextLine()));
 			 salps.add(salp);
 		}
+		scanner.close();
 		//Cargo la info de Cliente
 		List<Cliente> clientes;
 		clientes = clienteDAO.getClientes();

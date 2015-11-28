@@ -14,24 +14,23 @@ import santaclara.modelo.Cliente;
 public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 
 	private String ruta = "archivos/Clientes.txt";
-	private Scanner scaner;
-	
+
 	@Override
 	public List<Cliente> getClientes() throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		// Listar Todos lo Clientes 
 		List<Cliente> clientes = new ArrayList<Cliente>();
 		File file = new File(ruta);
- 		scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner  scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			 Cliente cliente = new Cliente();
-			 cliente.setId(new Integer(scaner.skip("id:").nextLine().trim()));
-			 cliente.setRif(scaner.skip("rif:").nextLine().trim());
-			 cliente.setRazonsocial(scaner.skip("razonsocial:").nextLine().trim());
-			 cliente.setDireccion(scaner.skip("direccion:").nextLine());
-			 cliente.setTelefono(scaner.skip("telefono:").nextLine().trim());
-			 String linea =scaner.skip("ruta:").nextLine().trim();
+			 cliente.setId(new Integer(scanner.skip("id:").nextLine().trim()));
+			 cliente.setRif(scanner.skip("rif:").nextLine().trim());
+			 cliente.setRazonsocial(scanner.skip("razonsocial:").nextLine().trim());
+			 cliente.setDireccion(scanner.skip("direccion:").nextLine());
+			 cliente.setTelefono(scanner.skip("telefono:").nextLine().trim());
+			 String linea =scanner.skip("ruta:").nextLine().trim();
 			 if(linea.trim().length() == 0)
 			 {
 				 cliente.setRuta(null);
@@ -43,7 +42,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 			 }
 			 clientes.add(cliente); 
 		}
-		
+  	    scanner.close();
 		return clientes;
 	}
 	@Override

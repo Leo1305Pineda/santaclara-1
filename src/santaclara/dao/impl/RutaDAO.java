@@ -20,22 +20,22 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 		// TODO Auto-generated method stub
 		List<Ruta> rutas = new ArrayList<Ruta>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			Ruta ruta = new Ruta();
-			ruta.setId(new Integer(scaner.skip("id:").nextLine().toString().trim()));
+			ruta.setId(new Integer(scanner.skip("id:").nextLine().toString().trim()));
 			
 			//guardo demas los datos de la Zona 
 			ZonaDAO zonaDAO = new ZonaDAO();
 			ruta.setZona(
 				zonaDAO.getZona(
-					new Integer(scaner.skip("zona:").nextLine().trim())));
+					new Integer(scanner.skip("zona:").nextLine().trim())));
 			
-			ruta.setNombre(scaner.skip("nombre:").nextLine());
+			ruta.setNombre(scanner.skip("nombre:").nextLine());
 			rutas.add(ruta); 
 		}
-		scaner.close();
+		scanner.close();
 		return rutas;
 	}
 

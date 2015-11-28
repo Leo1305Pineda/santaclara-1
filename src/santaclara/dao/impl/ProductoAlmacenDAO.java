@@ -12,14 +12,13 @@ import santaclara.modelo.ProductoAlmacen;
 
 public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenDAO {
 	private String ruta = "archivos/productoAlmacenes.txt";
-	private Scanner scaner;
 	@Override
 	public List<ProductoAlmacen> getProductoAlmacenes() throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		List<ProductoAlmacen> productoAlmacenes = new ArrayList<ProductoAlmacen>();
 		File file = new File(ruta);
- 		scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{			
 			 ProductoAlmacen productoAlmacen = new ProductoAlmacen();
 			 //asigna Producto
@@ -27,21 +26,21 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 			 
 			 productoAlmacen.setEmpaqueProducto(
 					 productoEmpaqueDAO.getEmpaqueProducto(
-							 new Integer(scaner.skip("idEmpaqueProducto:").nextLine().toString().trim())));
+							 new Integer(scanner.skip("idEmpaqueProducto:").nextLine().toString().trim())));
 			 
 			 //asigna Almacen
 			 AlmacenDAO almacenDAO = new AlmacenDAO();
 			 productoAlmacen.setAlmacen(
 					 almacenDAO.getAlmacen(
-							 new Integer(scaner.skip("idAlmacen:").nextLine().toString().trim())));
+							 new Integer(scanner.skip("idAlmacen:").nextLine().toString().trim())));
 			 
-			 productoAlmacen.setStock(new Integer(scaner.skip("stock:").nextLine().toString().trim()));
-			 productoAlmacen.setStockMin(new Integer(scaner.skip("stockMin:").nextLine().toString().trim()));
-			 productoAlmacen.setExistencia(new Integer(scaner.skip("existencia:").nextLine().toString().trim()));
+			 productoAlmacen.setStock(new Integer(scanner.skip("stock:").nextLine().toString().trim()));
+			 productoAlmacen.setStockMin(new Integer(scanner.skip("stockMin:").nextLine().toString().trim()));
+			 productoAlmacen.setExistencia(new Integer(scanner.skip("existencia:").nextLine().toString().trim()));
 			 
 			 productoAlmacenes.add(productoAlmacen); 
 		}
-		
+		scanner.close();
 		return productoAlmacenes;
 
 	}
