@@ -20,7 +20,6 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 	public ContAlmacenes() throws NumberFormatException, IOException{
 		servicioAlmacen = new ServicioAlmacen();
 		vista = new AlmacenesUI(this,servicioAlmacen.getAlmacenes());
-		vista.activarBinding(servicioAlmacen.getAlmacenes());
 	}
 	
 	public ContAlmacenes(ContPrincipal contPrincipal) throws Exception {
@@ -28,20 +27,17 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 		setContPrincipal(contPrincipal);
 		servicioAlmacen = new ServicioAlmacen();
 		vista = new AlmacenesUI(this,servicioAlmacen.getAlmacenes());
-		vista.activarBinding(servicioAlmacen.getAlmacenes());
 		dibujar(vista,this);
-		vista.quitarNuevo();
 	}
 
 	@Override
 	public JPanel getVista() {
 		// TODO Auto-generated method stub
-		return null;
+		return vista;
 	}
 	
 	public ActionListener nuevo(){
 		return new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -62,17 +58,17 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 					Almacen almacen  = new Almacen();
 					try {
 						almacen = servicioAlmacen.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-					} catch (NumberFormatException | IOException e1) {
+						if (almacen != null)
+						{
+							vista.activarNuevoAlmacen();
+							vista.getScrollPanel().setVisible(false);
+							vista.getTxtId().setText(almacen.getId().toString());
+							vista.getTxtUbicacion().setText(almacen.getUbicacion());
+						}
+					} catch (IOException e1) {
 						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(vista,e1.getMessage());
 						e1.printStackTrace();
-					}
-					if (almacen != null)
-					{
-						vista.activarNuevoAlmacen();
-						vista.getScrollPanel().setVisible(false);
-						
-						vista.getTxtId().setText(almacen.getId().toString());
-						vista.getTxtUbicacion().setText(almacen.getUbicacion());
 					}
 				}
 				else
@@ -95,26 +91,26 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 				if (vista.getTxtId().getText().equals("")) almacen.setId(null);
 					else almacen.setId(new Integer(vista.getTxtId().getText().toString())); 
 				
-				if (vista.getTxtUbicacion().getText().equals("")) JOptionPane.showMessageDialog(vista,"Campos Vacios: Ubicacion");
-					else
-						{
-							try {								
-									almacen.setUbicacion(vista.getTxtUbicacion().getText().toString());								
-									JOptionPane.showMessageDialog(vista,servicioAlmacen.guardar(almacen));
-									// agregarlo a la lista
-									vista.getAlmacenes().add(almacen);
+				if (vista.getTxtUbicacion().getText().equals(""))
+					JOptionPane.showMessageDialog(vista,"Campos Vacios: Ubicacion");
+				else
+				{
+					try {								
+						almacen.setUbicacion(vista.getTxtUbicacion().getText().toString());								
+						JOptionPane.showMessageDialog(vista,servicioAlmacen.guardar(almacen));
+						// agregarlo a la lista
+						vista.getAlmacenes().add(almacen);
+						vista.getBinAlmacenes().unbind();
+						vista.getBinAlmacenes().bind();
+						vista.activarBinding(servicioAlmacen.getAlmacenes());
+						vista.quitarNuevo();
 									
-									vista.getBinAlmacenes().unbind();
-									vista.getBinAlmacenes().bind();
-									vista.activarBinding(servicioAlmacen.getAlmacenes());
-									vista.quitarNuevo();
-									
-								} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								JOptionPane.showConfirmDialog(null,e1.getMessage());
-								e1.printStackTrace();
-								}
-						}
+					} catch (IOException e1) {
+					// TODO Auto-generated catch block
+						JOptionPane.showConfirmDialog(null,e1.getMessage());
+						e1.printStackTrace();
+					}
+				}
 			}
 		};
 	}
@@ -190,7 +186,7 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				qutarVista();
+				quitarVista();
 			}
 		};
 		
@@ -204,21 +200,41 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
+					if (vista.getTable().getSelectedRow()>=0)
+					{
 						Almacen almacen;
-						almacen = servicioAlmacen.getAlmacen(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
-				
-						servicioAlmacen.eliminar(almacen);
-						
-						vista.getBinAlmacenes().unbind();
-						vista.getBinAlmacenes().bind();				
-						vista.activarBinding(servicioAlmacen.getAlmacenes());
-						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-						vista.quitarNuevo();
-						
+						almacen = servicioAlmacen.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						if (almacen != null)
+						{
+							almacen = servicioAlmacen.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
+							servicioAlmacen.eliminar(almacen);
+							vista.getBinAlmacenes().unbind();
+							vista.getBinAlmacenes().bind();				
+							vista.activarBinding(servicioAlmacen.getAlmacenes());
+							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+							vista.quitarNuevo();
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(vista,"Seleccione el Almacen");
+					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+		};
+	}
+
+	public ActionListener quitarNuevo() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				vista.quitarNuevo();
 			}
 		};
 	}
