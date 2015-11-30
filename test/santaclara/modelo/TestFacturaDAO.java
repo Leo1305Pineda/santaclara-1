@@ -38,7 +38,7 @@ public class TestFacturaDAO {
 				new Double("8329"),new Double("655"),
 				new Double("655"),
 				clienteDAO.getCliente(1),
-				vendedorDAO.getVendedor(1),new ServicioAlmacen().getAlmacen(2),true);
+				vendedorDAO.getVendedor(1),new ServicioAlmacen().buscar(2),true);
 			
 		facturaDAO.guardar(factura1);
 		assertNotNull(factura1.getId());
