@@ -166,6 +166,7 @@ public class PresentacionesUI extends JPanel {
 		pnPresentacion.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnPresentaciones.add(pnPresentacion);
 		pnPresentacion.setLayout(null);
+		pnPresentacion.setVisible(false);
 		
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(contPresentaciones.guardar());
@@ -202,6 +203,8 @@ public class PresentacionesUI extends JPanel {
 		txtId.setBounds(254, 12, 54, 19);
 		pnPresentacion.add(txtId);
 		txtId.setColumns(10);
+		
+		activarBinding(presentaciones);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -210,16 +213,13 @@ public class PresentacionesUI extends JPanel {
 		pnTabla.setVisible(true);
 		table = new JTable();
 		scrollPanel.setViewportView(table);
-		binPresentaciones = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
-    			presentaciones,table);
+		binPresentaciones = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,presentaciones,table);
 		
 		BeanProperty idPresentacion  = BeanProperty.create("id");
 		BeanProperty materialPresentacion = BeanProperty.create("material");
-	    
-	    
-	    binPresentaciones.addColumnBinding(idPresentacion).setColumnClass(Integer.class).setColumnName("id");;
+
+		binPresentaciones.addColumnBinding(idPresentacion).setColumnClass(Integer.class).setColumnName("id");;
 	    binPresentaciones.addColumnBinding(materialPresentacion).setColumnClass(String.class).setColumnName("Material");
-	    
 	    binPresentaciones.bind();
 
 	}

@@ -6,6 +6,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 
 import santaclara.controlador.ContIniciarSesion;
+import santaclara.vista.herramientas.VistaGenericaUI;
 
 import java.awt.Color;
 
@@ -30,7 +31,7 @@ public class IniciarSesionUI extends JPanel {
 	public IniciarSesionUI(ContIniciarSesion controlador) {
 		setBackground(Color.WHITE);
 		setLayout(null);
-		setSize(1200,800);;
+		setSize(VistaGenericaUI.getWidthPantalla(),VistaGenericaUI.getHeightPantalla());
 		btnEntrar = new JButton("Iniciar Sesion");
 		btnEntrar.setBounds(528, 388, 161, 44);
 		btnEntrar.addActionListener(controlador.iniciarsesion());
