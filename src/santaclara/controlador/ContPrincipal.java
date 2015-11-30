@@ -1,42 +1,34 @@
 package santaclara.controlador;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import santaclara.modelo.Almacen;
-import santaclara.modelo.Cliente;
-import santaclara.modelo.ProductoAlmacen;
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
 
-public  class ContPrincipal implements IContGeneral {
+public  class ContPrincipal {
 	
-	private PrincipalUI  vista ;
+	private PrincipalUI  vista;
 	private IContGeneral controlador;
 	private Usuario		 usuario;
 	private Stack<String> cache = new Stack<String>();
 	private Stack<Object> cacheObjet = new Stack<Object>();
 	private Boolean editorActivo = new Boolean(false);
 	
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	public static void main(String[] args) {
 	   ContPrincipal controlador = new  ContPrincipal();
 	   controlador.ejecutar();   
 	   
 	}
 
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	private void ejecutar() {
 		// TODO Auto-generated method stub
 		vista = new PrincipalUI(this);
-		// iniciar session
 		try {
 			setControlador(new ContIniciarSesion(this));
 		}
@@ -49,10 +41,11 @@ public  class ContPrincipal implements IContGeneral {
 
 	void agregarPanel(JPanel panel)
 	{
-		vista.getFrame().getContentPane().removeAll();
-		vista.getFrame().getContentPane().add(panel);
+		//vista.getFrame().getContentPane().removeAll();
+		//vista.getFrame().getContentPane().add(panel);
+		//vista.getFrame().getContentPane().removeAll();
+		vista.getFrame().setContentPane(panel);
 		vista.getFrame().repaint();
-	
 	}
 	
 	void quitarPanel(){
@@ -71,33 +64,17 @@ public  class ContPrincipal implements IContGeneral {
 	
 	public void dibujarMenu()
 	{
-		//dado el usuario 
-		// limpiar contenedor 
 		vista.getFrame().getContentPane().removeAll();
 		vista.dibujarMenu(usuario);
-		
 	}
-
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	public IContGeneral getControlador() {
 		return controlador;
 	}
 
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	public void setControlador(IContGeneral controlador) {
 		this.controlador = controlador;
 	}
 
-	@Override
-	public JPanel getVista() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	
 	/************ Salir Session *************/
 	public ActionListener salirSesion() {
@@ -118,14 +95,13 @@ public  class ContPrincipal implements IContGeneral {
 	public ActionListener activarMenu() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if(e.getSource().equals(vista.getMntAlmacen()))
-					{
+				{
 						ActivarAlmacenes();
-					}
+				}
 				else if(e.getSource().equals(vista.getMntCamiones()))
 				{
 					ActivarCamiones();
@@ -141,10 +117,6 @@ public  class ContPrincipal implements IContGeneral {
 				else if(e.getSource().equals(vista.getMntConcesionario()))
 				{
 					ActivarUsuarios();
-				}
-				else if(e.getSource().equals(vista.getMntConcesionarioRutas()))
-				{
-					//ActivarConcesionarioRutas();
 				}
 				else if(e.getSource().equals(vista.getMntEmpaqueProductos()))
 				{
@@ -372,7 +344,7 @@ public  class ContPrincipal implements IContGeneral {
 	public void ActivarPedidos(Object objetContCache,Object objetContCachePresente,Object objetClassVista) {
 		// TODO Auto-generated method stub
 		try {
-			ContPedidos contPedidos = new ContPedidos(ContPrincipal.this);
+			//ContPedidos contPedidos = new ContPedidos(ContPrincipal.this);
 			if(objetContCache!=null)
 			{
 					/*Nota: objetContCacheAux =
@@ -381,12 +353,12 @@ public  class ContPrincipal implements IContGeneral {
 					
 					//carga la vista Previa almacenada en al cache de objet Controlador
 					
-					contPedidos.setAlmacen(((ContPedidos)objetContCache).getAlmacen());
+				/*	contPedidos.setAlmacen(((ContPedidos)objetContCache).getAlmacen());
 					contPedidos.setVendedor(((ContPedidos)objetContCache).getVendedor());
 		 			contPedidos.setCliente(((ContPedidos)objetContCache).getCliente());
 		 			contPedidos.setFactura(((ContPedidos)objetContCache).getFactura());
 		 			contPedidos.setDetalleFacturas(((ContPedidos)objetContCache).getDetalleFactura());
-		 			contPedidos.actualizarVista();
+		 			contPedidos.actualizarVista();*/
 		 			//contPedidos.setVista(((ContPedidos)objetContCache).getVista());
 			} 
 		 	if(objetContCachePresente!=null)
@@ -395,7 +367,7 @@ public  class ContPrincipal implements IContGeneral {
 		 			/*Nota: objetContCache =
 					 *  corresponde a la clase modelo  
 					 *  que se almaceno en el cache*/
-		 			
+		 		/*	
 					switch (objetContCachePresente.getClass().getName()) {
 					case "santaclara.controlador.ContAlmacenes":
 						if (objetClassVista == null)contPedidos.setAlmacen(null);
@@ -424,9 +396,9 @@ public  class ContPrincipal implements IContGeneral {
 
 					default:
 						break;
-				}
+				}*/
 			}
-			controlador = contPedidos;
+		//	controlador = contPedidos;
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block

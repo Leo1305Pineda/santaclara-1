@@ -25,15 +25,13 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 		setContPrincipal(contPrincipal);
 		servicioCamion = new ServicioCamion();
 		vista = new CamionesUI(this, servicioCamion.getCamiones());
-		vista.activarBinding(servicioCamion.getCamiones());
 		dibujar(vista,this);
-		vista.quitarNuevo();
 	}
 
 	@Override
 	public JPanel getVista() {
 		// TODO Auto-generated method stub
-		return null;
+		return vista;
 	}
 	
 	public ActionListener nuevo(){
@@ -190,12 +188,24 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				qutarVista();
+				vista.quitarNuevo();
 			}
 		};
 		
 	}
 
+	public ActionListener quitarNuevo() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				vista.quitarNuevo();
+			}
+		};
+	}
+	
 	public ActionListener eliminar() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {

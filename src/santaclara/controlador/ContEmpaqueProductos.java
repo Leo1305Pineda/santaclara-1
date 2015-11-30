@@ -162,7 +162,7 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				qutarVista();
+				quitarVista();
 			}
 		};
 	}

@@ -54,8 +54,10 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 				try {
 					validar();
 					Producto producto = new Producto();
-					if (vista.getTxtId().getText().equals(""))producto.setId(null);
-					else producto.setId(new Integer(vista.getTxtId().getText().toString()));
+					if (vista.getTxtId().getText().equals(""))
+						producto.setId(null);
+					else 
+						producto.setId(new Integer(vista.getTxtId().getText().toString()));
 				
 					producto.setNombre(vista.getTxtNombre().getText());			
 					producto.setPrecio((Double) vista.getTxtPrecio().getValue());
@@ -74,7 +76,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 				    JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 				} catch (Exception exe) {
 					// TODO Auto-generated catch block
-					JOptionPane.showConfirmDialog(vista,exe.getMessage());
+					JOptionPane.showMessageDialog(vista,exe.getMessage());
 					exe.printStackTrace();
 				}
 			}
