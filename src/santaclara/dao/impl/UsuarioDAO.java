@@ -21,19 +21,19 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 		// Listar Todos lo Usuario 
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			 Usuario usuario = new Usuario();
-			 usuario.setId(new Integer(scaner.skip("id:").nextLine()));
-			 usuario.setUsername(scaner.skip("username:").nextLine());
-			 usuario.setCedula(scaner.skip("cedula:").nextLine());
-			 usuario.setNombre(scaner.skip("nombre:").nextLine());
-			 usuario.setContrasena(scaner.skip("contrasena:").nextLine());
+			 usuario.setId(new Integer(scanner.skip("id:").nextLine()));
+			 usuario.setUsername(scanner.skip("username:").nextLine());
+			 usuario.setCedula(scanner.skip("cedula:").nextLine());
+			 usuario.setNombre(scanner.skip("nombre:").nextLine());
+			 usuario.setContrasena(scanner.skip("contrasena:").nextLine());
 			 		 
 			 usuarios.add(usuario); 
 		}
-		scaner.close();
+		scanner.close();
 		return usuarios;
 	}
 	@Override

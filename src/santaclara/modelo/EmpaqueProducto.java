@@ -40,10 +40,6 @@ public class EmpaqueProducto {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public String getUnidadesStr() {
-		return unidades.toString().concat(" Un.xCAJ."); 
-	}
-	
 	public String getDescripcionEmpaque(){
 		return  producto.getId()+"  "+
 				producto.getNombre()+"  "+
@@ -58,5 +54,10 @@ public class EmpaqueProducto {
 	
 	public String  getPrecioEmpaqueStr() {
 	return (producto.getPrecio()*unidades)+" BsF.";
+	}
+
+	public String getUnidadesStr() {
+		// TODO Auto-generated method stub
+		return unidades.toString().concat(" Un.xCAJ."); 
 	}
 }

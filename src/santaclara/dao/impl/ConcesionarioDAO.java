@@ -50,25 +50,25 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 		File file = new File(ruta);
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		List<Usuario> usuarios;
- 		Scanner scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			 Concesionario concesionario = new Concesionario();
-			 concesionario.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 concesionario.setId(new Integer(scanner.skip("id:").nextLine().trim()));
 			 
 			 CamionDAO camionDAO = new CamionDAO();
 			 		concesionario.setCamion(
 			 			camionDAO.getCamion(
-			 					new Integer(scaner.skip("camion:").nextLine().toString().trim())));
+			 					new Integer(scanner.skip("camion:").nextLine().toString().trim())));
 			 
 			 RutaDAO rutaDAO = new RutaDAO();
 			 concesionario.setRuta(
 					 rutaDAO.getRuta(
-							 new Integer(scaner.skip("ruta:").nextLine().trim())));
+							 new Integer(scanner.skip("ruta:").nextLine().trim())));
 			 
 			 concesionarios.add(concesionario); 
 		}
-		scaner.close();
+		scanner.close();
 		//guardar demas datos del vendedor 
 		usuarios = usuarioDAO.getUsuarios();
 		

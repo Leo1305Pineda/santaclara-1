@@ -20,15 +20,15 @@ public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
 		// TODO Auto-generated method stub
 		List<Zona> zonas = new ArrayList<Zona>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			Zona zona = new Zona();
-			zona.setId(new Integer(scaner.skip("id:").nextLine().toString().trim()));
-			zona.setDescripcion(scaner.skip("descripcion:").nextLine().toString());
+			zona.setId(new Integer(scanner.skip("id:").nextLine().toString().trim()));
+			zona.setDescripcion(scanner.skip("descripcion:").nextLine().toString());
 			zonas.add(zona); 
 		}
-		scaner.close();
+		scanner.close();
 		return zonas;
 	}
 

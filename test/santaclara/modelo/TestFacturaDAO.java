@@ -34,7 +34,7 @@ public class TestFacturaDAO {
 		
 		@SuppressWarnings("deprecation")
 		
-		Factura factura1 = new Factura(null,new Date("2015/10/05"),clienteDAO.getCliente(1),vendedorDAO.getVendedor(1),new ServicioAlmacen().getAlmacen(2),true,0.0,100.0,0.0,100.0,12.0,112.0);
+		Factura factura1 = null;//new Factura(null,new Date("2015/10/05"),clienteDAO.getCliente(1),vendedorDAO.getVendedor(1),new ServicioAlmacen().getAlmacen(2),true,0.0,100.0,0.0,100.0,12.0,112.0);
 			
 		facturaDAO.guardar(factura1);
 		assertNotNull(factura1.getId());

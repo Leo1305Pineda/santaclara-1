@@ -32,6 +32,12 @@ public class ServicioDomicilioComercio {
 		// TODO Auto-generated method stub
 		return domicilioComercioDAO.getDomicilioComercio(id);
 	}
+	
+	public Boolean isbuscar(Integer id) throws IOException {
+		DomicilioComercio domicilioComercio = domicilioComercioDAO.getDomicilioComercio(id);
+		if (domicilioComercio != null) return true; 
+		return false;
+	} 
 
 	public void guardar(DomicilioComercio domicilioComercio) throws IOException {
 		// TODO Auto-generated method stub

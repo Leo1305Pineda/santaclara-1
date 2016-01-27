@@ -33,10 +33,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 		vista = new ProductosUI(this,servicioProducto.getProductos(),
 					servicioProducto.getCapacidades(),
 					servicioProducto.getSabores(),presentacionDAO.getPresentaciones());
-		vista.getChckbxExentoDelIva().setSelected(false);
-		vista.activarBinding(servicioProducto.getProductos());
 		dibujar(vista,this);
-		vista.quitarNuevo();
 	}
 
 	@Override
@@ -57,14 +54,13 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 				try {
 					validar();
 					Producto producto = new Producto();
-					if (vista.getTxtId().getText().equals(""))producto.setId(null);
-					else producto.setId(new Integer(vista.getTxtId().getText().toString()));
+					if (vista.getTxtId().getText().equals(""))
+						producto.setId(null);
+					else 
+						producto.setId(new Integer(vista.getTxtId().getText().toString()));
 				
 					producto.setNombre(vista.getTxtNombre().getText());			
 					producto.setPrecio((Double) vista.getTxtPrecio().getValue());
-					producto.setDescuento((Double) vista.getTxtDescuento().getValue());
-					producto.setIva(vista.getChckbxExentoDelIva().isSelected());
-					
 					producto.setCapacidad((Capacidad) vista.getCmbCapacidad().getSelectedItem());
 					producto.setPresentacion((Presentacion)vista.getCmbPresentacion().getSelectedItem());
 					producto.setSabor((Sabor)vista.getCmbSabor().getSelectedItem());
@@ -80,7 +76,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 				    JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 				} catch (Exception exe) {
 					// TODO Auto-generated catch block
-					JOptionPane.showConfirmDialog(vista,exe.getMessage());
+					JOptionPane.showMessageDialog(vista,exe.getMessage());
 					exe.printStackTrace();
 				}
 			}
@@ -93,7 +89,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 		{
 			throw new Exception("Ingrese nombre ");
 		}
-		if( (Double)(vista.getTxtPrecio().getValue()) <= 1.0 )
+		if( (Double)(vista.getTxtPrecio().getValue()) <= 0.0 )
 		{
 			throw new Exception("Ingrese un monto superior a 1 Bsf. ");
 		}
@@ -136,7 +132,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (vista.getTable().getSelectedRow()>=0)
+				if (vista.getTable().getSelectedRow()>0)
 				{
 					try {
 						Producto producto;
@@ -164,7 +160,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 							vista.quitarNuevo();
 						}
 						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
-								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: EmpaqueProducto");
+								" Este producto esta siendo utilizado en otra clase ");
 		
 					} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -200,7 +196,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				qutarVista();
+				quitarVista();
 			}
 		};
 	}
@@ -223,8 +219,6 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 								vista.getTxtId().setText(producto.getId().toString());
 								vista.getTxtNombre().setText(producto.getNombre());
 								vista.getTxtPrecio().setValue(producto.getPrecio());
-								vista.getTxtDescuento().setValue(producto.getDescuento());
-								vista.getChckbxExentoDelIva().setSelected(producto.getIva());;
 								setSelectedValue(vista.getCmbPresentacion(),producto.getPresentacion().getId());
 								setSelectedValue(vista.getCmbCapacidad(),producto.getCapacidad().getId());
 								setSelectedValue(vista.getCmbSabor(),producto.getSabor().getId());
@@ -302,6 +296,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 		};
 	}
 
+
 	public ActionListener AbrirSabor() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -327,6 +322,15 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ActivarAtras(null);
+			}
+		};
+	}
+
+	public ActionListener quitarNuevo() {
+		// TODO Auto-generated method stub
+		return new  ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				vista.quitarNuevo();
 			}
 		};
 	}	

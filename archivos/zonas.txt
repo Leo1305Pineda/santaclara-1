@@ -1,16 +1,26 @@
 id:0
-descripcion:centro
+descripcion:Centro Barquisimeto.
 id:1
-descripcion:Norte
+descripcion:Norte Barquisimeto.
 id:2
-descripcion:sur
+descripcion:sur Barquisimeto.
 id:3
-descripcion:Este
+descripcion:Este Barquisimeto.
 id:4
-descripcion:Oeste
+descripcion:Oeste Barquisimeto.
 id:5
-descripcion:NorOeste
+descripcion:NorOeste Barquisimeto.
 id:6
-descripcion:NorEste
+descripcion:NorEste Barquisimeto.
 id:7
-descripcion:SurEste
+descripcion:SurOeste Barquisimeto.
+id:8
+descripcion:SurEste Barquisimeto.
+id:9
+descripcion:Centro Cabudare.
+id:10
+descripcion:Norte Cabudare.
+id:11
+descripcion:CentrOeste Barquisimeto.
+id:12
+descripcion:Este Cabudare.

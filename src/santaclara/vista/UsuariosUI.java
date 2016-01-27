@@ -216,14 +216,10 @@ public class UsuariosUI extends JPanel {
 		pnTabla = new JPanel();
 		pnTabla.setBounds(12, 85, 852, 103);
 		pnUsuarios.add(pnTabla);
-		GridBagLayout gbl_pnTabla = new GridBagLayout();
-		gbl_pnTabla.columnWidths = new int[]{852, 0};
-		gbl_pnTabla.rowHeights = new int[]{100, 0};
-		gbl_pnTabla.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_pnTabla.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		pnTabla.setLayout(gbl_pnTabla);
+		pnTabla.setLayout(null);
 		
 		table = new JTable();
+		table.setBounds(0, 0, 0, 0);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -231,18 +227,11 @@ public class UsuariosUI extends JPanel {
 			new String[] {
 			}
 		));
-		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.anchor = GridBagConstraints.NORTHWEST;
-		gbc_table.gridx = 0;
-		gbc_table.gridy = 0;
-		pnTabla.add(table, gbc_table);
+		pnTabla.add(table);
 		
 		scrollPanel = new JScrollPane();
-		GridBagConstraints gbc_scrollPanel = new GridBagConstraints();
-		gbc_scrollPanel.fill = GridBagConstraints.BOTH;
-		gbc_scrollPanel.gridx = 0;
-		gbc_scrollPanel.gridy = 0;
-		pnTabla.add(scrollPanel, gbc_scrollPanel);
+		scrollPanel.setBounds(0, 0, 852, 100);
+		pnTabla.add(scrollPanel);
 		
 		panel_1 = new JPanel();
 		panel_1.setForeground(Color.GRAY);
@@ -582,6 +571,8 @@ public class UsuariosUI extends JPanel {
 		pnTabla.setVisible(true);
 		table = new JTable();
 		scrollPanel.setViewportView(table);
+		pnTabla.setBounds(12, 85, 852, 408);
+		scrollPanel.setBounds(0, 0, 852, 408);
 		binUsuarios = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
 				jefeVentas,table);
 		BeanProperty idUsuario  = BeanProperty.create("id");
@@ -604,6 +595,8 @@ public class UsuariosUI extends JPanel {
 	public void activarBindingConcesionarios(List<Concesionario> concesionarios) {
 		pnTabla.setVisible(true);
 		table = new JTable();
+		pnTabla.setBounds(12, 85, 852, 408);
+		scrollPanel.setBounds(0, 0, 852, 408);
 		scrollPanel.setViewportView(table);
 		binUsuarios = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
 				concesionarios,table);

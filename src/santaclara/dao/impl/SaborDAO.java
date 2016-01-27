@@ -20,15 +20,15 @@ public class SaborDAO extends GenericoDAO implements ISaborDAO{
 		// TODO Auto-generated method stub
 		List<Sabor> sabores = new ArrayList<Sabor>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			 Sabor sabor = new Sabor();
-			 sabor.setId(new Integer(scaner.skip("id:").nextLine().trim()));
-			 sabor.setSabor(scaner.skip("sabor:").nextLine().trim());
+			 sabor.setId(new Integer(scanner.skip("id:").nextLine().trim()));
+			 sabor.setSabor(scanner.skip("sabor:").nextLine().trim());
 			 sabores.add(sabor);
 		}
-		scaner.close();
+		scanner.close();
 		return sabores;
 	}
 

@@ -12,12 +12,15 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
+import santaclara.Servicio.ServicioCliente;
 import santaclara.Servicio.ServicioConcesionario;
 import santaclara.Servicio.ServicioDetalleFactura;
 import santaclara.Servicio.ServicioDomicilioComercio;
@@ -74,19 +77,39 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		vista.getLblRuta().setText("Ruta:");
 	}
 	
-	public void cargarClientelbl(Cliente cliente){
+	public void cargarClientelbl(Cliente cliente) throws IOException{
 		
 		if (cliente.getId()==null)
 		{
 			limpiarlblCliente();
+			vista.getPnlCliente().setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
 		}
 		else
 		{
+			setPnlClienteTitle(cliente.getId());
 			vista.getLblRif().setText("Rif: "+cliente.getRif());
 			vista.getLblRazonSocial().setText("Nombre o Razon Social: "+cliente.getId()+"-> "+cliente.getRazonsocial());
 			vista.getLblTelefono().setText("Telefono: "+cliente.getTelefono());
 			vista.getLblDireccion().setText("-> "+cliente.getDireccion());
 			vista.getLblRuta().setText("Ruta: "+cliente.getRutaNombre());
+		}
+		
+	}
+	
+	public void setPnlClienteTitle(Integer id) throws IOException{
+	
+		if (new ServicioDomicilioComercio().isbuscar(id).equals(false))
+		{
+			vista.getPnlCliente().setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Cliente Salp", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		}
+		else
+		{
+			if(new ServicioDomicilioComercio().getdDomicilioComercio(id).getTipo().equals("C")) 
+			{
+				vista.getPnlCliente().setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Cliente Comercial", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
+			}
+			else vista.getPnlCliente().setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Cliente Domicilio", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
+				
 		}
 	}
 	
@@ -107,7 +130,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 	
 	public void limpiarlbAlmacen(){
 	
-			vista.getLblAlmacen().setText("");
+			vista.getLblAlmacen().setText("Ubicacion:");
 	}
 	
 	public void cargarAlmacenlbl(Almacen almacen){
@@ -122,9 +145,9 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 	}
 	
 	public void limpiarlblFactura(){
-		vista.getLblNumeroPedido().setText("Numero:      AutoGenerado");
+		vista.getTxtNumeroPedido().setText("Numero:      AutoGenerado");
 		vista.getLblFecha().setText("Fecha:       "+new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
-		vista.getLblCondicion().setText("Condicion: ");
+		vista.getLblCondicion().setText("Condicion de Pago: ");
 		vista.getLblSubtotalExento().setText("SUBTOTAL EXENTO:    ");
 		vista.getLblSubtotalGravado().setText("SUBTOTAL GRAVADO:   ");
 		vista.getLblDesc().setText("% DESCUENTO.:       ");
@@ -139,11 +162,11 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		limpiarlblFactura();
 	if(factura.getId()==null)
 	{
-		vista.getLblNumeroPedido().setText("Numero:      AutoGenerado");
+		vista.getTxtNumeroPedido().setText("Numero:      AutoGenerado");
 	}
 	else
 	{
-		vista.getLblNumeroPedido().setText("Numero:"+factura.getId().toString());
+		vista.getTxtNumeroPedido().setText("Numero:"+factura.getId().toString());
 	}
 	vista.getLblFecha().setText("Fecha:       "+new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
 	
@@ -233,7 +256,6 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 				// TODO Auto-generated method stub
 				try {
 					ContClientes contClientes = new  ContClientes(getContPrincipal());
-					contClientes.getVista().getComboRutas().setEnabled(true);
 					if(factura.getVendedor()!=null)
 					{
 						if((new ServicioVendedor().getVendedor(factura.getVendedor().getId()))!=null)
@@ -243,8 +265,8 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 									new DefaultComboBoxModel(
 											new String[] {"Salp"}));
 							contClientes.getVista().getCmbTipoCliente().setEnabled(true);
-							contClientes.getVista().setRutas(vendedor1.getRutas());
-							contClientes.getVista().activarBindingSalp(
+							contClientes.setRutas(vendedor1.getRutas());
+							contClientes.activarBindingSalp(
 									new ServicioSalp().getSalps(vendedor1.getRutas()));
 						}
 						else if((new ServicioConcesionario().getConcesionario(factura.getVendedor().getId()))!=null)
@@ -254,17 +276,18 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 									new DefaultComboBoxModel(
 											new String[] {"Domicilio","Comercial"}));
 							contClientes.getVista().getCmbTipoCliente().setEnabled(true);
-							contClientes.getVista().getRutas().add(vendedor1.getRuta());
+							contClientes.getRutas().add(vendedor1.getRuta());
 							List<DomicilioComercio> domicilioComercios =new ServicioDomicilioComercio().getDomicilioComercios(vendedor1.getRuta());
 							if (domicilioComercios.isEmpty())
 							{
-								contClientes.getVista().getComboRutas().setSelectedItem(vendedor1.getRuta());
-								contClientes.getVista().activarBindingDomicilioComercios(domicilioComercios);
+								contClientes.getCliente().setRuta(vendedor1.getRuta());
+								contClientes.cargarCliente();
+								contClientes.activarBindingDomicilioComercios(domicilioComercios);
 								throw new Exception("ruta null");
 							}
 							else
 							{
-								contClientes.getVista().activarBindingDomicilioComercios(domicilioComercios);
+								contClientes.activarBindingDomicilioComercios(domicilioComercios);
 							}
 									
 						}
@@ -444,14 +467,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				 try {
-					validarFactura();
-					
-					
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				
 			} 
 		};
 	}
@@ -481,6 +497,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 					{
 						if((new ServicioSalp().getSalp(factura.getCliente().getId()))!=null)
 						{
+							//se valida si opta por el credito
 							if (new ServicioFactura().isCredito(factura)) factura.setEstado(false);
 							else throw new Exception("noCredito");
 						}
@@ -511,21 +528,22 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 						break;
 					case "Opcion invalida": 
 						opt = new Integer(JOptionPane.showConfirmDialog(vista, exe.getMessage().concat(
-								"Desea Continuar"),"Seleccione la Opcion",2));
+								" Desea Continuar"),"Seleccione la Opcion",2));
 						if(opt==0){
 							vista.getBtnGuardarFactura().doClick();
 						}
 						break;
 					case "Cliente Salp":
 						opt = new Integer(JOptionPane.showConfirmDialog(vista,"Los Credito se le asignan solo a los "+ exe.getMessage().concat(
-								"Desea Continuar"),"Seleccione la Opcion",2));
+								" Desea Continuar"),"Seleccione la Opcion",2));
 						if(opt==0){
 							vista.getBtnGuardarFactura().doClick();
 						}
 						break;
 					case "noCredito":
-						opt = new Integer(JOptionPane.showConfirmDialog(vista,"el Cliente Salp no puede obtar por el credito".concat(
-								"Desea Continuar"),"Seleccione la Opcion",2));
+						opt = new Integer(JOptionPane.showConfirmDialog(vista,"el Cliente no puede obtar por el credito \n "
+								+ "dicho cliente no posee factura en los ultimos 6 meses que superen los 800 mil Bolivares".concat(
+								" Desea Continuar"),"Seleccione la Opcion",2));
 						if(opt==0){
 							vista.getBtnGuardarFactura().doClick();
 						}
@@ -560,8 +578,8 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 					break;
 					case "Factura Existente":
 						opt = new Integer(JOptionPane.showConfirmDialog(vista,exe.getMessage()
-								+ "no se puede Eliminar ni Modificar \n"
-								+ "desea Generar un Nuevo Pedido\n",".:: Aviso ::.",2));
+								+ " no se puede Eliminar ni Modificar \n"
+								+ " desea Generar un Nuevo Pedido\n",".:: Aviso ::.",2));
 						if (opt.equals(0))
 						{
 							try {
@@ -607,7 +625,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				qutarVista();
+				quitarVista();
 			}
 		};
 		
@@ -755,7 +773,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		{
 			 vista.getBtnGuardar().setBackground(Color.GREEN);;
 		}
-		else vista.getBtnGuardar().setBackground(Color.gray);
+		else vista.getBtnGuardar().setBackground(Color.DARK_GRAY);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked"})

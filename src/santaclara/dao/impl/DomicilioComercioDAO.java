@@ -16,7 +16,6 @@ import santaclara.modelo.DomicilioComercio;
 public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioComercioDAO{
 
 	private String ruta = "archivos/domicilioComercio.txt";
-	private Scanner scaner;
 
 	@Override
 	public List<DomicilioComercio> getDomicilioComercios() throws FileNotFoundException {
@@ -24,13 +23,13 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 		List<DomicilioComercio> domicilioComercios = new ArrayList<DomicilioComercio>();
 		ClienteDAO clienteDAO = new ClienteDAO();
 		File file = new File(ruta);
- 		scaner = new Scanner(file);
-		while(scaner.hasNext())
+		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			 DomicilioComercio domicilioComercio = new DomicilioComercio();
-			 domicilioComercio.setId(new Integer(scaner.skip("idCliente:").nextLine()));
-			 domicilioComercio.setTipo(scaner.skip("tipo:").nextLine().toString().trim());
-			 domicilioComercio.setDiaVisita(new Integer(scaner.skip("diaVisita:").nextLine().trim()));
+			 domicilioComercio.setId(new Integer(scanner.skip("idCliente:").nextLine()));
+			 domicilioComercio.setTipo(scanner.skip("tipo:").nextLine().toString().trim());
+			 domicilioComercio.setDiaVisita(new Integer(scanner.skip("diaVisita:").nextLine().trim()));
 			 domicilioComercios.add(domicilioComercio);
 		}
 		//Cargo la info de Cliente
@@ -52,6 +51,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 				}
 			}
 		}			  
+		scanner.close();
 		return domicilioComercios;
 
 	}

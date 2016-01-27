@@ -1,7 +1,13 @@
 package santaclara.controlador;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +15,12 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+
 import santaclara.Servicio.ServicioDomicilioComercio;
-import santaclara.Servicio.ServicioRuta;
 import santaclara.Servicio.ServicioCliente;
 import santaclara.Servicio.ServicioSalp;
 import santaclara.modelo.DomicilioComercio;
@@ -21,23 +31,25 @@ import santaclara.vista.ClientesUI;
 
 public class ContClientes extends ContGeneral implements IContGeneral{
 	
-	private ServicioCliente servicioCliente = new ServicioCliente();
-	private ServicioRuta servicioRuta = new ServicioRuta();
 	private ClientesUI vista ;
+	private Cliente cliente = new Cliente();
 	private List<Ruta> rutas  = new ArrayList<Ruta>();
+	@SuppressWarnings("rawtypes")
+	private JTableBinding binClientes;
 	
+	public ContClientes(Cliente cliente)throws Exception{
+		setCliente(cliente);
+	}
+		
 	public ContClientes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
+		vista = new ClientesUI(this);
+		dibujar(vista,this);
 		
-		servicioCliente = new ServicioCliente();
-		servicioRuta = new ServicioRuta();
-		vista = new ClientesUI(this, servicioCliente.getClientes(),servicioRuta.getRutas());
-		vista.activarBindingSalp(new ServicioSalp().getSalps());
+		activarBindingSalp(new ServicioSalp().getSalps());
 		vista.getPnCheckDia().setVisible(false);
 		vista.getLblDiaVisita().setVisible(false);
-		dibujar(vista,this);
-		vista.quitarNuevo();
 	}
 
 	@Override
@@ -52,46 +64,52 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.activarNuevo();
 				vista.LimpiarTxt();
-				vista.getPnTabla().setVisible(false);
+				cliente = new Cliente();
 			}
 		};
 	}
 	
 	
 	
-	public ActionListener modificar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
+	public void cargarCliente() {
+		// TODO Auto-generated method stub	
+		try {
+			vista.LimpiarTxt();
+			if(cliente.getId() != null)
+			{
+				vista.getTxtId().setText(cliente.getId().toString());
+				vista.getTxtDireccion().setText(cliente.getDireccion());
+				vista.getTxtRazonSocial().setText(cliente.getRazonsocial());
+				vista.getTxtRif().setText(cliente.getRif());
+				vista.getTxtTelefono().setText(cliente.getTelefono());
+				mostrarDiaVisita(cliente.getId());
+			}
+			else
+			{
+				vista.getTxtDireccion().setText(cliente.getDireccion());
+				vista.getTxtRazonSocial().setText(cliente.getRazonsocial());
+				vista.getTxtRif().setText(cliente.getRif());
+				vista.getTxtTelefono().setText(cliente.getTelefono());
+				mostrarDiaVisita(cliente.getId());
+			}
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-					if (vista.getTable().getSelectedRow()>=0)
-					{	
-							Cliente cliente  = new Cliente();
-							try {
-								cliente = new ServicioCliente().buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-								if (cliente != null)
-								{
-									vista.activarNuevo();
-									vista.getTxtId().setText(cliente.getId().toString());
-									vista.getTxtDireccion().setText(cliente.getDireccion());
-									vista.getTxtRazonSocial().setText(cliente.getRazonsocial());
-									vista.getTxtRif().setText(cliente.getRif());
-									vista.getTxtRif().setEnabled(false);
-									vista.getTxtTelefono().setText(cliente.getTelefono());
-									vista.setSelectedValueRuta(cliente.getRuta().getId());
-									mostrarDiaVisita(cliente.getId());
-								}
-								} catch (NumberFormatException | IOException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-					}
-					else JOptionPane.showMessageDialog(vista,"Seleccione la fila");
-			};
-		};
+			if(cliente.getRuta()!=null && cliente.getRuta().getId()!=null)
+			{
+				vista.getLblRuta().setText("Ruta: ".concat(cliente.getRuta().getNombre()).concat(", Zona: ").concat(cliente.getRuta().getZona().getDescripcion()));
+				vista.getBtnAbrirRuta().setBackground(Color.DARK_GRAY);
+			}
+			else
+			{
+				vista.getLblRuta().setText("Ruta: ");
+				vista.getBtnAbrirRuta().setBackground(Color.YELLOW);
+			}
+				
+			
+		} catch (NumberFormatException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			}
 	}
 	
 	public void mostrarDiaVisita(Integer id) throws IOException{
@@ -177,12 +195,10 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 						salp.setRazonsocial(vista.getTxtRazonSocial().getText());
 						salp.setRif(vista.getTxtRif().getText());
 						salp.setTelefono(vista.getTxtTelefono().getText());
-						salp.setRuta((Ruta) vista.getComboRutas().getSelectedItem());
+						salp.setRuta(cliente.getRuta());
 						new ServicioSalp().guardar(salp);
-						vista.getBinClientes().unbind();
-						vista.getBinClientes().bind();
-						vista.activarBindingSalp(new ServicioSalp().getSalps());
-						vista.quitarNuevo();							
+						
+						activarBindingSalp(new ServicioSalp().getSalps());							
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
 					}
 					else
@@ -196,7 +212,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 						domicilioComercio.setRazonsocial(vista.getTxtRazonSocial().getText());
 						domicilioComercio.setRif(vista.getTxtRif().getText());
 						domicilioComercio.setTelefono(vista.getTxtTelefono().getText());
-						domicilioComercio.setRuta((Ruta) vista.getComboRutas().getSelectedItem());
+						domicilioComercio.setRuta(cliente.getRuta());
 						
 						if(vista.getCmbTipoCliente().getSelectedItem().equals("Domicilio"))
 						{
@@ -211,12 +227,12 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 								vista.getCheckJueve().isSelected(), vista.getCheckVierne().isSelected(),
 								vista.getCheckSabado().isSelected()));
 						new ServicioDomicilioComercio().guardar(domicilioComercio);
-						vista.getBinClientes().unbind();
-						vista.getBinClientes().bind();
-						vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());
-						vista.quitarNuevo();								
+						
+						activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());								
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa");							
 					}
+					vista.LimpiarTxt();
+					cliente = new Cliente();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -237,7 +253,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		}	
 		
 		//Validar unicidad RIF
-		Cliente cliente = servicioCliente.getCliente(vista.getTxtRif().getText().trim());
+		Cliente cliente = new ServicioCliente().getCliente(vista.getTxtRif().getText().trim());
 		if ( cliente != null && cliente.getId() == null) 
 		{
 			throw new Exception("Este RIF se Encuentra Asignado a otro Cliente");
@@ -255,7 +271,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		{
 			throw new Exception("Ingrese el telefono del Cliente ");
 		}
-		if(vista.getComboRutas().getSelectedItem() == null)
+		if(vista.getLblRuta().getText().equals(""))
 		{
 			throw new Exception(" Selecione la ruta ");
 		}
@@ -270,6 +286,15 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
+					
+					if (vista.getTxtId().getText().equals("")) cliente.setId(null);
+					else cliente.setId(new Integer(vista.getTxtId().getText().toString()));
+					
+					cliente.setDireccion(vista.getTxtDireccion().getText());
+					cliente.setRazonsocial(vista.getTxtRazonSocial().getText());
+					cliente.setRif(vista.getTxtRif().getText());
+					cliente.setTelefono(vista.getTxtTelefono().getText());
+						
 						new ContRutas(getContPrincipal());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -344,7 +369,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				qutarVista();
+				quitarVista();
 			}
 		};
 		
@@ -367,7 +392,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 										new Integer(vista.getTable().getValueAt(
 												vista.getTable().getSelectedRow(),0).toString())));
 					
-								servicioCliente.eliminar(new ServicioCliente().buscar(
+								new ServicioCliente().eliminar(new ServicioCliente().buscar(
 										new Integer(vista.getTable().getValueAt(
 												vista.getTable().getSelectedRow(),0).toString())));
 								
@@ -381,7 +406,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 										new Integer(vista.getTable().getValueAt(
 												vista.getTable().getSelectedRow(),0).toString())));
 					
-								servicioCliente.eliminar(new ServicioCliente().buscar(
+								new ServicioCliente().eliminar(new ServicioCliente().buscar(
 										new Integer(vista.getTable().getValueAt(
 												vista.getTable().getSelectedRow(),0).toString())));
 								JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
@@ -397,13 +422,11 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	}
 	
 	void MostrarTabla() throws NumberFormatException, IOException{
-		vista.getBinClientes().unbind();
-		vista.getBinClientes().bind();		
+			
 		if(vista.getCmbTipoCliente().getSelectedItem().equals("Salp"))
-		vista.activarBindingSalp(new ServicioSalp().getSalps());
-		else vista.activarBindingDomicilioComercios(
+		activarBindingSalp(new ServicioSalp().getSalps());
+		else activarBindingDomicilioComercios(
 				new ServicioDomicilioComercio().getDomicilioComercios());
-		vista.quitarNuevo();
 	}
 	
 	public ActionListener ActivarTipoUsuario() {
@@ -414,44 +437,28 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
+					vista.LimpiarTxt();
 						if(vista.getCmbTipoCliente().getSelectedItem().equals("Salp")){
-							vista.activarBindingSalp(new ServicioSalp().getSalps());
+							activarBindingSalp(new ServicioSalp().getSalps());
 						}
 						else if(vista.getCmbTipoCliente().getSelectedItem().equals("Domicilio")||
 								vista.getCmbTipoCliente().getSelectedItem().equals("Comercial")){
 	
 							if(rutas.isEmpty())
 							{
-								vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());
+								activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());
 							}
 							else
 							{
-								vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios(rutas));	
+								activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios(rutas));	
 							}
 						}
 					} catch (NumberFormatException | IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						}
-				vista.quitarNuevo();
 			}
 		};
-	}
-
-	public ServicioCliente getServicioCliente() {
-		return servicioCliente;
-	}
-
-	public void setServicioCliente(ServicioCliente servicioCliente) {
-		this.servicioCliente = servicioCliente;
-	}
-
-	public ServicioRuta getServicioRuta() {
-		return servicioRuta;
-	}
-
-	public void setServicioRuta(ServicioRuta servicioRuta) {
-		this.servicioRuta = servicioRuta;
 	}
 
 	public List<Ruta> getRutas() {
@@ -461,7 +468,154 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	public void setRutas(List<Ruta> rutas) {
 		this.rutas = rutas;
 	}
+
+	public MouseAdapter mostrarCliente() {
+		// TODO Auto-generated method stub
+		
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent evento) {
+				if (evento.getClickCount()==1)
+				{
+					try {
+						cliente = new ServicioCliente().buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						cargarCliente();
+					} catch (NumberFormatException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+			}
+		};
+	}
 	
+	public void actualizarContCliente(Object objetContCachePresente,Object objetClassVista){
+
+			switch (objetContCachePresente.getClass().getName()) {
+			case "santaclara.controlador.ContRutas":
+				if (objetClassVista != null)
+				{
+					
+						this.cliente.setRuta((Ruta)objetClassVista);
+						
+						cargarCliente();
+				}
+				break;
+				default:
+					break;
+			}
+			
+	}
+
+	public void actualizarVista(){
+		if (vista != null)dibujar(vista,this);//Actualiza la vista
+		if (cliente!=null)
+		{
+			cargarCliente();
+		} 
+	}
 	
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void activarBindingDomicilioComercios(List<DomicilioComercio> domicilioComercios) {
+		// TODO Auto-generated method stub
+		vista.getScrollPanel().setViewportView(vista.getTable());
+		
+		List<DomicilioComercio> aux = new ArrayList<DomicilioComercio>();
+		
+		for(DomicilioComercio domicilioComercio : domicilioComercios)
+		{
+			if(domicilioComercio.getTipo().equals("C") && vista.getCmbTipoCliente().getSelectedItem().equals("Comercial")) 
+				aux.add(domicilioComercio);
+			else if(domicilioComercio.getTipo().equals("D")  && vista.getCmbTipoCliente().getSelectedItem().equals("Domicilio"))
+				aux.add(domicilioComercio);
+		}
+		
+		domicilioComercios = aux;
+
+		binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,domicilioComercios,vista.getTable());
+		
+		BeanProperty idCliente  = BeanProperty.create("id");
+		BeanProperty rif = BeanProperty.create("rif");
+		BeanProperty razonSocial = BeanProperty.create("razonsocial");
+		BeanProperty direccion = BeanProperty.create("direccion");
+		BeanProperty telefono = BeanProperty.create("telefono");
+		BeanProperty rutaCliente = BeanProperty.create("ruta.nombre");
+
+		binClientes.addColumnBinding(idCliente).setColumnClass(Integer.class).setColumnName("idCliente");
+		binClientes.addColumnBinding(rif).setColumnClass(String.class).setColumnName("rif");
+		binClientes.addColumnBinding(razonSocial).setColumnClass(String.class).setColumnName("Razon Social");
+		binClientes.addColumnBinding(direccion).setColumnClass(String.class).setColumnName("Direccion");
+		binClientes.addColumnBinding(telefono).setColumnClass(String.class).setColumnName("Telefono");
+		binClientes.addColumnBinding(rutaCliente).setColumnClass(String.class).setColumnName("Ruta");
+		binClientes.bind();
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void activarBindingSalp(List<Salp> salps) {
+		// TODO Auto-generated method stub
+		vista.getScrollPanel().setViewportView(vista.getTable());
+		
+		binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
+    			salps,vista.getTable());
+		
+			BeanProperty idCliente  = BeanProperty.create("id");
+			BeanProperty rif = BeanProperty.create("rif");
+			BeanProperty razonSocial = BeanProperty.create("razonsocial");
+			BeanProperty direccion = BeanProperty.create("direccion");
+			BeanProperty telefono = BeanProperty.create("telefono");
+			BeanProperty rutaCliente = BeanProperty.create("ruta.nombre");
+			
+			binClientes.addColumnBinding(idCliente).setColumnClass(Integer.class).setColumnName("idCliente");
+			binClientes.addColumnBinding(rif).setColumnClass(String.class).setColumnName("rif");
+			binClientes.addColumnBinding(razonSocial).setColumnClass(String.class).setColumnName("Razon Social");
+			binClientes.addColumnBinding(direccion).setColumnClass(String.class).setColumnName("Direccion");
+			binClientes.addColumnBinding(telefono).setColumnClass(String.class).setColumnName("Telefono");
+			binClientes.addColumnBinding(rutaCliente).setColumnClass(String.class).setColumnName("Ruta");
+			binClientes.bind();
+
+	}
+
+	public KeyAdapter keyPressTable() {
+		// TODO Auto-generated method stub
+		return new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+					try {
+						if(e.getKeyCode()==38)
+						{
+							Integer row = new Integer(vista.getTable().getSelectedRow()-1);
+							if(row > 0)
+							{
+								cliente = new ServicioCliente().buscar(new Integer(vista.getTable().getValueAt(row,0).toString().trim()));
+							}
+						}
+						if(e.getKeyCode()==40)
+						{
+							Integer row = new Integer(vista.getTable().getSelectedRow()+1);
+							
+							if(row < vista.getTable().getRowCount())
+							{
+								cliente = new ServicioCliente().buscar(new Integer(vista.getTable().getValueAt(row,0).toString().trim()));
+							}
+						}
+						cargarCliente();
+					} catch (NumberFormatException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+				
+			}
+		};
+	}
+
 }

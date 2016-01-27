@@ -1,5 +1,7 @@
 package santaclara.controlador;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Stack;
 
 import javax.swing.JPanel;
@@ -28,9 +30,8 @@ public abstract class ContGeneral implements IContGeneral {
 		else this.contPrincipal.getCacheObjet().push(cacheobject);
 	}
 	
-	public void qutarVista(){//btnSalir
+	public void quitarVista(){//btnSalir
 		contPrincipal.quitarPanel();
-		
 		if (!this.contPrincipal.getCacheObjet().empty())
 		{
 			while(this.contPrincipal.getCacheObjet().size()>1)
@@ -39,11 +40,15 @@ public abstract class ContGeneral implements IContGeneral {
 			}
 		}
 	}
+	 
+	
+	
 	
 	public void ActivarAtras(Object object) {//btnAtras
 		
-		if(this.contPrincipal.getCacheObjet().size()>1)	this.contPrincipal.ActivarAtras(object);
-		else qutarVista();
+		if(this.contPrincipal.getCacheObjet().size()>1)
+			this.contPrincipal.ActivarAtras(object);
+		else quitarVista();
 	}
 
 

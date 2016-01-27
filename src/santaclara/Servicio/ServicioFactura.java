@@ -101,6 +101,10 @@ public class ServicioFactura {
 	}
 	
 	@SuppressWarnings("deprecation")
+	/*con este metodo determino si elcliente salp opta por el credito
+	 * Solo los cliente salp opta por credito 
+	 * dicho creditose aprobara si en los ultimos 6 meses todas sus factura superan elmonto de 800.000 bsf 
+	 * y al menos tiene una por mes*/
 	public Boolean isCredito (Factura factura) throws NumberFormatException, IOException{
 		
 		java.sql.Date fecha =  new java.sql.Date(factura.getFecha().getTime());// Fecha Actual

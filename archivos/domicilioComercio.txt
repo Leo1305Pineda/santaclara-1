@@ -24,4 +24,4 @@ tipo:D
 diaVisita:84
 idCliente:12
 tipo:D
-diaVisita:0
+diaVisita:42

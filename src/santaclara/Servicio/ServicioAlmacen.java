@@ -51,10 +51,6 @@ public class ServicioAlmacen {
 		
 	}
 	
-	public Almacen getAlmacen(Integer id) throws IOException{
-		return almacenDAO.getAlmacen(id);
-	}
-	
 	public void eliminar(Almacen presentacion) throws IOException{
 		almacenDAO.eliminar(presentacion);
 	}

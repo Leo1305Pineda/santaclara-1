@@ -33,7 +33,7 @@ public class ProductoAlmacen {
 	}
 	
 	public String getUbicacion() {
-		return almacen.getId().toString()+" "+almacen.getUbicacion();
+		return almacen.getUbicacion();
 	}
 
 	public String getIdAlmacen() {

@@ -18,32 +18,32 @@ public class ConcesionarioRutaDAO extends GenericoDAO implements IConcesionarioR
 		// TODO Auto-generated method stub
 		List<ConcesionarioRuta> concesionarioRutas = new ArrayList<ConcesionarioRuta>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
+ 		Scanner scanner = new Scanner(file);
  		
- 		while(scaner.hasNext())
+ 		while(scanner.hasNext())
 		{
 			ConcesionarioRuta concesionarioRuta = new ConcesionarioRuta();
 			 
 			ClienteDAO clienteDAO = new ClienteDAO();
 			concesionarioRuta.setCliente(
 					clienteDAO.getCliente(
-						new Integer(scaner.skip("idCliente:").nextLine().trim())));
+						new Integer(scanner.skip("idCliente:").nextLine().trim())));
 			 
 			ConcesionarioDAO concesionarioDAO = new ConcesionarioDAO();
 			concesionarioRuta.setConcesionario(
 					concesionarioDAO.getConcesionario(
-							new Integer(scaner.skip("idConcesionario:").nextLine().trim())));				 	 
+							new Integer(scanner.skip("idConcesionario:").nextLine().trim())));				 	 
 			 
 			RutaDAO rutaDAO = new RutaDAO();
 			 concesionarioRuta.setRuta(
 					 rutaDAO.getRuta(
-							 new Integer(scaner.skip("idRuta:").nextLine().trim())));				 	 
+							 new Integer(scanner.skip("idRuta:").nextLine().trim())));				 	 
 			 
-			 concesionarioRuta.setDias(scaner.skip("dias:").nextLine().trim());
+			 concesionarioRuta.setDias(scanner.skip("dias:").nextLine().trim());
 			 
 			 concesionarioRutas.add(concesionarioRuta); 
 		}
-		scaner.close();
+ 		scanner.close();
 		return concesionarioRutas;
 	}
 

@@ -36,13 +36,13 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 		List<Usuario> usuarios = usuarioDAO.getUsuarios();
 		
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			 Vendedor vendedor = new Vendedor();
-			 vendedor.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 vendedor.setId(new Integer(scanner.skip("id:").nextLine().trim()));
 			 
-			 Scanner sc = new Scanner(scaner.skip("idRutas:").nextLine()).useDelimiter(",");
+			 Scanner sc = new Scanner(scanner.skip("idRutas:").nextLine()).useDelimiter(",");
 			 
 			 if (sc.hasNext())
 			 {
@@ -66,7 +66,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 			 
 		vendedores.add(vendedor);
 		}
-		scaner.close();
+		scanner.close();
 		//guardar demas datos del vendedor 
 		
 		for(Vendedor vendedor: vendedores)

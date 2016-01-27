@@ -1,39 +1,34 @@
 package santaclara.controlador;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
 
-public  class ContPrincipal implements IContGeneral {
+public  class ContPrincipal {
 	
-	private PrincipalUI  vista ;
+	private PrincipalUI  vista;
 	private IContGeneral controlador;
 	private Usuario		 usuario;
 	private Stack<String> cache = new Stack<String>();
 	private Stack<Object> cacheObjet = new Stack<Object>();
 	private Boolean editorActivo = new Boolean(false);
 	
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	public static void main(String[] args) {
 	   ContPrincipal controlador = new  ContPrincipal();
 	   controlador.ejecutar();   
 	   
 	}
 
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	private void ejecutar() {
 		// TODO Auto-generated method stub
 		vista = new PrincipalUI(this);
-		// iniciar session
 		try {
 			setControlador(new ContIniciarSesion(this));
 		}
@@ -46,10 +41,11 @@ public  class ContPrincipal implements IContGeneral {
 
 	void agregarPanel(JPanel panel)
 	{
-		vista.getFrame().getContentPane().removeAll();
-		vista.getFrame().getContentPane().add(panel);
+		//vista.getFrame().getContentPane().removeAll();
+		//vista.getFrame().getContentPane().add(panel);
+		//vista.getFrame().getContentPane().removeAll();
+		vista.getFrame().setContentPane(panel);
 		vista.getFrame().repaint();
-	
 	}
 	
 	void quitarPanel(){
@@ -68,33 +64,17 @@ public  class ContPrincipal implements IContGeneral {
 	
 	public void dibujarMenu()
 	{
-		//dado el usuario 
-		// limpiar contenedor 
 		vista.getFrame().getContentPane().removeAll();
 		vista.dibujarMenu(usuario);
-		
 	}
-
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	public IContGeneral getControlador() {
 		return controlador;
 	}
 
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	public void setControlador(IContGeneral controlador) {
 		this.controlador = controlador;
 	}
 
-	@Override
-	public JPanel getVista() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	
 	/************ Salir Session *************/
 	public ActionListener salirSesion() {
@@ -115,14 +95,13 @@ public  class ContPrincipal implements IContGeneral {
 	public ActionListener activarMenu() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if(e.getSource().equals(vista.getMntAlmacen()))
-					{
+				{
 						ActivarAlmacenes();
-					}
+				}
 				else if(e.getSource().equals(vista.getMntCamiones()))
 				{
 					ActivarCamiones();
@@ -133,15 +112,11 @@ public  class ContPrincipal implements IContGeneral {
 				}
 				else if(e.getSource().equals(vista.getMntClientes()))
 				{
-					ActivarClientes();
+					ActivarClientes(null,"",null);
 				}
 				else if(e.getSource().equals(vista.getMntConcesionario()))
 				{
 					ActivarUsuarios();
-				}
-				else if(e.getSource().equals(vista.getMntConcesionarioRutas()))
-				{
-					//ActivarConcesionarioRutas();
 				}
 				else if(e.getSource().equals(vista.getMntEmpaqueProductos()))
 				{
@@ -157,7 +132,7 @@ public  class ContPrincipal implements IContGeneral {
 				}
 				else if(e.getSource().equals(vista.getMntProductos()))
 				{
-					ActivarProductos();;
+					ActivarProductos();
 				}
 				else if(e.getSource().equals(vista.getMntProductoAlmacenes()))
 				{
@@ -171,9 +146,9 @@ public  class ContPrincipal implements IContGeneral {
 				{
 					ActivarSabores();
 				}
-				else if(e.getSource().equals(vista.getMntSalps()))
+				else if(e.getSource().equals(vista.getMntClientes()))
 				{
-					ActivarClientes();
+					ActivarClientes(null,"",null);
 				}
 				else if(e.getSource().equals(vista.getMntUsuarios()))
 				{
@@ -222,10 +197,22 @@ public  class ContPrincipal implements IContGeneral {
 			e1.printStackTrace();
 		}
 	}
-	public void ActivarClientes() {
+	public void ActivarClientes(Object objetContCache,Object objetContCachePresente,Object objetClassVista) {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContClientes(ContPrincipal.this);
+			ContClientes contClientes = new ContClientes(ContPrincipal.this);
+			
+			if(objetContCache!=null)
+			{	
+				contClientes.setCliente((((ContClientes)objetContCache).getCliente()));
+				contClientes.actualizarVista();
+			} 
+		 	if(objetContCachePresente!=null)
+		 	{		
+		 		contClientes.actualizarContCliente(objetContCachePresente,objetClassVista);
+			}
+		
+			controlador = contClientes;
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -408,7 +395,7 @@ public  class ContPrincipal implements IContGeneral {
 			break;
 			case "santaclara.controlador.ContVendedores":		ActivarVendedores();
 			break;
-			case "santaclara.controlador.ContClientes":			ActivarClientes();
+			case "santaclara.controlador.ContClientes":			ActivarClientes(obtetContCache,obtetContCachePresente,objectClassVista);
 			break;
 			case "santaclara.controlador.ContRutas":				ActivarRutas();
 			break;

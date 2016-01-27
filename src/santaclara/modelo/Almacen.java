@@ -32,7 +32,4 @@ public class Almacen{
 		this.ubicacion = ubicacion;
 	}
 	
-	public String getAlmacenStr(){
-		return id+"  "+ubicacion;
-	}
 }
