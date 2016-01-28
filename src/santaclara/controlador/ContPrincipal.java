@@ -1,12 +1,10 @@
 package santaclara.controlador;
-
-import java.awt.BorderLayout;
+ 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack;
 
-import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
+ 
 import javax.swing.JPanel;
 
 import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
@@ -214,6 +212,7 @@ public  class ContPrincipal {
 			e1.printStackTrace();
 		}
 	}
+
 	public void ActivarClientes(Object objetContCache,Object objetContCachePresente,Object objetClassVista) {
 		// TODO Auto-generated method stub
 		try {
@@ -397,9 +396,7 @@ public  class ContPrincipal {
 		if (!cacheObjet.empty())
 		{
 			Object obtetContCache = cacheObjet.pop();
-			
 			Object obtetContCachePresente = obtetContCache;// el objetControlador presente
-			
 			obtetContCache = cacheObjet.pop();
 			
 			switch (obtetContCache.getClass().getName()) {

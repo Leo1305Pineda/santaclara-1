@@ -48,7 +48,8 @@ public abstract class ContGeneral implements IContGeneral {
 		
 		if(this.contPrincipal.getCacheObjet().size()>1)
 			this.contPrincipal.ActivarAtras(object);
-		else quitarVista();
+		else
+			quitarVista();
 	}
 
 

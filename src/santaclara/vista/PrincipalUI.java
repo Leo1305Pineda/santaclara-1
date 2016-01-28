@@ -47,7 +47,6 @@ public class PrincipalUI {
 	private 	JMenuItem mntProductoAlmacenes;
 	private 	JMenuItem mntRutas;
 	private 	JMenuItem mntSabores;
-	private 	JMenuItem mntSalps;
 	private 	JMenuItem mntUsuarios;
 	private 	JMenuItem mntVendedores;
 	private 	JMenuItem mntVisitas;
@@ -196,9 +195,9 @@ public class PrincipalUI {
 		mntZonas.addActionListener(controlador.activarMenu());
 		mnCatalogo.add(mntZonas);
 
-		mntSalps = new JMenuItem("Clientes ");
-		mntSalps.addActionListener(controlador.activarMenu());
-		mnCatalogo.add(mntSalps);
+		mntClientes = new JMenuItem("Clientes ");
+		mntClientes.addActionListener(controlador.activarMenu());
+		mnCatalogo.add(mntClientes);
 		
 		mnCatalogo.add(new JSeparator());
 
@@ -454,14 +453,7 @@ public class PrincipalUI {
 		this.mntSabores = mntSabores;
 	}
 
-	public JMenuItem getMntSalps() {
-		return mntSalps;
-	}
-
-	public void setMntSalps(JMenuItem mntSalps) {
-		this.mntSalps = mntSalps;
-	}
-
+ 
 	public JMenuItem getMntUsuarios() {
 		return mntUsuarios;
 	}
