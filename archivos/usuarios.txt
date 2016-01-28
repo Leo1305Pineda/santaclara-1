@@ -48,3 +48,23 @@ username:Felipe
 cedula:V-5376222
 nombre:Felipe
 contrasena:123
+id:10
+username:DARIO
+cedula:124352754
+nombre:Dario Pereira
+contrasena:123
+id:11
+username:Jose
+cedula:13533725
+nombre:Jose Fernandez
+contrasena:1234
+id:12
+username:Maria
+cedula:14673463
+nombre:Maria Suarez
+contrasena:1234
+id:13
+username:Elias
+cedula:26542987
+nombre:Elias Cibrian
+contrasena:1234

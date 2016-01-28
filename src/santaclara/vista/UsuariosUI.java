@@ -56,12 +56,12 @@ import javax.swing.ListSelectionModel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.FlowLayout;
 
 @SuppressWarnings("serial")
 public class UsuariosUI extends JPanel {
 	
 	private JPanel pnOpciones;
-	private JPanel panel;
 	private JPanel pnUsuarios;
 	private JPanel panel_1;
 	private JPanel pnTabla;
@@ -148,82 +148,13 @@ public class UsuariosUI extends JPanel {
 		add(pnUsuarios);
 		pnUsuarios.setLayout(null);
 		
-		panel = new JPanel();
-		panel.setBackground(Color.GRAY);
-		panel.setBounds(12, 45, 852, 42);
-		pnUsuarios.add(panel);
-		panel.setLayout(null);
-		
-		pnOpciones = new JPanel();
-		pnOpciones.setBounds(0, 0, 852, 34);
-		panel.add(pnOpciones);
-		pnOpciones.setBackground(Color.DARK_GRAY);
-		pnOpciones.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Opciones", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		pnOpciones.setLayout(null);
-		
-		btnNuevo = new JButton("Nuevo");
-		btnNuevo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				if(cmbTipoUsuario.getSelectedItem().equals("Todos")) btnNuevo.setEnabled(false);
-				else btnNuevo.setEnabled(true);
-				if(btnNuevo.isEnabled()){
-					btnNuevo.setToolTipText("Nuevo "+cmbTipoUsuario.getSelectedItem().toString());
-				}
-				else btnNuevo.setToolTipText("Seleccione el Tipo de Usuario");
-			}
-		});
-		btnNuevo.addActionListener(contUsuarios.nuevo());
-		btnNuevo.setBounds(125, 15, 115, 16);
-		btnNuevo.setForeground(Color.WHITE);
-		btnNuevo.setBackground(Color.DARK_GRAY);
-		btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
-		btnNuevo.setEnabled(false);
-		pnOpciones.add(btnNuevo);
-		
-		btnEditar = new JButton("Editar");
-		btnEditar.addActionListener(contUsuarios.modificar());
-		btnEditar.setBounds(245, 15, 115, 16);
-		btnEditar.setForeground(Color.WHITE);
-		btnEditar.setBackground(Color.DARK_GRAY);
-		btnEditar.setIcon(new ImageIcon("img/gestion/Modificara.png"));
-		pnOpciones.add(btnEditar);
-		
-		btnAtras = new JButton("Atras");
-		btnAtras.addActionListener(contUsuarios.atras());
-		btnAtras.setBounds(5, 15, 115, 16);
-		btnAtras.setForeground(Color.WHITE);
-		btnAtras.setBackground(Color.DARK_GRAY);
-		btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
-		pnOpciones.add(btnAtras);
-		
-		btnSalir = new JButton("Salir");
-		btnSalir.addActionListener(contUsuarios.salir());
-		btnSalir.setBounds(725, 15, 115, 16);
-		btnSalir.setForeground(Color.WHITE);
-		btnSalir.setBackground(Color.DARK_GRAY);
-		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
-		pnOpciones.add(btnSalir);
-		
-		btnEliminar = new JButton("Eliminar");
-		btnEliminar.setForeground(Color.WHITE);
-		btnEliminar.setBackground(Color.DARK_GRAY);
-		btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-		btnEliminar.addActionListener(contUsuarios.eliminar());
-		btnEliminar.setBounds(365, 15, 115, 16);
-		pnOpciones.add(btnEliminar);
-		
 		pnTabla = new JPanel();
 		pnTabla.setBounds(12, 85, 852, 103);
 		pnUsuarios.add(pnTabla);
-		GridBagLayout gbl_pnTabla = new GridBagLayout();
-		gbl_pnTabla.columnWidths = new int[]{852, 0};
-		gbl_pnTabla.rowHeights = new int[]{100, 0};
-		gbl_pnTabla.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_pnTabla.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		pnTabla.setLayout(gbl_pnTabla);
+		pnTabla.setLayout(null);
 		
 		table = new JTable();
+		table.setBounds(0, 0, 0, 0);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -231,18 +162,11 @@ public class UsuariosUI extends JPanel {
 			new String[] {
 			}
 		));
-		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.anchor = GridBagConstraints.NORTHWEST;
-		gbc_table.gridx = 0;
-		gbc_table.gridy = 0;
-		pnTabla.add(table, gbc_table);
+		pnTabla.add(table);
 		
 		scrollPanel = new JScrollPane();
-		GridBagConstraints gbc_scrollPanel = new GridBagConstraints();
-		gbc_scrollPanel.fill = GridBagConstraints.BOTH;
-		gbc_scrollPanel.gridx = 0;
-		gbc_scrollPanel.gridy = 0;
-		pnTabla.add(scrollPanel, gbc_scrollPanel);
+		scrollPanel.setBounds(0, 0, 852, 100);
+		pnTabla.add(scrollPanel);
 		
 		panel_1 = new JPanel();
 		panel_1.setForeground(Color.GRAY);
@@ -549,6 +473,59 @@ public class UsuariosUI extends JPanel {
 		btnCamion.setBackground(Color.DARK_GRAY);
 		btnCamion.setBounds(312, 22, 120, 16);
 		pnCamion.add(btnCamion);
+		
+		pnOpciones = new JPanel();
+		pnOpciones.setBounds(12, 48, 630, 36);
+		pnUsuarios.add(pnOpciones);
+		pnOpciones.setBackground(Color.DARK_GRAY);
+		
+		btnNuevo = new JButton("Nuevo");
+		btnNuevo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				if(cmbTipoUsuario.getSelectedItem().equals("Todos")) btnNuevo.setEnabled(false);
+				else btnNuevo.setEnabled(true);
+				if(btnNuevo.isEnabled()){
+					btnNuevo.setToolTipText("Nuevo "+cmbTipoUsuario.getSelectedItem().toString());
+				}
+				else btnNuevo.setToolTipText("Seleccione el Tipo de Usuario");
+			}
+		});
+		btnNuevo.addActionListener(contUsuarios.nuevo());
+		pnOpciones.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		btnAtras = new JButton("Atras");
+		btnAtras.addActionListener(contUsuarios.atras());
+		btnAtras.setForeground(Color.WHITE);
+		btnAtras.setBackground(Color.DARK_GRAY);
+		btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
+		pnOpciones.add(btnAtras);
+		btnNuevo.setForeground(Color.WHITE);
+		btnNuevo.setBackground(Color.DARK_GRAY);
+		btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
+		btnNuevo.setEnabled(false);
+		pnOpciones.add(btnNuevo);
+		
+		btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(contUsuarios.modificar());
+		btnEditar.setForeground(Color.WHITE);
+		btnEditar.setBackground(Color.DARK_GRAY);
+		btnEditar.setIcon(new ImageIcon("img/gestion/Modificara.png"));
+		pnOpciones.add(btnEditar);
+		
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.setForeground(Color.WHITE);
+		btnEliminar.setBackground(Color.DARK_GRAY);
+		btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
+		btnEliminar.addActionListener(contUsuarios.eliminar());
+		pnOpciones.add(btnEliminar);
+		
+		btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(contUsuarios.salir());
+		btnSalir.setForeground(Color.WHITE);
+		btnSalir.setBackground(Color.DARK_GRAY);
+		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
+		pnOpciones.add(btnSalir);
 		initDataBindings();
 		
 	}
@@ -582,6 +559,8 @@ public class UsuariosUI extends JPanel {
 		pnTabla.setVisible(true);
 		table = new JTable();
 		scrollPanel.setViewportView(table);
+		pnTabla.setBounds(12, 85, 852, 408);
+		scrollPanel.setBounds(0, 0, 852, 408);
 		binUsuarios = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
 				jefeVentas,table);
 		BeanProperty idUsuario  = BeanProperty.create("id");
@@ -604,6 +583,8 @@ public class UsuariosUI extends JPanel {
 	public void activarBindingConcesionarios(List<Concesionario> concesionarios) {
 		pnTabla.setVisible(true);
 		table = new JTable();
+		pnTabla.setBounds(12, 85, 852, 408);
+		scrollPanel.setBounds(0, 0, 852, 408);
 		scrollPanel.setViewportView(table);
 		binUsuarios = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
 				concesionarios,table);
@@ -751,14 +732,6 @@ public class UsuariosUI extends JPanel {
 
 	public void setPnOpciones(JPanel pnOpciones) {
 		this.pnOpciones = pnOpciones;
-	}
-
-	public JPanel getPanel() {
-		return panel;
-	}
-
-	public void setPanel(JPanel panel) {
-		this.panel = panel;
 	}
 
 	public JPanel getPnUsuarios() {
@@ -1212,4 +1185,6 @@ public class UsuariosUI extends JPanel {
 		AutoBinding<JTable, Integer, JTable, List<Object>> autoBinding_1 = Bindings.createAutoBinding(UpdateStrategy.READ, table, jTableBeanProperty_1, table, jTableBeanProperty_2);
 		autoBinding_1.bind();
 	}
+	
+	
 }

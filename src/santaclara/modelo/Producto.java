@@ -1,6 +1,6 @@
 package santaclara.modelo;
 
-
+ 
 public class Producto {
 	private Integer id;
 	private Capacidad capacidad;
@@ -8,6 +8,8 @@ public class Producto {
 	private Sabor sabor;
 	private String nombre;
 	private Double precio;
+	private Double descuento;
+	private Boolean iva;
 	
 	public Producto(Integer id,Capacidad capacidad, Presentacion presentacion,
 			Sabor sabor, String nombre,Double precio) {
@@ -77,4 +79,38 @@ public class Producto {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Double getDescuento() {
+		return descuento;
+	}
+	
+	public String getDescuentoStr() {
+		
+		return "%  "+descuento;
+	}
+	
+	public void setDescuento(Double descuento) {
+		this.descuento = descuento;
+	}
+
+	public Boolean getIva() {
+		return iva;
+	}
+
+	public void setIva(Boolean exento) {
+		this.iva = exento;
+	}
+	
+	public String getIvaStr() {
+		if (iva.booleanValue()==true) return "Exento";
+		else if (iva.booleanValue()==false) return "12.000";
+		else return "";
+	}
+	
+	public String getDescripcion(){
+		return  getNombre()+"  "+
+				getPresentacion().getMaterial()+"  "+
+				getCapacidad().getVolumenStr()+"  "+
+				getSabor().getSabor();
+	}
+	
 }

@@ -3,7 +3,6 @@ package santaclara.vista;
 import javax.swing.JPanel;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.io.IOException;
 
@@ -12,7 +11,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
-import javax.swing.Box;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
@@ -20,6 +18,9 @@ import javax.swing.JLabel;
 import org.jdesktop.swingbinding.JTableBinding;
 
 import santaclara.controlador.ContPedidos;
+import java.awt.Font;
+import java.awt.FlowLayout;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class PedidosUI extends JPanel{
@@ -44,22 +45,19 @@ public class PedidosUI extends JPanel{
 	private JButton btnBuscar;
 	private JButton btnGuardarFactura;
 	private JButton btnSalir;
-	
-	private JLabel lblCedulaVendedor;
 	private JLabel lblNombreVendedor;
 	private JLabel lblRif;
 	private JLabel lblRazonSocial;
 	private JLabel lblTelefono;
 	private JLabel lblDireccion;
 	private JLabel lblRuta;
-	private JLabel lblTotalIva;
-	private JLabel lblSaldoAPagar;
-	private JLabel lblTotalSinIva;
-	private JLabel lblNumeroPedido;
+	private JLabel lblIvaSobreBs;
+	private JLabel lblTotalAPagar;
+	private JLabel lblDesc;
 	private JLabel lblAlmacen;
 	private JLabel lblFecha;
-	private JLabel lblDescuento;
-	private JLabel lblTotalDescuento;
+	private JLabel lblIva;
+	private JLabel lblCondicion;
 	
 	private JScrollPane scrollPane;
 	
@@ -67,6 +65,11 @@ public class PedidosUI extends JPanel{
 	private JTableBinding BinPedidos;
 	
 	private JTable table;
+	private JLabel lblDomicilioFiscal;
+	private JLabel lblSubtotalGravado;
+	private JLabel lblSubtotalExento;
+	private JPanel panel_1;
+	private JTextField txtNumeroPedido;
 	
 	public PedidosUI(ContPedidos contPedidos) throws IOException {
 		setBounds(0, 0, 800, 700);
@@ -77,143 +80,60 @@ public class PedidosUI extends JPanel{
 		pnlPedido = new JPanel();
 		pnlPedido.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 3, true), "Registro de Pedidos", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnlPedido.setBackground(Color.DARK_GRAY);
-		pnlPedido.setBounds(0, 0, 800, 700);
+		pnlPedido.setBounds(12, 12, 1170, 700);
 		add(pnlPedido);
 		pnlPedido.setLayout(null);
 		
 		pnlOption = new JPanel();
-		pnlOption.setBorder(new LineBorder(Color.LIGHT_GRAY, 2, true));
 		pnlOption.setToolTipText("Operaciones");
-		pnlOption.setBackground(Color.GRAY);
-		pnlOption.setBounds(25, 25, 763, 40);
+		pnlOption.setBackground(Color.DARK_GRAY);
+		pnlOption.setBounds(12, 25, 437, 40);
 		pnlPedido.add(pnlOption);
-		pnlOption.setLayout(null);
 		
-		btnAtras = new JButton("");
+		btnAtras = new JButton("Atras");
 		btnAtras.addActionListener(contPedidos.actionAtras());
-		btnAtras.setBounds(0, 0, 40, 40);
+		pnlOption.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		btnAtras.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/AtrasCurva.png"));
 		btnAtras.setForeground(Color.WHITE);
-		btnAtras.setBackground(Color.GRAY);
+		btnAtras.setBackground(Color.DARK_GRAY);
 		pnlOption.add(btnAtras);
 		
-		Component verticalGlue = Box.createVerticalGlue();
-		verticalGlue.setForeground(Color.WHITE);
-		verticalGlue.setBackground(Color.LIGHT_GRAY);
-		verticalGlue.setBounds(42, 0, 12, 38);
-		pnlOption.add(verticalGlue);
-		
-		btnBuscar = new JButton("");
-		btnBuscar.addActionListener(contPedidos.actionBuscarPedido());
-		btnBuscar.setBounds(50, 0, 40, 40);
-		btnBuscar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/buscar.png"));
-		btnBuscar.setBackground(Color.GRAY);
-		btnBuscar.setForeground(Color.WHITE);
-		pnlOption.add(btnBuscar);
-		
-		btnGuardar = new JButton("");
-		btnGuardar.addActionListener(contPedidos.actionGuardarPedido());
-		btnGuardar.setBounds(140, 0, 40, 40);
-		btnGuardar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/disk.png"));
-		btnGuardar.setForeground(Color.WHITE);
-		btnGuardar.setBackground(Color.GRAY);
-		pnlOption.add(btnGuardar);
-		
-		btnNuevo = new JButton("");
+		btnNuevo = new JButton("Limpiar");
 		btnNuevo.addActionListener(contPedidos.actionNuevo());
-		btnNuevo.setBounds(95, 0, 40, 40);
-		btnNuevo.setToolTipText("Nuevo");
+		btnNuevo.setToolTipText("Limpiar");
 		btnNuevo.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/add.png"));
 		btnNuevo.setForeground(Color.WHITE);
-		btnNuevo.setBackground(Color.GRAY);
+		btnNuevo.setBackground(Color.DARK_GRAY);
 		pnlOption.add(btnNuevo);
 		
-		Component verticalGlue_1 = Box.createVerticalGlue();
-		verticalGlue_1.setBackground(Color.LIGHT_GRAY);
-		verticalGlue_1.setBounds(182, 0, 12, 38);
-		pnlOption.add(verticalGlue_1);
+		btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(contPedidos.actionGuardarPedido());
+		btnGuardar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/disk.png"));
+		btnGuardar.setForeground(Color.WHITE);
+		btnGuardar.setBackground(Color.DARK_GRAY);
+		pnlOption.add(btnGuardar);
 		
-		btnAlmacen = new JButton("");
-		btnAlmacen.addActionListener(contPedidos.actionAlmacen());
-		btnAlmacen.setBounds(190, 0, 40, 40);
-		btnAlmacen.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/empresa.png"));
-		btnAlmacen.setToolTipText("Almacen");
-		btnAlmacen.setForeground(Color.WHITE);
-		btnAlmacen.setBackground(Color.GRAY);
-		pnlOption.add(btnAlmacen);
-		
-		btnCliente = new JButton("");
-		btnCliente.addActionListener(contPedidos.actionCliente());
-		btnCliente.setBounds(235, 0, 40, 40);
-		btnCliente.setToolTipText("Cliente");
-		btnCliente.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/group.png"));
-		btnCliente.setBackground(Color.GRAY);
-		btnCliente.setForeground(Color.WHITE);
-		pnlOption.add(btnCliente);
-		
-		btnVendedor = new JButton("");
-		btnVendedor.addActionListener(contPedidos.actionVendedor());
-		btnVendedor.setBounds(280, 0, 40, 40);
-		btnVendedor.setToolTipText("Vendedor");
-		btnVendedor.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/user.png"));
-		btnVendedor.setBackground(Color.GRAY);
-		btnVendedor.setForeground(Color.WHITE);
-		pnlOption.add(btnVendedor);
-		
-		btnProducto = new JButton("");
-		btnProducto.addActionListener(contPedidos.actionProducto());
-		btnProducto.setBounds(325, 0, 40, 40);
-		btnProducto.setToolTipText("Agregar Producto");
-		btnProducto.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/NuevoPaquete.png"));
-		btnProducto.setBackground(Color.GRAY);
-		btnProducto.setForeground(Color.WHITE);
-		pnlOption.add(btnProducto);
-		
-		btnQuitarProducto = new JButton("");
-		btnQuitarProducto.addActionListener(contPedidos.actionQuitarProductoDetalle());
-		btnQuitarProducto.setBounds(370, 0, 40, 40);
-		btnQuitarProducto.setToolTipText("Quitar Producto");
-		btnQuitarProducto.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/desktop.png"));
-		btnQuitarProducto.setBackground(Color.GRAY);
-		btnQuitarProducto.setForeground(Color.WHITE);
-		pnlOption.add(btnQuitarProducto);
-		
-		Component verticalGlue_2 = Box.createVerticalGlue();
-		verticalGlue_2.setBackground(Color.LIGHT_GRAY);
-		verticalGlue_2.setBounds(415, 0, 0, 38);
-		pnlOption.add(verticalGlue_2);
-		
-		btnSalir = new JButton("");
+		btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(contPedidos.actionSalir());
-		btnSalir.setBounds(711, 0, 40, 40);
 		btnSalir.setToolTipText("Salir");
 		btnSalir.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/SalirCurva.png"));
-		btnSalir.setBackground(Color.GRAY);
+		btnSalir.setBackground(Color.DARK_GRAY);
 		btnSalir.setForeground(Color.WHITE);
 		btnSalir.setHorizontalAlignment(SwingConstants.LEFT);
 		pnlOption.add(btnSalir);
 		
-		btnGuardarFactura = new JButton("");
-		btnGuardarFactura.addActionListener(contPedidos.actionGenerarFactura());
-		btnGuardarFactura.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/bien.png"));
-		btnGuardarFactura.setToolTipText("GenararFactura");
-		btnGuardarFactura.setForeground(Color.WHITE);
-		btnGuardarFactura.setBackground(Color.GRAY);
-		btnGuardarFactura.setBounds(427, 0, 40, 40);
-		pnlOption.add(btnGuardarFactura);
-		
 		pnlInfo = new JPanel();
-		pnlInfo.setBackground(Color.GRAY);
+		pnlInfo.setBackground(Color.DARK_GRAY);
 		pnlInfo.setForeground(Color.WHITE);
 		pnlInfo.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 3, true), "Informacion del Pedido", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		pnlInfo.setBounds(25, 77, 763, 135);
+		pnlInfo.setBounds(12, 77, 1146, 185);
 		pnlPedido.add(pnlInfo);
 		pnlInfo.setLayout(null);
 		
 		pnlAlmacen = new JPanel();
-		pnlAlmacen.setBackground(Color.GRAY);
+		pnlAlmacen.setBackground(Color.DARK_GRAY);
 		pnlAlmacen.setBorder(new TitledBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(192, 192, 192)), "Almacen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
-		pnlAlmacen.setBounds(12, 24, 250, 30);
+		pnlAlmacen.setBounds(541, 43, 547, 51);
 		pnlInfo.add(pnlAlmacen);
 		pnlAlmacen.setLayout(new GridLayout(0, 1, 0, 0));
 		
@@ -223,27 +143,24 @@ public class PedidosUI extends JPanel{
 		
 		pnlVendedor = new JPanel();
 		pnlVendedor.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Vendedor", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
-		pnlVendedor.setBackground(Color.GRAY);
-		pnlVendedor.setBounds(12, 60, 250, 46);
+		pnlVendedor.setBackground(Color.DARK_GRAY);
+		pnlVendedor.setBounds(541, 106, 547, 51);
 		pnlInfo.add(pnlVendedor);
 		pnlVendedor.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		lblCedulaVendedor = new JLabel("Cedula:");
-		lblCedulaVendedor.setForeground(Color.WHITE);
-		pnlVendedor.add(lblCedulaVendedor);
-		
-		lblNombreVendedor = new JLabel("Nombre:");
+		lblNombreVendedor = new JLabel("");
 		lblNombreVendedor.setForeground(Color.WHITE);
 		pnlVendedor.add(lblNombreVendedor);
 		
 		pnlCliente = new JPanel();
 		pnlCliente.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 1, true), "Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
-		pnlCliente.setBackground(Color.GRAY);
-		pnlCliente.setBounds(270, 24, 250, 82);
+		pnlCliente.setBackground(Color.DARK_GRAY);
+		pnlCliente.setBounds(12, 43, 480, 130);
 		pnlInfo.add(pnlCliente);
 		pnlCliente.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		lblRif = new JLabel("Rif:");
+		lblRif.setFont(new Font("Dialog", Font.BOLD, 12));
 		lblRif.setForeground(Color.WHITE);
 		pnlCliente.add(lblRif);
 		
@@ -251,75 +168,162 @@ public class PedidosUI extends JPanel{
 		lblRazonSocial.setForeground(Color.WHITE);
 		pnlCliente.add(lblRazonSocial);
 		
+		lblDomicilioFiscal = new JLabel("Domicilio Fiscal:");
+		lblDomicilioFiscal.setForeground(Color.WHITE);
+		pnlCliente.add(lblDomicilioFiscal);
+		
+		lblDireccion = new JLabel("");
+		lblDireccion.setForeground(Color.WHITE);
+		pnlCliente.add(lblDireccion);
+		
 		lblTelefono = new JLabel("Telefono:");
 		lblTelefono.setForeground(Color.WHITE);
 		pnlCliente.add(lblTelefono);
-		
-		lblDireccion = new JLabel("Direccion:");
-		lblDireccion.setForeground(Color.WHITE);
-		pnlCliente.add(lblDireccion);
 		
 		lblRuta = new JLabel("Ruta:");
 		lblRuta.setForeground(Color.WHITE);
 		pnlCliente.add(lblRuta);
 		
-		lblNumeroPedido = new JLabel("Numero:");
-		lblNumeroPedido.setForeground(Color.WHITE);
-		lblNumeroPedido.setBounds(527, 38, 192, 10);
-		pnlInfo.add(lblNumeroPedido);
+		JPanel panel = new JPanel();
+		panel.setBounds(12, 12, 415, 35);
+		pnlInfo.add(panel);
+		panel.setBackground(Color.DARK_GRAY);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		lblFecha = new JLabel("Fecha:");
-		lblFecha.setForeground(Color.WHITE);
-		lblFecha.setBounds(527, 60, 192, 10);
-		pnlInfo.add(lblFecha);
+		btnAlmacen = new JButton("Almacenes");
+		panel.add(btnAlmacen);
+		btnAlmacen.addActionListener(contPedidos.actionAlmacen());
+		btnAlmacen.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/empresa.png"));
+		btnAlmacen.setToolTipText("Almacen");
+		btnAlmacen.setForeground(Color.WHITE);
+		btnAlmacen.setBackground(Color.DARK_GRAY);
 		
-		lblDescuento = new JLabel("Descuento:");
-		lblDescuento.setForeground(Color.WHITE);
-		lblDescuento.setBounds(527, 82, 192, 10);
-		lblDescuento.setVisible(false);
-		pnlInfo.add(lblDescuento);
+		btnCliente = new JButton("Clientes");
+		panel.add(btnCliente);
+		btnCliente.addActionListener(contPedidos.actionCliente());
+		btnCliente.setToolTipText("Cliente");
+		btnCliente.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/group.png"));
+		btnCliente.setBackground(Color.DARK_GRAY);
+		btnCliente.setForeground(Color.WHITE);
+		
+		btnVendedor = new JButton("Vendedores");
+		panel.add(btnVendedor);
+		btnVendedor.addActionListener(contPedidos.actionVendedor());
+		btnVendedor.setToolTipText("Vendedor");
+		btnVendedor.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/user.png"));
+		btnVendedor.setBackground(Color.DARK_GRAY);
+		btnVendedor.setForeground(Color.WHITE);
 		
 		pnlDetalle = new JPanel();
 		pnlDetalle.setForeground(Color.WHITE);
 		pnlDetalle.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 3, true), "Detalle", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
-		pnlDetalle.setBackground(Color.GRAY);
-		pnlDetalle.setBounds(25, 220, 763, 371);
+		pnlDetalle.setBackground(Color.DARK_GRAY);
+		pnlDetalle.setBounds(12, 264, 1146, 282);
 		pnlPedido.add(pnlDetalle);
 		pnlDetalle.setLayout(null);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(14, 14, 737, 347);
+		scrollPane.setBounds(14, 49, 1120, 230);
 		pnlDetalle.add(scrollPane);
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
+		panel_1 = new JPanel();
+		panel_1.setBackground(Color.DARK_GRAY);
+		panel_1.setBounds(14, 12, 239, 35);
+		pnlDetalle.add(panel_1);
+		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		btnProducto = new JButton("Agregar");
+		panel_1.add(btnProducto);
+		btnProducto.addActionListener(contPedidos.actionProducto());
+		btnProducto.setToolTipText("Agregar Producto");
+		btnProducto.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/NuevoPaquete.png"));
+		btnProducto.setBackground(Color.DARK_GRAY);
+		btnProducto.setForeground(Color.WHITE);
+		
+		btnQuitarProducto = new JButton("Quitar");
+		panel_1.add(btnQuitarProducto);
+		btnQuitarProducto.addActionListener(contPedidos.actionQuitarProductoDetalle());
+		btnQuitarProducto.setToolTipText("Quitar Producto");
+		btnQuitarProducto.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/desktop.png"));
+		btnQuitarProducto.setBackground(Color.DARK_GRAY);
+		btnQuitarProducto.setForeground(Color.WHITE);
+		
 		pnlTotales = new JPanel();
 		pnlTotales.setBorder(new TitledBorder(new LineBorder(new Color(192, 192, 192), 2, true), "Totales", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnlTotales.setBackground(Color.DARK_GRAY);
-		pnlTotales.setBounds(534, 590, 254, 100);
+		pnlTotales.setBounds(817, 548, 341, 140);
 		pnlPedido.add(pnlTotales);
-		pnlTotales.setLayout(null);
+		pnlTotales.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		lblTotalSinIva = new JLabel("Total Sin Iva:");
-		lblTotalSinIva.setForeground(Color.WHITE);
-		lblTotalSinIva.setBounds(12, 18, 244, 10);
-		pnlTotales.add(lblTotalSinIva);
+		lblSubtotalExento = new JLabel("SUBTOTAL EXENTO:");
+		lblSubtotalExento.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblSubtotalExento.setForeground(Color.WHITE);
+		pnlTotales.add(lblSubtotalExento);
 		
-		lblTotalIva = new JLabel("Total Iva:");
-		lblTotalIva.setForeground(Color.WHITE);
-		lblTotalIva.setBounds(12, 36, 244, 10);
-		pnlTotales.add(lblTotalIva);
+		lblSubtotalGravado = new JLabel("SUBTOTAL GRAVADO:");
+		lblSubtotalGravado.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblSubtotalGravado.setForeground(Color.WHITE);
+		pnlTotales.add(lblSubtotalGravado);
 		
-		lblSaldoAPagar = new JLabel("Saldo a Pagar:");
-		lblSaldoAPagar.setForeground(Color.WHITE);
-		lblSaldoAPagar.setBounds(12, 77, 244, 10);
-		pnlTotales.add(lblSaldoAPagar);
+		lblDesc = new JLabel("%DESC.:");
+		lblDesc.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblDesc.setForeground(Color.WHITE);
+		pnlTotales.add(lblDesc);
 		
-		lblTotalDescuento = new JLabel("Total Descuento:");
-		lblTotalDescuento.setForeground(Color.WHITE);
-		lblTotalDescuento.setBounds(12, 55, 244, 10);
-		pnlTotales.add(lblTotalDescuento);
+		lblIvaSobreBs = new JLabel("I.V.A. SOBRE Bs.:");
+		lblIvaSobreBs.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblIvaSobreBs.setForeground(Color.WHITE);
+		pnlTotales.add(lblIvaSobreBs);
+		
+		lblIva = new JLabel("I.V.A: 12.00  %");
+		lblIva.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblIva.setForeground(Color.WHITE);
+		pnlTotales.add(lblIva);
+		
+		lblTotalAPagar = new JLabel("TOTAL A PAGAR:");
+		lblTotalAPagar.setFont(new Font("Abyssinica SIL", Font.ITALIC, 12));
+		lblTotalAPagar.setForeground(Color.WHITE);
+		pnlTotales.add(lblTotalAPagar);
+		
+		btnGuardarFactura = new JButton("Generar Factura");
+		btnGuardarFactura.setBounds(36, 617, 178, 26);
+		pnlPedido.add(btnGuardarFactura);
+		btnGuardarFactura.addActionListener(contPedidos.actionGenerarFactura());
+		btnGuardarFactura.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/bien.png"));
+		btnGuardarFactura.setToolTipText("GenararFactura");
+		btnGuardarFactura.setForeground(Color.WHITE);
+		btnGuardarFactura.setBackground(Color.DARK_GRAY);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.DARK_GRAY);
+		panel_2.setBounds(914, 25, 244, 40);
+		pnlPedido.add(panel_2);
+		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		txtNumeroPedido = new JTextField("");
+		panel_2.add(txtNumeroPedido);
+		txtNumeroPedido.setColumns(15);
+		
+		btnBuscar = new JButton("");
+		panel_2.add(btnBuscar);
+		btnBuscar.addActionListener(contPedidos.actionBuscarPedido());
+		btnBuscar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/buscar.png"));
+		btnBuscar.setBackground(Color.DARK_GRAY);
+		btnBuscar.setForeground(Color.WHITE);
+		
+		lblFecha = new JLabel("Fecha:");
+		lblFecha.setFont(new Font("Dialog", Font.BOLD, 18));
+		lblFecha.setBounds(544, 36, 313, 24);
+		pnlPedido.add(lblFecha);
+		lblFecha.setForeground(Color.WHITE);
+		
+		lblCondicion = new JLabel("Condicion de pago:");
+		lblCondicion.setBounds(36, 575, 250, 15);
+		pnlPedido.add(lblCondicion);
+		lblCondicion.setForeground(Color.WHITE);
 	}
 
 	public JPanel getPnlPedido() {
@@ -490,14 +494,6 @@ public class PedidosUI extends JPanel{
 		this.pnlAlmacen = pnlAlmacen;
 	}
 
-	public JLabel getLblCedulaVendedor() {
-		return lblCedulaVendedor;
-	}
-
-	public void setLblCedulaVendedor(JLabel lblCedulaVendedor) {
-		this.lblCedulaVendedor = lblCedulaVendedor;
-	}
-
 	public JLabel getLblNombreVendedor() {
 		return lblNombreVendedor;
 	}
@@ -546,37 +542,6 @@ public class PedidosUI extends JPanel{
 		this.lblRuta = lblRuta;
 	}
 
-	public JLabel getLblTotalIva() {
-		return lblTotalIva;
-	}
-
-	public void setLblTotalIva(JLabel lblTotalIva) {
-		this.lblTotalIva = lblTotalIva;
-	}
-
-	public JLabel getLblSaldoAPagar() {
-		return lblSaldoAPagar;
-	}
-
-	public void setLblSaldoAPagar(JLabel lblSaldoAPagar) {
-		this.lblSaldoAPagar = lblSaldoAPagar;
-	}
-
-	public JLabel getLblTotalSinIva() {
-		return lblTotalSinIva;
-	}
-
-	public void setLblTotalSinIva(JLabel lblTotalSinIva) {
-		this.lblTotalSinIva = lblTotalSinIva;
-	}
-
-	public JLabel getLblNumeroPedido() {
-		return lblNumeroPedido;
-	}
-
-	public void setLblNumeroPedido(JLabel lblNumeroPedido) {
-		this.lblNumeroPedido = lblNumeroPedido;
-	}
 
 	public JLabel getLblAlmacen() {
 		return lblAlmacen;
@@ -592,14 +557,6 @@ public class PedidosUI extends JPanel{
 
 	public void setLblFecha(JLabel lblFecha) {
 		this.lblFecha = lblFecha;
-	}
-
-	public JLabel getLblDescuento() {
-		return lblDescuento;
-	}
-
-	public void setLblDescuento(JLabel lblDescuento) {
-		this.lblDescuento = lblDescuento;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -628,12 +585,77 @@ public class PedidosUI extends JPanel{
 		this.btnQuitarProducto = btnQuitarProducto;
 	}
 
-	public JLabel getLblTotalDescuento() {
-		return lblTotalDescuento;
+	public JLabel getLblCondicion() {
+		return lblCondicion;
 	}
 
-	public void setLblTotalDescuento(JLabel lblTotalDescuento) {
-		this.lblTotalDescuento = lblTotalDescuento;
+	public void setLblCondicion(JLabel lblCondicion) {
+		this.lblCondicion = lblCondicion;
+	}
+
+	public JLabel getLblIvaSobreBs() {
+		return lblIvaSobreBs;
+	}
+
+	public void setLblIvaSobreBs(JLabel lblIvaSobreBs) {
+		this.lblIvaSobreBs = lblIvaSobreBs;
+	}
+
+	public JLabel getLblTotalAPagar() {
+		return lblTotalAPagar;
+	}
+
+	public void setLblTotalAPagar(JLabel lblTotalAPagar) {
+		this.lblTotalAPagar = lblTotalAPagar;
+	}
+
+	public JLabel getLblDesc() {
+		return lblDesc;
+	}
+
+	public void setLblDesc(JLabel lblDesc) {
+		this.lblDesc = lblDesc;
+	}
+
+	public JLabel getLblIva() {
+		return lblIva;
+	}
+
+	public void setLblIva(JLabel lblIva) {
+		this.lblIva = lblIva;
+	}
+
+	public JLabel getLblDomicilioFiscal() {
+		return lblDomicilioFiscal;
+	}
+
+	public void setLblDomicilioFiscal(JLabel lblDomicilioFiscal) {
+		this.lblDomicilioFiscal = lblDomicilioFiscal;
+	}
+
+	public JLabel getLblSubtotalGravado() {
+		return lblSubtotalGravado;
+	}
+
+	public void setLblSubtotalGravado(JLabel lblSubtotalGravado) {
+		this.lblSubtotalGravado = lblSubtotalGravado;
+	}
+
+	public JLabel getLblSubtotalExento() {
+		return lblSubtotalExento;
+	}
+
+	public void setLblSubtotalExento(JLabel lblSubtotalExento) {
+		this.lblSubtotalExento = lblSubtotalExento;
+	}
+
+	public JTextField getTxtNumeroPedido() {
+		return txtNumeroPedido;
+	}
+
+	public void setTxtNumeroPedido(JTextField txtNumeroPedido) {
+		this.txtNumeroPedido = txtNumeroPedido;
 	}
 	
 }
+

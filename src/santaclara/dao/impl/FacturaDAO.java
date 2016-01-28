@@ -28,7 +28,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 	}
 
 	@Override
-	public List<Factura> getFacturas() throws FileNotFoundException {
+	public List<Factura> getFacturas() throws FileNotFoundException{
 		// TODO Auto-generated method stub
 		List<Factura> facturas = new ArrayList<Factura>();
 		File file = new File(ruta);
@@ -36,7 +36,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		while(scanner.hasNext())
 		{
 			 Factura factura = new Factura();
-			 factura.setId(new Integer(scanner.skip("id:").nextLine().trim()));
+			 factura.setId(new Integer(scanner.skip("id:").nextLine().toString().trim()));
 			 
 			 Date fecha = new Date();
 				try {
@@ -46,9 +46,9 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 					e.printStackTrace();
 				}
 				factura.setFecha(fecha);
-			 
-			 factura.setTotal(new Double(scanner.skip("total:").nextLine().trim()));
-			 factura.setSaldo(new Double(scanner.skip("saldo:").nextLine().trim()));
+
+			 //factura.setTotal(new Double(scanner.skip("total:").nextLine().trim()));
+			 //factura.setSaldo(new Double(scanner.skip("saldo:").nextLine().trim()));
 			 factura.setIva(new Double(scanner.skip("iva:").nextLine().trim()));
 			 factura.setDescuento(new Double(scanner.skip("descuento:").nextLine().trim()));			 
 			 ClienteDAO clienteDAO = new ClienteDAO();
@@ -82,14 +82,25 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 			default:factura.setEstado(false);
 				break;
 			}
- 
-			
+
 			 facturas.add(factura);
 		}
 		scanner.close();
 		return facturas;
 	}
 
+	public Integer ultimaFactura() throws FileNotFoundException{
+		int i = 0;
+		for(Factura factura1 : getFacturas())
+		{
+			if(factura1.getId()> i )
+			{
+				i = factura1.getId();
+			}
+		}
+		return i;
+	}
+	
 	@Override
 	public void guardar(Factura factura) throws IOException {
 		// TODO Auto-generated method stub
@@ -97,15 +108,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		//buscar codigo el ultimo codigo Asignado 
 		if(factura.getId() == null )
 		{
-			int i = 0;
-			for(Factura factura1 : facturas)
-			{
-				if(factura1.getId()> i )
-				{
-					i = factura1.getId();
-				}
-			}
-			factura.setId(i+1);
+			factura.setId(ultimaFactura()+1);
 			facturas.add(factura);
 		}
 		else
@@ -115,14 +118,17 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 				if(factura1.getId().equals(factura.getId()))
 				{ 
 					factura1.setFecha(factura.getFecha());
-					factura1.setTotal(factura.getTotal());
-					factura1.setSaldo(factura.getSaldo());
-					factura1.setIva(factura.getIva());
-					factura1.setDescuento(factura.getDescuento());
 					factura1.setCliente(factura.getCliente());
 					factura1.setVendedor(factura.getVendedor());
 					factura1.setAlmacen(factura.getAlmacen());
 					factura1.setEstado(factura.getEstado());
+					
+					factura1.setSubTotalExento(factura.getSubTotalExento());
+					factura1.setSubTotalGravado(factura.getSubTotalGravado());
+					factura1.setDescuento(factura.getDescuento());
+					factura1.setIvaSobreBs(factura.getIvaSobreBs());
+					factura1.setIva(factura.getIva());
+					factura1.setTotalAPagar(factura.getTotalAPagar());
 				}
 			}
 		}
@@ -166,10 +172,6 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		{
 			fw.append("id:"+factura.getId().toString()+"\n");
 			fw.append("fecha:"+(factura.getFechaStr()+"\n"));
-			fw.append("total:"+factura.getTotal().toString()+"\n");
-			fw.append("saldo:"+factura.getSaldo().toString()+"\n");
-			fw.append("iva:"+factura.getIva().toString()+"\n");
-			fw.append("descuento:"+factura.getDescuento().toString()+"\n");
 			fw.append("idCliente:"+(factura.getCliente().getId().toString())+"\n");
 			fw.append("idVendedor:"+(factura.getVendedor().getId().toString())+"\n");
 			fw.append("idAlmacen:"+(factura.getAlmacen().getId().toString() )+"\n");
@@ -188,6 +190,12 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 			{
 				fw.append("estado:Pedido\n");	
 			}
+			fw.append("subTotalExento:"+factura.getSubTotalExento().toString().trim()+"\n");
+			fw.append("subTotalGravado:"+factura.getSubTotalGravado().toString().trim()+"\n");
+			fw.append("desc%:"+factura.getDescuento().toString().trim()+"\n");
+			fw.append("ivaSobreBs:"+factura.getIvaSobreBs().toString().trim()+"\n");
+			fw.append("iva:"+factura.getIva().toString().trim()+"\n");
+			fw.append("totalAPagar:"+factura.getTotalAPagar().toString().trim()+"\n");
 			
 		}
 		fw.close();
@@ -195,14 +203,17 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 
 /*
  * id:0
-fecha:06/06/2015
-total:7350000000
-saldo:88200000
-iva:7261800000
-descuento:0
-idCliente:2
-idVendedor:2
-idAlmacen:1
-estado:Pedido*/
+ * fecha:06/06/2015
+ * idCliente:2
+ * idVendedor:2
+ * idAlmacen:1
+ * estado:Pedido
+ * subTotalExento:0
+ * subTotalGravado:100
+ * desc%:0
+ * ivaSobreBs:100
+ * iva:12
+ * tatalAPagar:120
+ */
 	
 }

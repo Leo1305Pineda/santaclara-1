@@ -276,7 +276,7 @@ public class ProductoAlmacenesUI extends JPanel {
 			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getCapacidad().getVolumenStr()));
 			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getSabor().getSabor()));
 			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getProducto().getPrecioStr()));
-			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getCantidadStr()));
+			pnEmpaqueProducto.add(new JTextField(empaqueProducto.getUnidadesStr()));
 			pnEmpaqueProducto.setLayout(new GridLayout(1, 0, 0, 0));
 												
 			return pnEmpaqueProducto;

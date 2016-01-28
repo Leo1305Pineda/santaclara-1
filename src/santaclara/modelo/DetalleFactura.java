@@ -2,22 +2,24 @@ package santaclara.modelo;
 
 public class DetalleFactura {
 	
-	private Producto producto;
+	private Factura factura;
+	private EmpaqueProducto empaqueProducto;
 	private Integer cantidad;
 	private Double precio;
-	private Factura factura;
-	private Double iva; 
+	private Double descuento;
 	private Double total;
+	private Double iva; 
+	
 
 	
 	public DetalleFactura() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public DetalleFactura(Producto producto,Integer cantidad, Double precio, Factura factura,
+	public DetalleFactura(EmpaqueProducto producto,Integer cantidad, Double precio, Factura factura,
 			Double iva, Double total) {
 		super();
-		this.producto = producto;
+		this.empaqueProducto = producto;
 		this.cantidad = cantidad;
 		this.precio = precio;
 		this.factura = factura;
@@ -46,6 +48,9 @@ public class DetalleFactura {
 	public Double getIva() {
 		return iva;
 	}
+	public String getIvaStr() {
+		return empaqueProducto.getProducto().getIvaStr();
+	}
 	public void setIva(Double iva) {
 		this.iva = iva;
 	}
@@ -55,12 +60,28 @@ public class DetalleFactura {
 	public void setTotal(Double total) {
 		this.total = total;
 	}
-	public Producto getProducto() {
-		return producto;
+	public EmpaqueProducto getEmpaqueProducto() {
+		return empaqueProducto;
+	} 
+	public void setEmpaqueProducto(EmpaqueProducto empaqueProducto) {
+		this.empaqueProducto = empaqueProducto;
 	}
-	public void setProducto(Producto producto) {
-		this.producto = producto;
+	public Double getDescuento() {
+		return descuento;
 	}
-
+	public void setDescuento(Double descuento) {
+		this.descuento = descuento;
+	}
 	
+	public String getCodigoStr(){
+		return empaqueProducto.getId().toString();
+	}
+	
+	public String  getUnidadesStr(){
+		return empaqueProducto.getUnidadesStr();
+	}
+	
+	public String getDescripcion(){
+		return empaqueProducto.getDescripcionEmpaque();
+	}
 }

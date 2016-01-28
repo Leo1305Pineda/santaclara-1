@@ -19,7 +19,7 @@ ruta:2
 id:4
 rif:V-19727835
 razonsocial:Birtraje.CA
-direccion:El ujano
+direccion:carrera 8 con calle 2A y 2B Sector la Brama
 telefono:0251-6543765
 ruta:1
 id:5
@@ -70,3 +70,15 @@ razonsocial:Dario Fernadez
 direccion:Carrera 3 con calle 5 y 6
 telefono:02512373498
 ruta:2
+id:13
+rif:V-12342546
+razonsocial:Arepera del Centro
+direccion:Carrera 22 entre Calle 30 y 31
+telefono:0251-2372634
+ruta:0
+id:14
+rif:V-2563826
+razonsocial:Comercial Chan 2013
+direccion:Carrera 15 con calle 21 y 22
+telefono:0251-2374927
+ruta:10

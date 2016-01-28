@@ -54,7 +54,9 @@ public class PrincipalUI {
 	private 	JMenuItem mntZonas;
 	private 	JMenuItem mntCalendarios;
 	private     JMenuItem mntPedidos;
+	private     JMenuItem mntReportMontFacturaAlmacen;
 
+	
 	
 	/**
 	 * Launch the application.
@@ -115,7 +117,7 @@ public class PrincipalUI {
 		
 		mnConsulta = new JMenu("Consulta");
 		menuBar.add(mnConsulta);
-		
+
 		mnSalir = new JMenu("Salir");
 		mntCerrar = new JMenuItem("cerrar sesión ");
 
@@ -153,6 +155,9 @@ public class PrincipalUI {
 		mnCatalogo.add(mntJefeVenta);
 		mntJefeVenta.addActionListener(controlador.activarMenu());
 		*/
+		mntReportMontFacturaAlmacen = new JMenuItem("Monto Total Facturado por Almacenes");
+		mnReportes.add(mntReportMontFacturaAlmacen);
+		mntReportMontFacturaAlmacen.addActionListener(controlador.activarMenu());
 
 		mntProductos = new JMenuItem("Productos");
 		mntProductos.addActionListener(controlador.activarMenu());
@@ -170,13 +175,12 @@ public class PrincipalUI {
 		mntPresentaciones = new JMenuItem("Presentaciones");
 		mntPresentaciones.addActionListener(controlador.activarMenu());
 		mnCatalogo.add(mntPresentaciones);
-		
 
+		
 		mntCapacidades = new JMenuItem("Capacidades");
 		mnCatalogo.add(mntCapacidades);
 		mntCapacidades.addActionListener(controlador.activarMenu());
-		
-		
+
 		/*
 		mntProductoAlmacenes = new JMenuItem("Producto por Almacenes");
 		mnCatalogo.add(mntProductoAlmacenes);
@@ -496,6 +500,14 @@ public class PrincipalUI {
 
 	public void setMntPedidos(JMenuItem mntPedido) {
 		this.mntPedidos = mntPedido;
+	}
+
+	public JMenuItem getMntReportMontFacturaAlmacen() {
+		return mntReportMontFacturaAlmacen;
+	}
+
+	public void setMntReportMontFacturaAlmacen(JMenuItem mntReportMontFacturaAlmacen) {
+		this.mntReportMontFacturaAlmacen = mntReportMontFacturaAlmacen;
 	}
 
 	
