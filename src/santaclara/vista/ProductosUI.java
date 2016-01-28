@@ -80,6 +80,8 @@ public class ProductosUI extends VistaGenericaUI {
 	
     public ProductosUI(ContProductos contProductos, List<Producto> productos,List<Capacidad> capacidades, List<Sabor> sabores,List<Presentacion> presentaciones) {
 		super();
+		getPnTabla().setBounds(0, 55, 1216, 681);
+		getPnOpciones().setBounds(0, 0, 1216, 55);
 		this.productos = productos;
 		this.presentaciones = presentaciones;
 		this.capacidades = capacidades;
@@ -280,6 +282,7 @@ public class ProductosUI extends VistaGenericaUI {
 		btnBuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
 		btnBuscar.setBackground(Color.DARK_GRAY);
 		getPanelBuscar().add(btnBuscar);
+		setLayout(null);
 		
 		activarBinding(productos);
 			

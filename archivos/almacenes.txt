@@ -1,6 +1,6 @@
 id:1
-ubicacion:Zoma industrial I
+ubicacion:Zona Industrial I
 id:2
-ubicacion:Zoma industrial II
+ubicacion:Zona Industrial II
 id:3
 ubicacion:Zona Industrial III

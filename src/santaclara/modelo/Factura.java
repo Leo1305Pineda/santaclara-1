@@ -115,7 +115,7 @@ public class Factura {
 		if (fecha==null)return "";
 		else{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			return sdf.format(fecha);
+			return " "+sdf.format(fecha);
 			} 
 		}
 		

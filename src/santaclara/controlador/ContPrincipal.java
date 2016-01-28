@@ -6,8 +6,10 @@ import java.awt.event.ActionListener;
 import java.util.Stack;
 
 import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
 
@@ -174,9 +176,25 @@ public  class ContPrincipal {
 				{
 					ActivarPedidos(null,"",null);
 				}
+				else if(e.getSource().equals(vista.getMntReportMontFacturaAlmacen())){
+					ActivarReportFacturadoAlmacen();
+				}
 			}
 		};
 	}
+	
+	public void ActivarReportFacturadoAlmacen(){
+		
+		try {
+			
+			controlador = new ContReportMontFacturadoAlmacen(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
 	public void ActivarRutas(){
 		// TODO Auto-generated method stub
 		try {
@@ -420,6 +438,8 @@ public  class ContPrincipal {
 			case "santaclara.controlador.ContCalendario":	ActivarCalendarios();
 			break;
 			case "santaclara.controlador.ContPedidos":	ActivarPedidos(obtetContCache,obtetContCachePresente,objectClassVista);
+			break;
+			case "santaclara.controlador.reportes.ContReportMontFacturadoAlmacen":	ActivarReportFacturadoAlmacen();
 			break;
  
 			default:

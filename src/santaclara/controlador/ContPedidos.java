@@ -317,6 +317,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 				// TODO Auto-generated method stub
 				try {
 					ContUsuarios contUsuarios = new ContUsuarios(getContPrincipal());
+					contUsuarios.getVistaUsuario().getBtnAtras().setText("Seleccione");
 					if(factura.getCliente() !=null)
 					{
 						if ((new ServicioSalp().getSalp(factura.getCliente().getId()))!=null)
@@ -483,7 +484,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 					validarDetalle();
 					Factura facturaAux =new ServicioFactura().getFactura(factura.getId()); 
 					//Existe la Factura 
-					if(facturaAux==null) throw new Exception("Guardar Pedido");
+					if(facturaAux==null) throw new Exception("EL pedido debe ser Guardado");
 					//y ademas no se a Facturado estado null o en Pedido
 					if(facturaAux.getEstado()!=null) throw new Exception("Factura Existente");
 							
@@ -542,8 +543,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 						break;
 					case "noCredito":
 						opt = new Integer(JOptionPane.showConfirmDialog(vista,"el Cliente no puede obtar por el credito \n "
-								+ "dicho cliente no posee factura en los ultimos 6 meses que superen los 800 mil Bolivares".concat(
-								" Desea Continuar"),"Seleccione la Opcion",2));
+								+ "dicho cliente no posee factura en los ultimos 6 meses que superen los 800 mil Bolivares","Seleccione la Opcion",2));
 						if(opt==0){
 							vista.getBtnGuardarFactura().doClick();
 						}
@@ -576,28 +576,6 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 							vista.getBtnProducto().doClick();
 						}
 					break;
-					case "Factura Existente":
-						opt = new Integer(JOptionPane.showConfirmDialog(vista,exe.getMessage()
-								+ " no se puede Eliminar ni Modificar \n"
-								+ " desea Generar un Nuevo Pedido\n",".:: Aviso ::.",2));
-						if (opt.equals(0))
-						{
-							try {
-								factura.setId(null);
-								factura.setEstado(null);
-								new ServicioFactura().guardar(factura);
-								factura.setId(new ServicioFactura().ultimaFactura()+1);
-								for(DetalleFactura detalleFactura : detalleFacturas)detalleFactura.setFactura(factura);
-								new ServicioDetalleFactura().guardar(detalleFacturas);
-							
-								JOptionPane.showMessageDialog(vista,"Generado el Pedido Exitosamente \n"
-										+ "Ya Puede Procedar a Generar La Factura");
-							} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-						}
-						break;
 						
 					default:exe.printStackTrace();
 						break;
