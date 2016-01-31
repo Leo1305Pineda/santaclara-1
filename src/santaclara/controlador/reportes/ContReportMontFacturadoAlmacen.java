@@ -20,6 +20,8 @@ import santaclara.vista.reporte.MontoFacturadoAlmacenUI;
 public class ContReportMontFacturadoAlmacen extends ContGeneral implements IContGeneral {
 
 	private static MontoFacturadoAlmacenUI vista;
+	
+	//Estoy Probando A ver
 	public ContReportMontFacturadoAlmacen() {
 		// TODO Auto-generated constructor stub
 		
