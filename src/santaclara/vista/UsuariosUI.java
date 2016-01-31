@@ -53,8 +53,6 @@ import org.jdesktop.beansbinding.ObjectProperty;
 
 import javax.swing.ListSelectionModel;
 
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.FlowLayout;
 

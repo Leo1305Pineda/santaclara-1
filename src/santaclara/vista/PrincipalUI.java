@@ -1,13 +1,11 @@
 package santaclara.vista;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue; 
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem; 
  
-
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -15,9 +13,6 @@ import javax.swing.JSeparator;
 import santaclara.controlador.ContPrincipal;
 import santaclara.modelo.Usuario;
 import santaclara.vista.herramientas.VistaGenericaUI;
-
-import java.awt.Font;
-
 
 public class PrincipalUI {
 
@@ -47,7 +42,6 @@ public class PrincipalUI {
 	private 	JMenuItem mntProductoAlmacenes;
 	private 	JMenuItem mntRutas;
 	private 	JMenuItem mntSabores;
-	private 	JMenuItem mntSalps;
 	private 	JMenuItem mntUsuarios;
 	private 	JMenuItem mntVendedores;
 	private 	JMenuItem mntVisitas;
@@ -55,7 +49,14 @@ public class PrincipalUI {
 	private 	JMenuItem mntCalendarios;
 	private     JMenuItem mntPedidos;
 	private     JMenuItem mntReportMontFacturaAlmacen;
+	private     JMenuItem mntReportMontFacturaVendedor;
+	private     JMenuItem mntConsultaDetalleFacturaMesAlmacen;
+	private 	JMenuItem mntListCantRefrescoSaborVendidoAlmacen;
+	private 	JMenuItem mntListCantRefrescoPresentCapacFacturadoZona;
+	private		JMenuItem mntListClienteZonaTipo;
+	private		JMenuItem mntMontoFacturadoMesZonaTipoPago;
 
+	
 	
 	/**
 	 * Launch the application.
@@ -91,7 +92,6 @@ public class PrincipalUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	@SuppressWarnings("unused")
 	private void initialize() {
 
 		frame = new JFrame("Embotelladora Santa Clara");
@@ -116,14 +116,6 @@ public class PrincipalUI {
 		
 		mnConsulta = new JMenu("Consulta");
 		menuBar.add(mnConsulta);
-		
-		mnSalir = new JMenu("Salir");
-		mntCerrar = new JMenuItem("cerrar sesión ");
-
-		/****************** btn cerrar session  ******/
-		mnSalir.add(mntCerrar);  
-		mntCerrar.addActionListener(controlador.salirSesion());
-		menuBar.add(mnSalir);
 
 		/***************************** Botones para catalogo **********************************/
 		
@@ -132,11 +124,11 @@ public class PrincipalUI {
 		mnCatalogo.add(mntAlmacen);
 		mnCatalogo.add(new JSeparator());
 
-		/*
+		
 		mntCalendarios = new JMenuItem("Calendario");
 		mnCatalogo.add(mntCalendarios);
 		mntCalendarios.addActionListener(controlador.activarMenu());
-		*/
+	
 
 		/*
 		mntConcesionarios = new JMenuItem("Concesionarios");
@@ -155,10 +147,38 @@ public class PrincipalUI {
 		mntJefeVenta.addActionListener(controlador.activarMenu());
 		*/
 		
+		/***************************** Botones para Reporte **********************************/
+		
 		mntReportMontFacturaAlmacen = new JMenuItem("Monto Total Facturado por Almacenes");
 		mnReportes.add(mntReportMontFacturaAlmacen);
 		mntReportMontFacturaAlmacen.addActionListener(controlador.activarMenu());
+		
+		mntReportMontFacturaVendedor = new JMenuItem("Monto Total Facturado por Vendedores");
+		mnReportes.add(mntReportMontFacturaVendedor);
+		mntReportMontFacturaVendedor.addActionListener(controlador.activarMenu());
+		
+		/***************************** Botones para Consultar **********************************/
+		
+		mntConsultaDetalleFacturaMesAlmacen = new JMenuItem("Detalle Facturado mensualmente por Almacen");
+		mnConsulta.add(mntConsultaDetalleFacturaMesAlmacen);
+		mntConsultaDetalleFacturaMesAlmacen.addActionListener(controlador.activarMenu());
 
+		mntListCantRefrescoSaborVendidoAlmacen = new JMenuItem("Listado Cantidad de refresco por Sabor Vendido en Cada Almacen");
+		mnConsulta.add(mntListCantRefrescoSaborVendidoAlmacen);
+		mntListCantRefrescoSaborVendidoAlmacen.addActionListener(controlador.activarMenu());
+
+		mntListCantRefrescoPresentCapacFacturadoZona = new JMenuItem("Listado Cantidad de Refresco por Presentacion y Capacidad Facturado por Zona");
+		mnConsulta.add(mntListCantRefrescoPresentCapacFacturadoZona);
+		mntListCantRefrescoPresentCapacFacturadoZona.addActionListener(controlador.activarMenu());
+
+		mntListClienteZonaTipo = new JMenuItem("Listado Detalle de Cliente por Zona y por Tipo");
+		mnConsulta.add(mntListClienteZonaTipo);
+		mntListClienteZonaTipo.addActionListener(controlador.activarMenu());
+		
+		mntMontoFacturadoMesZonaTipoPago = new JMenuItem("Monto total Facturado Mensualmente por almacen y por Tipo de Pago");
+		mnConsulta.add(mntMontoFacturadoMesZonaTipoPago);
+		mntMontoFacturadoMesZonaTipoPago.addActionListener(controlador.activarMenu());
+		
 		mntProductos = new JMenuItem("Productos");
 		mntProductos.addActionListener(controlador.activarMenu());
 		mnCatalogo.add(mntProductos);
@@ -175,13 +195,12 @@ public class PrincipalUI {
 		mntPresentaciones = new JMenuItem("Presentaciones");
 		mntPresentaciones.addActionListener(controlador.activarMenu());
 		mnCatalogo.add(mntPresentaciones);
-		
 
+		
 		mntCapacidades = new JMenuItem("Capacidades");
 		mnCatalogo.add(mntCapacidades);
 		mntCapacidades.addActionListener(controlador.activarMenu());
-		
-		
+
 		/*
 		mntProductoAlmacenes = new JMenuItem("Producto por Almacenes");
 		mnCatalogo.add(mntProductoAlmacenes);
@@ -197,9 +216,9 @@ public class PrincipalUI {
 		mntZonas.addActionListener(controlador.activarMenu());
 		mnCatalogo.add(mntZonas);
 
-		mntSalps = new JMenuItem("Clientes ");
-		mntSalps.addActionListener(controlador.activarMenu());
-		mnCatalogo.add(mntSalps);
+		mntClientes = new JMenuItem("Clientes ");
+		mntClientes.addActionListener(controlador.activarMenu());
+		mnCatalogo.add(mntClientes);
 		
 		mnCatalogo.add(new JSeparator());
 
@@ -229,6 +248,13 @@ public class PrincipalUI {
 		mntConcesionarios = new JMenuItem("Consesionarios");
 		mnCatalogo.add(mntConcesionarios);
 		*/
+		/****************** btn cerrar session  ******/
+		mnSalir = new JMenu("Salir");
+		mntCerrar = new JMenuItem("cerrar sesión ");
+		mnSalir.add(mntCerrar);  
+		mntCerrar.addActionListener(controlador.salirSesion());
+		menuBar.add(mnSalir);
+		
 		menuBar.setVisible(false);;
 		frame.setVisible(true); 
 	}
@@ -455,14 +481,7 @@ public class PrincipalUI {
 		this.mntSabores = mntSabores;
 	}
 
-	public JMenuItem getMntSalps() {
-		return mntSalps;
-	}
-
-	public void setMntSalps(JMenuItem mntSalps) {
-		this.mntSalps = mntSalps;
-	}
-
+ 
 	public JMenuItem getMntUsuarios() {
 		return mntUsuarios;
 	}
@@ -511,6 +530,58 @@ public class PrincipalUI {
 		this.mntReportMontFacturaAlmacen = mntReportMontFacturaAlmacen;
 	}
 
+	public JMenuItem getMntReportMontFacturaVendedor() {
+		return mntReportMontFacturaVendedor;
+	}
+
+	public void setMntReportMontFacturaVendedor(
+			JMenuItem mntReportMontFacturaVendedor) {
+		this.mntReportMontFacturaVendedor = mntReportMontFacturaVendedor;
+	}
+
+	public JMenuItem getMntConsultaDetalleFacturaMesAlmacen() {
+		return mntConsultaDetalleFacturaMesAlmacen;
+	}
+
+	public void setMntConsultaDetalleFacturaMesAlmacen(
+			JMenuItem mntConsultaDetalleFacturaMesAlmacen) {
+		this.mntConsultaDetalleFacturaMesAlmacen = mntConsultaDetalleFacturaMesAlmacen;
+	}
+
+	public JMenuItem getMntListCantRefrescoSaborVendidoAlmacen() {
+		return mntListCantRefrescoSaborVendidoAlmacen;
+	}
+
+	public void setMntListCantRefrescoSaborVendidoAlmacen(
+			JMenuItem mntListCantRefrescoSaborVendidoAlmacen) {
+		this.mntListCantRefrescoSaborVendidoAlmacen = mntListCantRefrescoSaborVendidoAlmacen;
+	}
+
+	public JMenuItem getMntListCantRefrescoPresentCapacFacturadoZona() {
+		return mntListCantRefrescoPresentCapacFacturadoZona;
+	}
+
+	public void setMntListCantRefrescoPresentCapacFacturadoZona(
+			JMenuItem mntListCantRefrescoPresentCapacFacturadoZona) {
+		this.mntListCantRefrescoPresentCapacFacturadoZona = mntListCantRefrescoPresentCapacFacturadoZona;
+	}
+
+	public JMenuItem getMntListClienteZonaTipo() {
+		return mntListClienteZonaTipo;
+	}
+
+	public void setMntListClienteZonaTipo(JMenuItem mntListClienteZonaTipo) {
+		this.mntListClienteZonaTipo = mntListClienteZonaTipo;
+	}
+
+	public JMenuItem getMntMontoFacturadoMesZonaTipoPago() {
+		return mntMontoFacturadoMesZonaTipoPago;
+	}
+
+	public void setMntMontoFacturadoMesZonaTipoPago(
+			JMenuItem mntMontoFacturadoMesZonaTipoPago) {
+		this.mntMontoFacturadoMesZonaTipoPago = mntMontoFacturadoMesZonaTipoPago;
+	}
 	
 	
 }

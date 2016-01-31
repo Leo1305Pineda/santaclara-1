@@ -14,39 +14,38 @@ import santaclara.modelo.Producto;
 public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 
 	private String ruta = "archivos/productos.txt";
-	private Scanner scaner;
 	
 	@Override
 	public List<Producto> getProductos() throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub 
 		List<Producto> productos = new ArrayList<Producto>();
 		File file = new File(ruta);
- 		scaner = new Scanner(file);
-		while(scaner.hasNext())
+		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			 Producto producto = new Producto();
-			 producto.setId(new Integer(scaner.skip("id:").nextLine().trim()));
+			 producto.setId(new Integer(scanner.skip("id:").nextLine().trim()));
 			 //Asigna Capacidad
 			 CapacidadDAO capacidadDAO = new CapacidadDAO();
 			 producto.setCapacidad(
 					 capacidadDAO.getCapacidad(
-							 new Integer(scaner.skip("idCapacidad:").nextLine().trim())));
+							 new Integer(scanner.skip("idCapacidad:").nextLine().trim())));
 			//asigna Presentacion
 			 PresentacionDAO presentacionDAO = new PresentacionDAO();
 			 producto.setPresentacion(
 					 presentacionDAO.getPresentacion(
-							 new Integer(scaner.skip("idPresentacion:").nextLine().trim())));
+							 new Integer(scanner.skip("idPresentacion:").nextLine().trim())));
 			 //asigna Sabor
 			 SaborDAO saborDAO = new SaborDAO();
 			 producto.setSabor(
 					 saborDAO.getSabor(
-							 new Integer(scaner.skip("idSabor:").nextLine().trim())));
-			 producto.setNombre(scaner.skip("nombre:").nextLine());
-			 producto.setPrecio(new Double(scaner.skip("precio:").nextLine().trim()));
+							 new Integer(scanner.skip("idSabor:").nextLine().trim())));
+			 producto.setNombre(scanner.skip("nombre:").nextLine());
+			 producto.setPrecio(new Double(scanner.skip("precio:").nextLine().trim()));
 			 
-			 producto.setDescuento(new Double(scaner.skip("descuento:").nextLine().trim()));
+			 producto.setDescuento(new Double(scanner.skip("descuento:").nextLine().trim()));
 			 
-			 String linea = new String(scaner.skip("estadoIva:").nextLine().trim());
+			 String linea = new String(scanner.skip("estadoIva:").nextLine().trim());
 			 
 			 if(linea.equals("exento"))
 			 producto.setIva(true);
@@ -54,6 +53,7 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 			 
 			 productos.add(producto);
 		}
+		scanner.close();
 		return productos;
 	}
 

@@ -68,3 +68,8 @@ username:Elias
 cedula:26542987
 nombre:Elias Cibrian
 contrasena:1234
+id:14
+username:lei
+cedula:4027537
+nombre:Leiberth gomez
+contrasena:1234

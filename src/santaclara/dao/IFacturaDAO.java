@@ -9,6 +9,8 @@ import santaclara.modelo.Factura;
 public interface IFacturaDAO extends IGenericoDAO {
 
 	public List<Factura>  getFacturas() throws FileNotFoundException;
+	
+	public List<Factura>  getPedidoFacturados() throws FileNotFoundException;
 
 	public void	guardar(Factura factura) throws IOException;
 	

@@ -8,17 +8,14 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import net.miginfocom.swing.MigLayout;
 
+@SuppressWarnings("serial")
 public class VistaGenericaUI extends JPanel {
 	
 	private JPanel pnTabla;

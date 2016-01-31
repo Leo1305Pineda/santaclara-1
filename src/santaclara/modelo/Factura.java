@@ -22,9 +22,9 @@ public class Factura {
 
 	public Factura() {
 		super();
-		// TODO Auto-generated constructor stub
+	 
 	}
-	
+
 
 	public Factura(Integer id, Date fecha, Cliente cliente, Usuario vendedor,
 			Almacen almacen, Boolean estado, Double subTotalExento,
@@ -127,6 +127,32 @@ public class Factura {
 			} 
 		}
 
+		public String getFechaCadenaStr() {
+			if (fecha==null)return "";
+			else{
+				String str = new String();
+				switch (fecha.getMonth()) {
+				case 0:	str =	" Enero		";	break;
+				case 1:	str	=	" Febrero	";	break;
+				case 2:	str	=	" Marzo		";	break;
+				case 3:	str	= 	" Abril		";	break;
+				case 4:	str	= 	" Mayo		";	break;
+				case 5:	str	= 	" Junio		";	break;
+				case 6:	str	= 	" Julio		";	break;
+				case 7:	str	= 	" Agosto	";	break;
+				case 8:	str	= 	" Septiembre";	break;
+				case 9:	str	=	" Octubre   ";	break;
+				case 10:str	=	" Noviembre ";	break;
+				case 11:str	=	" Dicienbre ";	break;
+
+				default:
+					break;
+				}
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				return sdf.format(fecha).concat(str);
+			} 
+		}
+		
 		public Double getSubTotalExento() {
 			return subTotalExento;
 		}

@@ -10,8 +10,6 @@ import java.util.List;
 import org.junit.Test;
 
 import santaclara.Servicio.ServicioFactura;
-import santaclara.dao.IAlmacenDAO;
-import santaclara.dao.impl.AlmacenDAO;
 import santaclara.modelo.Factura;
 
 public class TestReportMontoFacturadoAlmacen {

@@ -4,12 +4,10 @@ import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 
-import santaclara.Servicio.ServicioAlmacen;
 import santaclara.dao.impl.ClienteDAO;
 import santaclara.dao.impl.FacturaDAO;
 import santaclara.dao.impl.VendedorDAO;
@@ -23,6 +21,7 @@ public class TestFacturaDAO {
 		assertEquals(2,facturaDAO.getFacturas().size());
 	}
 
+	@SuppressWarnings({ "unused", "null" })
 	@Test
 	public void addRemoveFacturaTest() throws IOException {
 		FacturaDAO facturaDAO = new FacturaDAO();
@@ -31,8 +30,6 @@ public class TestFacturaDAO {
 		
 		ClienteDAO clienteDAO = new ClienteDAO();
 		VendedorDAO vendedorDAO = new VendedorDAO();
-		
-		@SuppressWarnings("deprecation")
 		
 		Factura factura1 = null;//new Factura(null,new Date("2015/10/05"),clienteDAO.getCliente(1),vendedorDAO.getVendedor(1),new ServicioAlmacen().getAlmacen(2),true,0.0,100.0,0.0,100.0,12.0,112.0);
 			

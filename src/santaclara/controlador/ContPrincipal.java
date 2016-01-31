@@ -1,15 +1,14 @@
 package santaclara.controlador;
-
-import java.awt.BorderLayout;
+ 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack;
 
-import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
 import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
+import santaclara.controlador.reportes.ContReportMontFacturadoVendedor;
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
 
@@ -43,9 +42,6 @@ public  class ContPrincipal {
 
 	void agregarPanel(JPanel panel)
 	{
-		//vista.getFrame().getContentPane().removeAll();
-		//vista.getFrame().getContentPane().add(panel);
-		//vista.getFrame().getContentPane().removeAll();
 		vista.getFrame().setContentPane(panel);
 		vista.getFrame().repaint();
 	}
@@ -77,7 +73,6 @@ public  class ContPrincipal {
 		this.controlador = controlador;
 	}
 
-	
 	/************ Salir Session *************/
 	public ActionListener salirSesion() {
 		// TODO Auto-generated method stub
@@ -179,8 +174,97 @@ public  class ContPrincipal {
 				else if(e.getSource().equals(vista.getMntReportMontFacturaAlmacen())){
 					ActivarReportFacturadoAlmacen();
 				}
+				else if(e.getSource().equals(vista.getMntReportMontFacturaVendedor())){
+					ActivarReportFacturadoVendedor();
+				}
+				else if(e.getSource().equals(vista.getMntConsultaDetalleFacturaMesAlmacen())){
+					ActivarConsultaDetalleFacturaMesAlmacen();
+				}
+				else if(e.getSource().equals(vista.getMntListCantRefrescoSaborVendidoAlmacen())){
+					ActivarListCantRefrescoSaborVendidoAlmacen();
+				}
+				else if(e.getSource().equals(vista.getMntListCantRefrescoPresentCapacFacturadoZona())){
+					ActivarListCantRefrescoPresentCapacFacturadoZona();
+				}
+				else if(e.getSource().equals(vista.getMntListClienteZonaTipo())){
+					ActivarListClienteZonaTipo();
+				}
+				else if(e.getSource().equals(vista.getMntMontoFacturadoMesZonaTipoPago())){
+					ActivarMontoFacturadoMesZonaTipoPago();
+				}
 			}
 		};
+	}
+	
+public void ActivarConsultaDetalleFacturaMesAlmacen(){
+		
+		try {
+			
+			controlador = new ContDetalleFacturaMesAlmacen(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+public void ActivarListCantRefrescoSaborVendidoAlmacen(){
+	
+	try {
+		
+		//controlador = new Cont(ContPrincipal.this);
+	}
+	catch (Exception e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+}
+public void ActivarListCantRefrescoPresentCapacFacturadoZona(){
+	
+	try {
+		
+		//controlador = new ContReportMontFacturadoVendedor(ContPrincipal.this);
+	}
+	catch (Exception e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+}
+public void ActivarListClienteZonaTipo(){
+	
+	try {
+		
+		//controlador = new ContReportMontFacturadoVendedor(ContPrincipal.this);
+	}
+	catch (Exception e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+}
+public void ActivarMontoFacturadoMesZonaTipoPago(){
+	
+	try {
+		
+		//controlador = new ContReportMontFacturadoVendedor(ContPrincipal.this);
+	}
+	catch (Exception e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+}
+
+	
+	
+	
+public void ActivarReportFacturadoVendedor(){
+		
+		try {
+			
+			controlador = new ContReportMontFacturadoVendedor(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 	public void ActivarReportFacturadoAlmacen(){
@@ -215,6 +299,7 @@ public  class ContPrincipal {
 			e1.printStackTrace();
 		}
 	}
+
 	public void ActivarClientes(Object objetContCache,Object objetContCachePresente,Object objetClassVista) {
 		// TODO Auto-generated method stub
 		try {
@@ -398,9 +483,7 @@ public  class ContPrincipal {
 		if (!cacheObjet.empty())
 		{
 			Object obtetContCache = cacheObjet.pop();
-			
 			Object obtetContCachePresente = obtetContCache;// el objetControlador presente
-			
 			obtetContCache = cacheObjet.pop();
 			
 			switch (obtetContCache.getClass().getName()) {
@@ -441,7 +524,9 @@ public  class ContPrincipal {
 			break;
 			case "santaclara.controlador.reportes.ContReportMontFacturadoAlmacen":	ActivarReportFacturadoAlmacen();
 			break;
- 
+			case "santaclara.controlador.reportes.ContReportMontFacturadoVendedor":	ActivarReportFacturadoVendedor();
+			break;
+			
 			default:
 				break;
 			}

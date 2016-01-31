@@ -1,7 +1,5 @@
 package santaclara.controlador;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Stack;
 
 import javax.swing.JPanel;
@@ -48,7 +46,8 @@ public abstract class ContGeneral implements IContGeneral {
 		
 		if(this.contPrincipal.getCacheObjet().size()>1)
 			this.contPrincipal.ActivarAtras(object);
-		else quitarVista();
+		else
+			quitarVista();
 	}
 
 
