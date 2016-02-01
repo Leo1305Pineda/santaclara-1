@@ -33,11 +33,11 @@ public class ServicioFactura {
 	public List<Factura> getFacturas() throws FileNotFoundException{
 		return new FacturaDAO().getFacturas();
 	}
-	
+	 
 	public List<Factura> getPedidoFacturados() throws FileNotFoundException{
 		return new FacturaDAO().getPedidoFacturados();
 	}
-	
+	 
 	public Factura getFactura(Integer id) throws FileNotFoundException{
 		
 		for (Factura factura : getFacturas()){

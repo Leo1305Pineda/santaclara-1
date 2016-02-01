@@ -22,34 +22,36 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		facturas = new FacturaDAO().getPedidoFacturados();
 		List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();		
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
+ 		Scanner scanner = new Scanner(file);
  		String linea = new String();
-		while(scaner.hasNext())
+		while(scanner.hasNext())
 		{
 			DetalleFactura detalleFactura = new DetalleFactura();
-			linea = scaner.skip("idFactura:").nextLine().trim();
+ 
+			linea = scanner.skip("idFactura:").nextLine().trim();
 			
 			 if(linea.trim().length() == 0)	detalleFactura.setFactura(null);
 			 else	detalleFactura.setFactura(getFactura(new Integer(linea)));
 			 
-			 linea = scaner.skip("idEmpaqueProducto:").nextLine().trim();
+			 linea = scanner.skip("idEmpaqueProducto:").nextLine().trim();
 			 if(linea.trim().length() == 0)	detalleFactura.setEmpaqueProducto(null);
 			 else	detalleFactura.setEmpaqueProducto(new ServicioEmpaqueProducto().getEmpaqueProducto(new Integer(linea)));
 			 
-			 detalleFactura.setCantidad(new Integer(scaner.skip("cantidad:").nextLine().trim()));
-			 detalleFactura.setPrecio(new Double(scaner.skip("precio:").nextLine().trim()));
-			 detalleFactura.setPrecio(new Double(scaner.skip("desc:").nextLine().trim()));
-			 detalleFactura.setIva(new Double(scaner.skip("iva:").nextLine().trim()));
-			 detalleFactura.setTotal(new Double(scaner.skip("total:").nextLine().trim()));
+			 detalleFactura.setCantidad(new Integer(scanner.skip("cantidad:").nextLine().trim()));
+			 detalleFactura.setPrecio(new Double(scanner.skip("precio:").nextLine().trim()));
+			 detalleFactura.setPrecio(new Double(scanner.skip("desc:").nextLine().trim()));
+			 detalleFactura.setIva(new Double(scanner.skip("iva:").nextLine().trim()));
+			 detalleFactura.setTotal(new Double(scanner.skip("total:").nextLine().trim()));
+ 
 			 
 			 
 			 detalleFacturas.add(detalleFactura); 
 		}
-		scaner.close();
+		scanner.close();
 		return detalleFacturas;
 
 	}
-	
+	 
 	public List<DetalleFactura> getDetalleFacturados() throws NumberFormatException, IOException {
 			// TODO Auto-generated method stub
 		/*Funcion que Permite la Validacion de la Busqueda de los Archivos
@@ -138,6 +140,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		for(DetalleFactura detalleFactura : detalleFacturas) detalleFacturasAux.add(detalleFactura); 
 	
 		guardarTodo(detalleFacturasAux);
+ 
 	}
 
 	@Override

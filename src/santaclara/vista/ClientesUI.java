@@ -80,12 +80,13 @@ public class ClientesUI extends VistaGenericaUI {
 	private JComboBox<String> cmbTipoCliente ;
 	private JComboBox<Ruta>  cmbRutas;
 	private ContClientes  contClientes;
-	
+	 
 	@SuppressWarnings("rawtypes")
 	private List  clientes = new ArrayList<Cliente>();
 	private List<Ruta>   rutas = new ArrayList<Ruta>();
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+ 
 	public ClientesUI(ContClientes contClientes, List salps, List<Ruta> rutas) {
 		super();
 		this.clientes = salps;
@@ -299,8 +300,9 @@ public class ClientesUI extends VistaGenericaUI {
 	 checkVierne.setSelected(false);
 	 checkSabado.setSelected(false);
 	}
- 
+  
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+ 
 	public void activarBindingSalp(List<Salp>  salps) {
 		// TODO Auto-generated method stub
 		clientes = salps;
@@ -369,10 +371,11 @@ public class ClientesUI extends VistaGenericaUI {
 		
 		getTable().addKeyListener(contClientes.mostrarCliente_keypress());
 		getTable().addMouseListener(contClientes.mostrarCliente());
+ 
 
 		remove(pnCliente);
 		///pnCliente.setVisible(false);
-
+ 
 }
 	
 	@SuppressWarnings("rawtypes")
@@ -629,13 +632,15 @@ public class ClientesUI extends VistaGenericaUI {
 	public void setCmbRutas(JComboBox<Ruta> cmbRutas) {
 		this.cmbRutas = cmbRutas;
 	}
-
+ 
 	@SuppressWarnings("rawtypes")
+ 
 	public List getClientes() {
 		return clientes;
 	}
-
+ 
 	@SuppressWarnings("rawtypes")
+ 
 	public void setClientes(List clientes) {
 		this.clientes = clientes;
 	}
@@ -660,8 +665,9 @@ public class ClientesUI extends VistaGenericaUI {
 		pnCheckDia.setVisible(true);
 	}
 	
-	
+	 
 	@SuppressWarnings("static-access")
+ 
 	public void setCkeckDiaVisita(Integer numero){
 
 		String cadena = Integer.toBinaryString(numero);

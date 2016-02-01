@@ -9,6 +9,7 @@ import santaclara.modelo.DetalleFactura;
 import santaclara.modelo.Factura;
 
 public class ServicioDetalleFactura {
+ 
 	//retorna todo el detalle factura facturado y en pedido
 	public List<DetalleFactura> getDetalles() throws NumberFormatException, IOException{
 		return new DetalleFacturaDAO().getDetalles();
@@ -29,15 +30,18 @@ public class ServicioDetalleFactura {
 		return new DetalleFacturaDAO().getDetallePedidos();
 	}
 	
+ 
 	public List<DetalleFactura> getDetalleFacturas(Factura factura) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();
 		for(DetalleFactura detalleFactura : getDetalleFacturas()){
+ 
 			if (detalleFactura.getFactura().getId().equals(factura.getId())) detalleFacturas.add(detalleFactura);
+ 
 		}
 		return detalleFacturas;
 	}
-	
+	 
 	
 	public void guardar(List<DetalleFactura> detalle) throws IOException{
 		new DetalleFacturaDAO().guardar(detalle);
@@ -55,4 +59,5 @@ public class ServicioDetalleFactura {
 		}
 	
 	}*/
+ 
 }

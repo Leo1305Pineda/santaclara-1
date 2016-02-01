@@ -164,7 +164,6 @@ public class SaboresUI  extends VistaGenericaUI  {
 		activarBinding(sabores);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Sabor> sabores) {
 		// TODO Auto-generated method stub
 		getPnTabla().setVisible(true);

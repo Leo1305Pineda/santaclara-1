@@ -32,11 +32,11 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 	@Override
 	public JPanel getVista() {
 		// TODO Auto-generated method stub
-		return vista;
+		return vista; 
 	}
 	
 	public AlmacenesUI getVistaAlmacen(){
-		return vista;
+		return vista; 
 	}
 	
 	public ActionListener nuevo(){
@@ -240,6 +240,5 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 				vista.quitarNuevo();
 			}
 		};
-	}
-	
+	} 
 }

@@ -116,6 +116,7 @@ public class Factura {
 		else{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			return " "+sdf.format(fecha);
+ 
 			} 
 		}
 		
@@ -124,6 +125,7 @@ public class Factura {
 			else{
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				return sdf.format(fecha);
+ 
 			} 
 		}
 
@@ -151,7 +153,8 @@ public class Factura {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				return sdf.format(fecha).concat(str);
 			} 
-		}
+		} 
+ 
 		
 		public Double getSubTotalExento() {
 			return subTotalExento;

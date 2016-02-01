@@ -22,11 +22,12 @@ import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
+ 
 import net.miginfocom.swing.MigLayout;
 import santaclara.controlador.ContAlmacenes;
 import santaclara.modelo.Almacen;
 import santaclara.vista.herramientas.VistaGenericaUI;
-
+ 
 @SuppressWarnings("serial")
 public class AlmacenesUI extends VistaGenericaUI {
 

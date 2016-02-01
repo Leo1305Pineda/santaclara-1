@@ -468,6 +468,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+ 
 				try {
 					if(factura==null)
 					{
@@ -504,6 +505,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 					validarFactura();
 					validarDetalle();
 					Factura facturaAux =new ServicioFactura().getFactura(factura.getId()); 
+ 
 					//si no existe la Factura 
 					if(facturaAux!=null) 
 					{	
@@ -541,6 +543,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 						else JOptionPane.showMessageDialog(new JPanel(), "Factura Existente");
 						}
 						else throw new Exception("Guardar Pedido");
+ 
 
 				} catch (Exception exe) {
 					// TODO Auto-generated catch block
@@ -650,7 +653,9 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 					else 
 					{
 						ContProductoAlmacenes contProductoAlmacenes = new ContProductoAlmacenes(getContPrincipal());
+ 
 						contProductoAlmacenes.getVista().getBtnAtras().setText("Seleccione");
+ 
 						contProductoAlmacenes.getVista().activarBinding(
 								new ServicioProductoAlmacen().getProductoAlmacenes(factura.getAlmacen().getId()));
 					}
@@ -736,8 +741,10 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+ 
 				try {
 					factura.setId(null);
+ 
 					actualizarVista();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -906,11 +913,13 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			break;
 			case "Producto": actualizarVista();
 			break;
+ 
 			case"null":
 			break;
 			
 			default:
 				exe.printStackTrace();
+ 
 				break;
 			}
 		}
@@ -975,7 +984,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-	}
+	} 
 
 	public ActionListener actionLimpiar() {
 		// TODO Auto-generated method stub
@@ -1001,5 +1010,5 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 				}
 			}
 		};
-	}
+	} 
 }

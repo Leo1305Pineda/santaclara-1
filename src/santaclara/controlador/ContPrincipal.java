@@ -4,11 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack;
 
+ 
 import javax.swing.JPanel;
 
 import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
 import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
 import santaclara.controlador.reportes.ContReportMontFacturadoVendedor;
+
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
 
@@ -195,7 +197,7 @@ public  class ContPrincipal {
 			}
 		};
 	}
-	
+	 
 public void ActivarConsultaDetalleFacturaMesAlmacen(){
 		
 		try {
@@ -266,7 +268,7 @@ public void ActivarReportFacturadoVendedor(){
 			e1.printStackTrace();
 		}
 	}
-	
+	 
 	public void ActivarReportFacturadoAlmacen(){
 		
 		try {

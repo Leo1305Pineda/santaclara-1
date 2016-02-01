@@ -45,6 +45,7 @@ public class PedidosUI extends JPanel{
 	private JButton btnBuscar;
 	private JButton btnGuardarFactura;
 	private JButton btnSalir;
+
 	private JButton btnLimpiar;
 	
 	private JLabel lblNombreVendedor;
@@ -118,6 +119,7 @@ public class PedidosUI extends JPanel{
 		btnLimpiar.setForeground(Color.WHITE);
 		btnLimpiar.setBackground(Color.DARK_GRAY);
 		pnlOption.add(btnLimpiar);
+
 		btnGuardar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/disk.png"));
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
@@ -207,7 +209,7 @@ public class PedidosUI extends JPanel{
 		btnAlmacen.setToolTipText("Almacen");
 		btnAlmacen.setForeground(Color.WHITE);
 		btnAlmacen.setBackground(Color.DARK_GRAY);
-		
+ 
 		btnCliente = new JButton("Clientes");
 		panel.add(btnCliente);
 		btnCliente.addActionListener(contPedidos.actionCliente());
@@ -216,6 +218,7 @@ public class PedidosUI extends JPanel{
 		btnCliente.setBackground(Color.DARK_GRAY);
 		btnCliente.setForeground(Color.WHITE);
 		
+ 
 		btnVendedor = new JButton("Vendedores");
 		panel.add(btnVendedor);
 		btnVendedor.addActionListener(contPedidos.actionVendedor());
@@ -299,7 +302,9 @@ public class PedidosUI extends JPanel{
 		pnlTotales.add(lblTotalAPagar);
 		
 		btnGuardarFactura = new JButton("Generar Factura");
+ 
 		btnGuardarFactura.setBounds(36, 634, 178, 26);
+ 
 		pnlPedido.add(btnGuardarFactura);
 		btnGuardarFactura.addActionListener(contPedidos.actionGenerarFactura());
 		btnGuardarFactura.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/bien.png"));
@@ -309,6 +314,7 @@ public class PedidosUI extends JPanel{
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.DARK_GRAY);
+ 
 		panel_2.setBounds(875, 25, 285, 40);
 		pnlPedido.add(panel_2);
 		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -329,6 +335,7 @@ public class PedidosUI extends JPanel{
 		btnBuscar.setBackground(Color.DARK_GRAY);
 		btnBuscar.setForeground(Color.WHITE);
 		
+ 
 		lblFecha = new JLabel("Fecha:");
 		lblFecha.setFont(new Font("Dialog", Font.BOLD, 18));
 		lblFecha.setBounds(544, 36, 313, 24);
@@ -336,6 +343,7 @@ public class PedidosUI extends JPanel{
 		lblFecha.setForeground(Color.WHITE);
 		
 		lblCondicion = new JLabel("Condicion de pago:");
+ 
 		lblCondicion.setBounds(36, 596, 250, 15);
 		pnlPedido.add(lblCondicion);
 		lblCondicion.setForeground(Color.WHITE);
@@ -344,6 +352,7 @@ public class PedidosUI extends JPanel{
 		lblObservacion.setForeground(Color.WHITE);
 		lblObservacion.setBounds(38, 558, 772, 15);
 		pnlPedido.add(lblObservacion);
+ 
 	}
 
 	public JPanel getPnlPedido() {
@@ -607,6 +616,7 @@ public class PedidosUI extends JPanel{
 
 	public JLabel getLblCondicion() {
 		return lblCondicion;
+ 
 	}
 
 	public void setLblCondicion(JLabel lblCondicion) {
@@ -620,7 +630,7 @@ public class PedidosUI extends JPanel{
 	public void setLblIvaSobreBs(JLabel lblIvaSobreBs) {
 		this.lblIvaSobreBs = lblIvaSobreBs;
 	}
-
+ 
 	public JLabel getLblTotalAPagar() {
 		return lblTotalAPagar;
 	}

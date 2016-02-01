@@ -1,5 +1,6 @@
 package santaclara.vista;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue; 
 
 import javax.swing.JFrame;
@@ -12,7 +13,8 @@ import javax.swing.JSeparator;
 
 import santaclara.controlador.ContPrincipal;
 import santaclara.modelo.Usuario;
-import santaclara.vista.herramientas.VistaGenericaUI;
+import santaclara.vista.herramientas.VistaGenericaUI; 
+
 
 public class PrincipalUI {
 
@@ -49,13 +51,14 @@ public class PrincipalUI {
 	private 	JMenuItem mntCalendarios;
 	private     JMenuItem mntPedidos;
 	private     JMenuItem mntReportMontFacturaAlmacen;
+
 	private     JMenuItem mntReportMontFacturaVendedor;
 	private     JMenuItem mntConsultaDetalleFacturaMesAlmacen;
 	private 	JMenuItem mntListCantRefrescoSaborVendidoAlmacen;
 	private 	JMenuItem mntListCantRefrescoPresentCapacFacturadoZona;
 	private		JMenuItem mntListClienteZonaTipo;
 	private		JMenuItem mntMontoFacturadoMesZonaTipoPago;
-
+ 
 	
 	
 	/**
@@ -124,11 +127,16 @@ public class PrincipalUI {
 		mnCatalogo.add(mntAlmacen);
 		mnCatalogo.add(new JSeparator());
 
-		
+
+		mntAlmacen = new JMenuItem("Almacenes");
+		mntAlmacen.addActionListener(controlador.activarMenu());
+		mnCatalogo.add(mntAlmacen);
+		mnCatalogo.add(new JSeparator());
+
+		/*
 		mntCalendarios = new JMenuItem("Calendario");
 		mnCatalogo.add(mntCalendarios);
 		mntCalendarios.addActionListener(controlador.activarMenu());
-	
 
 		/*
 		mntConcesionarios = new JMenuItem("Concesionarios");
@@ -145,7 +153,7 @@ public class PrincipalUI {
 		mntJefeVenta = new JMenuItem("Jefe Ventas");
 		mnCatalogo.add(mntJefeVenta);
 		mntJefeVenta.addActionListener(controlador.activarMenu());
-		*/
+		*/ 
 		
 		/***************************** Botones para Reporte **********************************/
 		
@@ -195,8 +203,7 @@ public class PrincipalUI {
 		mntPresentaciones = new JMenuItem("Presentaciones");
 		mntPresentaciones.addActionListener(controlador.activarMenu());
 		mnCatalogo.add(mntPresentaciones);
-
-		
+ 
 		mntCapacidades = new JMenuItem("Capacidades");
 		mnCatalogo.add(mntCapacidades);
 		mntCapacidades.addActionListener(controlador.activarMenu());
@@ -247,14 +254,14 @@ public class PrincipalUI {
 		/*
 		mntConcesionarios = new JMenuItem("Consesionarios");
 		mnCatalogo.add(mntConcesionarios);
-		*/
+		*/ 
 		/****************** btn cerrar session  ******/
 		mnSalir = new JMenu("Salir");
 		mntCerrar = new JMenuItem("cerrar sesión ");
 		mnSalir.add(mntCerrar);  
 		mntCerrar.addActionListener(controlador.salirSesion());
 		menuBar.add(mnSalir);
-		
+		 
 		menuBar.setVisible(false);;
 		frame.setVisible(true); 
 	}
@@ -529,7 +536,7 @@ public class PrincipalUI {
 	public void setMntReportMontFacturaAlmacen(JMenuItem mntReportMontFacturaAlmacen) {
 		this.mntReportMontFacturaAlmacen = mntReportMontFacturaAlmacen;
 	}
-
+ 
 	public JMenuItem getMntReportMontFacturaVendedor() {
 		return mntReportMontFacturaVendedor;
 	}
@@ -581,7 +588,7 @@ public class PrincipalUI {
 	public void setMntMontoFacturadoMesZonaTipoPago(
 			JMenuItem mntMontoFacturadoMesZonaTipoPago) {
 		this.mntMontoFacturadoMesZonaTipoPago = mntMontoFacturadoMesZonaTipoPago;
-	}
+	} 
 	
 	
 }

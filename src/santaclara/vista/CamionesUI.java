@@ -24,6 +24,7 @@ import net.miginfocom.swing.MigLayout;
 import santaclara.controlador.ContCamiones;
 import santaclara.modelo.Camion;
 import santaclara.vista.herramientas.VistaGenericaUI;
+ 
 
 import javax.swing.JLabel;
 
@@ -41,10 +42,11 @@ public class CamionesUI extends VistaGenericaUI {
 	private JButton btnSalir;
 	private JButton btnABuscar;
 	private JButton btnEliminar;
-	
+	 
 	@SuppressWarnings("rawtypes")
 	private JTableBinding binCamioness; 
 	
+ 
 	private JTextField txtABuscar;
 	private JSpinner txtCapacidad;
 	

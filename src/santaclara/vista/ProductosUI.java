@@ -60,6 +60,7 @@ public class ProductosUI extends VistaGenericaUI {
 
 	private JPanel 	  		pnlProducto;
 	@SuppressWarnings("rawtypes")
+
 	private JTableBinding   binProductos;
 	
 	private JButton btnNuevo;

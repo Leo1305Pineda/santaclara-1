@@ -32,13 +32,14 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		// TODO Auto-generated method stub
 		List<Factura> facturas = new ArrayList<Factura>();
 		File file = new File(ruta);
- 		Scanner scaner = new Scanner(file);
-		while(scaner.hasNext())
+ 		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
 		{
 			 Factura factura = new Factura();
-			 factura.setId(new Integer(scaner.skip("id:").nextLine().toString().trim()));
+ 
+			 factura.setId(new Integer(scanner.skip("id:").nextLine().toString().trim()));
 			 
-			 switch (scaner.skip("estado:").nextLine().toString().trim()) {
+			 switch (scanner.skip("estado:").nextLine().toString().trim()) {
 			 case "Facturado":factura.setEstado(true);	
 			 break;
 			 case "Pendiente":factura.setEstado(false);
@@ -48,45 +49,48 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 			 default:factura.setEstado(null);
 			 break;
 			 }
+ 
 			 
 			 Date fecha = new Date();
 				try {
-					fecha = new SimpleDateFormat("dd/MM/yyyy").parse(scaner.skip("fecha:").nextLine().toString().trim());
+					fecha = new SimpleDateFormat("dd/MM/yyyy").parse(scanner.skip("fecha:").nextLine().toString().trim());
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				factura.setFecha(fecha);
+ 
 				
 				ClienteDAO clienteDAO = new ClienteDAO();
 				 factura.setCliente(
 						 clienteDAO.getCliente(
-								 new Integer(scaner.skip("idCliente:").nextLine().toString().trim())));
+								 new Integer(scanner.skip("idCliente:").nextLine().toString().trim())));
 				 
 				 UsuarioDAO usuarioDAO = new UsuarioDAO();
 				 factura.setVendedor(
 						 (usuarioDAO.getUsuario(
-								 new Integer(scaner.skip("idVendedor:").nextLine().toString().trim()))));
+								 new Integer(scanner.skip("idVendedor:").nextLine().toString().trim()))));
 				 
 				 AlmacenDAO almacenDAO = new AlmacenDAO();
 
 				 factura.setAlmacen(
 						(almacenDAO.getAlmacen(
-								new Integer(scaner.skip("idAlmacen:").nextLine().toString().trim())))); 
+								new Integer(scanner.skip("idAlmacen:").nextLine().toString().trim())))); 
 				 
-				 factura.setSubTotalExento(new Double(scaner.skip("subTotalExento:").nextLine().toString().trim()));
-				 factura.setSubTotalGravado(new Double(scaner.skip("subTotalGravado:").nextLine().toString().trim()));
-				 factura.setDescuento(new Double(scaner.skip("desc%:").nextLine().toString().trim()));
-				 factura.setIvaSobreBs(new Double(scaner.skip("ivaSobreBs:").nextLine().toString().trim()));
-				 factura.setIva(new Double(scaner.skip("iva:").nextLine().toString().trim()));
-				 factura.setTotalAPagar(new Double(scaner.skip("totalAPagar:").nextLine().toString().trim()));
-				 
+				 factura.setSubTotalExento(new Double(scanner.skip("subTotalExento:").nextLine().toString().trim()));
+				 factura.setSubTotalGravado(new Double(scanner.skip("subTotalGravado:").nextLine().toString().trim()));
+				 factura.setDescuento(new Double(scanner.skip("desc%:").nextLine().toString().trim()));
+				 factura.setIvaSobreBs(new Double(scanner.skip("ivaSobreBs:").nextLine().toString().trim()));
+				 factura.setIva(new Double(scanner.skip("iva:").nextLine().toString().trim()));
+				 factura.setTotalAPagar(new Double(scanner.skip("totalAPagar:").nextLine().toString().trim()));
+	 
 			 facturas.add(factura);
 		}
-		scaner.close();
+		scanner.close();
 		return facturas;
 	}
-
+ 
+	
 	@Override
 	// Permite retornar Datos selectivos
 	public List<Factura> getPedidoFacturados() throws FileNotFoundException{
@@ -193,6 +197,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 					factura1.setCliente(factura.getCliente());
 					factura1.setVendedor(factura.getVendedor());
 					factura1.setAlmacen(factura.getAlmacen());
+ 
 					
 					factura1.setSubTotalExento(factura.getSubTotalExento());
 					factura1.setSubTotalGravado(factura.getSubTotalGravado());
@@ -242,6 +247,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		for(Factura factura :facturas)
 		{
 			fw.append("id:"+factura.getId().toString()+"\n");
+ 
 			if(factura.getEstado()!=null)
 			{
 				if(factura.getEstado()==true)
@@ -256,11 +262,12 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 			else
 			{
 				fw.append("estado:Pedido\n");	
-			}
+			} 
 			fw.append("fecha:"+(factura.getFechaStr()+"\n"));
 			fw.append("idCliente:"+(factura.getCliente().getId().toString())+"\n");
 			fw.append("idVendedor:"+(factura.getVendedor().getId().toString())+"\n");
 			fw.append("idAlmacen:"+(factura.getAlmacen().getId().toString() )+"\n");
+ 
 			fw.append("subTotalExento:"+factura.getSubTotalExento().toString().trim()+"\n");
 			fw.append("subTotalGravado:"+factura.getSubTotalGravado().toString().trim()+"\n");
 			fw.append("desc%:"+factura.getDescuento().toString().trim()+"\n");
@@ -273,12 +280,13 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 	}
 
 /*
- * id:0
- * estado:Pedido
+ * id:0 
+ * estado:Pedido 
  * fecha:06/06/2015
  * idCliente:2
  * idVendedor:2
  * idAlmacen:1
+ 
  * subTotalExento:0
  * subTotalGravado:100
  * desc%:0
