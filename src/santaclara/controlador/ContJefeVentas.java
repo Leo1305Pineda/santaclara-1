@@ -17,12 +17,7 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 	private UsuariosUI vista ;
 	private ServicioJefeVenta servicioJefeVenta = new ServicioJefeVenta();
 	
-	@Override
-	public JPanel getVista() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+ 
 	public ContJefeVentas(UsuariosUI vista) {
 		super();
 		this.vista = vista;
@@ -125,6 +120,12 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 		vista.getBinUsuarios().bind();
 		vista.activarBindingJefeVentas(servicioJefeVenta.getJefeVentas());
 		vista.quitarNuevo();
+	}
+
+	@Override
+	public JPanel getVista() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

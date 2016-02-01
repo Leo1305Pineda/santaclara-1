@@ -149,11 +149,10 @@ public class PrincipalUI {
 		*/
 		
 	    
-		/*
 		mntJefeVenta = new JMenuItem("Jefe Ventas");
 		mnCatalogo.add(mntJefeVenta);
 		mntJefeVenta.addActionListener(controlador.activarMenu());
-		*/
+
 		mntReportMontFacturaAlmacen = new JMenuItem("Monto Total Facturado por Almacenes");
 		mnReportes.add(mntReportMontFacturaAlmacen);
 		mntReportMontFacturaAlmacen.addActionListener(controlador.activarMenu());

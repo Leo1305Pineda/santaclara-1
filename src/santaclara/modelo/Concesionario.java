@@ -5,8 +5,7 @@ import santaclara.modelo.Ruta;
 public class Concesionario extends Usuario{
 	private Camion camion;
 	private Ruta ruta;
-	
-	
+
 	public Concesionario(Integer id, String username, String cedula, String nombres,
 			String contrasena,Camion camion, Ruta ruta) {
 		super( id, username, cedula,nombres ,contrasena);

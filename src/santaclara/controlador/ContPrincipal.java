@@ -123,7 +123,7 @@ public  class ContPrincipal {
 				}
 				else if(e.getSource().equals(vista.getMntJefeVenta()))
 				{
-					ActivarUsuarios();
+					ActivarJefeVenta();
 				}
 				else if(e.getSource().equals(vista.getMntPresentaciones()))
 				{
@@ -177,6 +177,7 @@ public  class ContPrincipal {
 					ActivarReportFacturadoAlmacen();
 				}
 			}
+
 		};
 	}
 	
@@ -191,6 +192,19 @@ public  class ContPrincipal {
 			e1.printStackTrace();
 		}
 	}
+	
+
+	public void ActivarJefeVenta() {
+		// TODO Auto-generated method stub
+		try {
+			///controlador = new ContJefeVentas(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
 	
 	public void ActivarRutas(){
 		// TODO Auto-generated method stub
