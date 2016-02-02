@@ -117,12 +117,15 @@ public class PrincipalUI {
 		mnConsulta = new JMenu("Consulta");
 		menuBar.add(mnConsulta);
 
-		mnSalir = new JMenu("Salir");
-		mntCerrar = new JMenuItem("cerrar sesión ");
 
-		/****************** btn cerrar session  ******/
-		mnSalir.add(mntCerrar);  
+
+		mntCerrar = new JMenuItem("cerrar sesión ");
+		System.out.println(controlador);
 		mntCerrar.addActionListener(controlador.salirSesion());
+
+		mnSalir = new JMenu("Salir");
+		mnSalir.add(mntCerrar);  
+		
 		menuBar.add(mnSalir);
 
 		/***************************** Botones para catalogo **********************************/

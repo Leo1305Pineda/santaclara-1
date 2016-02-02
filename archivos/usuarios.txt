@@ -1,13 +1,8 @@
 id:0
 username:Rhonal
-cedula:V-19827297
-nombre:Rhonal Chirino
+cedula:19827297
+nombre:Rhonal Chirinos
 contrasena:1234
-id:1
-username:leonardo
-cedula:V-19727835
-nombre:Leonardo Pineda
-contrasena:123
 id:2
 username:Gipsis
 cedula:V-19828553

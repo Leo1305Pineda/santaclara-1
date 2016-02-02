@@ -151,7 +151,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 					{
 						if(vista.getCmbTipoUsuario().getSelectedItem().equals("JefeVenta"))
 						{
-							new ContJefeVentas(vista).Modificar();;
+						//	new ContJefeVentas(vista).Modificar();;
 						}
 						else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
 						{
@@ -206,7 +206,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 					if(vista.getCmbTipoUsuario().getSelectedItem().equals("JefeVenta"))
 					{
 						
-						new ContJefeVentas(vista).Guardar();
+						///new ContJefeVentas(vista).Guardar();
 							
 					}
 					else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
@@ -336,7 +336,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 						if(vista.getCmbTipoUsuario().getSelectedItem().equals("JefeVenta"))
 						{
 						
-							new ContJefeVentas(vista).Eliminar();
+							//new ContJefeVentas(vista).Eliminar();
 						}
 						else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
 						{

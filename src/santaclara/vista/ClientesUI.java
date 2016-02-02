@@ -153,8 +153,8 @@ public class ClientesUI extends VistaGenericaUI {
 		
 		
 		pnCliente = new JPanel();
-		pnCliente.setBounds(12, 75, 726, 126);
-		pnCliente.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		//pnCliente.setBounds(12, 75, 726, 126);
+		pnCliente.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"editar cliente", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnCliente.setBackground(Color.DARK_GRAY);
 		pnCliente.setLayout(new MigLayout());
 		add(pnCliente,BorderLayout.SOUTH);	

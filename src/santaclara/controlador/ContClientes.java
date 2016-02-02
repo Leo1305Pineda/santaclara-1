@@ -390,9 +390,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 				}
 			}
 		};
-	}
-
- 
+	}  
 	public void actualizarContCliente(Object objetContCachePresente,Object objetClassVista){
 			if (objetContCachePresente instanceof ContRutas && objetClassVista != null)
 			{

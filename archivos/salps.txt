@@ -3,3 +3,6 @@ idCliente:4
 idCliente:7
 idCliente:13
 idCliente:14
+idCliente:15
+idCliente:16
+idCliente:17

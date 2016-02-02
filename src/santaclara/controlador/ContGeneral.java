@@ -27,7 +27,8 @@ public abstract class ContGeneral implements IContGeneral {
 				this.contPrincipal.getCacheObjet().push(cacheobject);
 			}
 		}
-		else this.contPrincipal.getCacheObjet().push(cacheobject);
+		else 
+			this.contPrincipal.getCacheObjet().push(cacheobject);
 	}
 	
 	public void quitarVista(){//btnSalir

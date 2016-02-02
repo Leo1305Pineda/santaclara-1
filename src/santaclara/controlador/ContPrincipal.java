@@ -5,11 +5,13 @@ import java.awt.event.ActionListener;
 import java.util.Stack;
 
  
+
 import javax.swing.JPanel;
 
 import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
+import santaclara.vista.herramientas.VistaGenericaUI;
 
 public  class ContPrincipal {
 	
@@ -45,7 +47,10 @@ public  class ContPrincipal {
 		//vista.getFrame().getContentPane().add(panel);
 		//vista.getFrame().getContentPane().removeAll();
 		vista.getFrame().setContentPane(panel);
+
+		vista.getFrame().resize(VistaGenericaUI.getWidthPantalla(),VistaGenericaUI.getHeightPantalla());
 		vista.getFrame().repaint();
+
 	}
 	
 	void quitarPanel(){
@@ -197,7 +202,7 @@ public  class ContPrincipal {
 	public void ActivarJefeVenta() {
 		// TODO Auto-generated method stub
 		try {
-			///controlador = new ContJefeVentas(ContPrincipal.this);
+			controlador = new ContJefeVentas(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
