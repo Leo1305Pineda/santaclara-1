@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.modelo.JefeVenta;
+import santaclara.modelo.Usuario;
 import santaclara.dao.impl.JefeVentaDAO;
+import santaclara.dao.impl.UsuarioDAO;
 
 public class ServicioJefeVenta {
 	
@@ -64,7 +66,17 @@ public class ServicioJefeVenta {
 				
 		
 	}
-	
+	 
+	public JefeVenta buscar(String username) throws IOException {
+		// TODO Auto-generated method stub
+		return jefeVentaDAO.getJefeVenta(username);
+	}
+
+	public JefeVenta buscarCedula(String cedula) throws IOException {
+		// TODO Auto-generated method stub
+		return jefeVentaDAO.getJefeVentaCedula(cedula);
+	}
+		 
 	public JefeVenta getJefeVenta(Integer id) throws IOException{
 		return jefeVentaDAO.getJefeVenta(id);
 	}

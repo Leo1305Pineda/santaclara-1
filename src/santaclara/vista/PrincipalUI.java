@@ -97,7 +97,8 @@ public class PrincipalUI {
 		frame = new JFrame("Embotelladora Santa Clara");
 		frame.setBounds(VistaGenericaUI.getMargenX(),VistaGenericaUI.getMargenY(),VistaGenericaUI.getWidthPantalla(),VistaGenericaUI.getHeightPantalla());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		  
 		JPanel panel = new JPanel();
 		frame.setContentPane(panel);
 		frame.setVisible(true);

@@ -86,7 +86,6 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 	private JPasswordField txtReContrasena;
 	
 	private JButton btnNuevo; 
-	private JButton btnAtras;
 	private JButton btnSalir;
 	private JButton btnABuscar;
 	private JButton btnEliminar;
@@ -138,6 +137,7 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		
 		txtUserName = new JTextField();
 		txtUserName.setColumns(10);
+		txtUserName.setEnabled(false);
 		pnUsuario.add(txtUserName,"cell 1 0");
 		
 		txtId = new JTextField();
@@ -153,6 +153,7 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		
 		txtCedula = new JTextField();
 		txtCedula.setColumns(10);
+		txtCedula.setEnabled(false);
 		pnUsuario.add(txtCedula,"cell 3 0");
 		
 		
@@ -206,6 +207,7 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(contJefeVentas.guardar());
+		btnGuardar.setSize(200,200);
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		pnUsuario.add(btnGuardar,"cell 2 3");
@@ -214,15 +216,7 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setBackground(Color.DARK_GRAY);
 		pnUsuario.add(btnCancelar,"cell 2 3");
- 
-		
-		btnAtras = new JButton("Atras");
-		//btnAtras.addActionListener(contJefeVentas.atras());
-		btnAtras.setForeground(Color.WHITE);
-		btnAtras.setBackground(Color.DARK_GRAY);
-		btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
-		getPnBotones().add(btnAtras);
-		
+  
 		btnNuevo = new JButton("Nuevo");
 		btnNuevo.addActionListener(contJefeVentas.nuevo());
 		btnNuevo.setForeground(Color.WHITE);
@@ -296,24 +290,35 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		getTxtUserName().setText("");
 	}
 	
-	 
+
+	public void cargarJefeVenta(JefeVenta jefeVenta) {
+		// TODO Auto-generated method stub
+		txtUserName.setText(jefeVenta.getUsername());
+		txtUserName.setEnabled(false);
+		txtId.setText(jefeVenta.getId().toString());
+		txtCedula.setText(jefeVenta.getCedula());
+		txtCedula.setEnabled(false);
+		txtNombre.setText(jefeVenta.getNombre());
+		txtContrasena.setText(jefeVenta.getContrasena());
+		txtReContrasena.setText(jefeVenta.getContrasena());
+		for(int i =0 ; i < zonas.size(); i++)
+		{
+			Zona zona = zonas.get(i);
+			if (zona.getId().equals(jefeVenta.getZona().getId()))
+			{
+				cmbZona.setSelectedIndex(i);
+				break;
+			}
+		} 
+	}   
+	
 	public JButton getBtnNuevo() {
 		return btnNuevo;
 	}
 
 	public void setBtnNuevo(JButton btnNuevo) {
 		this.btnNuevo = btnNuevo;
-	}
- 
-
-	public JButton getBtnAtras() {
-		return btnAtras;
-	}
-
-	public void setBtnAtras(JButton btnAtras) {
-		this.btnAtras = btnAtras;
-	}
-
+	} 
 	public JButton getBtnSalir() {
 		return btnSalir;
 	}
@@ -506,25 +511,5 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 	}
 
 
-	public void cargarJefeVenta(JefeVenta jefeVenta) {
-		// TODO Auto-generated method stub
-		
-		txtUserName.setText(jefeVenta.getUsername());
-		txtId.setText(jefeVenta.getId().toString());
-		txtCedula.setText(jefeVenta.getCedula());
-		txtNombre.setText(jefeVenta.getNombre());
-		txtContrasena.setText(jefeVenta.getContrasena());
-		txtReContrasena.setText(jefeVenta.getContrasena());
-		for(int i =0 ; i < zonas.size(); i++)
-		{
-			Zona zona = zonas.get(i);
-			if (zona.getId().equals(jefeVenta.getZona().getId()))
-			{
-				cmbZona.setSelectedIndex(i);
-				break;
-			}
-		}
-		
-	}  
  
 }

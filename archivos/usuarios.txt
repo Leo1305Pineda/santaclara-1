@@ -1,7 +1,7 @@
 id:0
 username:Rhonal
 cedula:19827297
-nombre:Rhonal Chirinos
+nombre:Rhonal Chirinosss
 contrasena:1234
 id:2
 username:Gipsis
@@ -63,3 +63,13 @@ username:Elias
 cedula:26542987
 nombre:Elias Cibrian
 contrasena:1234
+id:14
+username:1212
+cedula:1
+nombre:1212
+contrasena:1212
+id:15
+username:2323
+cedula:22
+nombre:2323
+contrasena:1212

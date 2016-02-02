@@ -172,7 +172,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 				// TODO Auto-generated method stub
 				try {	
 						Usuario usuario  = new Usuario();
-						usuario = servicioUsuario.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						usuario = servicioUsuario.buscar(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),2).toString().trim());
 				
 						if (usuario != null)
 						{
@@ -292,20 +292,16 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				try {
 					if (vista.getTable().getSelectedRow()>=0)
 					{
 						Usuario usuario  = new Usuario();
-						usuario = servicioUsuario.buscar(
-								new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						usuario = vista.getUsuarios().get(vista.getTable().getSelectedColumn());
 						ActivarAtras(usuario);
 					}
- 					else ActivarAtras(null);
-				} catch (NumberFormatException | IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
+ 					else 
+ 					{
+ 						ActivarAtras(null);
+ 					}
 			}
 		};
 	}

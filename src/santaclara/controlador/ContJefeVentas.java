@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable; 
 
 import santaclara.Servicio.ServicioJefeVenta;
+import santaclara.Servicio.ServicioUsuario;
 import santaclara.Servicio.ServicioZona;
 import santaclara.modelo.Cliente;
 import santaclara.modelo.JefeVenta;
@@ -37,29 +38,16 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 		dibujar(vista,this); 
 	}
 	
-	
-	
-	public String ValidarTxt(){
-		
-		if (vista.getTxtNombre().getText().equals("")) return " Nombre ";
-		if (vista.getTxtCedula().getText().equals("")) return " Cedula ";
-		if (vista.getTxtContrasena().getText().equals("")) return " Contraseña ";
-		if (vista.getTxtUserName().getText().equals("")) return " UserName ";
-		if (!vista.getTxtReContrasena().getText().equals(vista.getTxtContrasena().getText())) return "Contraseña invalida ";
-		return "";
-		}
  
-
+/*
 	public void Modificar() {
 		// TODO Auto-generated method stub
 		try {	
 				JefeVenta jefeVenta  = new JefeVenta();
 				jefeVenta = servicioJefeVenta.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-	
 				if (jefeVenta != null)
 				{
 					//vista.activarNuevo();
-
 					vista.getTxtId().setText(jefeVenta.getId().toString());
 					vista.getTxtNombre().setText(jefeVenta.getNombre());
 					vista.getTxtCedula().setText(jefeVenta.getCedula());
@@ -76,7 +64,8 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 				e1.printStackTrace();
 			}
 	}
-	
+*/	
+	/*
 	@SuppressWarnings("rawtypes")
 	public void setSelectedValue(JComboBox comboBox,Integer id)
 	{	
@@ -94,12 +83,12 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 			if (enc) break;
 		}
 	}
- 
+ */
 
 	@Override
 	public JPanel getVista() {
 		// TODO Auto-generated method stub
-		return null;
+		return vista;
 	}
 	
 	public ActionListener buscar() {
@@ -134,9 +123,55 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 	}
 	
 
-	private void validar() {
-		// TODO Auto-generated method stub
-		
+	public void validar() throws Exception {
+		// TODO Auto-generated method stub.
+		if(vista.getTxtCedula().getText().length() < 1 )
+		{
+				 throw new Exception("Campo Cedula Vacio ");
+		}
+		else if(vista.getTxtNombre().getText().length() < 3 )
+		{
+			 throw new Exception("Campo Nombre No es lo suficiente mente largo  ");
+		}
+		else if(vista.getTxtUserName().getText().length() < 4 )
+		{
+			 throw new Exception("Campo Nombre Usuario No es lo suficiente mente largo ");
+		}
+		else if(vista.getTxtContrasena().getText().length() < 4 )
+		{
+			 throw new Exception("Campo Contrasena Usuario No es lo suficiente mente largo ");
+		}
+		else if(vista.getTxtReContrasena().getText().length() < 4 )
+		{
+			 throw new Exception("Campo Repetir Contrasena Usuario No es lo suficiente mente largo ");
+		}
+		else if(vista.getCmbZona().getSelectedIndex() < 0 )
+		{
+			 throw new Exception("seleccione zona ");
+		}
+		else
+		{
+			String cedula = vista.getTxtCedula().getText();
+			String nombreUsuario = vista.getTxtUserName().getText();
+			//validar cedula, nombre de usuario y contrasena
+			if (!vista.getTxtContrasena().getText().equals(vista.getTxtReContrasena().getText()))
+			{
+				 throw new Exception("La contraseña no coincide ");
+			}
+			else  //es nuevo ?
+				if(vista.getTxtId().getText() == "")
+				{
+					if(servicioJefeVenta.buscar(nombreUsuario) != null)
+					{
+						 throw new Exception(" nombre de usuario actualmente utilizado ");
+					}
+					else if(servicioJefeVenta.buscarCedula(cedula) != null)
+					{
+						 throw new Exception(" cedula de usuario actualmente utilizado ");
+					}		
+				}
+		}
+
 	}
 
 	public ActionListener guardar() {
@@ -145,23 +180,27 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub 
-				try {
+				try
+				{
+					validar();
 					JefeVenta usuario = new JefeVenta(); 
 					if (vista.getTxtId().getText().equals("")) 
+					{
 						usuario.setId(null);
+					}
 					else 
-					{ 
+					{
 						usuario.setId(new Integer(vista.getTxtId().getText().toString().trim()));			
-						usuario.setCedula(vista.getTxtCedula().getText().toString());
-						usuario.setNombre(vista.getTxtNombre().getText().toString());
-						usuario.setUsername(vista.getTxtUserName().getText().toString());
-						usuario.setContrasena(vista.getTxtContrasena().getText().toString());
-						usuario.setZona((Zona) vista.getCmbZona().getSelectedItem());	
-						servicioJefeVenta.guardar(usuario);
-						vista.activarBinding(servicioJefeVenta.getJefeVentas());
-						JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
-					} 
-				}catch (IOException e) {
+					}
+					usuario.setCedula(vista.getTxtCedula().getText().toString());
+					usuario.setNombre(vista.getTxtNombre().getText().toString());
+					usuario.setUsername(vista.getTxtUserName().getText().toString());
+					usuario.setContrasena(vista.getTxtContrasena().getText().toString());
+					usuario.setZona((Zona) vista.getCmbZona().getSelectedItem());	
+					servicioJefeVenta.guardar(usuario);
+					vista.activarBinding(servicioJefeVenta.getJefeVentas());
+					JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(vista,e.getMessage(),"error",JOptionPane.ERROR_MESSAGE);
@@ -169,9 +208,6 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
-
- 
-
 	
 	public ActionListener nuevo(){
 		return new ActionListener() {
@@ -180,6 +216,8 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				vista.LimpiarTxt();  
+				vista.getTxtCedula().setEnabled(true);
+				vista.getTxtUserName().setEnabled(true);
 			}
 		};
 	}
@@ -187,33 +225,22 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 
 	public ActionListener eliminar() {
 		// TODO Auto-generated method 
-		
 		return new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				if (vista.getTable().getSelectedRow()>=0)
+				if (vista.getTable().getSelectedRow()>=0 && vista.getTable().getSelectedColumn() < vista.getJefeVentas().size())
 				{
 					try {				
-						JefeVenta jefeVenta = servicioJefeVenta.getJefeVenta(
-								new Integer(vista.getTable().getValueAt(
-											vista.getTable().getSelectedRow(),0).toString()));
-							if (jefeVenta.getId().equals(null))
-							{
-								JOptionPane.showMessageDialog(vista,"Operacion Fallida\n Valor no exixtente");
-							}
-							else 
-							{
-								servicioJefeVenta.eliminar(jefeVenta);
-								JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
-					
-							}
-						} catch (Exception e) {
-							// TODO: handle exception
-							e.printStackTrace(); 
-							JOptionPane.showMessageDialog(vista,e.getMessage());
-						}
+						JefeVenta jefeVenta = (JefeVenta) vista.getJefeVentas().get(vista.getTable().getSelectedColumn());
+						servicioJefeVenta.eliminar(jefeVenta);
+						JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
+						vista.activarBinding(servicioJefeVenta.getJefeVentas());
+					} catch (Exception e) 
+					{
+						e.printStackTrace(); 
+						JOptionPane.showMessageDialog(vista,e.getMessage());
+					}
 					}
 					else 
 						JOptionPane.showMessageDialog(vista,"Seleccione la fila");
@@ -223,17 +250,13 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 	
 	public ActionListener salir(){
 		return new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				quitarVista();
 			}
 		};
-		
 	}
-
-
 
 	public MouseListener mostrar() {
 		// TODO Auto-generated method stub
@@ -249,5 +272,4 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
-	
 }

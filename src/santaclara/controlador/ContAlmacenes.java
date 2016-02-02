@@ -11,7 +11,7 @@ import javax.swing.JTable;
 import santaclara.Servicio.ServicioAlmacen;
 import santaclara.modelo.Almacen;
 import santaclara.vista.AlmacenesUI;
-
+ 
 public class ContAlmacenes extends ContGeneral implements IContGeneral{
 	
 	private ServicioAlmacen servicioAlmacen;

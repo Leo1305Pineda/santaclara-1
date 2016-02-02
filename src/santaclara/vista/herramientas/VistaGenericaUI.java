@@ -34,7 +34,7 @@ public class VistaGenericaUI extends JPanel {
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
 		setBackground(Color.DARK_GRAY);
-		setSize(getWidthPantalla(),getHeightPantalla());
+		//setSize(getWidthPantalla(),getHeightPantalla());
 		setLayout(new BorderLayout());
 		//dibujarPanelOpciones();
 		//dibujarPanelTabla();
@@ -48,7 +48,7 @@ public class VistaGenericaUI extends JPanel {
 		pnTabla.setBackground(Color.DARK_GRAY);
 		pnTabla.setLayout(new BorderLayout());
 		pnTabla.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Catalogo", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		pnTabla.setSize(500,400);
+		//pnTabla.setSize(500,400);
 		add(pnTabla,BorderLayout.CENTER);
 		setScrollPanel(new JScrollPane());
 		//getScrollPanel().setBounds(0, 0,getWidthPantalla(),getHeightPantalla());
@@ -90,12 +90,15 @@ public class VistaGenericaUI extends JPanel {
 	{
 		Rectangle screenSize =  GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		return (int) (screenSize.height*0.95);
+		//return screenSize.height;
 	}
 
 	public static Integer getMargenX()
 	{
 		Rectangle screenSize =  GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		return (int) (screenSize.width*0.08);
+		//return screenSize.width;
+
 	}
 	
 	public static Integer getMargenY()

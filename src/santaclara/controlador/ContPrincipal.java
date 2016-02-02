@@ -47,7 +47,6 @@ public  class ContPrincipal {
 		//vista.getFrame().getContentPane().add(panel);
 		//vista.getFrame().getContentPane().removeAll();
 		vista.getFrame().setContentPane(panel);
-
 		vista.getFrame().resize(VistaGenericaUI.getWidthPantalla(),VistaGenericaUI.getHeightPantalla());
 		vista.getFrame().repaint();
 
