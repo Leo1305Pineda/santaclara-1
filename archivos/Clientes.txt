@@ -83,28 +83,8 @@ direccion:Carrera 15 con calle 21 y 22
 telefono:0251-2374927
 ruta:10
 id:15
-<<<<<<< HEAD
 rif:vvggvvg
 razonsocial:fgygfvygvygy
 direccion:vhvhgvhyfyfty
 telefono:vgvhvh
 ruta:14
-=======
-rif:sdadasdas
-razonsocial:asdassss
-direccion:dasddasdas
-telefono:asdasdasd
-ruta:14
-id:16
-rif:222
-razonsocial:2222222
-direccion:222222222222222
-telefono:22222222
-ruta:13
-id:17
-rif:asdas
-razonsocial:<<<<<<<<
-direccion:a<<<<<<<<
-telefono:dassa
-ruta:1
->>>>>>> upstream/master

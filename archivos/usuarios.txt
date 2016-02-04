@@ -1,8 +1,13 @@
 id:0
 username:Rhonal
-cedula:19827297
-nombre:Rhonal Chirinosss
+cedula:V-19827297
+nombre:Rhonal Chirino
 contrasena:1234
+id:1
+username:leonardo
+cedula:V-19727835
+nombre:Leonardo Pineda
+contrasena:123
 id:2
 username:Gipsis
 cedula:V-19828553
@@ -64,19 +69,7 @@ cedula:26542987
 nombre:Elias Cibrian
 contrasena:1234
 id:14
-<<<<<<< HEAD
 username:lei
 cedula:4027537
 nombre:Leiberth gomez
 contrasena:1234
-=======
-username:1212
-cedula:1
-nombre:1212
-contrasena:1212
-id:15
-username:2323
-cedula:22
-nombre:2323
-contrasena:1212
->>>>>>> upstream/master

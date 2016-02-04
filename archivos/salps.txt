@@ -4,8 +4,3 @@ idCliente:7
 idCliente:13
 idCliente:14
 idCliente:15
-<<<<<<< HEAD
-=======
-idCliente:16
-idCliente:17
->>>>>>> upstream/master
