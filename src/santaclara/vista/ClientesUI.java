@@ -68,7 +68,7 @@ public class ClientesUI extends VistaGenericaUI {
 	private JButton btnABuscar;
 	private JButton btnEliminar;
 	private JButton btnGuardar; 
-	private JButton btnAbrirRuta;
+	//private JButton btnAbrirRuta;
 	
 	private JCheckBox checkLune;
 	private JCheckBox checkMarte;
@@ -123,26 +123,16 @@ public class ClientesUI extends VistaGenericaUI {
 		btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
 		getPnBotones().add(btnNuevo);
 		
-		btnAbrirRuta = new JButton("Ruta");
-		btnAbrirRuta.addActionListener(contClientes.AbrirRutas());
-		btnAbrirRuta.setForeground(Color.WHITE);
-		btnAbrirRuta.setBackground(Color.DARK_GRAY);
-		getPnBotones().add(btnAbrirRuta);
-		
-		
 		btnSalir.setForeground(Color.WHITE);
 		btnSalir.setBackground(Color.DARK_GRAY);
 		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
 		getPnBotones().add(btnSalir);
-		
-		
 		
 		txtABuscar = new JTextField();
 		txtABuscar.setForeground(Color.WHITE);
 		txtABuscar.setBackground(new Color(64, 64, 64));
 		txtABuscar.setColumns(10);
 		getPanelBuscar().add(txtABuscar);
-		
 
 		btnABuscar = new JButton("");
 		btnABuscar.addActionListener(contClientes.buscar());
@@ -154,7 +144,7 @@ public class ClientesUI extends VistaGenericaUI {
 		lblTipoCliente = new JLabel("Tipo Cliente:");
 		lblTipoCliente.setForeground(Color.WHITE);
 		lblTipoCliente.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
-		lblTipoCliente.setBounds(12, 18, 113, 25);
+		///lblTipoCliente.setBounds(12, 18, 113, 25);
 		getPanelBuscar().add(lblTipoCliente);
 		
 		cmbTipoCliente = new JComboBox();
@@ -169,13 +159,14 @@ public class ClientesUI extends VistaGenericaUI {
 		pnCliente.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnCliente.setBackground(Color.DARK_GRAY);
 		pnCliente.setLayout(new MigLayout());
-			
+		add(pnCliente,BorderLayout.SOUTH);	
+		
 		lblRif = new JLabel("Rif:");
 		lblRif.setForeground(Color.WHITE);
 		lblRif.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
 		pnCliente.add(lblRif,"cell 0 0");
 		
-		txtRif = new JTextField("rif");
+		txtRif = new JTextField("");
 		txtRif.setColumns(10);
 		pnCliente.add(txtRif,"cell 1 0");
 		
@@ -185,8 +176,8 @@ public class ClientesUI extends VistaGenericaUI {
 		lblRazonSocial.setBounds(200, 5, 100, 25);
 		pnCliente.add(lblRazonSocial,"cell 1 0");
 		
-		txtRazonSocial = new JTextField("razon social");
-		txtRazonSocial.setColumns(10);
+		txtRazonSocial = new JTextField("");
+		txtRazonSocial.setColumns(20);
 		txtRazonSocial.setBounds(300, 10, 412, 16);
 		pnCliente.add(txtRazonSocial,"cell 1 0");
 
@@ -273,7 +264,7 @@ public class ClientesUI extends VistaGenericaUI {
 		btnGuardar.addActionListener(contClientes.guardar());
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
-		pnCliente.add(btnGuardar,"cell 0 5");
+		pnCliente.add(btnGuardar,"cell 3 1");
 		
 		txtId = new JTextField();
 		txtId.setColumns(10);
@@ -328,7 +319,7 @@ public class ClientesUI extends VistaGenericaUI {
 		getTable().addMouseListener(contClientes.mostrarCliente());
 		
 		//pnCliente.setVisible(false);
-		remove(pnCliente);
+		//remove(pnCliente);
 	}
 
 
@@ -373,7 +364,7 @@ public class ClientesUI extends VistaGenericaUI {
 		getTable().addMouseListener(contClientes.mostrarCliente());
  
 
-		remove(pnCliente);
+		//remove(pnCliente);
 		///pnCliente.setVisible(false);
  
 }
@@ -506,7 +497,7 @@ public class ClientesUI extends VistaGenericaUI {
 	public void setBtnGuardar(JButton btnGuardar) {
 		this.btnGuardar = btnGuardar;
 	}
-
+/**
 	public JButton getBtnAbrirRuta() {
 		return btnAbrirRuta;
 	}
@@ -514,7 +505,7 @@ public class ClientesUI extends VistaGenericaUI {
 	public void setBtnAbrirRuta(JButton btnAbrirRuta) {
 		this.btnAbrirRuta = btnAbrirRuta;
 	}
-
+*/
 
 	public JComboBox<String> getCmbTipoCliente() {
 		return cmbTipoCliente;
@@ -659,10 +650,10 @@ public class ClientesUI extends VistaGenericaUI {
 			pnCheckDia.setVisible(true);
 			lblDiaVisita.setVisible(true);
 		}
-		getPnTabla().setVisible(false);
-		add(pnCliente,BorderLayout.CENTER);
-		btnGuardar.setVisible(true);
-		pnCheckDia.setVisible(true);
+		//getPnTabla().setVisible(false);
+		add(pnCliente,BorderLayout.SOUTH);
+		//btnGuardar.setVisible(true);
+		//pnCheckDia.setVisible(true);
 	}
 	
 	 
@@ -733,12 +724,14 @@ public class ClientesUI extends VistaGenericaUI {
 				if(cliente instanceof DomicilioComercio)
 				{
 					pnCheckDia.setVisible(true);
+					lblDiaVisita.setVisible(true);
 					//System.out.println( ((DomicilioComercio) cliente ).getId()+ "Aki ----->"+ ((DomicilioComercio) cliente ).getDiaVisita() + ((DomicilioComercio) cliente ).getRazonsocial());
 					mostrarDiaVisita( ((DomicilioComercio) cliente ).getDiaVisita());
 				}
 				else
 				{
 					pnCheckDia.setVisible(false);
+					lblDiaVisita.setVisible(false);
 				}
 				if(cliente.getRuta() != null && cliente.getRuta().getId() !=null )
 				{
@@ -753,7 +746,7 @@ public class ClientesUI extends VistaGenericaUI {
 					}
 				}
 				add(pnCliente,BorderLayout.SOUTH);
-				btnGuardar.setVisible(false);
+				//btnGuardar.setVisible(false);
 			}
 	}
 	

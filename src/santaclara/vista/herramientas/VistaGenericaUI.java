@@ -46,11 +46,8 @@ public class VistaGenericaUI extends JPanel {
 		pnTabla.setLayout(new BorderLayout(0, 0));
 		pnTabla.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Catalogo", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		add(pnTabla,BorderLayout.CENTER);
-
-		/////////////////////////////////////////////////////////////////////////////
-		
 		setScrollPanel(new JScrollPane());
-		getScrollPanel().setBounds(0, 0,getWidthPantalla(),getHeightPantalla());
+		//getScrollPanel().setBounds(0, 0,getWidthPantalla(),getHeightPantalla());
 		getPnTabla().add(getScrollPanel());
 		
 	}

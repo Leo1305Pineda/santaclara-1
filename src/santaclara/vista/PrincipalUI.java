@@ -131,7 +131,6 @@ public class PrincipalUI {
 		mntAlmacen.addActionListener(controlador.activarMenu());
 		mnCatalogo.add(mntAlmacen);
 		mnCatalogo.add(new JSeparator());
-
 	
 		mntCalendarios = new JMenuItem("Calendario");
 		mnCatalogo.add(mntCalendarios);
@@ -149,11 +148,10 @@ public class PrincipalUI {
 		*/
 		
 	    
-		/*
 		mntJefeVenta = new JMenuItem("Jefe Ventas");
 		mnCatalogo.add(mntJefeVenta);
 		mntJefeVenta.addActionListener(controlador.activarMenu());
-		*/ 
+
 		
 		/***************************** Botones para Reporte **********************************/
 		
