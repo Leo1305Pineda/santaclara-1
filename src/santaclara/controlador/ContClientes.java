@@ -134,8 +134,6 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 					}
 					vista.LimpiarTxt();
 					vista.repaint();
- 
- 
 					cliente = new Cliente();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -181,7 +179,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		}
 
 	}
-	/*
+
 	public ActionListener AbrirRutas() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -191,15 +189,15 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 				// TODO Auto-generated method stub
 				try {
 					
-					if (vista.getTxtId().getText().equals("")) 
-							cliente.setId(null);
-					else 
-						cliente.setId(new Integer(vista.getTxtId().getText().toString()));
+					if (vista.getTxtId().getText().equals("")) cliente.setId(null);
+					else cliente.setId(new Integer(vista.getTxtId().getText().toString()));
+					
 					cliente.setDireccion(vista.getTxtDireccion().getText());
 					cliente.setRazonsocial(vista.getTxtRazonSocial().getText());
 					cliente.setRif(vista.getTxtRif().getText());
 					cliente.setTelefono(vista.getTxtTelefono().getText());
-					new ContRutas(getContPrincipal());
+						
+						new ContRutas(getContPrincipal());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -207,11 +205,10 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			}
 		};
 	}
-	
-	*/
 	public ActionListener buscar() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -231,8 +228,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 						break;
 					}
 				}
-				if (!enc) 
-					JOptionPane.showMessageDialog(vista,"No Encontrado");
+				if (!enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
 				vista.setTable(tabla1);
 				vista.getTxtABuscar().setText("");
 				
@@ -371,7 +367,6 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 				if (evento.getClickCount()==1)
 				{
 					cliente = (Cliente) vista.getClientes().get(vista.getTable().getSelectedRow());
-					vista.repaint();
 					vista.cargarCliente();
 				}
 			}
@@ -385,7 +380,6 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 				if(e.getKeyCode()==38 || e.getKeyCode()==40 )
 				{
 					cliente = (Cliente) vista.getClientes().get(vista.getTable().getSelectedRow());
-					vista.repaint();
 					vista.cargarCliente();
 				}
 			}
