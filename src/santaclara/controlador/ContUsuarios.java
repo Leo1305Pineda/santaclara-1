@@ -158,9 +158,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 					{
 						if(vista.getCmbTipoUsuario().getSelectedItem().equals("JefeVenta"))
 						{
-							
-							new ContJefeVentas(vista).Modificar();;
-								
+							//	new ContJefeVentas(vista).Modificar();;
 						}
 						else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
 						{
@@ -179,7 +177,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 				// TODO Auto-generated method stub
 				try {	
 						Usuario usuario  = new Usuario();
-						usuario = servicioUsuario.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						usuario = servicioUsuario.buscar(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),2).toString().trim());
 				
 						if (usuario != null)
 						{
@@ -213,7 +211,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 					if(vista.getCmbTipoUsuario().getSelectedItem().equals("JefeVenta"))
 					{
 						
-						new ContJefeVentas(vista).Guardar();
+						///new ContJefeVentas(vista).Guardar();
 							
 					}
 					else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
@@ -299,20 +297,16 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				try {
 					if (vista.getTable().getSelectedRow()>=0)
 					{
 						Usuario usuario  = new Usuario();
-						usuario = servicioUsuario.buscar(
-								new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						usuario = vista.getUsuarios().get(vista.getTable().getSelectedColumn());
 						ActivarAtras(usuario);
 					}
- 					else ActivarAtras(null);
-				} catch (NumberFormatException | IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
+ 					else 
+ 					{
+ 						ActivarAtras(null);
+ 					}
 			}
 		};
 	}
@@ -343,7 +337,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 						if(vista.getCmbTipoUsuario().getSelectedItem().equals("JefeVenta"))
 						{
 						
-							new ContJefeVentas(vista).Eliminar();
+							//new ContJefeVentas(vista).Eliminar();
 						}
 						else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
 						{

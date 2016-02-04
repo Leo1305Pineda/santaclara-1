@@ -55,11 +55,18 @@ public class ServicioUsuario {
 		this.usuarioDAO = usuarioDAO;
 	}
 
-	public Usuario buscar(Integer id) throws IOException {
+ 
+	public Usuario buscar(String username) throws IOException {
 		// TODO Auto-generated method stub
-		return usuarioDAO.getUsuario(id);
+		return usuarioDAO.getUsuario(username);
 	}
 
+	public Usuario buscarCedula(String cedula) throws IOException {
+		// TODO Auto-generated method stub
+		return usuarioDAO.getUsuarioCedula(cedula);
+	}
+	
+	
 	public void guardar(Usuario usuario) throws Exception {
 		// TODO Auto-generated method stub
 		

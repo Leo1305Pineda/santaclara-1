@@ -31,10 +31,10 @@ public class VistaGenericaUI extends JPanel {
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
 		setBackground(Color.DARK_GRAY);
-		setSize(getWidthPantalla(),getHeightPantalla());
+		//setSize(getWidthPantalla(),getHeightPantalla());
 		setLayout(new BorderLayout());
-		dibujarPanelOpciones();
-		dibujarPanelTabla();
+		//dibujarPanelOpciones();
+		//dibujarPanelTabla();
 
 	}
 	
@@ -43,8 +43,9 @@ public class VistaGenericaUI extends JPanel {
 		pnTabla = new JPanel();
 		//pnTabla.setBounds(10,50,getWidthPantalla()-20,70);
 		pnTabla.setBackground(Color.DARK_GRAY);
-		pnTabla.setLayout(new BorderLayout(0, 0));
+		pnTabla.setLayout(new BorderLayout());
 		pnTabla.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Catalogo", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		//pnTabla.setSize(500,400);
 		add(pnTabla,BorderLayout.CENTER);
 
 		/////////////////////////////////////////////////////////////////////////////
@@ -57,9 +58,8 @@ public class VistaGenericaUI extends JPanel {
 	
 	
 	protected void dibujarPanelOpciones() {
-
 		pnOpciones = new JPanel();
-		//pnOpciones.setBounds(10,50,getWidthPantalla()-20,70);
+		pnOpciones.setBounds(10,50,getWidthPantalla(),50);
 		pnOpciones.setBackground(Color.DARK_GRAY);
 		pnOpciones.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Opciones", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		add(pnOpciones,BorderLayout.NORTH);
@@ -90,12 +90,15 @@ public class VistaGenericaUI extends JPanel {
 	{
 		Rectangle screenSize =  GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		return (int) (screenSize.height*0.95);
+		//return screenSize.height;
 	}
 
 	public static Integer getMargenX()
 	{
 		Rectangle screenSize =  GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		return (int) (screenSize.width*0.08);
+		//return screenSize.width;
+
 	}
 	
 	public static Integer getMargenY()

@@ -3,14 +3,7 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack;
-
- 
-
-
-
-
 import javax.swing.JPanel;
-
 import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
 import santaclara.controlador.consultas.ContListCantRefrecoPresentCapacFacturadoZona;
 import santaclara.controlador.consultas.ContListCantRefrescoSaborVendidoAlmacen;
@@ -20,6 +13,7 @@ import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
 import santaclara.controlador.reportes.ContReportMontFacturadoVendedor;
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
+import santaclara.vista.herramientas.VistaGenericaUI;
 
 public  class ContPrincipal {
 	
@@ -52,7 +46,9 @@ public  class ContPrincipal {
 	void agregarPanel(JPanel panel)
 	{
 		vista.getFrame().setContentPane(panel);
+		vista.getFrame().resize(VistaGenericaUI.getWidthPantalla(),VistaGenericaUI.getHeightPantalla());
 		vista.getFrame().repaint();
+
 	}
 	
 	void quitarPanel(){
@@ -261,26 +257,24 @@ public void ActivarMontoFacturadoMesZonaTipoPago(){
 	}
 }
 
+public void ActivarReportFacturadoAlmacen(){
 	
+	try {
+
+		controlador = new ContReportMontFacturadoAlmacen(ContPrincipal.this);
+	}
+	catch (Exception e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+}
 	
 	
 public void ActivarReportFacturadoVendedor(){
 		
 		try {
-			
+
 			controlador = new ContReportMontFacturadoVendedor(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	 
-	public void ActivarReportFacturadoAlmacen(){
-		
-		try {
-			
-			controlador = new ContReportMontFacturadoAlmacen(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block

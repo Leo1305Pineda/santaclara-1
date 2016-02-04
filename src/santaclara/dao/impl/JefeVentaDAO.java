@@ -119,7 +119,7 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 		jefeVenta.setUsername(usuario.getUsername());
 		
 		return jefeVenta; 
-}
+	}
 	
 	@Override
 	public void eliminar(JefeVenta jefeVenta) throws IOException {
@@ -151,6 +151,34 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 		}
 		return null;
 	}
+	
+	public JefeVenta getJefeVenta(String username) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		List<JefeVenta> jefeVentas = getJefeVentas();
+		for(JefeVenta jefeVenta: jefeVentas)
+		{
+			if(jefeVenta.getUsername().equals(username))
+			{
+				return jefeVenta;
+			}
+		}
+		return null;
+	}
+	
+	public JefeVenta getJefeVentaCedula(String cedula) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		List<JefeVenta> jefeVentas = getJefeVentas();
+		for(JefeVenta jefeVenta: jefeVentas)
+		{
+			if(jefeVenta.getCedula().equals(cedula))
+			{
+				return jefeVenta;
+			}
+		}
+		return null;
+	}
+	
+	
 	
 	public void guardarTodo(List<JefeVenta> jefeVentas) throws IOException
 	{

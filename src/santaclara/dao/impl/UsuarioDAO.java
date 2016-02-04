@@ -140,6 +140,20 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 		}
 		fw.close();
 	}
+	
+	public Usuario getUsuarioCedula(String cedula) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		List<Usuario> usuarios = getUsuarios();
+		
+		for(Usuario usuario: usuarios)
+		{
+			if(usuario.getCedula().equals(cedula))
+			{
+				return usuario;
+			}
+		}
+		return null;
+	}
 
 	
 	/*
