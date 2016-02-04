@@ -84,4 +84,5 @@ public class DetalleFactura {
 	public String getDescripcion(){
 		return empaqueProducto.getDescripcionEmpaque();
 	}
+
 }

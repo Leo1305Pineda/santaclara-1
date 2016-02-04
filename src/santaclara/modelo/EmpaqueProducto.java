@@ -60,4 +60,12 @@ public class EmpaqueProducto {
 		// TODO Auto-generated method stub
 		return unidades.toString().concat(" Un.xCAJ."); 
 	}
+	
+	public String getProductoSabor(){
+		return producto.getSabor().getSabor();
+	}
+	
+	public String getProductoPresentacionStr(){
+		return producto.getPresentacion().getMaterial();
+	}
 }

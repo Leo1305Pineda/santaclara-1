@@ -12,15 +12,18 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JTable;
+
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.swingbinding.JComboBoxBinding;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
+
 import santaclara.Servicio.ServicioAlmacen;
-import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
+import santaclara.controlador.consultas.ContMontoFacturadoMesZonaTipoPago;
 import santaclara.modelo.Almacen;
-import santaclara.modelo.Factura;
+import santaclara.modelo.DetalleFactura;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
@@ -52,7 +55,7 @@ public class MontoFacturadoUsuarioUI extends JPanel {
     private JButton btnActualizar;
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	public MontoFacturadoUsuarioUI(ContReportMontFacturadoAlmacen contReportMontFacturadoAlmacen) throws NumberFormatException, IOException {
+	public MontoFacturadoUsuarioUI(ContMontoFacturadoMesZonaTipoPago contMontoFacturadoMesZonaTipoPago) throws NumberFormatException, IOException {
 		super();
 		setBackground(Color.DARK_GRAY);
 
@@ -104,7 +107,7 @@ public class MontoFacturadoUsuarioUI extends JPanel {
 		pnOpciones.add(cmbAlmacen);
 		
 		btnActualizar = new JButton("Actualizar");
-		btnActualizar.addActionListener(contReportMontFacturadoAlmacen.Actualizar());
+		btnActualizar.addActionListener(contMontoFacturadoMesZonaTipoPago.Actualizar());
 		btnActualizar.setBackground(Color.DARK_GRAY);
 		btnActualizar.setForeground(Color.WHITE);
 		pnOpciones.add(btnActualizar);
@@ -128,11 +131,11 @@ public class MontoFacturadoUsuarioUI extends JPanel {
 
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void activarBinding(List<Factura> facturas) {
+	public void activarBinding(List<DetalleFactura> detalleFacturas) {
 		// TODO Auto-generated method stub
 		setTable(new JTable());
 		getScrollPane().setViewportView(getTable());
-		binFacturas = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,facturas,getTable());
+		binFacturas = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,detalleFacturas,getTable());
 	    
 	    BeanProperty idFactura  = BeanProperty.create("id");
 	    BeanProperty fecha  = BeanProperty.create("getFechaStr");

@@ -77,12 +77,12 @@ public class RutasUI extends JPanel {
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
 		setBackground(Color.DARK_GRAY);
-		setSize(763,363);
+		setSize(763,427);
 		setLayout(null);
 		
 		JPanel pnRutas = new JPanel();
 		pnRutas.setLocation(12, 12);
-		pnRutas.setSize(735,338);
+		pnRutas.setSize(735,339);
 		pnRutas.setBackground(Color.DARK_GRAY);
 		pnRutas.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modulo Rutas", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		add(pnRutas);
@@ -452,7 +452,6 @@ public class RutasUI extends JPanel {
 	public void setTxtABuscar(JTextField txtABuscar) {
 		this.txtABuscar = txtABuscar;
 	}
-	
 }
 
 

@@ -90,13 +90,25 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		return facturas;
 	}
  
+	public List<Factura> getPedidoFacturados()throws FileNotFoundException{
+		return confGetFactura(true);
+	}
+	
+	public List<Factura> getPedidoPendientes()throws FileNotFoundException{
+		return confGetFactura(false);
+	}
+	
+	public List<Factura> getPedidos()throws FileNotFoundException{
+		return confGetFactura(null);
+	}
 	
 	@Override
 	// Permite retornar Datos selectivos
-	public List<Factura> getPedidoFacturados() throws FileNotFoundException{
-		// TODO Auto-generated method stub
+	public List<Factura> confGetFactura(Boolean condicion) throws FileNotFoundException {
 		/*Variable que Permite la Validacion de la Busqueda de los Archivos
 		 * estado == True 	:  	Facturados
+		 * estado == false  :   Pendientes
+		 * estado == null   :   Pedido
 		 */
 		List<Factura> facturas = new ArrayList<Factura>();
 		File file = new File(ruta);
@@ -116,7 +128,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 			 default:factura.setEstado(null);
 			 break;
 			 }
-			 	if(factura.getEstado()!=null && factura.getEstado()==true)
+			 	if(factura.getEstado()!=null && factura.getEstado()==condicion)
 				{
 					 Date fecha = new Date();
 						try {

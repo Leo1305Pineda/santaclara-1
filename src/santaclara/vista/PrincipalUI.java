@@ -1,6 +1,5 @@
 package santaclara.vista;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue; 
 
 import javax.swing.JFrame;
@@ -133,16 +132,17 @@ public class PrincipalUI {
 		mnCatalogo.add(mntAlmacen);
 		mnCatalogo.add(new JSeparator());
 
-		/*
+	
 		mntCalendarios = new JMenuItem("Calendario");
 		mnCatalogo.add(mntCalendarios);
 		mntCalendarios.addActionListener(controlador.activarMenu());
 
-		/*
+		
 		mntConcesionarios = new JMenuItem("Concesionarios");
 		mnCatalogo.add(mntConcesionarios);
 		mntConcesionarios.addActionListener(controlador.activarMenu());
 
+		/*
 		mntConcesionarioRutas = new JMenuItem("ConcesionarioRutas");
 		mnCatalogo.add(mntConcesionarioRutas);
 		mntConcesionarioRutas.addActionListener(controlador.activarMenu());

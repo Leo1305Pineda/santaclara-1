@@ -14,9 +14,11 @@ import santaclara.modelo.Almacen;
 public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 	private String ruta = "archivos/almacenes.txt";
 	@Override
+	
 	public List<Almacen> getAlmacenes() throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		List<Almacen> almacenes = new ArrayList<Almacen>();
+	
 		File file = new File(ruta);
  		Scanner scaner = new Scanner(file);
 		while(scaner.hasNext())
@@ -113,7 +115,6 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 	public void Mostrar() throws IOException {
 		// TODO Auto-generated method stub
 		List<Almacen> almacenes = getAlmacenes();
-		System.out.println("Listar Todos los Almacenes");
 		for(Almacen almacen1 :almacenes)
 		{
 			System.out.println("id: "+almacen1.getId());

@@ -105,7 +105,20 @@ public class Factura {
 		else return "Pendiente";
 		
 	}
-
+	
+	public String getTipoPago() {
+		if (estado == null) return "Pedido";
+		if (getEstado().equals(true))return "Contado";
+		else return "Credito";
+		
+	}
+	
+	public String getTipoPagoCreditoContado() {
+		if (estado == null) return "";
+		if (getEstado().equals(true))return "Contado";
+		else return "Credito";
+		
+	}
 	public void setFecha(String cadena) throws ParseException {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			this.fecha = sdf.parse(cadena);
@@ -129,6 +142,7 @@ public class Factura {
 			} 
 		}
 
+		@SuppressWarnings("deprecation")
 		public String getFechaCadenaStr() {
 			if (fecha==null)return "";
 			else{
@@ -196,7 +210,9 @@ public class Factura {
 			this.totalAPagar = totalAPagar;
 		}
 		
-	
+		public String getClienteZona(){
+			return cliente.getRuta().getZona().getDescripcion(); 
+		}	
 	
 /*
  * Estructura

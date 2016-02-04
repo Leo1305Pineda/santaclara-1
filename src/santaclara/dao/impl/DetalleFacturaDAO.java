@@ -20,6 +20,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 	public List<DetalleFactura> getDetalles() throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		facturas = new FacturaDAO().getPedidoFacturados();
+		
 		List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();		
 		File file = new File(ruta);
  		Scanner scanner = new Scanner(file);
@@ -42,8 +43,6 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 			 detalleFactura.setPrecio(new Double(scanner.skip("desc:").nextLine().trim()));
 			 detalleFactura.setIva(new Double(scanner.skip("iva:").nextLine().trim()));
 			 detalleFactura.setTotal(new Double(scanner.skip("total:").nextLine().trim()));
- 
-			 
 			 
 			 detalleFacturas.add(detalleFactura); 
 		}
@@ -80,7 +79,10 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		/*Variable que Permite la Validacion de la Busqueda de los Archivos
 		 * estadoFactura == True 	:  	Facturados
 		 */
-		facturas = new FacturaDAO().getPedidoFacturados();
+		if(condicion == true) facturas = new FacturaDAO().getPedidoFacturados();
+		else if (condicion == false) facturas = new FacturaDAO().getPedidoPendientes();
+		else facturas = new FacturaDAO().getPedidos();
+		
 		List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();		
 		File file = new File(ruta);
  		Scanner scaner = new Scanner(file);
@@ -117,18 +119,18 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 	
 	public Factura getFactura(Integer id) throws FileNotFoundException {
 		// TODO Auto-generated method stub
-		
-		for(Factura factura1 :facturas)
-		{
-			if(factura1.getId().equals(id))
+	
+			for(Factura factura1 :facturas)
 			{
-				return factura1;
+				if(factura1.getId().equals(id))
+				{
+					return factura1;
+				}
 			}
-		}
+	
 		return null;
 
 	}
-
 	
 	@Override
 	//Guarda y Permite modificarel pedido

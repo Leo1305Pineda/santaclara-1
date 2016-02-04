@@ -5,12 +5,19 @@ import java.awt.event.ActionListener;
 import java.util.Stack;
 
  
+
+
+
+
 import javax.swing.JPanel;
 
 import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
+import santaclara.controlador.consultas.ContListCantRefrecoPresentCapacFacturadoZona;
+import santaclara.controlador.consultas.ContListCantRefrescoSaborVendidoAlmacen;
+import santaclara.controlador.consultas.ContListClienteTipoZona;
+import santaclara.controlador.consultas.ContMontoFacturadoMesZonaTipoPago;
 import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
 import santaclara.controlador.reportes.ContReportMontFacturadoVendedor;
-
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
 
@@ -213,7 +220,7 @@ public void ActivarListCantRefrescoSaborVendidoAlmacen(){
 	
 	try {
 		
-		//controlador = new Cont(ContPrincipal.this);
+		controlador = new ContListCantRefrescoSaborVendidoAlmacen(ContPrincipal.this);
 	}
 	catch (Exception e1) {
 		// TODO Auto-generated catch block
@@ -224,7 +231,7 @@ public void ActivarListCantRefrescoPresentCapacFacturadoZona(){
 	
 	try {
 		
-		//controlador = new ContReportMontFacturadoVendedor(ContPrincipal.this);
+		controlador = new ContListCantRefrecoPresentCapacFacturadoZona(ContPrincipal.this);
 	}
 	catch (Exception e1) {
 		// TODO Auto-generated catch block
@@ -235,7 +242,7 @@ public void ActivarListClienteZonaTipo(){
 	
 	try {
 		
-		//controlador = new ContReportMontFacturadoVendedor(ContPrincipal.this);
+		controlador = new ContListClienteTipoZona(ContPrincipal.this);
 	}
 	catch (Exception e1) {
 		// TODO Auto-generated catch block
@@ -246,7 +253,7 @@ public void ActivarMontoFacturadoMesZonaTipoPago(){
 	
 	try {
 		
-		//controlador = new ContReportMontFacturadoVendedor(ContPrincipal.this);
+		controlador = new ContMontoFacturadoMesZonaTipoPago(ContPrincipal.this);
 	}
 	catch (Exception e1) {
 		// TODO Auto-generated catch block
@@ -528,7 +535,12 @@ public void ActivarReportFacturadoVendedor(){
 			break;
 			case "santaclara.controlador.reportes.ContReportMontFacturadoVendedor":	ActivarReportFacturadoVendedor();
 			break;
-			
+			case "santaclara.controlador.cansultas.ContDetalleFacturaMesAlmacen":	ActivarConsultaDetalleFacturaMesAlmacen();
+			break;
+			case "santaclara.controlador.cansultas.ContListCantRefrescoSaborVendidoAlmacen":	ActivarListCantRefrescoSaborVendidoAlmacen();;
+			break;
+			case "santaclara.controlador.cansultas.ContMontoFacturadoMesZonaTipoPago":	ActivarMontoFacturadoMesZonaTipoPago();;
+			break;
 			default:
 				break;
 			}

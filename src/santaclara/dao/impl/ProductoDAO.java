@@ -155,7 +155,8 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 			fw.append("nombre:"+producto.getNombre()+"\n");
 			fw.append("precio:"+producto.getPrecio()+"\n");
 			fw.append("descuento:"+producto.getPrecio()+"\n");
-			if(producto.getIva().booleanValue()==true) fw.append("estadoIva:exento\n");
+			if(producto.getIva()==null) fw.append("estadoIva:gravado\n");
+			else if(producto.getIva().booleanValue()==true) fw.append("estadoIva:exento\n");
 			else if(producto.getIva().booleanValue()==false) fw.append("estadoIva:gravado\n");
 			
 		}

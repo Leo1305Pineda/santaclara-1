@@ -194,7 +194,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 	{
 		
 		switch (mes) {
-		case 0: return "enenero";				
+		case 0: return "enero";				
 		case 1: return "febrero";			
 		case 2: return "marzo";				
 		case 3: return "abril";				

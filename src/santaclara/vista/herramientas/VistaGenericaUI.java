@@ -15,6 +15,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 
+@SuppressWarnings("serial")
 public class VistaGenericaUI extends JPanel {
 	
 	private JPanel pnTabla;

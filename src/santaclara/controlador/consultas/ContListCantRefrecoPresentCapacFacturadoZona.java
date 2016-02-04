@@ -22,23 +22,23 @@ import santaclara.controlador.ContPrincipal;
 import santaclara.controlador.IContGeneral;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.DetalleFactura;
-import santaclara.vista.consultas.DetalleFacturaMesAlmacenUI;
+import santaclara.vista.consultas.ListCantRefrescoPresentCapacFacturadoZonaUI;
 
-public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGeneral {
+public class ContListCantRefrecoPresentCapacFacturadoZona extends ContGeneral implements IContGeneral {
 
-	private static DetalleFacturaMesAlmacenUI vista;
+	private static ListCantRefrescoPresentCapacFacturadoZonaUI vista;
 	private static List<DetalleFactura> detalleFacturas ;
 	Integer acumCantidad = new Integer(0);
 	
-	public ContDetalleFacturaMesAlmacen() {
+	public ContListCantRefrecoPresentCapacFacturadoZona() {
 		// TODO Auto-generated constructor stub
 		
 	}
 	
-	public ContDetalleFacturaMesAlmacen(ContPrincipal contPrincipal) throws Exception {
+	public ContListCantRefrecoPresentCapacFacturadoZona(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
-		vista = new DetalleFacturaMesAlmacenUI(this);
+		vista = new  ListCantRefrescoPresentCapacFacturadoZonaUI(this);
 		dibujar(vista,this);
 		vista.cargarCmbAlmacen();
 		setSelectedValue(vista.getCmbAlmacen(), null);
@@ -124,6 +124,10 @@ public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGe
 			case "Month":return new Long(detalleFactura.getFactura().getFecha().getMonth());
 			case "Almacen": return  new Long(detalleFactura.getFactura().getAlmacen().getId());
 			case "EmpaqueProducto": return  new Long(detalleFactura.getEmpaqueProducto().getId());
+			case "Capacidad": return  new Long(detalleFactura.getEmpaqueProducto().getProducto().getCapacidad().getId());
+			case "Presentacion": return  new Long(detalleFactura.getEmpaqueProducto().getProducto().getPresentacion().getId());
+			case "Sabor": return  new Long(detalleFactura.getEmpaqueProducto().getProducto().getSabor().getId());
+			case "Zona": return  new Long(detalleFactura.getFactura().getCliente().getRuta().getZona().getId());
 			default:	return null;
 			}
 		}
@@ -236,29 +240,30 @@ public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGe
 	public void actualizarTabla() throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		/**7- Obtener informacion mediante ventana de consultas acerca de:
-		 * Detalle de lo facturado 
-		 * mensualmante por almacen
+		 * Listado de laq cantidad de refresco 
+		 * por presentacion y capacidad Facturado Zona 
+		 * en un determinado periodo de tiempo determinado
 		 * */
 		
 		List<List<DetalleFactura>> listGroup = new ArrayList<List<DetalleFactura>>();
 		List<DetalleFactura> listOrder = new ArrayList<DetalleFactura>();
-	
-		listOrder = getOrderBy("Date", getFilterByDate(getFilterByCmbAlmacen(detalleFacturas)));
-	
-		listGroup = getGroupBy("Month",listOrder);
-	
-		listGroup = getOrderListGroupBy("Almacen", listGroup);
-	
-		listGroup = getGroupListGroupBy("Almacen",listGroup);
-	
-		listGroup = getOrderListGroupBy("EmpaqueProducto", listGroup);
-	
-		listGroup = getGroupListGroupBy("EmpaqueProducto", listGroup);
-	
+		
+		listOrder = getOrderBy("Zona", getFilterByDate(getFilterByCmbAlmacen(detalleFacturas)));
+		
+		listGroup = getGroupBy("Zona",listOrder);
+		
+		listGroup = getOrderListGroupBy("Presentacion", listGroup);
+		
+		listGroup = getGroupListGroupBy("Presentacion", listGroup);
+				
+		listGroup = getOrderListGroupBy("Capacidad", listGroup);
+		
+		listGroup = getGroupListGroupBy("Capacidad", listGroup);
+		
 		listOrder = getConvertListGroupToListOrderBy(listGroup, null);
-	
+		
 		listOrder = getFilterByLineNull(2, listOrder);
-	
+		
 		listOrder = getAcumCantidad(listOrder);
 		
 		vista.activarBinding(listOrder);
@@ -347,12 +352,9 @@ public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGe
 	}
 
 	public static void setDetalleFacturas(List<DetalleFactura> detalleFacturas) {
-		ContDetalleFacturaMesAlmacen.detalleFacturas = detalleFacturas;
+		ContListCantRefrecoPresentCapacFacturadoZona.detalleFacturas = detalleFacturas;
 	}
 
-	public static void setVista(DetalleFacturaMesAlmacenUI vista) {
-		ContDetalleFacturaMesAlmacen.vista = vista;
-	}
 
 	public TableCellRenderer getTableCellRenderer(){
 		return new TableCellRenderer() {
@@ -392,6 +394,5 @@ public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGe
 			}
 		};
 	}
-
 }
 

@@ -19,7 +19,7 @@ import org.jdesktop.swingbinding.SwingBindings;
 import com.toedter.calendar.JDateChooser;
 
 import santaclara.Servicio.ServicioAlmacen;
-import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
+import santaclara.controlador.consultas.ContListCantRefrecoPresentCapacFacturadoZona;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.DetalleFactura;
 import santaclara.vista.herramientas.VistaGenericaUI;
@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class DetalleFacturaMesAlmacenUI extends VistaGenericaUI{
+public class ListCantRefrescoPresentCapacFacturadoZonaUI extends VistaGenericaUI{
 
 	private JComboBox<Almacen> 		cmbAlmacen;
 	@SuppressWarnings("rawtypes")
@@ -45,7 +45,7 @@ public class DetalleFacturaMesAlmacenUI extends VistaGenericaUI{
     private JButton btnActualizar;
 	
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	public DetalleFacturaMesAlmacenUI(ContDetalleFacturaMesAlmacen contDetalleFacturaMesAlmacen) throws NumberFormatException, IOException {
+	public ListCantRefrescoPresentCapacFacturadoZonaUI(ContListCantRefrecoPresentCapacFacturadoZona contListCantRefrecoPresentCapacFacturadoZona) throws NumberFormatException, IOException {
 		super();
 
 		/**********************************************************************************************************************************************************/
@@ -90,7 +90,7 @@ public class DetalleFacturaMesAlmacenUI extends VistaGenericaUI{
 		getPnBotones().add(cmbAlmacen);
 		
 		btnActualizar = new JButton("Actualizar");
-		btnActualizar.addActionListener(contDetalleFacturaMesAlmacen.Actualizar());
+		btnActualizar.addActionListener(contListCantRefrecoPresentCapacFacturadoZona.Actualizar());
 		btnActualizar.setBackground(Color.DARK_GRAY);
 		btnActualizar.setForeground(Color.WHITE);
 		getPnBotones().add(btnActualizar);
@@ -107,14 +107,21 @@ public class DetalleFacturaMesAlmacenUI extends VistaGenericaUI{
 	    BeanProperty idFactura  = BeanProperty.create("factura.id");
 	    BeanProperty fecha  = BeanProperty.create("factura.fechaCadenaStr");
 	    BeanProperty almacen = BeanProperty.create("factura.almacen.ubicacion");
-	    BeanProperty producto = BeanProperty.create("empaqueProducto.descripcionEmpaque");
+	    BeanProperty presentacion = BeanProperty.create("empaqueProducto.producto.presentacion.material");
+	    BeanProperty capacidad = BeanProperty.create("empaqueProducto.producto.capacidad.volumenStr");
+	    BeanProperty zonaDescripcion = BeanProperty.create("factura.clienteZona");
 	    BeanProperty cantidad = BeanProperty.create("cantidad");
 	    
 
 	    binFacturas.addColumnBinding(idFactura).setColumnClass(String.class).setColumnName("Nro Factura");
 	    binFacturas.addColumnBinding(fecha).setColumnClass(String.class).setColumnName("Fecha");
+	    binFacturas.addColumnBinding(zonaDescripcion).setColumnClass(String.class).setColumnName("Zona");
+	    
 	    binFacturas.addColumnBinding(almacen).setColumnClass(String.class).setColumnName("Almacen");
-	    binFacturas.addColumnBinding(producto).setColumnClass(String.class).setColumnName("Producto");
+	    binFacturas.addColumnBinding(presentacion).setColumnClass(String.class).setColumnName("Presentacion");
+	    
+	    binFacturas.addColumnBinding(capacidad).setColumnClass(String.class).setColumnName("Capacidad");
+	   
 	    binFacturas.addColumnBinding(cantidad).setColumnClass(String.class).setColumnName("Cantidad");
 	    
 

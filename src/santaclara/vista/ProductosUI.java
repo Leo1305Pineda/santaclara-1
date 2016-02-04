@@ -1,6 +1,7 @@
 package santaclara.vista;
 
 import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.Component;
 import java.awt.SystemColor;
 
@@ -56,7 +57,10 @@ public class ProductosUI extends VistaGenericaUI {
     private JTextField 				txtNombre;
     private JTextField 	 			txtId;
 	private JTextField 				txtBuscar;
-    private JSpinner				txtPrecio; 
+	
+    private JSpinner				txtPrecio;
+    
+    private Checkbox checkIva; 
 
 	private JPanel 	  		pnlProducto;
 	@SuppressWarnings("rawtypes")
@@ -247,6 +251,10 @@ public class ProductosUI extends VistaGenericaUI {
 		((JSpinner.NumberEditor)txtPrecio.getEditor()).getFormat().setMinimumFractionDigits(2);
 		pnlProducto.add(txtPrecio,"wrap,growx,width 40:40:60");
 
+		checkIva = new Checkbox("Iva Exento");
+		checkIva.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+		checkIva.setForeground(Color.WHITE);
+		pnlProducto.add(checkIva,"wrap,growx,width 40:40:60");
 		
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
@@ -280,7 +288,6 @@ public class ProductosUI extends VistaGenericaUI {
 		btnBuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
 		btnBuscar.setBackground(Color.DARK_GRAY);
 		getPanelBuscar().add(btnBuscar);
-		//setLayout(null);
 
 		activarBinding(productos);
 			
@@ -484,6 +491,18 @@ public class ProductosUI extends VistaGenericaUI {
 	public void setTxtABuscar(String txtABuscar) {
 		this.txtABuscar.setText(txtABuscar);
 	}
+
+
+	public Checkbox getCheckIva() {
+		return checkIva;
+	}
+
+
+	public void setCheckIva(Checkbox checkIva) {
+		this.checkIva = checkIva;
+	}
+	
+	
 }
 
 
