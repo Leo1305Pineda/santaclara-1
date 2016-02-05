@@ -19,12 +19,8 @@ import santaclara.Servicio.ServicioSalp;
 import santaclara.controlador.ContGeneral;
 import santaclara.controlador.ContPrincipal;
 import santaclara.controlador.IContGeneral;
-import santaclara.modelo.Almacen;
 import santaclara.modelo.Cliente;
-import santaclara.modelo.DomicilioComercio;
-import santaclara.modelo.Salp;
 import santaclara.vista.consultas.ListClienteZonaTipoUI;
-import sun.org.mozilla.javascript.ObjArray;
 
 public class ContListClienteTipoZona extends ContGeneral implements IContGeneral {
 
@@ -41,12 +37,10 @@ public class ContListClienteTipoZona extends ContGeneral implements IContGeneral
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		vista = new ListClienteZonaTipoUI(this);
+		dibujar(vista,this);
 		clientes = new ArrayList<>();
-		
 		clientes.addAll(new ServicioDomicilioComercio().getDomicilioComercios());
 		clientes.addAll(new ServicioSalp().getSalps());
-		
-		dibujar(vista,this);
 	}
 	@Override
 	public JPanel getVista() {
@@ -207,6 +201,7 @@ public class ContListClienteTipoZona extends ContGeneral implements IContGeneral
 		return clientesAux;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void actualizarTabla() throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		/**7- Obtener informacion mediante ventana de consultas acerca de:
@@ -215,21 +210,23 @@ public class ContListClienteTipoZona extends ContGeneral implements IContGeneral
 		 * */
 		
 		List<List<Cliente>> listGroup = new ArrayList<List<Cliente>>();
-		java.util.List listOrder = new ArrayList<Cliente>();
-	
-		listOrder = getOrderBy("Zona", getFilterByCmbCliente(clientes));
+		java.util.List listCliente = new ArrayList<Cliente>();
 		
-		listGroup = getGroupBy("Zona",listOrder);
+		listCliente.addAll(clientes);
+	
+		listCliente = getOrderBy("Zona", getFilterByCmbCliente(listCliente));
+		
+		listGroup = getGroupBy("Zona",listCliente);
 		
 		listGroup = getOrderListGroupBy("TipoCliente", listGroup);
 		
 		listGroup = getGroupListGroupBy("TipoCliente", listGroup);	
 	
-		listOrder = getConvertListGroupToListOrderBy(listGroup);
+		listCliente = getConvertListGroupToListOrderBy(listGroup);
 	
-		listOrder = getFilterByLineNull(2, listOrder);
+		listCliente = getFilterByLineNull(2, listCliente);
 		
-		vista.activarBinding(listOrder);
+		vista.activarBinding(listCliente);
 		
 		
 	}	

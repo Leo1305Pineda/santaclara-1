@@ -3,7 +3,9 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack;
+
 import javax.swing.JPanel;
+
 import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
 import santaclara.controlador.consultas.ContListCantRefrecoPresentCapacFacturadoZona;
 import santaclara.controlador.consultas.ContListCantRefrescoSaborVendidoAlmacen;
@@ -43,6 +45,7 @@ public  class ContPrincipal {
 	}
 	
 
+	@SuppressWarnings("deprecation")
 	void agregarPanel(JPanel panel)
 	{
 		vista.getFrame().setContentPane(panel);

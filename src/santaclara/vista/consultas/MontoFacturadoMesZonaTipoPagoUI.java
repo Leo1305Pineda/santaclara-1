@@ -19,7 +19,6 @@ import org.jdesktop.swingbinding.SwingBindings;
 import com.toedter.calendar.JDateChooser;
 
 import santaclara.Servicio.ServicioAlmacen;
-import santaclara.controlador.consultas.ContListClienteTipoZona;
 import santaclara.controlador.consultas.ContMontoFacturadoMesZonaTipoPago;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.Factura;

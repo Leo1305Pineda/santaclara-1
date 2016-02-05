@@ -12,9 +12,6 @@ import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
-
 import santaclara.controlador.consultas.ContListClienteTipoZona;
 
 import santaclara.modelo.Cliente;

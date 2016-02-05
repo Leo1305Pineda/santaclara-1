@@ -47,6 +47,9 @@ public class MontoFacturadoVendedorUI extends VistaGenericaUI{
 
 		/**********************************************************************************************************************************************************/
 
+		dibujarPanelOpciones();
+		dibujarPanelTabla();
+		
 		cmbVendedor = new JComboBox<String>();
 		cmbVendedor.setBackground(SystemColor.controlHighlight);
 
@@ -108,7 +111,6 @@ public class MontoFacturadoVendedorUI extends VistaGenericaUI{
 	    binFacturas.addColumnBinding(monto).setColumnClass(String.class).setColumnName("Monto");
 	    binFacturas.addColumnBinding(vendedor).setColumnClass(String.class).setColumnName("Vendedor");;
 	    
-
 	    binFacturas.bind();
 	}
    

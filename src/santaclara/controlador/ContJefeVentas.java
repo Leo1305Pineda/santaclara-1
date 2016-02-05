@@ -5,17 +5,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable; 
 
 import santaclara.Servicio.ServicioJefeVenta;
-import santaclara.Servicio.ServicioUsuario;
 import santaclara.Servicio.ServicioZona;
-import santaclara.modelo.Cliente;
 import santaclara.modelo.JefeVenta;
 import santaclara.modelo.Zona;
 import santaclara.vista.JefeVentaUI;

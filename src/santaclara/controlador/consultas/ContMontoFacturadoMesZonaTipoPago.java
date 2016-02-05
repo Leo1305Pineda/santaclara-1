@@ -259,9 +259,8 @@ public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IC
 		List<Factura> listOrder = new ArrayList<Factura>();
 	
 		listOrder = getOrderBy("Date", getFilterByDate(getFilterByCmbAlmacen(facturas)));
-	printListOrdenBy(listOrder, "Ordena Date");
+	
 		listGroup = getGroupBy("Month",listOrder);
-	printListGroupBy(listGroup, "agrupa mes");
 	
 		listGroup = getOrderListGroupBy("Zona", listGroup);
 	

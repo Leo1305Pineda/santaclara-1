@@ -292,3 +292,17 @@ precio:240.0
 desc:240.0
 iva:12.0
 total:2880.0
+idFactura:32
+idEmpaqueProducto:3
+cantidad:887
+precio:200.0
+desc:200.0
+iva:12.0
+total:177400.0
+idFactura:32
+idEmpaqueProducto:3
+cantidad:887
+precio:200.0
+desc:200.0
+iva:12.0
+total:177400.0
