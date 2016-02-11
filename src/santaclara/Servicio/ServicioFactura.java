@@ -24,7 +24,7 @@ public class ServicioFactura {
 	    }
 	 
 	 public static synchronized java.sql.Date restarFechasDias(java.sql.Date fch, int dias) {
-	        Calendar cal = new GregorianCalendar();
+	       Calendar cal = new GregorianCalendar();  
 	        cal.setTimeInMillis(fch.getTime());
 	        cal.add(Calendar.DATE, -dias);
 	        return new java.sql.Date(cal.getTimeInMillis());
@@ -32,6 +32,14 @@ public class ServicioFactura {
 
 	public List<Factura> getFacturas() throws FileNotFoundException{
 		return new FacturaDAO().getFacturas();
+	}
+	 
+	public List<Factura> getPedidoFacturados() throws FileNotFoundException{
+		return new FacturaDAO().getPedidoFacturados();
+	}
+	 
+	public List<Factura> getPedidoPendientes() throws FileNotFoundException{
+		return new FacturaDAO().getPedidoPendientes();
 	}
 	
 	public Factura getFactura(Integer id) throws FileNotFoundException{

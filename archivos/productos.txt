@@ -4,7 +4,7 @@ idPresentacion:2
 idSabor:3
 nombre:CocaCola
 precio:50.0
-descuento:0.0
+descuento:50.0
 estadoIva:gravado
 id:7
 idCapacidad:0
@@ -12,7 +12,7 @@ idPresentacion:0
 idSabor:0
 nombre:kokoliso
 precio:20.0
-descuento:0.0
+descuento:20.0
 estadoIva:gravado
 id:8
 idCapacidad:0
@@ -20,7 +20,7 @@ idPresentacion:0
 idSabor:0
 nombre:pepe
 precio:25.0
-descuento:0.0
+descuento:25.0
 estadoIva:gravado
 id:10
 idCapacidad:0
@@ -28,7 +28,7 @@ idPresentacion:0
 idSabor:0
 nombre:Frescolita
 precio:20.0
-descuento:0.0
+descuento:20.0
 estadoIva:gravado
 id:13
 idCapacidad:0
@@ -36,7 +36,7 @@ idPresentacion:0
 idSabor:0
 nombre:Golden
 precio:40.0
-descuento:0.0
+descuento:40.0
 estadoIva:gravado
 id:15
 idCapacidad:2
@@ -44,7 +44,7 @@ idPresentacion:1
 idSabor:3
 nombre:nuevos
 precio:50.0
-descuento:0.0
+descuento:50.0
 estadoIva:gravado
 id:16
 idCapacidad:0
@@ -52,7 +52,7 @@ idPresentacion:0
 idSabor:0
 nombre:FullCoca
 precio:10.0
-descuento:0.0
+descuento:10.0
 estadoIva:gravado
 id:18
 idCapacidad:2
@@ -60,15 +60,15 @@ idPresentacion:1
 idSabor:2
 nombre:el nuevo
 precio:40.0
-descuento:0.0
+descuento:40.0
 estadoIva:gravado
 id:22
 idCapacidad:0
 idPresentacion:1
-idSabor:0
+idSabor:1
 nombre:CocaCola
 precio:10.0
-descuento:0.0
+descuento:10.0
 estadoIva:gravado
 id:23
 idCapacidad:0
@@ -76,7 +76,7 @@ idPresentacion:0
 idSabor:6
 nombre:Golden
 precio:10.0
-descuento:0.0
+descuento:10.0
 estadoIva:gravado
 id:24
 idCapacidad:0
@@ -84,7 +84,7 @@ idPresentacion:0
 idSabor:4
 nombre:Golden
 precio:20.0
-descuento:0.0
+descuento:20.0
 estadoIva:gravado
 id:25
 idCapacidad:2
@@ -92,7 +92,7 @@ idPresentacion:0
 idSabor:6
 nombre:Golden
 precio:60.0
-descuento:0.0
+descuento:60.0
 estadoIva:gravado
 id:26
 idCapacidad:0
@@ -100,7 +100,7 @@ idPresentacion:4
 idSabor:5
 nombre:Golden
 precio:20.0
-descuento:0.0
+descuento:20.0
 estadoIva:gravado
 id:27
 idCapacidad:2
@@ -108,5 +108,5 @@ idPresentacion:4
 idSabor:5
 nombre:Golden
 precio:20.0
-descuento:0.0
+descuento:20.0
 estadoIva:gravado

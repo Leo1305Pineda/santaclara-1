@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +14,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -32,40 +29,12 @@ import org.jdesktop.swingbinding.SwingBindings;
 
 import net.miginfocom.swing.MigLayout;
 import santaclara.controlador.ContJefeVentas;
-import santaclara.controlador.ContUsuarios;
-import santaclara.modelo.Camion;
-import santaclara.modelo.Concesionario;
 import santaclara.modelo.JefeVenta;
-import santaclara.modelo.Ruta;
-import santaclara.modelo.Usuario;
-import santaclara.modelo.Vendedor;
 import santaclara.modelo.Zona;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import org.jdesktop.beansbinding.Bindings;
-import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
-
-import javax.swing.table.DefaultTableModel;
-
-import org.jdesktop.beansbinding.ObjectProperty;
-
-import com.sun.xml.internal.ws.org.objectweb.asm.Label;
-
-import javax.swing.ListSelectionModel;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.FlowLayout;
-
 @SuppressWarnings("serial")
 public class JefeVentaUI  extends VistaGenericaUI  {
-	
 	
 	private JPanel pnUsuario;
 	
@@ -93,12 +62,11 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 	private JButton btnCancelar;
 	private ContJefeVentas contJefeVentas;
 	private JComboBox<Zona> cmbZona;
-	
-	
+		
+	@SuppressWarnings("rawtypes")
 	private List jefeVentas = new ArrayList<JefeVenta>();
 	private List<Zona> zonas = new ArrayList<Zona>();
 
-	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public JefeVentaUI(ContJefeVentas contJefeVentas,List  jefeVentas,List<Zona> zonas ) {
 		super();
@@ -242,10 +210,6 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		
 	}
  
- 
-	
- 
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void activarBinding(List jefeventas) {
 		// TODO Auto-generated method stub
@@ -271,16 +235,12 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 
 	}
 	
-  
-	
-	@SuppressWarnings("rawtypes")
+    @SuppressWarnings("rawtypes")
 	public void activarJComboBoxBindingZona(){
 		JComboBoxBinding jcomboZonas = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,zonas,cmbZona);
 	    jcomboZonas.bind();
 	}
 	
-	
- 
 	public void LimpiarTxt(){
 		getTxtId().setText("");
 		getTxtCedula().setText("");
@@ -502,10 +462,12 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		this.contJefeVentas = contJefeVentas;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List getJefeVentas() {
 		return jefeVentas;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setJefeVentas(List jefeVentas) {
 		this.jefeVentas = jefeVentas;
 	}

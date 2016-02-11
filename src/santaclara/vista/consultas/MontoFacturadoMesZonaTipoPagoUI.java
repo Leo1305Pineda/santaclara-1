@@ -1,6 +1,5 @@
-package santaclara.vista.reporte;
+package santaclara.vista.consultas;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.SystemColor;
 
@@ -17,8 +16,10 @@ import org.jdesktop.swingbinding.JComboBoxBinding;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
+import com.toedter.calendar.JDateChooser;
+
 import santaclara.Servicio.ServicioAlmacen;
-import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
+import santaclara.controlador.consultas.ContMontoFacturadoMesZonaTipoPago;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.Factura;
 import santaclara.vista.herramientas.VistaGenericaUI;
@@ -28,28 +29,22 @@ import java.awt.Font;
 import java.io.IOException;
 import java.util.List;
 
-import com.toedter.calendar.JDateChooser;
-
-
 @SuppressWarnings("serial")
-public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
+public class MontoFacturadoMesZonaTipoPagoUI extends VistaGenericaUI{
 
 	private JComboBox<Almacen> 		cmbAlmacen;
 	@SuppressWarnings("rawtypes")
 	private JTableBinding   binFacturas;
-
-	private JButton btnAtras;
-    private JButton btnBuscar;
+    private JButton btnAtras;
     private JLabel lblDesde;
     private JLabel lblHasta;
-    private JLabel lblMonto;
     private JLabel lblAlmacen;
     private JDateChooser dateDesde;
     private JDateChooser dateHasta;
     private JButton btnActualizar;
-    
+	
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	public MontoFacturadoAlmacenUI(ContReportMontFacturadoAlmacen contReportMontFacturadoAlmacen) throws NumberFormatException, IOException {
+	public MontoFacturadoMesZonaTipoPagoUI(ContMontoFacturadoMesZonaTipoPago contListClienteTipoZona) throws NumberFormatException, IOException {
 		super();
 
 		/**********************************************************************************************************************************************************/
@@ -67,12 +62,10 @@ public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
 				return new JLabel(almacen.getUbicacion());
 			}
 		});
-
 		btnAtras = new JButton("Atras");
 		btnAtras.setForeground(Color.WHITE);
 		btnAtras.setFont(new Font("Dialog", Font.BOLD, 10));
 		btnAtras.setBackground(Color.DARK_GRAY);
-
 		getPnBotones().add(btnAtras);
 		
 		lblDesde = new JLabel("Desde");
@@ -96,53 +89,49 @@ public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
 		getPnBotones().add(cmbAlmacen);
 		
 		btnActualizar = new JButton("Actualizar");
-		btnActualizar.addActionListener(contReportMontFacturadoAlmacen.Actualizar());
+		btnActualizar.addActionListener(contListClienteTipoZona.Actualizar());
 		btnActualizar.setBackground(Color.DARK_GRAY);
 		btnActualizar.setForeground(Color.WHITE);
 		getPnBotones().add(btnActualizar);
-
-		
-		lblMonto = new JLabel("Monto:");
-		lblMonto.setFont(new Font("Dialog", Font.BOLD, 16));
-		lblMonto.setForeground(Color.WHITE);
-		add(lblMonto, BorderLayout.SOUTH);
-			
 	}
 
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void activarBinding(List<Factura> facturas) {
+	public void activarBinding(List<Factura> Facturas) {
 		// TODO Auto-generated method stub
 		setTable(new JTable());
 		getScrollPanel().setViewportView(getTable());
-
-		binFacturas = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,facturas,getTable());
+		binFacturas = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,Facturas,getTable());
 	    
 	    BeanProperty idFactura  = BeanProperty.create("id");
-	    BeanProperty fecha  = BeanProperty.create("fechaStr");
-	    BeanProperty monto = BeanProperty.create("totalAPagar");
+	    BeanProperty fecha  = BeanProperty.create("fechaCadenaStr");
 	    BeanProperty almacen = BeanProperty.create("almacen.ubicacion");
+	    BeanProperty zonaDescripcion = BeanProperty.create("cliente.ruta.zona.descripcion");
+	    BeanProperty tipoPago = BeanProperty.create("tipoPagoCreditoContado");
+	    BeanProperty monto = BeanProperty.create("totalAPagar");
 	    
 
-	    binFacturas.addColumnBinding(idFactura).setColumnClass(Integer.class).setColumnName("Nro Factura");;
+	    binFacturas.addColumnBinding(idFactura).setColumnClass(String.class).setColumnName("Nro Factura");
 	    binFacturas.addColumnBinding(fecha).setColumnClass(String.class).setColumnName("Fecha");
-	    binFacturas.addColumnBinding(monto).setColumnClass(String.class).setColumnName("Monto");
-	    binFacturas.addColumnBinding(almacen).setColumnClass(String.class).setColumnName("almacen");;
+	    binFacturas.addColumnBinding(almacen).setColumnClass(String.class).setColumnName("Almacen");
+	    binFacturas.addColumnBinding(zonaDescripcion).setColumnClass(String.class).setColumnName("Zona");
+	    binFacturas.addColumnBinding(tipoPago).setColumnClass(String.class).setColumnName("Tipo Pago");
 	    
-
+	    binFacturas.addColumnBinding(monto).setColumnClass(String.class).setColumnName("Monto");
+	    
 	    binFacturas.bind();
 	}
-    
+   
     @SuppressWarnings("rawtypes")
-	public void cargarCmbAlmacen() throws NumberFormatException, IOException{
-    	List<Almacen> almacenes = new ServicioAlmacen().getAlmacenes();
-    	Almacen almacen = new Almacen(0,"Todos");
-    	almacenes.add(almacen);
-    	JComboBoxBinding jcomboAlmacen = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,almacenes,cmbAlmacen);
-	    
-	    jcomboAlmacen.bind();
-    }
-
+   	public void cargarCmbAlmacen() throws NumberFormatException, IOException{
+       	List<Almacen> almacenes = new ServicioAlmacen().getAlmacenes();
+       	Almacen almacen = new Almacen(0,"Todos");
+       	almacenes.add(almacen);
+       	JComboBoxBinding jcomboAlmacen = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,almacenes,cmbAlmacen);
+   	    
+   	    jcomboAlmacen.bind();
+       }
+    
 	public JComboBox<Almacen> getCmbAlmacen() {
 		return cmbAlmacen;
 	}
@@ -150,28 +139,6 @@ public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
 
 	public void setCmbAlmacen(JComboBox<Almacen> cmbAlmacen) {
 		this.cmbAlmacen = cmbAlmacen;
-	}
-
-
-	@SuppressWarnings("rawtypes")
-	public JTableBinding getBinFacturas() {
-		return binFacturas;
-	}
-
-
-	@SuppressWarnings("rawtypes")
-	public void setBinFacturas(JTableBinding binFacturas) {
-		this.binFacturas = binFacturas;
-	}
-
-
-	public JLabel getLblDesde() {
-		return lblDesde;
-	}
-
-
-	public void setLblDesde(JLabel lblDesde) {
-		this.lblDesde = lblDesde;
 	}
 
 
@@ -185,16 +152,6 @@ public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
 	}
 
 
-	public JLabel getLblHasta() {
-		return lblHasta;
-	}
-
-
-	public void setLblHasta(JLabel lblHasta) {
-		this.lblHasta = lblHasta;
-	}
-
-
 	public JDateChooser getDateHasta() {
 		return dateHasta;
 	}
@@ -204,46 +161,7 @@ public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
 		this.dateHasta = dateHasta;
 	}
 
-
-	public JLabel getLblAlmacen() {
-		return lblAlmacen;
-	}
-
-
-	public void setLblAlmacen(JLabel lblAlmacen) {
-		this.lblAlmacen = lblAlmacen;
-	}
-
-	public JButton getBtnAtras() {
-		return btnAtras;
-	}
-
-
-	public void setBtnAtras(JButton btnAtras) {
-		this.btnAtras = btnAtras;
-	}
-
-
-	public JButton getBtnBuscar() {
-		return btnBuscar;
-	}
-
-
-	public void setBtnBuscar(JButton btnBuscar) {
-		this.btnBuscar = btnBuscar;
-	}
-
-
-	public JLabel getLblMonto() {
-		return lblMonto;
-	}
-
-
-	public void setLblMonto(JLabel lblMonto) {
-		this.lblMonto = lblMonto;
-	}
- 
-	
+    
 }
 
 

@@ -64,6 +64,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 					producto.setCapacidad((Capacidad) vista.getCmbCapacidad().getSelectedItem());
 					producto.setPresentacion((Presentacion)vista.getCmbPresentacion().getSelectedItem());
 					producto.setSabor((Sabor)vista.getCmbSabor().getSelectedItem());
+					producto.setIva(vista.getCheckIva().getState());
 				
 				    servicioProducto.guardar(producto);
 					// agregarlo a la lista

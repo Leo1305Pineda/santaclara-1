@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
@@ -20,7 +21,6 @@ import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
-import santaclara.Servicio.ServicioCliente;
 import santaclara.Servicio.ServicioConcesionario;
 import santaclara.Servicio.ServicioDetalleFactura;
 import santaclara.Servicio.ServicioDomicilioComercio;
@@ -162,11 +162,11 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		limpiarlblFactura();
 	if(factura.getId()==null)
 	{
-		vista.getTxtNumeroPedido().setText("Numero:      AutoGenerado");
+		vista.getTxtNumeroPedido().setText("AutoGenerado");
 	}
 	else
 	{
-		vista.getTxtNumeroPedido().setText("Numero:"+factura.getId().toString());
+		vista.getTxtNumeroPedido().setText(factura.getId().toString());
 	}
 	vista.getLblFecha().setText("Fecha:       "+new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
 	
@@ -256,6 +256,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 				// TODO Auto-generated method stub
 				try {
 					ContClientes contClientes = new  ContClientes(getContPrincipal());
+					contClientes.getVista().getBtnAtras().setText("Seleccione");
 					if(factura.getVendedor()!=null)
 					{
 						if((new ServicioVendedor().getVendedor(factura.getVendedor().getId()))!=null)
@@ -363,7 +364,9 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					new ContAlmacenes(getContPrincipal());
+					
+					ContAlmacenes contAlmacenes = new ContAlmacenes(getContPrincipal());
+					contAlmacenes.getVistaAlmacen().getBtnAtras().setText("Seleccione");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -383,18 +386,15 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 					validarFactura();
 					validarDetalle();
 					factura.setEstado(null);
-					new ServicioFactura().guardar(factura);//guarda la factura
-					if (factura.getId()==null) factura.setId(new ServicioFactura().ultimaFactura()+1);
-			
-					for(DetalleFactura detalleFactura : detalleFacturas) detalleFactura.setFactura(factura);
-					
-					new ServicioDetalleFactura().guardar(detalleFacturas);//guarda su detalle
-					
-					detalleFacturas = new ServicioDetalleFactura().getDetalleFacturas(factura);
-						
-					actualizarVista();
-					JOptionPane.showMessageDialog(vista,"Guardado el Pedido Exitosamente");
-					
+					if (factura.getId()==null)
+					{
+						new ServicioFactura().guardar(factura);//guarda la factura
+						factura.setId(new ServicioFactura().ultimaFactura());
+						for(DetalleFactura detalleFactura : detalleFacturas) detalleFactura.setFactura(factura);
+						new ServicioDetalleFactura().guardar(detalleFacturas);//guarda su detalle
+						actualizarVista();
+						JOptionPane.showMessageDialog(vista,"Guardado el Pedido Exitosamente Ya PuedeGenerar la Factura");
+					}else JOptionPane.showMessageDialog(vista,"El Pedido Existe Cree un Nuevo Pedido");
 					
 				} catch (Exception exe) {
 					// TODO Auto-generated catch block
@@ -468,7 +468,29 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+ 
+				try {
+					if(factura==null)
+					{
+						JOptionPane.showMessageDialog(new JPanel(), "No Encontrado");
+						vista.getTxtNumeroPedido().setText("");
+					}
+					else
+					{
+						factura =  new ServicioFactura().getFactura(new Integer(vista.getTxtNumeroPedido().getText()));
+						Date fechaBusqueda = factura.getFecha();
+						detalleFacturas = new ServicioDetalleFactura().getDetalleFacturas(factura);
+						actualizarVista();
+						vista.getLblFecha().setText("Fecha:       "+new SimpleDateFormat("dd/MM/yyyy").format(fechaBusqueda));
+						JOptionPane.showMessageDialog(new JPanel(), "Encontrado");
+					}
+					
+					
+				} catch (NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+						
 			} 
 		};
 	}
@@ -483,38 +505,45 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 					validarFactura();
 					validarDetalle();
 					Factura facturaAux =new ServicioFactura().getFactura(factura.getId()); 
-					//Existe la Factura 
-					if(facturaAux==null) throw new Exception("EL pedido debe ser Guardado");
-					//y ademas no se a Facturado estado null o en Pedido
-					if(facturaAux.getEstado()!=null) throw new Exception("Factura Existente");
-							
-					Integer opt = new Integer(JOptionPane.showInputDialog(vista,"Ingrese la Condicion de Pago \n"
-							+ "1 = Contado -- ó -- 2 = Credito","Seleccione la Opcion",2));
-					if (opt.equals(1))
-					{
-						factura.setEstado(true);
-					}
-					else if(opt.equals(2))
-					{
-						if((new ServicioSalp().getSalp(factura.getCliente().getId()))!=null)
+ 
+					//si no existe la Factura 
+					if(facturaAux!=null) 
+					{	
+						//y ademas no se a Facturado estado null o en Pedido
+						if(facturaAux.getEstado()==null)
 						{
-							//se valida si opta por el credito
-							if (new ServicioFactura().isCredito(factura)) factura.setEstado(false);
-							else throw new Exception("noCredito");
-						}
-						else throw new Exception("Cliente Salp");
-					}
-					else 
-					{
-						factura.setEstado(null);
-						throw new Exception("Opcion invalida ");
-					}
+							Integer opt = new Integer(JOptionPane.showInputDialog(vista,"Ingrese la Condicion de Pago \n"
+									+ "1 = Contado -- ó -- 2 = Credito","Seleccione la Opcion",2));
+							if (opt.equals(1))
+							{
+								factura.setEstado(true);
+							}
+							else if(opt.equals(2))
+							{
+								if((new ServicioSalp().getSalp(factura.getCliente().getId()))!=null)
+								{
+									//se valida si opta por el credito
+									if (new ServicioFactura().isCredito(factura)) factura.setEstado(false);
+									else throw new Exception("noCredito");
+								}
+								else throw new Exception("Cliente Salp");
+							}
+							else 
+							{
+								factura.setEstado(null);
+								throw new Exception("Opcion invalida ");
+							}
 					
-					new ServicioFactura().guardar(factura);
-					new ServicioDetalleFactura().guardar(detalleFacturas);
+							new ServicioFactura().guardar(factura);
+							new ServicioDetalleFactura().guardar(detalleFacturas);
 				
-					actualizarVista();
-					JOptionPane.showMessageDialog(vista,"Generada la Factura Exitosamente");		
+							actualizarVista();
+							JOptionPane.showMessageDialog(vista,"Generada la Factura Exitosamente");
+						}
+						else JOptionPane.showMessageDialog(new JPanel(), "Factura Existente");
+						}
+						else throw new Exception("Guardar Pedido");
+ 
 
 				} catch (Exception exe) {
 					// TODO Auto-generated catch block
@@ -624,6 +653,9 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 					else 
 					{
 						ContProductoAlmacenes contProductoAlmacenes = new ContProductoAlmacenes(getContPrincipal());
+ 
+						contProductoAlmacenes.getVista().getBtnAtras().setText("Seleccione");
+ 
 						contProductoAlmacenes.getVista().activarBinding(
 								new ServicioProductoAlmacen().getProductoAlmacenes(factura.getAlmacen().getId()));
 					}
@@ -709,16 +741,10 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				factura.setAlmacen(null);
-				factura.setCliente(null);
-				factura.setVendedor(null);
-				
-				limpiarlbAlmacen();
-				limpiarlblCliente();
-				limpiarlblFactura();
-				limpiarlblVendedor();
-				detalleFacturas.clear();
+ 
 				try {
+					factura.setId(null);
+ 
 					actualizarVista();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -887,10 +913,13 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			break;
 			case "Producto": actualizarVista();
 			break;
+ 
+			case"null":
+			break;
 			
 			default:
 				exe.printStackTrace();
-				JOptionPane.showMessageDialog(vista,exe.getMessage());
+ 
 				break;
 			}
 		}
@@ -955,5 +984,31 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-	}
+	} 
+
+	public ActionListener actionLimpiar() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				factura.setAlmacen(null);
+				factura.setCliente(null);
+				factura.setVendedor(null);
+				
+				limpiarlbAlmacen();
+				limpiarlblCliente();
+				limpiarlblFactura();
+				limpiarlblVendedor();
+				detalleFacturas.clear();
+				try {
+					actualizarVista();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		};
+	} 
 }

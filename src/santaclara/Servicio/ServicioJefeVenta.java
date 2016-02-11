@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.modelo.JefeVenta;
-import santaclara.modelo.Usuario;
 import santaclara.dao.impl.JefeVentaDAO;
-import santaclara.dao.impl.UsuarioDAO;
 
 public class ServicioJefeVenta {
 	

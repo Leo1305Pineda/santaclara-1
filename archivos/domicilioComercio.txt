@@ -15,10 +15,10 @@ tipo:D
 diaVisita:42
 idCliente:9
 tipo:C
-diaVisita:41
+diaVisita:42
 idCliente:10
 tipo:C
-diaVisita:1
+diaVisita:42
 idCliente:11
 tipo:D
 diaVisita:84

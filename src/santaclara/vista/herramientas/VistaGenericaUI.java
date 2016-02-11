@@ -8,17 +8,14 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import net.miginfocom.swing.MigLayout;
 
+@SuppressWarnings("serial")
 public class VistaGenericaUI extends JPanel {
 	
 	private JPanel pnTabla;
@@ -50,8 +47,11 @@ public class VistaGenericaUI extends JPanel {
 		pnTabla.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Catalogo", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		//pnTabla.setSize(500,400);
 		add(pnTabla,BorderLayout.CENTER);
+
+		/////////////////////////////////////////////////////////////////////////////
+		
 		setScrollPanel(new JScrollPane());
-		//getScrollPanel().setBounds(0, 0,getWidthPantalla(),getHeightPantalla());
+		getScrollPanel().setBounds(0, 0,getWidthPantalla(),getHeightPantalla());
 		getPnTabla().add(getScrollPanel());
 		
 	}

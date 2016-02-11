@@ -7,36 +7,41 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import santaclara.Servicio.ServicioConcesionario;
 import santaclara.Servicio.ServicioFactura;
+import santaclara.Servicio.ServicioVendedor;
 import santaclara.controlador.ContGeneral;
 import santaclara.controlador.ContPrincipal;
 import santaclara.controlador.IContGeneral;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.Factura;
-import santaclara.vista.reporte.MontoFacturadoAlmacenUI;
+import santaclara.vista.reporte.MontoFacturadoVendedorUI;
 
-public class ContReportMontFacturadoAlmacen extends ContGeneral implements IContGeneral {
+public class ContReportMontFacturadoVendedor extends ContGeneral implements IContGeneral {
 
-	private MontoFacturadoAlmacenUI vista;
+	private static MontoFacturadoVendedorUI vista;
 	private List<Factura> pedidoFacturados;
 	
-	public ContReportMontFacturadoAlmacen() {
+	public ContReportMontFacturadoVendedor() {
 		// TODO Auto-generated constructor stub
+		
 	}
 	
-	public ContReportMontFacturadoAlmacen(ContPrincipal contPrincipal) throws Exception {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public ContReportMontFacturadoVendedor(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
-		vista = new MontoFacturadoAlmacenUI(this);
-		dibujar(vista,this);	
-		vista.cargarCmbAlmacen();
-		setSelectedValue(vista.getCmbAlmacen(), null);
+		vista = new MontoFacturadoVendedorUI(this);
+		dibujar(vista,this);
+		vista.getCmbVendedor().setModel(new DefaultComboBoxModel(new String[] {"Vendedor", "Concesinario", "Todos"}));
 		vista.getDateHasta().setMaxSelectableDate(new Date());
 		vista.getDateHasta().setDate(new Date());
 		vista.getDateDesde().setDate(new Date());
+		
 	}
 	@Override
 	public JPanel getVista() {
@@ -62,7 +67,7 @@ public class ContReportMontFacturadoAlmacen extends ContGeneral implements ICont
 		};
 	}
 	
-	public  void actualizarTabla() throws NumberFormatException, IOException {
+	public void actualizarTabla() throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		pedidoFacturados = new ServicioFactura().getPedidoFacturados();
 		
@@ -70,17 +75,32 @@ public class ContReportMontFacturadoAlmacen extends ContGeneral implements ICont
 		List<Factura> facturas = new ArrayList<Factura>();// se cargaran las facturas a ser mostradas
 		
 		Double monto = new Double(0);
-		//Valida almacen
-		if(!((Almacen)vista.getCmbAlmacen().getSelectedItem()).getId().equals(0)){
-			
-			for(Factura factura: pedidoFacturados)
-			{
-				if (factura.getAlmacen().getId().equals(((Almacen)vista.getCmbAlmacen().getSelectedItem()).getId()))
+		//Valida vendedor
+		if(vista.getCmbVendedor().getSelectedItem().equals("Todos"))
+		{
+			facturasAux = pedidoFacturados;
+		}
+		else
+		{
+			for(Factura factura:pedidoFacturados )
+			{	
+				if(vista.getCmbVendedor().getSelectedItem().equals("Vendedor"))
 				{
-					facturasAux.add(factura); //carga la factura filtrada por almacen
-				}			
+					if (new ServicioVendedor().getVendedor(factura.getVendedor().getId())!=null)
+					{
+						facturasAux.add(factura); //carga la factura filtrada por vendedor
+					}
+				
+				}
+				else
+				{
+					if (new ServicioConcesionario().getConcesionario(factura.getVendedor().getId())!=null)
+					{
+						facturasAux.add(factura); //carga la factura filtrada por vendedor
+					}
+				}
 			}
-		}else facturasAux = pedidoFacturados;
+		} 
 		
 		//Valida fecha
 		for(Factura factura: facturasAux)
@@ -93,7 +113,7 @@ public class ContReportMontFacturadoAlmacen extends ContGeneral implements ICont
 		}
 		//Acumula monto e imprime 
 		for(Factura factura: facturas) monto = monto + factura.getTotalAPagar();
-		vista.getLblMonto().setText("Monto Total Facturado es.....: "+monto+" BsF. ".concat("en el Almacen: "+((Almacen)vista.getCmbAlmacen().getSelectedItem()).getUbicacion()));
+		vista.getLblMonto().setText("Monto Total Facturado es.....: "+monto+" BsF. ".concat("en el Almacen: "+vista.getCmbVendedor().getSelectedItem()));
 		vista.activarBinding(facturas);
 	}
 	@SuppressWarnings("rawtypes")

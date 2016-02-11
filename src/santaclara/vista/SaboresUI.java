@@ -5,7 +5,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -32,6 +31,7 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 
+@SuppressWarnings("serial")
 public class SaboresUI  extends VistaGenericaUI  {
 	
 	private JPanel pnSabor;
@@ -43,6 +43,7 @@ public class SaboresUI  extends VistaGenericaUI  {
 	private JButton btnABuscar;
 	private JButton btnEliminar;
 	
+	@SuppressWarnings("rawtypes")
 	private JTableBinding binSabores; 
 	
 	private JTextField txtABuscar;
@@ -163,6 +164,7 @@ public class SaboresUI  extends VistaGenericaUI  {
 		activarBinding(sabores);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Sabor> sabores) {
 		// TODO Auto-generated method stub
 		getPnTabla().setVisible(true);

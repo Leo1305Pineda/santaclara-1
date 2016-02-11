@@ -1,15 +1,14 @@
 package santaclara.vista;
 
 import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.SystemColor;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
@@ -37,11 +36,6 @@ import java.util.List;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.JSeparator;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
@@ -63,9 +57,14 @@ public class ProductosUI extends VistaGenericaUI {
     private JTextField 				txtNombre;
     private JTextField 	 			txtId;
 	private JTextField 				txtBuscar;
-    private JSpinner				txtPrecio; 
+	
+    private JSpinner				txtPrecio;
+    
+    private Checkbox checkIva; 
 
 	private JPanel 	  		pnlProducto;
+	@SuppressWarnings("rawtypes")
+
 	private JTableBinding   binProductos;
 	
 	private JButton btnNuevo;
@@ -78,7 +77,8 @@ public class ProductosUI extends VistaGenericaUI {
     private JButton btnGuardar;
 	
 	
-    public ProductosUI(ContProductos contProductos, List<Producto> productos,List<Capacidad> capacidades, List<Sabor> sabores,List<Presentacion> presentaciones) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public ProductosUI(ContProductos contProductos, List<Producto> productos,List<Capacidad> capacidades, List<Sabor> sabores,List<Presentacion> presentaciones) {
 		super();
 		//getPnTabla().setBounds(0, 55, 1216, 681);
 		//getPnOpciones().setBounds(0, 0, 1216, 55);
@@ -251,6 +251,10 @@ public class ProductosUI extends VistaGenericaUI {
 		((JSpinner.NumberEditor)txtPrecio.getEditor()).getFormat().setMinimumFractionDigits(2);
 		pnlProducto.add(txtPrecio,"wrap,growx,width 40:40:60");
 
+		checkIva = new Checkbox("Iva Exento");
+		checkIva.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+		checkIva.setForeground(Color.WHITE);
+		pnlProducto.add(checkIva,"wrap,growx,width 40:40:60");
 		
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
@@ -284,14 +288,14 @@ public class ProductosUI extends VistaGenericaUI {
 		btnBuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
 		btnBuscar.setBackground(Color.DARK_GRAY);
 		getPanelBuscar().add(btnBuscar);
-		//setLayout(null);
 
 		activarBinding(productos);
 			
 	}
 
 
-    public void activarBinding(List<Producto> lsProductos) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void activarBinding(List<Producto> lsProductos) {
 		// TODO Auto-generated method stub
 		setTable(new JTable());
 		getScrollPanel().setViewportView(getTable());
@@ -487,6 +491,18 @@ public class ProductosUI extends VistaGenericaUI {
 	public void setTxtABuscar(String txtABuscar) {
 		this.txtABuscar.setText(txtABuscar);
 	}
+
+
+	public Checkbox getCheckIva() {
+		return checkIva;
+	}
+
+
+	public void setCheckIva(Checkbox checkIva) {
+		this.checkIva = checkIva;
+	}
+	
+	
 }
 
 

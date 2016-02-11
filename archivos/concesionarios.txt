@@ -13,3 +13,6 @@ ruta:6
 id:8
 camion:5
 ruta:5
+id:14
+camion:6
+ruta:0

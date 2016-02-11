@@ -5,7 +5,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
@@ -25,9 +24,7 @@ import net.miginfocom.swing.MigLayout;
 import santaclara.controlador.ContCamiones;
 import santaclara.modelo.Camion;
 import santaclara.vista.herramientas.VistaGenericaUI;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+ 
 
 import javax.swing.JLabel;
 
@@ -45,10 +42,11 @@ public class CamionesUI extends VistaGenericaUI {
 	private JButton btnSalir;
 	private JButton btnABuscar;
 	private JButton btnEliminar;
-	
-	
+	 
+	@SuppressWarnings("rawtypes")
 	private JTableBinding binCamioness; 
 	
+ 
 	private JTextField txtABuscar;
 	private JSpinner txtCapacidad;
 	

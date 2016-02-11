@@ -63,4 +63,22 @@ public class Cliente {
 		this.ruta = ruta;
 	}
 
+	public String getTipoStr()
+	{
+		if( this instanceof Salp )
+		{
+			return "Salp";
+		}
+		else if( this instanceof DomicilioComercio )
+		{
+			if(((DomicilioComercio)  this).getTipo().equals("D")) return "Domicilio";
+			else return "Comercio";
+		}
+		else
+		{
+			return "";
+		}
+		
+		
+	}
 }

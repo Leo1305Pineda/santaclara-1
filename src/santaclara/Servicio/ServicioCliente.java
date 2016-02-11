@@ -24,9 +24,15 @@ public class ServicioCliente {
 		return rutaDAO.getRutas();
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Cliente> getClientes() throws IOException
 	{
-		return clienteDAO.getClientes();
+		List clientesAux = new ArrayList<>();
+		
+		clientesAux.addAll(new ServicioDomicilioComercio().getDomicilioComercios());
+		clientesAux.addAll(new ServicioSalp().getSalps());
+	
+		return clientesAux;
 	}
 	
 	public List<Zona> getZonas() throws IOException 
