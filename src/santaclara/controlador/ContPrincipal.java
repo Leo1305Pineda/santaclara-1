@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
@@ -103,103 +104,110 @@ public  class ContPrincipal {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(e.getSource().equals(vista.getMntAlmacen()))
-				{
-						ActivarAlmacenes();
+				try {
+					if(e.getSource().equals(vista.getMntAlmacen()))
+					{
+							ActivarAlmacenes();
+					}
+					else if(e.getSource().equals(vista.getMntCamiones()))
+					{
+						ActivarCamiones();
+					}
+					else if(e.getSource().equals(vista.getMntCapacidades()))
+					{
+						ActivarCapacidades();
+					}
+					else if(e.getSource().equals(vista.getMntClientes()))
+					{
+						ActivarClientes(null,"",null);
+					}
+					else if(e.getSource().equals(vista.getMntConcesionario()))
+					{
+						ActivarUsuarios();
+					}
+					else if(e.getSource().equals(vista.getMntEmpaqueProductos()))
+					{
+						ActivarEmpaqueProductos();
+					}
+					else if(e.getSource().equals(vista.getMntJefeVenta()))
+					{
+							new ContJefeVentas(ContPrincipal.this);
+					}
+					else if(e.getSource().equals(vista.getMntPresentaciones()))
+					{
+						ActivarPresentaciones();
+					}
+					else if(e.getSource().equals(vista.getMntProductos()))
+					{
+						ActivarProductos();
+					}
+					else if(e.getSource().equals(vista.getMntProductoAlmacenes()))
+					{
+						ActivarProductoAlmacenes();
+					}
+					else if(e.getSource().equals(vista.getMntRuta()))
+					{
+						ActivarRutas();
+					}
+					else if(e.getSource().equals(vista.getMntSabores()))
+					{
+						ActivarSabores();
+					}
+					else if(e.getSource().equals(vista.getMntClientes()))
+					{
+						ActivarClientes(null,"",null);
+					}
+					else if(e.getSource().equals(vista.getMntUsuarios()))
+					{
+						ActivarUsuarios();
+					}
+					else if(e.getSource().equals(vista.getMntVendedores()))
+					{
+						new ContVendedores(ContPrincipal.this);
+					}
+					else if(e.getSource().equals(vista.getMntVisitas()))
+					{
+						ActivarVisitas();
+					}
+					else if(e.getSource().equals(vista.getMntZonas()))
+					{
+						ActivarZonas();
+					}
+					else if(e.getSource().equals(vista.getMntCalendarios()))
+					{
+						ActivarCalendarios();
+					}
+					else if(e.getSource().equals(vista.getMntPedidos()))
+					{
+						ActivarPedidos(null,"",null);
+					}
+					else if(e.getSource().equals(vista.getMntReportMontFacturaAlmacen())){
+						ActivarReportFacturadoAlmacen();
+					}
+					else if(e.getSource().equals(vista.getMntReportMontFacturaVendedor())){
+						ActivarReportFacturadoVendedor();
+					}
+					else if(e.getSource().equals(vista.getMntConsultaDetalleFacturaMesAlmacen())){
+						ActivarConsultaDetalleFacturaMesAlmacen();
+					}
+					else if(e.getSource().equals(vista.getMntListCantRefrescoSaborVendidoAlmacen())){
+						ActivarListCantRefrescoSaborVendidoAlmacen();
+					}
+					else if(e.getSource().equals(vista.getMntListCantRefrescoPresentCapacFacturadoZona())){
+						ActivarListCantRefrescoPresentCapacFacturadoZona();
+					}
+					else if(e.getSource().equals(vista.getMntListClienteZonaTipo())){
+						ActivarListClienteZonaTipo();
+					}
+					else if(e.getSource().equals(vista.getMntMontoFacturadoMesZonaTipoPago())){
+						ActivarMontoFacturadoMesZonaTipoPago();
+					}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null,e1.getMessage());
 				}
-				else if(e.getSource().equals(vista.getMntCamiones()))
-				{
-					ActivarCamiones();
-				}
-				else if(e.getSource().equals(vista.getMntCapacidades()))
-				{
-					ActivarCapacidades();
-				}
-				else if(e.getSource().equals(vista.getMntClientes()))
-				{
-					ActivarClientes(null,"",null);
-				}
-				else if(e.getSource().equals(vista.getMntConcesionario()))
-				{
-					ActivarUsuarios();
-				}
-				else if(e.getSource().equals(vista.getMntEmpaqueProductos()))
-				{
-					ActivarEmpaqueProductos();
-				}
-				else if(e.getSource().equals(vista.getMntJefeVenta()))
-				{
-					ActivarUsuarios();
-				}
-				else if(e.getSource().equals(vista.getMntPresentaciones()))
-				{
-					ActivarPresentaciones();
-				}
-				else if(e.getSource().equals(vista.getMntProductos()))
-				{
-					ActivarProductos();
-				}
-				else if(e.getSource().equals(vista.getMntProductoAlmacenes()))
-				{
-					ActivarProductoAlmacenes();
-				}
-				else if(e.getSource().equals(vista.getMntRuta()))
-				{
-					ActivarRutas();
-				}
-				else if(e.getSource().equals(vista.getMntSabores()))
-				{
-					ActivarSabores();
-				}
-				else if(e.getSource().equals(vista.getMntClientes()))
-				{
-					ActivarClientes(null,"",null);
-				}
-				else if(e.getSource().equals(vista.getMntUsuarios()))
-				{
-					ActivarUsuarios();
-				}
-				else if(e.getSource().equals(vista.getMntVendedores()))
-				{
-					ActivarUsuarios();
-				}
-				else if(e.getSource().equals(vista.getMntVisitas()))
-				{
-					ActivarVisitas();
-				}
-				else if(e.getSource().equals(vista.getMntZonas()))
-				{
-					ActivarZonas();
-				}
-				else if(e.getSource().equals(vista.getMntCalendarios()))
-				{
-					ActivarCalendarios();
-				}
-				else if(e.getSource().equals(vista.getMntPedidos()))
-				{
-					ActivarPedidos(null,"",null);
-				}
-				else if(e.getSource().equals(vista.getMntReportMontFacturaAlmacen())){
-					ActivarReportFacturadoAlmacen();
-				}
-				else if(e.getSource().equals(vista.getMntReportMontFacturaVendedor())){
-					ActivarReportFacturadoVendedor();
-				}
-				else if(e.getSource().equals(vista.getMntConsultaDetalleFacturaMesAlmacen())){
-					ActivarConsultaDetalleFacturaMesAlmacen();
-				}
-				else if(e.getSource().equals(vista.getMntListCantRefrescoSaborVendidoAlmacen())){
-					ActivarListCantRefrescoSaborVendidoAlmacen();
-				}
-				else if(e.getSource().equals(vista.getMntListCantRefrescoPresentCapacFacturadoZona())){
-					ActivarListCantRefrescoPresentCapacFacturadoZona();
-				}
-				else if(e.getSource().equals(vista.getMntListClienteZonaTipo())){
-					ActivarListClienteZonaTipo();
-				}
-				else if(e.getSource().equals(vista.getMntMontoFacturadoMesZonaTipoPago())){
-					ActivarMontoFacturadoMesZonaTipoPago();
-				}
+
 			}
 		};
 	}

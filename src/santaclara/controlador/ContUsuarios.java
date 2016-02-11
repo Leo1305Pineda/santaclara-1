@@ -162,7 +162,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 						}
 						else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
 						{
-							new ContVendedores(vista).Modificar();
+						///	new ContVendedores(vista).Modificar();
 						}
 						else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Concesionario"))
 						{
@@ -216,7 +216,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 					}
 					else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
 					{
-						new ContVendedores(vista).Guardar();
+				///		new ContVendedores(vista).Guardar();
 					}
 					else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Concesionario"))
 					{
@@ -341,7 +341,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 						}
 						else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
 						{
-							new ContVendedores(vista).Eliminar();
+							///new ContVendedores(vista).Eliminar();
 						}
 						else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Concesionario"))
 						{

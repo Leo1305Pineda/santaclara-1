@@ -46,4 +46,9 @@ public class ServicioRuta {
 	public void modificar (Ruta ruta) throws IOException{
 		rutaDAO.guardar(ruta);
 	}
+
+	public List<Ruta> getRutas(Zona zona) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		return rutaDAO.getRutas(zona);
+	}
 }

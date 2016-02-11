@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable; 
 
 import santaclara.Servicio.ServicioJefeVenta;
+import santaclara.Servicio.ServicioUsuario;
 import santaclara.Servicio.ServicioZona;
 import santaclara.modelo.JefeVenta;
 import santaclara.modelo.Zona;
@@ -19,17 +20,17 @@ import santaclara.vista.JefeVentaUI;
 
 public class ContJefeVentas extends ContGeneral implements IContGeneral {
 	
-	private JefeVentaUI vista ;
-	private ServicioJefeVenta servicioJefeVenta;
-	private ServicioZona 	servicioZona;
-	 
+	private JefeVentaUI 		vista ;
+	private ServicioJefeVenta  servicioJefeVenta;
+	private ServicioZona 		servicioZona;
+	private ServicioUsuario 	servicioUsuario; 
  
 	public ContJefeVentas(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		servicioJefeVenta = new ServicioJefeVenta();
 		servicioZona = new ServicioZona();
-		
+		servicioUsuario = new ServicioUsuario();
 		vista = new JefeVentaUI(this,servicioJefeVenta.getJefeVentas(),servicioZona.getZonas());
 		dibujar(vista,this); 
 	}
@@ -157,11 +158,11 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 			else  //es nuevo ?
 				if(vista.getTxtId().getText() == "")
 				{
-					if(servicioJefeVenta.buscar(nombreUsuario) != null)
+					if(servicioUsuario.buscar(nombreUsuario) != null)
 					{
 						 throw new Exception(" nombre de usuario actualmente utilizado ");
 					}
-					else if(servicioJefeVenta.buscarCedula(cedula) != null)
+					else if(servicioUsuario.buscarCedula(cedula) != null)
 					{
 						 throw new Exception(" cedula de usuario actualmente utilizado ");
 					}		

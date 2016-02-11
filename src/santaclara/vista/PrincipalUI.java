@@ -30,9 +30,9 @@ public class PrincipalUI {
 	private 	JMenu mnSalir;
 	private 	JMenuItem mntCerrar;
 	
-	private     JMenuItem mntAlmacen;
-	private     JMenuItem mntCamiones;
-	private     JMenuItem mntCapacidades;
+	private    JMenuItem mntAlmacen;
+	private    JMenuItem mntCamiones;
+	private    JMenuItem mntCapacidades;
 	private 	JMenuItem mntClientes;
 	private 	JMenuItem mntConcesionarios;
 	private 	JMenuItem mntConcesionarioRutas;
@@ -48,11 +48,11 @@ public class PrincipalUI {
 	private 	JMenuItem mntVisitas;
 	private 	JMenuItem mntZonas;
 	private 	JMenuItem mntCalendarios;
-	private     JMenuItem mntPedidos;
-	private     JMenuItem mntReportMontFacturaAlmacen;
+	private    JMenuItem mntPedidos;
+	private    JMenuItem mntReportMontFacturaAlmacen;
 
-	private     JMenuItem mntReportMontFacturaVendedor;
-	private     JMenuItem mntConsultaDetalleFacturaMesAlmacen;
+	private    JMenuItem mntReportMontFacturaVendedor;
+	private    JMenuItem mntConsultaDetalleFacturaMesAlmacen;
 	private 	JMenuItem mntListCantRefrescoSaborVendidoAlmacen;
 	private 	JMenuItem mntListCantRefrescoPresentCapacFacturadoZona;
 	private		JMenuItem mntListClienteZonaTipo;
@@ -136,13 +136,7 @@ public class PrincipalUI {
 		mnCatalogo.add(mntAlmacen);
 		mnCatalogo.add(new JSeparator());
 
-
-		mntAlmacen = new JMenuItem("Almacenes");
-		mntAlmacen.addActionListener(controlador.activarMenu());
-		mnCatalogo.add(mntAlmacen);
-		mnCatalogo.add(new JSeparator());
-
-	
+		
 		mntCalendarios = new JMenuItem("Calendario");
 		mnCatalogo.add(mntCalendarios);
 		mntCalendarios.addActionListener(controlador.activarMenu());
@@ -158,12 +152,9 @@ public class PrincipalUI {
 		mntConcesionarioRutas.addActionListener(controlador.activarMenu());
 		*/
 		
-	    
-		/*
 		mntJefeVenta = new JMenuItem("Jefe Ventas");
 		mnCatalogo.add(mntJefeVenta);
 		mntJefeVenta.addActionListener(controlador.activarMenu());
-		*/ 
 		
 		/***************************** Botones para Reporte **********************************/
 		
@@ -248,10 +239,11 @@ public class PrincipalUI {
 		mntCamiones.addActionListener(controlador.activarMenu());
 
 
-		/*
 		mntVendedores = new JMenuItem("Vendedores");
 		mnCatalogo.add(mntVendedores);
 		mntVendedores.addActionListener(controlador.activarMenu());
+
+		/*
 		
 		mntVisitas = new JMenuItem("Visitas");
 		mnCatalogo.add(mntVisitas);

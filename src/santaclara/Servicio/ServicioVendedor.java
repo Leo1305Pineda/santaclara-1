@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.impl.RutaDAO;
+import santaclara.dao.impl.UsuarioDAO;
 import santaclara.dao.impl.VendedorDAO;
+import santaclara.modelo.JefeVenta;
 import santaclara.modelo.Vendedor;
 import santaclara.modelo.Ruta;
 
@@ -14,6 +16,7 @@ public class ServicioVendedor {
 	
 	private VendedorDAO vendedorDAO = new VendedorDAO();
 	private RutaDAO rutaDAO = new RutaDAO();
+	private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
 	public List<Vendedor>  getVendedores() throws NumberFormatException, IOException
 	{	
@@ -31,11 +34,14 @@ public class ServicioVendedor {
 	
 	public void guardar(Vendedor vendedor) throws Exception {
 		// TODO Auto-generated method stub
-		if (vendedor.getRutas().size()<=0) throw new Exception("El Vendedor no tiene asociada una ruta");
-		if (vendedor.getRutas().size()>3) throw new Exception("El limite de ruta permitida es de 3");  
-		if (vendedor.equals(vendedorDAO.getVendedor(vendedor.getId()))) throw new Exception("El vendedor Exixtente");
-		if (this.vendedorDAO.getVendedor(vendedor)) throw new Exception("Nombre de Usuario Existente");
-		
+		if (vendedor.getRutas().size() <= 0)
+				throw new Exception("El Vendedor no tiene asociada una ruta");
+		if (vendedor.getRutas().size() > 3) 
+				throw new Exception("El limite de ruta permitida es de 3");  
+		if (vendedor.equals(vendedorDAO.getVendedor(vendedor.getId()))) 
+				throw new Exception("El vendedor Exixtente");
+		if (this.vendedorDAO.getVendedor(vendedor))
+			throw new Exception("Nombre de Usuario Existente");
 		vendedorDAO.guardar(vendedor);
 	}
 	
@@ -69,5 +75,7 @@ public class ServicioVendedor {
 		}
 		return vendedors;
 	}
+	 
+	
 
 }
