@@ -14,14 +14,12 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
-
  
 import net.miginfocom.swing.MigLayout;
 import santaclara.controlador.ContAlmacenes;
@@ -33,13 +31,9 @@ public class AlmacenesUI extends VistaGenericaUI {
 
 	private JButton btnNuevo;
 	private JButton btnEditar;
-	private JButton btnAtras;
-	private JButton btnSalir;
-	private JButton btnABuscar;
 	private JButton btnEliminar;
 	@SuppressWarnings("rawtypes")
 	private JTableBinding binAlmacenes; 
-	private JTextField txtABuscar;
 	private JPanel pnAlmacen;
 	private JButton btnGuardar;
 	private JButton btnCancelar;
@@ -53,30 +47,22 @@ public class AlmacenesUI extends VistaGenericaUI {
 		super();
 		this.almacenes = almacenes;
 		dibujarPanelOpciones();
+		dibujarBuscar();
+		getBtnABuscar().addActionListener(contAlmacenes.buscar());
+		dibujarBotonAtras();
+		getBtnAtras().addActionListener(contAlmacenes.atras());
 		dibujarPanelTabla();
+		
 		btnNuevo = new JButton("Nuevo");
 		btnNuevo.addActionListener(contAlmacenes.nuevo());
-
-		btnAtras = new JButton("Atras");
-		btnAtras.addActionListener(contAlmacenes.atras());
-		//btnAtras.setBounds(5, 15, 92, 16);
-		btnAtras.setForeground(Color.WHITE);
-		btnAtras.setBackground(Color.DARK_GRAY);
-		btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
-		btnAtras.setFont(new Font("Dialog", Font.BOLD, 10));
-		getPnBotones().add(btnAtras);
-
-		//btnNuevo.setBounds(100, 15, 103, 16);
 		btnNuevo.setForeground(Color.WHITE);
 		btnNuevo.setBackground(Color.DARK_GRAY);
 		btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
 		btnNuevo.setFont(new Font("Dialog", Font.BOLD, 10));
-
 		getPnBotones().add(btnNuevo);
 		
 		btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(contAlmacenes.modificar());
-		//btnEditar.setBounds(207, 15, 102, 16);
 		btnEditar.setForeground(Color.WHITE);
 		btnEditar.setBackground(Color.DARK_GRAY);
 		btnEditar.setIcon(new ImageIcon("img/gestion/Modificara.png"));
@@ -84,40 +70,17 @@ public class AlmacenesUI extends VistaGenericaUI {
 
 		getPnBotones().add(btnEditar);
 
-		
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setForeground(Color.WHITE);
 		btnEliminar.setBackground(Color.DARK_GRAY);
 		btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
 		btnEliminar.addActionListener(contAlmacenes.eliminar());
 		btnEliminar.setFont(new Font("Dialog", Font.BOLD, 10));
-
-		//btnEliminar.setBounds(312, 15, 110, 16);
 		getPnBotones().add(btnEliminar);
+ 
+		dibujarBotonSalir();
+		getBtnSalir().addActionListener(contAlmacenes.salir());
 		
- 
- 
-		btnSalir = new JButton("Salir");
-		btnSalir.addActionListener(contAlmacenes.salir());
-		//btnSalir.setBounds(425, 15, 90, 16);
-		btnSalir.setForeground(Color.WHITE);
-		btnSalir.setBackground(Color.DARK_GRAY);
-		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
-		btnSalir.setFont(new Font("Dialog", Font.BOLD, 10));
-
-		getPnBotones().add(btnSalir);
-
-		txtABuscar = new JTextField("");
-		getPanelBuscar().add(txtABuscar);
-		txtABuscar.setColumns(15);
-
-		btnABuscar = new JButton();
-		btnABuscar.addActionListener(contAlmacenes.buscar());
-		btnABuscar.setBackground(Color.DARK_GRAY);
-		btnABuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
-		btnABuscar.setHorizontalAlignment(SwingConstants.RIGHT);
-		getPanelBuscar().add(btnABuscar);
-
 		/********          QUITAR  NUEVO 		*****************/
 		pnAlmacen = new JPanel();
 		pnAlmacen.setBackground(Color.DARK_GRAY);
@@ -146,11 +109,7 @@ public class AlmacenesUI extends VistaGenericaUI {
 		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
 		pnAlmacen.add(btnCancelar, "cell 1 1");
 		
-		
 		txtId = new JTextField();
-		txtId.setBounds(254, 12, 54, 19);
-		pnAlmacen.add(txtId);
-		txtId.setColumns(10);
 		
 		/*******************       Enlazador ******************************************************/
 		activarBinding(almacenes);
@@ -189,31 +148,6 @@ public class AlmacenesUI extends VistaGenericaUI {
 		this.btnEditar = btnEditar;
 	}
 
-	public JButton getBtnAtras() {
-		return btnAtras;
-	}
-
-	public void setBtnAtras(JButton btnAtras) {
-		this.btnAtras = btnAtras;
-	}
-
-	public JButton getBtnSalir() {
-		return btnSalir;
-	}
-
-	public void setBtnSalir(JButton btnSalir) {
-		this.btnSalir = btnSalir;
-	}
-
-	public JButton getBtnABuscar() {
-		return btnABuscar;
-	}
-
-	public void setBtnABuscar(JButton btnABuscar) {
-		this.btnABuscar = btnABuscar;
-	}
- 
-
 	public JScrollPane getScrollPane() {
 		return getScrollPanel();
 	}
@@ -221,14 +155,6 @@ public class AlmacenesUI extends VistaGenericaUI {
 	public void setScrollPane(JScrollPane scrollPane) {
 		this.setScrollPanel(scrollPane);
 	}
-
-	public JTextField getTextField() {
-		return txtABuscar;
-	}
-
-	public void setTextField(JTextField textField) {
-		this.txtABuscar = textField;
-	} 
 
 	public List<Almacen> getAlmacenes() {
 		return almacenes;
@@ -244,15 +170,6 @@ public class AlmacenesUI extends VistaGenericaUI {
 		getPnTabla().setVisible(true);
 		getScrollPanel().setVisible(true);
 		
-	}
- 
-
-	public JTextField getTxtABuscar() {
-		return txtABuscar;
-	}
-
-	public void setTxtABuscar(String txtABuscar) {
-		this.txtABuscar.setText(txtABuscar);
 	}
 
 	public JButton getBtnGuardar() {
@@ -295,10 +212,6 @@ public class AlmacenesUI extends VistaGenericaUI {
 		getPnTabla().setVisible(false);
 		add(pnAlmacen,BorderLayout.CENTER);
 	 
-	}
-
-	public void setTxtABuscar(JTextField txtABuscar) {
-		this.txtABuscar = txtABuscar;
 	}
 
 	public JTextField getTxtUbicacion() {

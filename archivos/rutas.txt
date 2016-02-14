@@ -14,8 +14,8 @@ id:4
 zona:4
 nombre:El Tostao
 id:5
-zona:1
-nombre:Cerro gordo, El Trompillo, Carorita
+zona:5
+nombre:Cerro gordo, El Trompillo, Carorita 1
 id:6
 zona:9
 nombre:Av. Moran
@@ -26,8 +26,8 @@ id:8
 zona:7
 nombre:La Playita 1, La Playita 2, El Cementerio ,Zona Industrial III, Mercabar
 id:9
-zona:11
-nombre:El Obelisco, Av. Pedro Leon Torre, Av. Rotaria,
+zona:9
+nombre:El Obelisco, Av. Pedro Leon Torre, Av. Rotaria,1
 id:10
 zona:0
 nombre:Centro Carrera 15,16,17,18,19

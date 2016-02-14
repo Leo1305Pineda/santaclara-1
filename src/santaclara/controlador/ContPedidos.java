@@ -267,7 +267,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 											new String[] {"Salp"}));
 							contClientes.getVista().getCmbTipoCliente().setEnabled(true);
 							contClientes.setRutas(vendedor1.getRutas());
-							contClientes.getVista().activarBindingSalp(
+							contClientes.activarBindingSalp(
 									new ServicioSalp().getSalps(vendedor1.getRutas()));
 						}
 						else if((new ServicioConcesionario().getConcesionario(factura.getVendedor().getId()))!=null)
@@ -282,13 +282,13 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 							if (domicilioComercios.isEmpty())
 							{
 								contClientes.getCliente().setRuta(vendedor1.getRuta());
-								contClientes.getVista().cargarCliente();
-								contClientes.getVista().activarBindingDomicilioComercios(domicilioComercios);
+								contClientes.cargarCliente(contClientes.getCliente());
+								contClientes.activarBindingDomicilioComercios(domicilioComercios);
 								throw new Exception("ruta null");
 							}
 							else
 							{
-								contClientes.getVista().activarBindingDomicilioComercios(domicilioComercios);
+								contClientes.activarBindingDomicilioComercios(domicilioComercios);
 							}
 									
 						}

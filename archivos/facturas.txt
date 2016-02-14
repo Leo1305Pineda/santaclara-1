@@ -382,3 +382,15 @@ desc%:15.0
 ivaSobreBs:177400.0
 iva:21288.0
 totalAPagar:172078.0
+id:33
+estado:Facturado
+fecha:13/02/2016
+idCliente:7
+idVendedor:3
+idAlmacen:2
+subTotalExento:0.0
+subTotalGravado:2750.0
+desc%:5.0
+ivaSobreBs:2750.0
+iva:330.0
+totalAPagar:2942.5

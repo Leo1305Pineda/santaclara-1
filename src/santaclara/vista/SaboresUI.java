@@ -38,8 +38,8 @@ public class SaboresUI  extends VistaGenericaUI  {
 
 	private JButton btnNuevo;
 	private JButton btnEditar;
-	private JButton btnAtras;
-	private JButton btnSalir;
+	//private JButton btnAtras;
+//	private JButton btnSalir;
 	private JButton btnABuscar;
 	private JButton btnEliminar;
 	
@@ -62,6 +62,9 @@ public class SaboresUI  extends VistaGenericaUI  {
 		super();
 		dibujarPanelOpciones();
 		dibujarPanelTabla();
+		dibujarBotonAtras();
+		getBtnAtras().addActionListener(contSabores.atras());
+		
 		this.sabores = sabores;
 		
 		btnNuevo = new JButton("Nuevo");
@@ -79,23 +82,7 @@ public class SaboresUI  extends VistaGenericaUI  {
 		btnEditar.setBackground(Color.DARK_GRAY);
 		btnEditar.setIcon(new ImageIcon("img/gestion/Modificara.png"));
 		getPnBotones().add(btnEditar);
-		
-		btnAtras = new JButton("Atras");
-		btnAtras.addActionListener(contSabores.atras());
-		btnAtras.setBounds(5, 15, 92, 16);
-		btnAtras.setForeground(Color.WHITE);
-		btnAtras.setBackground(Color.DARK_GRAY);
-		btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
-		getPnBotones().add(btnAtras);
-		
-		btnSalir = new JButton("Salir");
-		btnSalir.addActionListener(contSabores.salir());
-		btnSalir.setBounds(425, 15, 90, 16);
-		btnSalir.setForeground(Color.WHITE);
-		btnSalir.setBackground(Color.DARK_GRAY);
-		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
-		getPnBotones().add(btnSalir);
-		
+	
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setForeground(Color.WHITE);
 		btnEliminar.setBackground(Color.DARK_GRAY);
@@ -103,6 +90,9 @@ public class SaboresUI  extends VistaGenericaUI  {
 		btnEliminar.addActionListener(contSabores.eliminar());
 		btnEliminar.setBounds(312, 15, 110, 16);
 		getPnBotones().add(btnEliminar);
+		
+		dibujarBotonSalir();
+		getBtnSalir().addActionListener(contSabores.salir());
 		
 		txtABuscar = new JTextField();
 		txtABuscar.setForeground(Color.WHITE);
@@ -122,7 +112,6 @@ public class SaboresUI  extends VistaGenericaUI  {
 		pnSabor.setBounds(12, 270, 520, 30);
 		pnSabor.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)),"", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		pnSabor.setLayout(new MigLayout());
-		
 		
 		lblSabor = new JLabel("Sabor:");
 		lblSabor.setForeground(Color.WHITE);
@@ -196,22 +185,6 @@ public class SaboresUI  extends VistaGenericaUI  {
 
 	public void setBtnEditar(JButton btnEditar) {
 		this.btnEditar = btnEditar;
-	}
-
-	public JButton getBtnAtras() {
-		return btnAtras;
-	}
-
-	public void setBtnAtras(JButton btnAtras) {
-		this.btnAtras = btnAtras;
-	}
-
-	public JButton getBtnSalir() {
-		return btnSalir;
-	}
-
-	public void setBtnSalir(JButton btnSalir) {
-		this.btnSalir = btnSalir;
 	}
 
 	public JButton getBtnABuscar() {

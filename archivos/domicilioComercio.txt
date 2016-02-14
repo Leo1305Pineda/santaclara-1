@@ -9,7 +9,7 @@ tipo:D
 diaVisita:42
 idCliente:6
 tipo:C
-diaVisita:42
+diaVisita:21
 idCliente:8
 tipo:D
 diaVisita:42

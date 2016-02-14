@@ -53,7 +53,7 @@ idSabor:0
 nombre:FullCoca
 precio:10.0
 descuento:10.0
-estadoIva:gravado
+estadoIva:exento
 id:18
 idCapacidad:2
 idPresentacion:1
@@ -109,4 +109,4 @@ idSabor:5
 nombre:Golden
 precio:20.0
 descuento:20.0
-estadoIva:gravado
+estadoIva:exento

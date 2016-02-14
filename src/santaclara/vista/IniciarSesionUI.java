@@ -9,9 +9,7 @@ import santaclara.controlador.ContIniciarSesion;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
 import java.awt.Color;
-
 import javax.swing.JLabel;
-
 import java.awt.Font;
 
 import javax.swing.SwingConstants;
@@ -24,7 +22,8 @@ public class IniciarSesionUI extends JPanel {
 	private JTextField txtUsuario;
 	private JPasswordField password;
 	private JButton btnEntrar ;
-
+	private JLabel lblImagenAbrir;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -33,7 +32,7 @@ public class IniciarSesionUI extends JPanel {
 		setLayout(null);
 		setSize(VistaGenericaUI.getWidthPantalla(),VistaGenericaUI.getHeightPantalla());
 		btnEntrar = new JButton("Iniciar Sesion");
-		btnEntrar.setBounds(528, 388, 161, 44);
+		btnEntrar.setBounds(528, 388, 185, 44);
 		btnEntrar.addActionListener(controlador.iniciarsesion());
 		add(btnEntrar);
 		
@@ -60,9 +59,14 @@ public class IniciarSesionUI extends JPanel {
 		password.setBounds(483, 300, 250, 31);
 		add(password);
 		password.setColumns(10);
-
+		
+		lblImagenAbrir = new JLabel("");
+		lblImagenAbrir.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblImagenAbrir.setBounds(762, 243, 200, 150);
+		add(lblImagenAbrir);
+	
 	}
-
+	
 	public JTextField getTxtUsuario() {
 		return txtUsuario;
 	}
@@ -86,4 +90,13 @@ public class IniciarSesionUI extends JPanel {
 	public void setBtnEntrar(JButton btnEntrar) {
 		this.btnEntrar = btnEntrar;
 	}
+
+	public JLabel getLblImagen() {
+		return lblImagenAbrir;
+	}
+
+	public void setLblImagen(JLabel lblImagen) {
+		this.lblImagenAbrir = lblImagen;
+	}	
+	
 }

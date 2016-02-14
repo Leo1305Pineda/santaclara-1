@@ -2,12 +2,21 @@ package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
 
 import santaclara.Servicio.ServicioCapacidad;
 import santaclara.Servicio.ServicioProducto;
@@ -17,17 +26,17 @@ import santaclara.vista.CapacidadesUI;
 
 public class ContCapacidades extends ContGeneral implements IContGeneral{
 	
-	private ServicioCapacidad servicioCapacidad;
+	private List<Capacidad> capacidades = new ServicioCapacidad().getCapacidades();
+	private ServicioCapacidad servicioCapacidad = new ServicioCapacidad();
 	private CapacidadesUI vista;
+	private Capacidad capacidad = new Capacidad();
 	
 	public ContCapacidades(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
-		servicioCapacidad = new ServicioCapacidad();
-		vista = new CapacidadesUI(this,servicioCapacidad.getCapacidades());
-		vista.activarBinding(servicioCapacidad.getCapacidades());
+		vista = new CapacidadesUI(this);
+		activarBinding(capacidades);
 		dibujar(vista,this);
-		vista.quitarNuevo();
 	}
 
 	@Override
@@ -42,41 +51,10 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.activarNuevoCapacidad();
-				vista.getPnTabla().setVisible(false);
+				vista.getTable().clearSelection();
+				Capacidad capacidad = new Capacidad();
+				cargarCapacidad(capacidad);
 			}
-		};
-	}
-
-	public ActionListener modificar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (vista.getTable().getSelectedRow()>=0)
-				{
-					Capacidad capacidad  = new Capacidad();
-					try {
-						capacidad = servicioCapacidad.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-					} catch (NumberFormatException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					if (capacidad != null)
-					{
-						vista.activarNuevoCapacidad();
-						vista.getScrollPanel().setVisible(false);
-						
-						vista.getTxtId().setText(capacidad.getId().toString());
-						vista.getTxtVolumen().setText(capacidad.getVolumenStr());
-					}
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(vista,"Seleccione la Capacidad");
-				}
-		}
 		};
 	}
 
@@ -87,7 +65,6 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				Capacidad capacidad = new Capacidad();
 				
 				if (vista.getTxtId().getText().equals("")) capacidad.setId(null);
 					else capacidad.setId(new Integer(vista.getTxtId().getText().toString())); 
@@ -97,16 +74,9 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 						{
 							try {
 									capacidad.setVolumen(new Double(vista.getTxtVolumen().getText().toString()));
-									
 									JOptionPane.showMessageDialog(vista,servicioCapacidad.guardar(capacidad));
-									// agregarlo a la lista
-									vista.getCapacidades().add(capacidad);
-									
-									vista.getBinCapacidades().unbind();
-									vista.getBinCapacidades().bind();
-									vista.activarBinding(servicioCapacidad.getCapacidades());
-									vista.quitarNuevo();
-									vista.getScrollPanel().setVisible(true);
+									capacidades.add(capacidad);
+									activarBinding(capacidades);
 									
 								} catch (IOException e1) {
 								// TODO Auto-generated catch block
@@ -125,36 +95,21 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				JTable tabla1 = new JTable();
-				tabla1 = vista.getTable();
-				Boolean enc = false;
-				for(int i = 0;i<tabla1.getRowCount();i++)
+				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				if(fila>=0)
 				{
-					if (tabla1.getValueAt(i, 0).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
-						tabla1.getValueAt(i, 1).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim()))
-					{
-						tabla1.setRowSelectionInterval(i,i);
-						enc = true;
-						break;
-					}
+					cargarCapacidad((Capacidad)capacidades.get(fila));
 				}
-				if (!enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
-				vista.setTable(tabla1);
-				vista.setTxtABuscar("");;
+				else 
+				{
+					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
+					cargarCapacidad(new Capacidad());
+				}
 				
 			}
 		};
 	}
-
-	public ServicioCapacidad getServicioPresentaciones() {
-		return servicioCapacidad;
-	}
-
-	public void setServicioCapacidad(
-			ServicioCapacidad servicioCapacidad) {
-		this.servicioCapacidad = servicioCapacidad;
-	}
-
 	
 	public void setVista(CapacidadesUI vista) {
 		this.vista = vista;
@@ -192,8 +147,7 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-						Capacidad capacidad;
-						capacidad = servicioCapacidad.getCapacidad(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
+						capacidad = capacidades.get(vista.getTable().getSelectedRow());
 						
 						ServicioProducto servicioProducto = new ServicioProducto();
 						
@@ -209,13 +163,10 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 						}
 						if(enc==false)
 						{
-							servicioCapacidad.eliminar(capacidad);
-							
-							vista.getBinCapacidades().unbind();
-							vista.getBinCapacidades().bind();				
-							vista.activarBinding(servicioCapacidad.getCapacidades());
+							servicioCapacidad.eliminar(capacidad);	
+							capacidades = new ServicioCapacidad().getCapacidades();
+							activarBinding(capacidades);
 							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-							vista.quitarNuevo();
 						}
 						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
 								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: Producto");
@@ -226,5 +177,85 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 				}
 			}
 		};
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void activarBinding(List<Capacidad> capacidades) {
+		// TODO Auto-generated method stub
+		vista.remove(vista.getPnCapacidad());
+		vista.getPnTabla().setVisible(true);
+		vista.setTable(new JTable());
+		vista.getScrollPanel().setViewportView(vista.getTable());	
+		JTableBinding binCapacidades = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
+    	capacidades,vista.getTable());
+		
+		BeanProperty idCapacidad  = BeanProperty.create("id");
+		BeanProperty volumenCapacidad = BeanProperty.create("volumen");
+	    
+	    binCapacidades.addColumnBinding(idCapacidad).setColumnClass(Integer.class).setColumnName("id");;
+	    binCapacidades.addColumnBinding(volumenCapacidad).setColumnClass(String.class).setColumnName("Volumen");
+	    binCapacidades.bind();
+	    
+	    vista.getTable().addKeyListener(mostrarCapacidad_keypress());
+		vista.getTable().addMouseListener(mostrarCapacidad());
+ 
+		vista.remove(vista.getPnCapacidad());
+		vista.repaint();
+
+
+	}
+
+	public MouseAdapter mostrarCapacidad() {
+		// TODO Auto-generated method stub
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent evento) {
+				if (evento.getClickCount()==1)
+				{
+					capacidad = (Capacidad) capacidades.get(vista.getTable().getSelectedRow());
+					cargarCapacidad(capacidad);
+				}
+			}
+		};
+	}
+
+	public KeyAdapter mostrarCapacidad_keypress() {
+		// TODO Auto-generated method stub
+		return new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				Integer contFila = capacidades.size();
+				 
+				if(e.getKeyCode()==38 )
+				{
+					if(fila<=0) cargarCapacidad((Capacidad) capacidades.get(0));
+					else cargarCapacidad((Capacidad)capacidades.get(fila-1));
+				}
+				else if(e.getKeyCode()==40 )
+				{
+					if(fila+1>=contFila) cargarCapacidad((Capacidad)capacidades.get(contFila-1));
+					else cargarCapacidad((Capacidad)capacidades.get(fila+1));
+				}
+
+			}
+		};
+	}  
+
+	public void cargarCapacidad(Capacidad capacidad) {
+		// TODO Auto-generated method stub	
+		vista.remove(vista.getPnCapacidad());
+		vista.dibujarPanelCapacidades();
+		
+		if (vista.getTable().getSelectedRow() >= 0 )
+		{
+			vista.getTxtId().setText("");
+	
+			if(capacidad.getId() != null)
+			{
+				vista.getTxtId().setText(capacidad.getId().toString());
+			}
+		vista.getTxtVolumen().setText(capacidad.getVolumenStr());
+			
+		}
 	}
 }

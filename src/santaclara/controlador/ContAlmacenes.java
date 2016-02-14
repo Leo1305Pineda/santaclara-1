@@ -140,8 +140,6 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 				}
 				if (!enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
 				vista.setTable(tabla1);
-				vista.setTxtABuscar("");;
-				
 			}
 		};
 	}

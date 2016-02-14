@@ -116,7 +116,14 @@ public class ContReportMontFacturadoAlmacen extends ContGeneral implements ICont
 
 	public ActionListener Atras() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+						ActivarAtras(null);
+			}
+		};
 	}
 
 	public ActionListener buscar() {

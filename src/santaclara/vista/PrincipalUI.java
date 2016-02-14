@@ -58,8 +58,6 @@ public class PrincipalUI {
 	private		JMenuItem mntListClienteZonaTipo;
 	private		JMenuItem mntMontoFacturadoMesZonaTipoPago;
  
-	
-	
 	/**
 	 * Launch the application.
 	 */
@@ -90,7 +88,6 @@ public class PrincipalUI {
 		initialize();
 	}
 	
-
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -120,15 +117,6 @@ public class PrincipalUI {
 		mnConsulta = new JMenu("Consulta");
 		menuBar.add(mnConsulta);
 
-		mntCerrar = new JMenuItem("cerrar sesión ");
-		System.out.println(controlador);
-		mntCerrar.addActionListener(controlador.salirSesion());
-
-		mnSalir = new JMenu("Salir");
-		mnSalir.add(mntCerrar);  
-		
-		menuBar.add(mnSalir);
-
 		/***************************** Botones para catalogo **********************************/
 		
 		mntAlmacen = new JMenuItem("Almacenes");
@@ -136,21 +124,16 @@ public class PrincipalUI {
 		mnCatalogo.add(mntAlmacen);
 		mnCatalogo.add(new JSeparator());
 
-
-		mntAlmacen = new JMenuItem("Almacenes");
-		mntAlmacen.addActionListener(controlador.activarMenu());
-		mnCatalogo.add(mntAlmacen);
 		mnCatalogo.add(new JSeparator());
 
-	
 		mntCalendarios = new JMenuItem("Calendario");
 		mnCatalogo.add(mntCalendarios);
 		mntCalendarios.addActionListener(controlador.activarMenu());
-
 		
-		mntConcesionarios = new JMenuItem("Concesionarios");
+	/*	mntConcesionarios = new JMenuItem("Concesionarios");
 		mnCatalogo.add(mntConcesionarios);
 		mntConcesionarios.addActionListener(controlador.activarMenu());
+		*/
 
 		/*
 		mntConcesionarioRutas = new JMenuItem("ConcesionarioRutas");
@@ -158,7 +141,6 @@ public class PrincipalUI {
 		mntConcesionarioRutas.addActionListener(controlador.activarMenu());
 		*/
 		
-	    
 		/*
 		mntJefeVenta = new JMenuItem("Jefe Ventas");
 		mnCatalogo.add(mntJefeVenta);
@@ -246,7 +228,6 @@ public class PrincipalUI {
 		mntCamiones = new JMenuItem("Camiones");
 		mnCatalogo.add(mntCamiones);
 		mntCamiones.addActionListener(controlador.activarMenu());
-
 
 		/*
 		mntVendedores = new JMenuItem("Vendedores");
@@ -599,6 +580,5 @@ public class PrincipalUI {
 			JMenuItem mntMontoFacturadoMesZonaTipoPago) {
 		this.mntMontoFacturadoMesZonaTipoPago = mntMontoFacturadoMesZonaTipoPago;
 	} 
-	
 	
 }

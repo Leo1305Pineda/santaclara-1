@@ -26,6 +26,8 @@ public  class ContPrincipal {
 	private Stack<Object> cacheObjet = new Stack<Object>();
 	private Boolean editorActivo = new Boolean(false);
 	
+	private ContAlmacenes 	contAnimaciones ;
+	
 	public static void main(String[] args) {
 	   ContPrincipal controlador = new  ContPrincipal();
 	   controlador.ejecutar();   
@@ -566,6 +568,14 @@ public void ActivarReportFacturadoVendedor(){
 
 	public void setCacheObjet(Stack<Object> cacheObjet) {
 		this.cacheObjet = cacheObjet;
+	}
+
+	public ContAlmacenes getContAnimaciones() {
+		return contAnimaciones;
+	}
+
+	public void setContAnimaciones(ContAlmacenes contAnimaciones) {
+		this.contAnimaciones = contAnimaciones;
 	}
 
 	

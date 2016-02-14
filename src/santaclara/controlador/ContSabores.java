@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 
 import santaclara.Servicio.ServicioProducto;
 import santaclara.Servicio.ServicioSabor;
@@ -123,24 +122,17 @@ public class ContSabores extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				JTable tabla1 = new JTable();
-				tabla1 = vista.getTable();
-				Boolean enc = false;
-				for(int i = 0;i<tabla1.getRowCount();i++)
+				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				if(fila>=0)
 				{
-					if (tabla1.getValueAt(i, 0).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
-						tabla1.getValueAt(i, 1).toString().equals(vista.getTxtABuscar().getText().toString()))
-					{
-						tabla1.setRowSelectionInterval(i,i);
-						enc = true;
-						break;
-					}
+				//	cargarSabor(sabores.get(fila));
 				}
-				if (!enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
-				vista.setTable(tabla1);
-				vista.setTxtABuscar("");;
-				
-			}
+				else 
+				{
+					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
+				//	cargarSabor(new Sabor());
+				}		}
 		};
 	}
 
