@@ -187,6 +187,33 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 		return null;
 	}
 
+	public Concesionario getConcesionario(String nombreUsuario) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		List<Concesionario> concesionarios = getConcecionarios();
+		for(Concesionario concecionario : concesionarios)
+		{
+			if(concecionario.getUsername().equals(nombreUsuario))
+			{
+				return concecionario;
+			}
+		}
+		return null;
+	}
+
+	public Concesionario getConcecionariosCedula(String cedula) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		List<Concesionario> concesionarios = getConcecionarios();
+		for(Concesionario concecionario : concesionarios)
+		{
+			if(concecionario.getCedula().equals(cedula))
+			{
+				return concecionario;
+			}
+		}
+		return null;
+	}
+
 	
 	
 } 

@@ -20,7 +20,15 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 	private ServicioCamion servicioCamion;
 	private CamionesUI vista;
 	
-	public ContCamiones(ContPrincipal contPrincipal) throws Exception {
+	public ContCamiones(ContPrincipal contPrincipal ) throws Exception {
+		// TODO Auto-generated constructor stub
+		setContPrincipal(contPrincipal);
+		servicioCamion = new ServicioCamion();
+		vista = new CamionesUI(this, servicioCamion.getCamiones());
+		dibujar(vista,this);
+	}
+
+	public ContCamiones(ContPrincipal contPrincipal, Concesionario concesionario) throws NumberFormatException, IOException {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		servicioCamion = new ServicioCamion();
@@ -177,7 +185,15 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras(null);
+				if (vista.getTable().getSelectedColumn() > 0 )
+				{
+					Camion camion = (Camion) vista.getCamiones().get(vista.getTable().getSelectedRow());
+					ActivarAtras(camion);
+				}
+				else
+				{
+					ActivarAtras(null);
+				}
 			}
 		};
 	}
@@ -188,7 +204,7 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.quitarNuevo();
+				quitarVista();
 			}
 		};
 		

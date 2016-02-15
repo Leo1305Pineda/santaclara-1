@@ -1,5 +1,6 @@
 package santaclara.controlador;
  
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack;
@@ -7,13 +8,8 @@ import java.util.Stack;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
-import santaclara.controlador.consultas.ContListCantRefrecoPresentCapacFacturadoZona;
-import santaclara.controlador.consultas.ContListCantRefrescoSaborVendidoAlmacen;
-import santaclara.controlador.consultas.ContListClienteTipoZona;
-import santaclara.controlador.consultas.ContMontoFacturadoMesZonaTipoPago;
 import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
-import santaclara.controlador.reportes.ContReportMontFacturadoVendedor;
+import santaclara.modelo.Camion;
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
 import santaclara.vista.herramientas.VistaGenericaUI;
@@ -46,9 +42,11 @@ public  class ContPrincipal {
 	}
 	
 
-	@SuppressWarnings("deprecation")
 	void agregarPanel(JPanel panel)
 	{
+		//vista.getFrame().getContentPane().removeAll();
+		//vista.getFrame().getContentPane().add(panel);
+		//vista.getFrame().getContentPane().removeAll();
 		vista.getFrame().setContentPane(panel);
 		vista.getFrame().resize(VistaGenericaUI.getWidthPantalla(),VistaGenericaUI.getHeightPantalla());
 		vista.getFrame().repaint();
@@ -111,7 +109,7 @@ public  class ContPrincipal {
 					}
 					else if(e.getSource().equals(vista.getMntCamiones()))
 					{
-						ActivarCamiones();
+						ActivarCamiones(null,null,null);
 					}
 					else if(e.getSource().equals(vista.getMntCapacidades()))
 					{
@@ -121,17 +119,13 @@ public  class ContPrincipal {
 					{
 						ActivarClientes(null,"",null);
 					}
-					else if(e.getSource().equals(vista.getMntConcesionario()))
-					{
-						ActivarUsuarios();
-					}
 					else if(e.getSource().equals(vista.getMntEmpaqueProductos()))
 					{
 						ActivarEmpaqueProductos();
 					}
 					else if(e.getSource().equals(vista.getMntJefeVenta()))
 					{
-							new ContJefeVentas(ContPrincipal.this);
+							ActivarJefeVenta();
 					}
 					else if(e.getSource().equals(vista.getMntPresentaciones()))
 					{
@@ -163,7 +157,7 @@ public  class ContPrincipal {
 					}
 					else if(e.getSource().equals(vista.getMntVendedores()))
 					{
-						new ContVendedores(ContPrincipal.this);
+						ActivarVendedores();
 					}
 					else if(e.getSource().equals(vista.getMntVisitas()))
 					{
@@ -184,23 +178,10 @@ public  class ContPrincipal {
 					else if(e.getSource().equals(vista.getMntReportMontFacturaAlmacen())){
 						ActivarReportFacturadoAlmacen();
 					}
-					else if(e.getSource().equals(vista.getMntReportMontFacturaVendedor())){
-						ActivarReportFacturadoVendedor();
-					}
-					else if(e.getSource().equals(vista.getMntConsultaDetalleFacturaMesAlmacen())){
-						ActivarConsultaDetalleFacturaMesAlmacen();
-					}
-					else if(e.getSource().equals(vista.getMntListCantRefrescoSaborVendidoAlmacen())){
-						ActivarListCantRefrescoSaborVendidoAlmacen();
-					}
-					else if(e.getSource().equals(vista.getMntListCantRefrescoPresentCapacFacturadoZona())){
-						ActivarListCantRefrescoPresentCapacFacturadoZona();
-					}
-					else if(e.getSource().equals(vista.getMntListClienteZonaTipo())){
-						ActivarListClienteZonaTipo();
-					}
-					else if(e.getSource().equals(vista.getMntMontoFacturadoMesZonaTipoPago())){
-						ActivarMontoFacturadoMesZonaTipoPago();
+					else if(e.getSource().equals(vista.getMntConcesionarios()))
+					{
+		 
+						ActivarConcenionario(null,null,null);
 					}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -209,109 +190,48 @@ public  class ContPrincipal {
 				}
 
 			}
+
+
 		};
 	}
-	 
-public void ActivarConsultaDetalleFacturaMesAlmacen(){
-		
-		try {
-			
-			controlador = new ContDetalleFacturaMesAlmacen(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-public void ActivarListCantRefrescoSaborVendidoAlmacen(){
 	
-	try {
-		
-		controlador = new ContListCantRefrescoSaborVendidoAlmacen(ContPrincipal.this);
-	}
-	catch (Exception e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-}
-public void ActivarListCantRefrescoPresentCapacFacturadoZona(){
-	
-	try {
-		
-		controlador = new ContListCantRefrecoPresentCapacFacturadoZona(ContPrincipal.this);
-	}
-	catch (Exception e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-}
-public void ActivarListClienteZonaTipo(){
-	
-	try {
-		
-		controlador = new ContListClienteTipoZona(ContPrincipal.this);
-	}
-	catch (Exception e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-}
-public void ActivarMontoFacturadoMesZonaTipoPago(){
-	
-	try {
-		
-		controlador = new ContMontoFacturadoMesZonaTipoPago(ContPrincipal.this);
-	}
-	catch (Exception e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-}
+	private void ActivarConcenionario(ContGeneral contLlamador, ContGeneral contllamado, Object mensaje) throws Exception {
+		// TODO Auto-generated method stub
 
-public void ActivarReportFacturadoAlmacen(){
-	
-	try {
+		if(contLlamador != null)
+		{
+			//controlador = new ContCamiones(ContPrincipal.this);
+			contLlamador.dibujar(contLlamador.getVista(),contLlamador);
+			if(contLlamador instanceof ContConcesionarios )
+			{
+				((ContConcesionarios) contLlamador).setCamion((Camion)mensaje);
+			}
+		}
+		else // no ah sido invocado 
+			controlador = new ContConcesionarios(ContPrincipal.this);
+		
+		/*controlador = new ContConcesionarios(ContPrincipal.this);
+		((ContConcesionarios) controlador).setCamion();
+		*/
+	}
 
+	public void ActivarReportFacturadoAlmacen()  throws Exception {
 		controlador = new ContReportMontFacturadoAlmacen(ContPrincipal.this);
 	}
-	catch (Exception e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-}
 	
-	
-public void ActivarReportFacturadoVendedor(){
-		
-		try {
 
-			controlador = new ContReportMontFacturadoVendedor(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	public void ActivarJefeVenta()  throws Exception {
+		// TODO Auto-generated method stub
+		controlador = new ContJefeVentas(ContPrincipal.this);
 	}
 	
-	public void ActivarRutas(){
-		// TODO Auto-generated method stub
-		try {
+	
+	public void ActivarRutas()   throws Exception {
 			controlador = new ContRutas(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 	}
-	public void ActivarVisitas(){
+	public void ActivarVisitas()  throws Exception {
 		// TODO Auto-generated method stub
-		try {
 			controlador = new ContVisitas(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 	}
 
 	public void ActivarClientes(Object objetContCache,Object objetContCachePresente,Object objetClassVista) {
@@ -337,219 +257,19 @@ public void ActivarReportFacturadoVendedor(){
 		}
 	}
 	
-	public void ActivarVendedores() {
+	public void ActivarVendedores()   throws Exception {
 		// TODO Auto-generated method stub
-		try {
-			controlador = new ContUsuarios(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+			controlador = new ContVendedores(ContPrincipal.this);
 	}
 
 	public void setVista(PrincipalUI vista) {
 		this.vista = vista;
 	}
 
-	public void ActivarProductos() {
+	public void ActivarProductos()   throws Exception {
 		// TODO Auto-generated method stub
-		try {
 			controlador = new ContProductos(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}		
 
-	}
-	
-	public void ActivarPresentaciones() {
-		// TODO Auto-generated method stub
-		try {
-			controlador = new ContPresentaciones(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-	}
-	
-	public void ActivarCapacidades() {
-		// TODO Auto-generated method stub
-		try {
-			controlador = new ContCapacidades(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	
-	public void ActivarSabores() {
-		// TODO Auto-generated method stub
-		try {
-			controlador = new ContSabores(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	public void ActivarEmpaqueProductos() {
-		// TODO Auto-generated method stub
-		try {
-			controlador = new ContEmpaqueProductos(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	public void ActivarAlmacenes() {
-		// TODO Auto-generated method stub
-		try {
-			controlador = new ContAlmacenes(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	public void ActivarProductoAlmacenes() {
-		// TODO Auto-generated method stub
-		try {
-			controlador = new ContProductoAlmacenes(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	public void ActivarCamiones() {
-		// TODO Auto-generated method stub
-		try {
-			controlador = new ContCamiones(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	
-	public void ActivarUsuarios() {
-		// TODO Auto-generated method stub
-		try {
-			controlador = new ContUsuarios(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	public void ActivarZonas() {
-		// TODO Auto-generated method stub
-		try {
-			controlador = new ContZonas(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	
-	public void ActivarCalendarios() {
-		// TODO Auto-generated method stub
-		try {
-			controlador = new ContCalendarios(ContPrincipal.this);
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	
-	public void ActivarPedidos(Object objetContCache,Object objetContCachePresente,Object objetClassVista) {
-		// TODO Auto-generated method stub
-		try {
-			ContPedidos contPedidos = new ContPedidos(ContPrincipal.this);
-			if(objetContCache!=null)
-			{	
-				contPedidos.cargarVistaPrevia(((ContPedidos)objetContCache).getAlmacen(),
-						((ContPedidos)objetContCache).getVendedor(), ((ContPedidos)objetContCache).getCliente(), 
-						((ContPedidos)objetContCache).getFactura(), ((ContPedidos)objetContCache).getDetalleFactura());
-			} 
-		 	if(objetContCachePresente!=null)
-		 	{		
-		 		contPedidos.actualizarContPedido(objetContCachePresente,objetClassVista);
-			}
-			controlador = contPedidos;
-		}
-		catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	
-	public void ActivarAtras(Object objectClassVista){
-		// TODO Auto-generated method stub
-		if (!cacheObjet.empty())
-		{
-			Object obtetContCache = cacheObjet.pop();
-			Object obtetContCachePresente = obtetContCache;// el objetControlador presente
-			obtetContCache = cacheObjet.pop();
-			
-			switch (obtetContCache.getClass().getName()) {
-			case "santaclara.ContIniciarSesion": cacheObjet.push(
-							new ContIniciarSesion(this));
-			break;
-			case "santaclara.controlador.ContProductos": 		ActivarProductos();
-				break;
-			case "santaclara.controlador.ContPresentaciones": 	ActivarPresentaciones();
-			break;
-			case "santaclara.controlador.ContVendedores":		ActivarVendedores();
-			break;
-			case "santaclara.controlador.ContClientes":			ActivarClientes(obtetContCache,obtetContCachePresente,objectClassVista);
-			break;
-			case "santaclara.controlador.ContRutas":				ActivarRutas();
-			break;
-			case "santaclara.controlador.ContCapacidades":		ActivarCapacidades();
-			break;
-			case "santaclara.controlador.ContSabores":			ActivarSabores();
-			break;
-			case "santaclara.controlador.ContEmpaqueProductos":	ActivarEmpaqueProductos();
-			break;
-			case "santaclara.controlador.ContAlmacenes":	ActivarAlmacenes();
-			break;
-			case "santaclara.controlador.ContProductoAlmacenes":	ActivarProductoAlmacenes();
-			break;
-			case "santaclara.controlador.ContCamiones":	ActivarCamiones();
-			break;
-			case "santaclara.controlador.ContUsuarios":	ActivarUsuarios();
-			break;
-			case "santaclara.controlador.ContZonas":	ActivarZonas();
-			break;
-			case "santaclara.controlador.ContVisitas":	ActivarVisitas();
-			break;
-			case "santaclara.controlador.ContCalendario":	ActivarCalendarios();
-			break;
-			case "santaclara.controlador.ContPedidos":	ActivarPedidos(obtetContCache,obtetContCachePresente,objectClassVista);
-			break;
-			case "santaclara.controlador.reportes.ContReportMontFacturadoAlmacen":	ActivarReportFacturadoAlmacen();
-			break;
-			case "santaclara.controlador.reportes.ContReportMontFacturadoVendedor":	ActivarReportFacturadoVendedor();
-			break;
-			case "santaclara.controlador.cansultas.ContDetalleFacturaMesAlmacen":	ActivarConsultaDetalleFacturaMesAlmacen();
-			break;
-			case "santaclara.controlador.cansultas.ContListCantRefrescoSaborVendidoAlmacen":	ActivarListCantRefrescoSaborVendidoAlmacen();;
-			break;
-			case "santaclara.controlador.cansultas.ContMontoFacturadoMesZonaTipoPago":	ActivarMontoFacturadoMesZonaTipoPago();;
-			break;
-			default:
-				break;
-			}
-		}
 	}
 	
 	public Stack<String> getCache() {
@@ -576,5 +296,164 @@ public void ActivarReportFacturadoVendedor(){
 		this.cacheObjet = cacheObjet;
 	}
 
+
+	
+	public void ActivarPresentaciones()   throws Exception {
+			controlador = new ContPresentaciones(ContPrincipal.this);
+	}
+	
+	public void ActivarCapacidades()   throws Exception {
+		// TODO Auto-generated method stub
+			controlador = new ContCapacidades(ContPrincipal.this);
+	}
+	
+	public void ActivarSabores()   throws Exception {
+		// TODO Auto-generated method stub
+			controlador = new ContSabores(ContPrincipal.this);
+	}
+	
+	public void ActivarEmpaqueProductos()   throws Exception {
+		// TODO Auto-generated method stub
+			controlador = new ContEmpaqueProductos(ContPrincipal.this);
+	
+	}
+	
+	public void ActivarAlmacenes() throws Exception {
+		// TODO Auto-generated method stub
+			controlador = new ContAlmacenes(ContPrincipal.this);
+	}
+	
+	public void ActivarProductoAlmacenes()  throws Exception {
+		// TODO Auto-generated method stub
+			controlador = new ContProductoAlmacenes(ContPrincipal.this);
+	}
+	
+	/* 
+	 *  contCamiones : controlador de Camiones
+	 *  contLlamador : si llamo a otro controlador este seria a quien el controlador llamo 
+	 *  Object objectClassVist
+	 */
+	public void ActivarCamiones(ContGeneral contLlamador,ContGeneral contCamiones, Object mensaje) throws Exception  {
+		
+		if(contLlamador != null)
+		{
+			//controlador = new ContCamiones(ContPrincipal.this);
+			contLlamador.dibujar(contCamiones.getVista(),contCamiones);
+			if(contLlamador instanceof ContConcesionarios )
+			{
+				((ContConcesionarios) contLlamador).setCamion((Camion)mensaje);
+			}
+		}
+		else // no ah sido invocado 
+			controlador = new ContCamiones(ContPrincipal.this);
+	}
+	
+	public void ActivarUsuarios()  throws Exception {
+			controlador = new ContUsuarios(ContPrincipal.this);
+	}
+
+	public void ActivarZonas()  throws Exception {
+		// TODO Auto-generated method stub
+			controlador = new ContZonas(ContPrincipal.this);
+	}
+	
+	public void ActivarCalendarios()  throws Exception {
+		// TODO Auto-generated method stub
+			controlador = new ContCalendarios(ContPrincipal.this);
+	}
+	
+	public void ActivarPedidos(Object objetContCache,Object objetContCachePresente,Object objetClassVista) {
+		// TODO Auto-generated method stub
+		try {
+			ContPedidos contPedidos = new ContPedidos(ContPrincipal.this);
+			if(objetContCache!=null)
+			{	
+				contPedidos.cargarVistaPrevia(((ContPedidos)objetContCache).getAlmacen(),
+						((ContPedidos)objetContCache).getVendedor(), ((ContPedidos)objetContCache).getCliente(), 
+						((ContPedidos)objetContCache).getFactura(), ((ContPedidos)objetContCache).getDetalleFactura());
+			} 
+		 	if(objetContCachePresente!=null)
+		 	{		
+		 		contPedidos.actualizarContPedido(objetContCachePresente,objetClassVista);
+			}
+			controlador = contPedidos;
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	public void ActivarAtras(Object mensaje) throws Exception{
+		// TODO Auto-generated method stub
+		if (!cacheObjet.empty())
+		{ 
+			
+			Object obtetContCachePresente = cacheObjet.pop(); ;// el objetControlador presente
+			Object obtetContCache = cacheObjet.pop(); // llamador
+			switch (obtetContCache.getClass().getName()) 
+			{
+			case "santaclara.ContIniciarSesion": 
+				cacheObjet.push(new ContIniciarSesion(this));
+				break;
+			case "santaclara.controlador.ContProductos":
+				ActivarProductos();
+				break;
+			case "santaclara.controlador.ContPresentaciones": 
+				ActivarPresentaciones();
+				break;
+			case "santaclara.controlador.ContVendedores":
+				ActivarVendedores();
+				break;
+			case "santaclara.controlador.ContClientes":
+				ActivarClientes(obtetContCache,obtetContCachePresente,mensaje);
+				break;
+			case "santaclara.controlador.ContRutas":
+				ActivarRutas();
+				break;
+			case "santaclara.controlador.ContCapacidades":		
+				ActivarCapacidades();
+				break;
+			case "santaclara.controlador.ContSabores":			
+				ActivarSabores();
+				break;
+			case "santaclara.controlador.ContEmpaqueProductos":	
+				ActivarEmpaqueProductos();
+				break;
+			case "santaclara.controlador.ContAlmacenes":	
+				ActivarAlmacenes();
+				break;
+			case "santaclara.controlador.ContProductoAlmacenes":	
+				ActivarProductoAlmacenes();
+				break;
+			case "santaclara.controlador.ContCamiones":	
+				ActivarCamiones((ContGeneral)obtetContCache,(ContGeneral)obtetContCachePresente,mensaje);
+				break;
+			case "santaclara.controlador.ContConcesionarios":
+				ActivarConcenionario((ContGeneral)obtetContCache,(ContGeneral)obtetContCachePresente,mensaje);
+				break;
+			case "santaclara.controlador.ContUsuarios":
+				ActivarUsuarios();
+				break;
+			case "santaclara.controlador.ContZonas":
+				ActivarZonas();
+				break;
+			case "santaclara.controlador.ContVisitas":
+				ActivarVisitas();
+				break;
+			case "santaclara.controlador.ContCalendario":
+				ActivarCalendarios();
+				break;
+			case "santaclara.controlador.ContPedidos":
+				ActivarPedidos(obtetContCache,obtetContCachePresente,mensaje);
+				break;
+			case "santaclara.controlador.reportes.ContReportMontFacturadoAlmacen":
+				ActivarReportFacturadoAlmacen();
+				break;
+ 			default:
+				break;
+			}
+		}
+	}
 	
 }

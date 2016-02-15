@@ -121,7 +121,7 @@ public class PrincipalUI {
 		menuBar.add(mnConsulta);
 
 		mntCerrar = new JMenuItem("cerrar sesión ");
-		System.out.println(controlador);
+		System.out.println(controlador+"<-----");
 		mntCerrar.addActionListener(controlador.salirSesion());
 
 		mnSalir = new JMenu("Salir");
@@ -137,24 +137,14 @@ public class PrincipalUI {
 		mnCatalogo.add(new JSeparator());
 
 		
-		mntCalendarios = new JMenuItem("Calendario");
-		mnCatalogo.add(mntCalendarios);
-		mntCalendarios.addActionListener(controlador.activarMenu());
 
-		
-		mntConcesionarios = new JMenuItem("Concesionarios");
-		mnCatalogo.add(mntConcesionarios);
-		mntConcesionarios.addActionListener(controlador.activarMenu());
-
+	
 		/*
 		mntConcesionarioRutas = new JMenuItem("ConcesionarioRutas");
 		mnCatalogo.add(mntConcesionarioRutas);
 		mntConcesionarioRutas.addActionListener(controlador.activarMenu());
 		*/
-		
-		mntJefeVenta = new JMenuItem("Jefe Ventas");
-		mnCatalogo.add(mntJefeVenta);
-		mntJefeVenta.addActionListener(controlador.activarMenu());
+
 		
 		/***************************** Botones para Reporte **********************************/
 		
@@ -234,6 +224,12 @@ public class PrincipalUI {
 		mnCatalogo.add(mntUsuarios);
 		mntUsuarios.addActionListener(controlador.activarMenu());
 
+		
+		mntConcesionarios = new JMenuItem("Concesionarios");
+		mnCatalogo.add(mntConcesionarios);
+		mntConcesionarios.addActionListener(controlador.activarMenu());
+
+		
 		mntCamiones = new JMenuItem("Camiones");
 		mnCatalogo.add(mntCamiones);
 		mntCamiones.addActionListener(controlador.activarMenu());
@@ -243,16 +239,25 @@ public class PrincipalUI {
 		mnCatalogo.add(mntVendedores);
 		mntVendedores.addActionListener(controlador.activarMenu());
 
+		
+		mntJefeVenta = new JMenuItem("Jefe Ventas");
+		mnCatalogo.add(mntJefeVenta);
+		mntJefeVenta.addActionListener(controlador.activarMenu());
+
+		mntCalendarios = new JMenuItem("Calendario");
+		mnCatalogo.add(mntCalendarios);
+		mntCalendarios.addActionListener(controlador.activarMenu());
 		/*
 		
 		mntVisitas = new JMenuItem("Visitas");
 		mnCatalogo.add(mntVisitas);
 		mntVisitas.addActionListener(controlador.activarMenu());
-		*/
+		*/ 
 		
 		mntPedidos = new JMenuItem("Pedidos");
 		mntPedidos.addActionListener(controlador.activarMenu());
 		mnFacturacion.add(mntPedidos);
+		
 		/*
 		mntConcesionarios = new JMenuItem("Consesionarios");
 		mnCatalogo.add(mntConcesionarios);

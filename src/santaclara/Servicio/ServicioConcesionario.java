@@ -1,5 +1,6 @@
 package santaclara.Servicio;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +32,17 @@ public class ServicioConcesionario {
 		// TODO Auto-generated method stub
 		return concesionarioDAO.getConcesionario(id);
 	}
+	
+	public Concesionario buscar(String nombreUsuario) throws IOException {
+		// TODO Auto-generated method stub
+		return concesionarioDAO.getConcesionario(nombreUsuario);
+	}
+	
 
 	public void guardar(Concesionario concesionario) throws Exception {
 		// TODO Auto-generated method stub
-		
-		validarConcesionario(concesionario);
+	
+		//validarConcesionario(concesionario);
 		validarConcesionarioRuta(concesionario);
 		validarCamion(concesionario);
 			/*los Concesionario solo podran tomar rutas 
@@ -44,7 +51,8 @@ public class ServicioConcesionario {
 			//if(concesionario.getRuta().getId().equals());  pendiente por hacer
 		concesionarioDAO.guardar(concesionario);
 	}
-	public void validarConcesionario(Concesionario concesionario) throws Exception
+	
+	/*public void validarConcesionario(Concesionario concesionario) throws Exception
 	{
 		concesionarios = concesionarioDAO.getConcecionarios();
 		
@@ -52,7 +60,7 @@ public class ServicioConcesionario {
 		{	
 			if(comcesionario1.getId().equals(concesionario.getId()))
 			{
-				/* ¿ Existe Algun Cambio?*/
+				// ¿ Existe Algun Cambio?
 				if(comcesionario1.getCedula().equals(concesionario.getCedula())&&
 						comcesionario1.getNombre().equals(concesionario.getNombre())&&
 						comcesionario1.getUsername().equals(concesionario.getUsername())&&
@@ -63,7 +71,8 @@ public class ServicioConcesionario {
 				
 			}
 		}
-	}
+	}*/
+
 	public void validarConcesionarioRuta(Concesionario concesionarioRuta) throws Exception
 	{
 		concesionarios = concesionarioDAO.getConcecionarios();
@@ -79,6 +88,7 @@ public class ServicioConcesionario {
 			}
 		}
 	}
+
 	public void validarCamion(Concesionario concesionario) throws Exception
 	{
 		concesionarios = concesionarioDAO.getConcecionarios();
@@ -98,6 +108,7 @@ public class ServicioConcesionario {
 			}
 		}
 	}
+
 	public Concesionario getConcesionario(Integer id) throws IOException{
 		return concesionarioDAO.getConcesionario(id);
 	}
@@ -123,5 +134,10 @@ public class ServicioConcesionario {
 		}
 		
 		return concesionariosAux;
+	}
+
+	public Concesionario buscarCedula(String cedula) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		return concesionarioDAO.getConcecionariosCedula(cedula);
 	}
 }

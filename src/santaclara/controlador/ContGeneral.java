@@ -2,6 +2,7 @@ package santaclara.controlador;
 
 import java.util.Stack;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public abstract class ContGeneral implements IContGeneral {
@@ -9,24 +10,24 @@ public abstract class ContGeneral implements IContGeneral {
 	
 	private ContPrincipal 	 contPrincipal;
 		
-	public void dibujar(JPanel vista,Object cacheobject)
+	public void dibujar(JPanel vista,Object controladorNuevo)
 	{
 		contPrincipal.agregarPanel(vista);
 		if(!this.contPrincipal.getCacheObjet().empty())
 		{
-			Object object = this.contPrincipal.getCacheObjet().pop();
-			if (object.equals(cacheobject))
+			Object actual = this.contPrincipal.getCacheObjet().pop();
+			if (actual.equals(controladorNuevo))
 			{
-				this.contPrincipal.getCacheObjet().push(object);
+				this.contPrincipal.getCacheObjet().push(actual);
 			}
 			else
 			{
-				this.contPrincipal.getCacheObjet().push(object);
-				this.contPrincipal.getCacheObjet().push(cacheobject);
+				this.contPrincipal.getCacheObjet().push(actual);
+				this.contPrincipal.getCacheObjet().push(controladorNuevo);
 			}
 		}
 		else 
-			this.contPrincipal.getCacheObjet().push(cacheobject);
+			this.contPrincipal.getCacheObjet().push(controladorNuevo);
 	}
 	
 	public void quitarVista(){//btnSalir
@@ -43,14 +44,18 @@ public abstract class ContGeneral implements IContGeneral {
 	
 	
 	
-	public void ActivarAtras(Object object) {//btnAtras
-		
-		if(this.contPrincipal.getCacheObjet().size()>1)
-			this.contPrincipal.ActivarAtras(object);
-		else
-			quitarVista();
+	public void ActivarAtras(Object mensaje) {//btnAtras
+		try {
+			if(this.contPrincipal.getCacheObjet().size()>1)
+				this.contPrincipal.ActivarAtras(mensaje);
+			else
+				quitarVista();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,e.getMessage());
+		}
 	}
-
 
 	public ContPrincipal getContPrincipal() {
 		return contPrincipal;
