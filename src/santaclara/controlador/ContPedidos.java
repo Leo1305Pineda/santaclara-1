@@ -656,7 +656,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
  
 						contProductoAlmacenes.getVista().getBtnAtras().setText("Seleccione");
  
-						contProductoAlmacenes.getVista().activarBinding(
+						contProductoAlmacenes.activarBinding(
 								new ServicioProductoAlmacen().getProductoAlmacenes(factura.getAlmacen().getId()));
 					}
 					
