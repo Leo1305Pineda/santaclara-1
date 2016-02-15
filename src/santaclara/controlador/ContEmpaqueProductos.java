@@ -43,11 +43,8 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 		setContPrincipal(contPrincipal);
 		vista = new EmpaqueProductosUI(this);		
 		dibujar(vista,this);
-		
-		activarBinding(servicioEmpaqueProducto.getEmpaqueProductos());
+		activarBinding(empaqueProductos);
 		cargarCmbProducto();
-		
-		//vista.quitarNuevo();
 	}
 
 	@Override
@@ -69,9 +66,6 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 				empaqueProducto = new EmpaqueProducto();
 				String msg="";
 				
-				if (vista.getTxtId().getText().equals("")) empaqueProducto.setId(null);
-					else empaqueProducto.setId(new Integer(vista.getTxtId().getText().toString()));
-				
 				if(vista.getTxtCantidad().getValue().equals(0))empaqueProducto.setCantidad(0);
 					else empaqueProducto.setCantidad((Integer) vista.getTxtCantidad().getValue());
 				
@@ -85,7 +79,6 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 									// agregarlo a la lista
 									empaqueProductos.add(empaqueProducto);
 									activarBinding(servicioEmpaqueProducto.getEmpaqueProductos());
-									vista.quitarNuevo();
 									vista.getScrollPanel().setVisible(true);
 									
 								} catch (IOException e1) {
@@ -131,8 +124,6 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 						servicioEmpaqueProducto.eliminar(empaqueProductos.get(vista.getTable().getSelectedRow()));				
 						activarBinding(servicioEmpaqueProducto.getEmpaqueProductos());
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-						vista.quitarNuevo();
-		
 					} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -146,7 +137,6 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 		};
 	}
 
-
 	public ActionListener nuevo() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -154,8 +144,10 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.dibujarPanelEmpaqueProducto();
-				vista.getPnTabla().setVisible(false);
+				
+					vista.getTable().clearSelection();
+					empaqueProducto = new EmpaqueProducto();
+					cargarEmpaqueProducto(empaqueProducto);
 			}
 		};
 	}

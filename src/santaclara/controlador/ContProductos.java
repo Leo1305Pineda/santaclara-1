@@ -165,6 +165,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 						{
 							servicioProducto.eliminar(producto);
 							productos =servicioProducto.getProductos();
+							producto = new Producto();
 							activarBinding(productos);
 							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 						}
@@ -184,7 +185,6 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 		};
 	}
 
-
 	public ActionListener nuevo() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -192,8 +192,9 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.activarNuevoProducto();
-				vista.getScrollPanel().setVisible(false);
+				vista.getTable().clearSelection();
+				producto = new Producto();
+				cargarProducto(producto);
 			}
 		};
 	}
@@ -295,17 +296,6 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ActivarAtras(null);
-			}
-		};
-	}
-
-	public ActionListener quitarNuevo() {
-		// TODO Auto-generated method stub
-		return new  ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				producto = new Producto();
-				cargarProducto(producto);
-				vista.getTable().clearSelection();
 			}
 		};
 	}	

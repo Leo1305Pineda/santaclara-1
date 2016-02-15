@@ -2,6 +2,10 @@ package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.List;
 
@@ -9,25 +13,32 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+
+import santaclara.Servicio.ServicioRuta;
 import santaclara.Servicio.ServicioZona;
-import santaclara.Servicio.ServicioJefeVenta;
-import santaclara.modelo.JefeVenta;
+import santaclara.modelo.Ruta;
 import santaclara.modelo.Zona;
 import santaclara.vista.ZonasUI;
+
 
 public class ContZonas extends ContGeneral implements IContGeneral{
 	
 	private ServicioZona servicioZona;
 	private ZonasUI vista;
+	private List<Zona> Zonas = new ServicioZona().getZonas();
+	private Zona Zona = new Zona();
 	
 	public ContZonas(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		servicioZona = new ServicioZona();
-		vista = new ZonasUI(this,servicioZona.getZonas());
-		vista.activarBinding(servicioZona.getZonas());
+		vista = new ZonasUI(this);
 		dibujar(vista,this);
-		vista.quitarNuevo();
+		activarBinding(Zonas);
 	}
 
 	@Override
@@ -42,41 +53,10 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.activarNuevoZona();
-				vista.getPnTabla().setVisible(false);
+				vista.getTable().clearSelection();
+				Zona = new Zona();
+				cargarZona(Zona);
 			}
-		};
-	}
-
-	public ActionListener modificar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (vista.getTable().getSelectedRow()>=0)
-				{
-					Zona zona  = new Zona();
-					try {
-						zona = servicioZona.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-					} catch (NumberFormatException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					if (zona != null)
-					{
-						vista.activarNuevoZona();;
-						vista.getScrollPanel().setVisible(false);
-						
-						vista.getTxtId().setText(zona.getId().toString());
-						vista.getTxtNombre().setText(zona.getDescripcion());
-					}
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(vista,"Seleccione la Zona");
-				}
-		}
 		};
 	}
 
@@ -86,27 +66,18 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				Zona zona = new Zona();
-				
-				if (vista.getTxtId().getText().equals("")) zona.setId(null);
-					else zona.setId(new Integer(vista.getTxtId().getText().toString())); 
+				// TODO Auto-generated method stub 
 				
 				if (vista.getTxtNombre().getText().equals("")) JOptionPane.showMessageDialog(vista,"Campos Vacios: Nombre Material");
 					else
 						{
 							try {
-									zona.setDescripcion(vista.getTxtNombre().getText().toString());
+									Zona.setDescripcion(vista.getTxtNombre().getText().toString());
 									
-									JOptionPane.showMessageDialog(vista,servicioZona.guardar(zona));
-									// agregarlo a la lista
-									vista.getZonas().add(zona);
+									JOptionPane.showMessageDialog(vista,servicioZona.guardar(Zona));
+									Zonas = servicioZona.getZonas();
 									
-									vista.getBinZonas().unbind();
-									vista.getBinZonas().bind();
-									vista.activarBinding(servicioZona.getZonas());
-									vista.quitarNuevo();
-									vista.getScrollPanel().setVisible(true);
+									activarBinding(servicioZona.getZonas());
 									
 								} catch (IOException e1) {
 								// TODO Auto-generated catch block
@@ -125,23 +96,18 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				JTable tabla1 = new JTable();
-				tabla1 = vista.getTable();
-				Boolean enc = false;
-				for(int i = 0;i<tabla1.getRowCount();i++)
+				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				if(fila>=0)
 				{
-					if (tabla1.getValueAt(i, 0).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
-						tabla1.getValueAt(i, 1).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim()))
-					{
-						tabla1.setRowSelectionInterval(i,i);
-						enc = true;
-						break;
-					}
+					cargarZona(Zonas.get(fila));
 				}
-				if (!enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
-				vista.setTable(tabla1);
-				vista.setTxtABuscar("");;
-				
+				else 
+				{
+					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
+					Zona = new Zona();
+					cargarZona(Zona);
+				}
 			}
 		};
 	}
@@ -151,11 +117,10 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 	}
 
 	public void setServicioZonas(
-			ServicioZona servicioZonas) {
-		this.servicioZona = servicioZonas;
+			ServicioZona servicioPresentaciones) {
+		this.servicioZona = servicioPresentaciones;
 	}
 
-	
 	public void setVista(ZonasUI vista) {
 		this.vista = vista;
 	}
@@ -192,16 +157,14 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-						Zona zona;
-						zona = servicioZona.getZona(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
+						Zona = Zonas.get(vista.getTable().getSelectedRow());
+						ServicioRuta ServicioRuta = new ServicioRuta();
 						
-						ServicioJefeVenta servicioJefeVenta = new ServicioJefeVenta();
-						
-						List<JefeVenta> jefeVentas = servicioJefeVenta.getJefeVentas();
+						List<Ruta> rutas = ServicioRuta.getRutas();
 						Boolean enc = new Boolean(false);
-						for(JefeVenta jefeVenta: jefeVentas)
+						for(Ruta ruta: rutas)
 						{
-							if(jefeVenta.getZona().getId().equals(zona.getId()))
+							if(ruta.getZona().getId().equals(Zona.getId()))
 								{
 									enc=true;
 									break;
@@ -209,16 +172,14 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 						}
 						if(enc==false)
 						{
-							servicioZona.eliminar(zona);
-						
-							vista.getBinZonas().unbind();
-							vista.getBinZonas().bind();				
-							vista.activarBinding(servicioZona.getZonas());
+							servicioZona.eliminar(Zona);
+							Zona = new Zona();
+							Zonas = servicioZona.getZonas();
+							activarBinding(Zonas);
 							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-							vista.quitarNuevo();
 						}
 						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
-								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: JefeVenta");
+								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: Producto");
 						
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -226,5 +187,74 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 				}
 			}
 		};
+	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void activarBinding(List<Zona> Zonas) {
+		// TODO Auto-generated method stub
+		vista.remove(vista.getPnZona());
+		vista.getPnTabla().setVisible(true);
+		vista.setTable(new JTable());
+		vista.getScrollPanel().setViewportView(vista.getTable());	
+		JTableBinding binZonas = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,Zonas,vista.getTable());
+		
+		BeanProperty idPresentacion  = BeanProperty.create("id");
+		BeanProperty materialPresentacion = BeanProperty.create("descripcion");
+
+		binZonas.addColumnBinding(idPresentacion).setColumnClass(Integer.class).setColumnName("id");;
+	    binZonas.addColumnBinding(materialPresentacion).setColumnClass(String.class).setColumnName("Material");
+	    binZonas.bind();
+
+	    vista.getTable().addKeyListener(mostrarZona_keypress());
+		vista.getTable().addMouseListener(mostrarZona());
+ 
+		vista.remove(vista.getPnZona());
+		vista.repaint();
+	}
+	
+	public MouseAdapter mostrarZona() {
+		// TODO Auto-generated method stub
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent evento) {
+				if (evento.getClickCount()==1)
+				{
+					Zona = Zonas.get(vista.getTable().getSelectedRow());
+					cargarZona(Zona);
+				}
+			}
+		};
+	}
+
+	public KeyAdapter mostrarZona_keypress() {
+		// TODO Auto-generated method stub
+		return new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				Integer contFila = Zonas.size();
+				 
+				if(e.getKeyCode()==38 )
+				{
+					if(fila<=0) cargarZona(Zonas.get(0));
+					else cargarZona(Zonas.get(fila-1));
+				}
+				else if(e.getKeyCode()==40 )
+				{
+					if(fila+1>=contFila) cargarZona(Zonas.get(contFila-1));
+					else cargarZona(Zonas.get(fila+1));
+				}
+
+			}
+		};
+	}  
+
+	public void cargarZona(Zona presentacion) {
+		// TODO Auto-generated method stub	
+		vista.remove(vista.getPnZona());
+		vista.dibujarPanelZonas();;
+		
+		if (vista.getTable().getSelectedRow() >= 0 )
+		{
+			vista.getTxtNombre().setText(presentacion.getDescripcion());	
+		}
 	}
 }

@@ -58,7 +58,6 @@ public class CapacidadesUI extends VistaGenericaUI {
 		
 		dibujarBotonSalir();
 		getBtnSalir().addActionListener(contCapacidades.salir());
-		
 	}
 	
 	public void dibujarPanelCapacidades(){

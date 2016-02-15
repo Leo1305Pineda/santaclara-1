@@ -16,10 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Color;
 
 import net.miginfocom.swing.MigLayout;
@@ -35,10 +32,6 @@ public class EmpaqueProductosUI extends VistaGenericaUI {
 
 	private JPanel 	  			panelEmpaqueProducto;
 	
-	private JTextField 			txtBuscar;
-	private JTextField  		txtId;
-	private JTextField 			txtABuscar;
-	
 	private JSpinner			txtCantidad;
 
     private JComboBox<Producto> cmbProducto;
@@ -48,7 +41,6 @@ public class EmpaqueProductosUI extends VistaGenericaUI {
 	private JButton 			btnGuardar;
 	private JButton 			btnProducto;
 	private JButton				btnCancelar;
-	private JButton 			btnBuscar;
 	
 	private JPanel pnEmpaque;
 	
@@ -59,11 +51,12 @@ public class EmpaqueProductosUI extends VistaGenericaUI {
 		this.contEmpaqueProductos = contEmpaqueProductos;
 		
 		dibujarPanelOpciones();
+		dibujarBuscar();
+		getBtnABuscar().addActionListener(contEmpaqueProductos.buscar());
 		dibujarPanelTabla();
-		dibujarPanelEmpaqueProducto();
 		dibujarBotonAtras();
-		
 		getBtnAtras().addActionListener(contEmpaqueProductos.Atras());
+		dibujarPanelEmpaqueProducto();
 		
 		btnNuevo = new JButton("Nuevo");
 		btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
@@ -82,20 +75,6 @@ public class EmpaqueProductosUI extends VistaGenericaUI {
 		
 		dibujarBotonSalir();
 		getBtnSalir().addActionListener(contEmpaqueProductos.salir());
-	
-		txtABuscar = new JTextField();
-		txtABuscar.setForeground(Color.WHITE);
-		txtABuscar.setColumns(10);
-		txtABuscar.setBackground(Color.DARK_GRAY);
-		getPanelBuscar().add(txtABuscar, "flowx,cell 0 0,growx");
-		
-		btnBuscar = new JButton("");
-		btnBuscar.addActionListener(contEmpaqueProductos.buscar());
-		btnBuscar.setVerticalAlignment(SwingConstants.TOP);
-		btnBuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
-		btnBuscar.setBackground(Color.DARK_GRAY);
-		getPanelBuscar().add(btnBuscar, "cell 0 0");
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -105,8 +84,6 @@ public class EmpaqueProductosUI extends VistaGenericaUI {
 		panelEmpaqueProducto.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Editar Empaque Producto", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
 		panelEmpaqueProducto.setBackground(Color.DARK_GRAY);
 		panelEmpaqueProducto.setLayout(new MigLayout());
-		
-		txtId = new JTextField();
 		
 		JLabel lblCantidad = new JLabel("Cantidad:");
 		lblCantidad.setBackground(SystemColor.controlHighlight);
@@ -168,64 +145,34 @@ public class EmpaqueProductosUI extends VistaGenericaUI {
 		panelEmpaqueProducto.add(btnGuardar,"cell 0 2");
 		
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				quitarNuevo();
-			}
-		});
-		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.setBackground(Color.DARK_GRAY);
 		panelEmpaqueProducto.add(btnCancelar,"cell 1 2");
 		
 		add(panelEmpaqueProducto,BorderLayout.SOUTH);
 		btnCancelar.setVisible(false);
 	}
-	
-	public JTextField getTxtBuscar() {
-		return txtBuscar;
+
+	public JPanel getPanelEmpaqueProducto() {
+		return panelEmpaqueProducto;
 	}
 
-	public void setTxtBuscar(JTextField txtBuscar) {
-		this.txtBuscar = txtBuscar;
-	}
-
-	@SuppressWarnings("rawtypes")
-	public JComboBox getCmbProducto() {
-		return cmbProducto;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void setCmbPresentacion(JComboBox cmbPresentacion) {
-		this.cmbProducto = cmbPresentacion;
-	}
-
-	public JButton getBtnGuardar() {
-		return btnGuardar;
-	}
-
-	public void setBtnGuardar(JButton btnGuardar) {
-		this.btnGuardar = btnGuardar;
+	public void setPanelEmpaqueProducto(JPanel panelEmpaqueProducto) {
+		this.panelEmpaqueProducto = panelEmpaqueProducto;
 	}
 
 	public JSpinner getTxtCantidad() {
 		return txtCantidad;
 	}
-	
-	public JTextField getTxtId() {
-		return txtId;
+
+	public void setTxtCantidad(JSpinner txtCantidad) {
+		this.txtCantidad = txtCantidad;
 	}
 
-	public void setTxtId(JTextField txtId) {
-		this.txtId = txtId;
+	public JComboBox<Producto> getCmbProducto() {
+		return cmbProducto;
 	}
 
-	public JPanel getPanelProducto() {
-		return panelEmpaqueProducto;
-	}
-
-	public void setPanelProducto(JPanel panelProducto) {
-		this.panelEmpaqueProducto = panelProducto;
+	public void setCmbProducto(JComboBox<Producto> cmbProducto) {
+		this.cmbProducto = cmbProducto;
 	}
 
 	public JButton getBtnNuevo() {
@@ -235,7 +182,7 @@ public class EmpaqueProductosUI extends VistaGenericaUI {
 	public void setBtnNuevo(JButton btnNuevo) {
 		this.btnNuevo = btnNuevo;
 	}
-	
+
 	public JButton getBtnEliminar() {
 		return btnEliminar;
 	}
@@ -244,25 +191,12 @@ public class EmpaqueProductosUI extends VistaGenericaUI {
 		this.btnEliminar = btnEliminar;
 	}
 
-	public void quitarNuevo() {
-		// TODO Auto-generated method stub
-		remove(panelEmpaqueProducto);
-	}
-		
-	public JTextField getTxtABuscar() {
-		return txtABuscar;
+	public JButton getBtnGuardar() {
+		return btnGuardar;
 	}
 
-	public void setTxtABuscar(String txtABuscar) {
-		this.txtABuscar.setText(txtABuscar);
-	}
-
-	public JPanel getPnAction() {
-		return getPnBotones();
-	}
-
-	public JPanel getPanel() {
-		return getPanelBuscar();
+	public void setBtnGuardar(JButton btnGuardar) {
+		this.btnGuardar = btnGuardar;
 	}
 
 	public JButton getBtnProducto() {
@@ -281,34 +215,6 @@ public class EmpaqueProductosUI extends VistaGenericaUI {
 		this.btnCancelar = btnCancelar;
 	}
 
-	public JButton getBtnBuscar() {
-		return btnBuscar;
-	}
-
-	public void setBtnBuscar(JButton btnBuscar) {
-		this.btnBuscar = btnBuscar;
-	}
-
-	public void setTxtABuscar(JTextField txtABuscar) {
-		this.txtABuscar = txtABuscar;
-	}
-
-	public void setTxtCantidad(JSpinner txtCantidad) {
-		this.txtCantidad = txtCantidad;
-	}
-
-	public void setCmbProducto(JComboBox<Producto> cmbProducto) {
-		this.cmbProducto = cmbProducto;
-	}
-
-	public JPanel getPanelEmpaqueProducto() {
-		return panelEmpaqueProducto;
-	}
-
-	public void setPanelEmpaqueProducto(JPanel panelEmpaqueProducto) {
-		this.panelEmpaqueProducto = panelEmpaqueProducto;
-	}
-
 	public JPanel getPnEmpaque() {
 		return pnEmpaque;
 	}
@@ -324,8 +230,7 @@ public class EmpaqueProductosUI extends VistaGenericaUI {
 	public void setContEmpaqueProductos(ContEmpaqueProductos contEmpaqueProductos) {
 		this.contEmpaqueProductos = contEmpaqueProductos;
 	}
-	
-	
+
 }
 
 

@@ -81,6 +81,8 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 				{
 					try {						
 						servicioRuta.eliminar(rutas.get(vista.getTable().getSelectedRow()));
+						rutas = servicioRuta.getRutas();
+						ruta = new Ruta();
 						activarBinding(servicioRuta.getRutas());
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 		

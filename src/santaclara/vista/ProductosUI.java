@@ -111,7 +111,6 @@ public class ProductosUI extends VistaGenericaUI {
 		
 		dibujarBotonSalir();
 		getBtnSalir().addActionListener(contProductos.salir());
-		
 	}
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -291,14 +290,6 @@ public class ProductosUI extends VistaGenericaUI {
 
 	public void setBtnEliminar(JButton btnEliminar) {
 		this.btnEliminar = btnEliminar;
-	}
-
-	public void activarNuevoProducto() {
-		// TODO Auto-generated method stub
-		pnlProducto.setVisible(true);
-		txtNombre.setText("");
-		txtPrecio.setValue(1.0);
-		add(pnlProducto,BorderLayout.SOUTH);
 	}
 
 	public Checkbox getCheckIva() {

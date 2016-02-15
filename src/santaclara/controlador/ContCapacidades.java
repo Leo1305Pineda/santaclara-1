@@ -75,7 +75,7 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 							try {
 									capacidad.setVolumen(new Double(vista.getTxtVolumen().getText().toString()));
 									JOptionPane.showMessageDialog(vista,servicioCapacidad.guardar(capacidad));
-									capacidades.add(capacidad);
+									capacidades = servicioCapacidad.getCapacidades();
 									activarBinding(capacidades);
 									
 								} catch (IOException e1) {
@@ -106,7 +106,6 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
 					cargarCapacidad(new Capacidad());
 				}
-				
 			}
 		};
 	}
@@ -201,8 +200,6 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
  
 		vista.remove(vista.getPnCapacidad());
 		vista.repaint();
-
-
 	}
 
 	public MouseAdapter mostrarCapacidad() {

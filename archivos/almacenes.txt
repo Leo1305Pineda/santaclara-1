@@ -3,4 +3,4 @@ ubicacion:Zona Industrial I
 id:2
 ubicacion:Zona Industrial II
 id:3
-ubicacion:Zona Industrial III
+ubicacion:sssss

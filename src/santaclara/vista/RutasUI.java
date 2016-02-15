@@ -24,13 +24,10 @@ import santaclara.vista.herramientas.VistaGenericaUI;
 
 @SuppressWarnings("serial")
 public class RutasUI extends VistaGenericaUI {
-
-	
-	
     private JComboBox<Zona> cmbZona;
    
     private JPanel 	 panelRuta;
-    
+  
     private JTextField 	txtNombre;
     private JTextField  txtId;
 	private JTextField txtABuscar;
