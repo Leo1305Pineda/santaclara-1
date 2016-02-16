@@ -3,6 +3,7 @@ package santaclara.vista.consultas;
 import java.awt.Component;
 import java.awt.SystemColor;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -93,6 +94,7 @@ public class ListCantRefrescoSaborVendidoAlmacenUI extends VistaGenericaUI{
 		getPnBotones().add(cmbSabor);
 		
 		btnActualizar = new JButton("Actualizar");
+		btnActualizar.setIcon(new ImageIcon("img/gestion/actualizar.png"));
 		btnActualizar.addActionListener(contListCantRefrescoSaborVendidoAlmacen.Actualizar());
 		btnActualizar.setBackground(Color.DARK_GRAY);
 		btnActualizar.setForeground(Color.WHITE);

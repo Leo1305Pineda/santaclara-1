@@ -2,11 +2,13 @@ package santaclara.vista.consultas;
 
 import java.awt.SystemColor;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+
 import santaclara.controlador.consultas.ContListClienteTipoZona;
 import santaclara.modelo.Cliente;
 import santaclara.modelo.Zona;
@@ -66,6 +68,7 @@ public class ListClienteZonaTipoUI extends VistaGenericaUI{
 		getPnBotones().add(cmbZona,"cell 2 1");	
 		
 		btnActualizar = new JButton("Actualizar");
+		btnActualizar.setIcon(new ImageIcon("img/gestion/actualizar.png"));
 		btnActualizar.addActionListener(contLisClienteZonaTipo.Actualizar());
 		btnActualizar.setBackground(Color.DARK_GRAY);
 		btnActualizar.setForeground(Color.WHITE);

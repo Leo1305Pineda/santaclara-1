@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.SystemColor;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -107,6 +108,7 @@ public class MontoFacturadoMesZonaTipoPagoUI extends VistaGenericaUI{
 		getPnBotones().add(cmbZona);
 
 		btnActualizar = new JButton("Actualizar");
+		btnActualizar.setIcon(new ImageIcon("img/gestion/actualizar.png"));
 		btnActualizar.addActionListener(contMontoFacturadoMesZonaTipoPago.Actualizar());
 		btnActualizar.setBackground(Color.DARK_GRAY);
 		btnActualizar.setForeground(Color.WHITE);

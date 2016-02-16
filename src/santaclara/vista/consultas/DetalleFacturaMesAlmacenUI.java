@@ -3,6 +3,7 @@ package santaclara.vista.consultas;
 import java.awt.Component;
 import java.awt.SystemColor;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -14,7 +15,6 @@ import com.toedter.calendar.JDateChooser;
 import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.Producto;
-
 import santaclara.vista.herramientas.VistaGenericaUI;
 
 import java.awt.Color;
@@ -96,6 +96,7 @@ public class DetalleFacturaMesAlmacenUI extends VistaGenericaUI{
 		getPnBotones().add(cmbProducto);
 		
 		btnActualizar = new JButton("Actualizar");
+		btnActualizar.setIcon(new ImageIcon("img/gestion/actualizar.png"));
 		btnActualizar.addActionListener(contDetalleFacturaMesAlmacen.Actualizar());
 		btnActualizar.setBackground(Color.DARK_GRAY);
 		btnActualizar.setForeground(Color.WHITE);

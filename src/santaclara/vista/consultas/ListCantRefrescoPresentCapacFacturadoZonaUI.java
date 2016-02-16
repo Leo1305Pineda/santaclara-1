@@ -3,6 +3,7 @@ package santaclara.vista.consultas;
 import java.awt.Component;
 import java.awt.SystemColor;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -30,7 +31,6 @@ public class ListCantRefrescoPresentCapacFacturadoZonaUI extends VistaGenericaUI
 	private JComboBox<Presentacion> cmbPresentacion;
 	private JComboBox<Capacidad> 	cmbCapacidad;
 	private JComboBox<Zona> 	cmbZona;
-    private JButton btnBuscar;
     private JLabel lblDesde;
     private JLabel lblHasta;
     private JLabel lblAlmacen;
@@ -68,6 +68,7 @@ public class ListCantRefrescoPresentCapacFacturadoZonaUI extends VistaGenericaUI
 		getPnBotones().add(dateHasta,"cell 4 0");
 		
 		btnActualizar = new JButton("Actualizar");
+		btnActualizar.setIcon(new ImageIcon("img/gestion/actualizar.png"));
 		btnActualizar.addActionListener(contListCantRefrecoPresentCapacFacturadoZona.Actualizar());
 		btnActualizar.setBackground(Color.DARK_GRAY);
 		btnActualizar.setForeground(Color.WHITE);
@@ -230,14 +231,6 @@ public class ListCantRefrescoPresentCapacFacturadoZonaUI extends VistaGenericaUI
 
 	public void setLblCapacidad(JLabel lblCapacidad) {
 		this.lblCapacidad = lblCapacidad;
-	}
-
-	public JButton getBtnBuscar() {
-		return btnBuscar;
-	}
-
-	public void setBtnBuscar(JButton btnBuscar) {
-		this.btnBuscar = btnBuscar;
 	}
 
 	public JComboBox<Zona> getCmbZona() {

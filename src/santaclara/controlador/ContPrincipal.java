@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import javax.swing.JPanel;
 
+import santaclara.controlador.consultas.ContConsulta;
 import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
 import santaclara.controlador.consultas.ContListCantRefrecoPresentCapacFacturadoZona;
 import santaclara.controlador.consultas.ContListCantRefrescoSaborVendidoAlmacen;
@@ -13,6 +14,7 @@ import santaclara.controlador.consultas.ContListClienteTipoZona;
 import santaclara.controlador.consultas.ContMontoFacturadoMesZonaTipoPago;
 import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
 import santaclara.controlador.reportes.ContReportMontFacturadoVendedor;
+import santaclara.controlador.reportes.ContReporte;
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
 import santaclara.vista.herramientas.VistaGenericaUI;
@@ -202,11 +204,41 @@ public  class ContPrincipal {
 				else if(e.getSource().equals(vista.getMntMontoFacturadoMesZonaTipoPago())){
 					ActivarMontoFacturadoMesZonaTipoPago();
 				}
+				else if(e.getSource().equals(vista.getMntReporte())){
+					ActivarReporte();
+				}
+				else if(e.getSource().equals(vista.getMntConsulta())){
+					ActivarConsulta();
+				}
 			}
 		};
 	}
-	 
-public void ActivarConsultaDetalleFacturaMesAlmacen(){
+	
+	public void ActivarReporte(){
+		
+		try {
+			
+			controlador = new ContReporte(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	public void ActivarConsulta(){
+	
+		try {
+		
+			controlador = new ContConsulta(ContPrincipal.this);
+			}
+			catch (Exception e1) {
+				// 	TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	}
+	
+	public void ActivarConsultaDetalleFacturaMesAlmacen(){
 		
 		try {
 			

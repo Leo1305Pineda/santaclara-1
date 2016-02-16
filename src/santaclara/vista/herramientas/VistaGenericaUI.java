@@ -48,11 +48,9 @@ public class VistaGenericaUI extends JPanel {
 	
 	protected void dibujarPanelTabla() {
 		pnTabla = new JPanel();
-		//pnTabla.setBounds(10,50,getWidthPantalla()-20,70);
 		pnTabla.setBackground(Color.DARK_GRAY);
 		pnTabla.setLayout(new BorderLayout());
 		pnTabla.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Catalogo", TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
-		//pnTabla.setSize(500,400);
 		add(pnTabla,BorderLayout.CENTER);
 
 		/////////////////////////////////////////////////////////////////////////////
@@ -62,7 +60,6 @@ public class VistaGenericaUI extends JPanel {
 		getPnTabla().add(getScrollPanel());
 		
 	}
-	
 	
 	protected void dibujarPanelOpciones() {
 		pnOpciones = new JPanel();
