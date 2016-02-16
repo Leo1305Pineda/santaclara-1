@@ -97,7 +97,7 @@ public class PedidosUI extends JPanel{
 		btnAtras = new JButton("Atras");
 		btnAtras.addActionListener(contPedidos.actionAtras());
 		pnlOption.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		btnAtras.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/AtrasCurva.png"));
+		btnAtras.setIcon(new ImageIcon("img/gestion/AtrasCurva.png"));
 		btnAtras.setForeground(Color.WHITE);
 		btnAtras.setBackground(Color.DARK_GRAY);
 		pnlOption.add(btnAtras);
@@ -105,7 +105,7 @@ public class PedidosUI extends JPanel{
 		btnNuevo = new JButton("Nuevo");
 		btnNuevo.addActionListener(contPedidos.actionNuevo());
 		btnNuevo.setToolTipText("Nuevo");
-		btnNuevo.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/add.png"));
+		btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
 		btnNuevo.setForeground(Color.WHITE);
 		btnNuevo.setBackground(Color.DARK_GRAY);
 		pnlOption.add(btnNuevo);
@@ -120,7 +120,7 @@ public class PedidosUI extends JPanel{
 		btnLimpiar.setBackground(Color.DARK_GRAY);
 		pnlOption.add(btnLimpiar);
 
-		btnGuardar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/disk.png"));
+		btnGuardar.setIcon(new ImageIcon("img/gestion/disk.png"));
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		pnlOption.add(btnGuardar);
@@ -128,7 +128,7 @@ public class PedidosUI extends JPanel{
 		btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(contPedidos.actionSalir());
 		btnSalir.setToolTipText("Salir");
-		btnSalir.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/SalirCurva.png"));
+		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
 		btnSalir.setBackground(Color.DARK_GRAY);
 		btnSalir.setForeground(Color.WHITE);
 		btnSalir.setHorizontalAlignment(SwingConstants.LEFT);
@@ -205,7 +205,7 @@ public class PedidosUI extends JPanel{
 		btnAlmacen = new JButton("Almacenes");
 		panel.add(btnAlmacen);
 		btnAlmacen.addActionListener(contPedidos.actionAlmacen());
-		btnAlmacen.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/empresa.png"));
+		btnAlmacen.setIcon(new ImageIcon("img/gestion/empresa.png"));
 		btnAlmacen.setToolTipText("Almacen");
 		btnAlmacen.setForeground(Color.WHITE);
 		btnAlmacen.setBackground(Color.DARK_GRAY);
@@ -214,7 +214,7 @@ public class PedidosUI extends JPanel{
 		panel.add(btnCliente);
 		btnCliente.addActionListener(contPedidos.actionCliente());
 		btnCliente.setToolTipText("Cliente");
-		btnCliente.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/group.png"));
+		btnCliente.setIcon(new ImageIcon("img/gestion/group.png"));
 		btnCliente.setBackground(Color.DARK_GRAY);
 		btnCliente.setForeground(Color.WHITE);
 		
@@ -223,7 +223,7 @@ public class PedidosUI extends JPanel{
 		panel.add(btnVendedor);
 		btnVendedor.addActionListener(contPedidos.actionVendedor());
 		btnVendedor.setToolTipText("Vendedor");
-		btnVendedor.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/user.png"));
+		btnVendedor.setIcon(new ImageIcon("img/gestion/user.png"));
 		btnVendedor.setBackground(Color.DARK_GRAY);
 		btnVendedor.setForeground(Color.WHITE);
 		
@@ -252,7 +252,7 @@ public class PedidosUI extends JPanel{
 		panel_1.add(btnProducto);
 		btnProducto.addActionListener(contPedidos.actionProducto());
 		btnProducto.setToolTipText("Agregar Producto");
-		btnProducto.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/NuevoPaquete.png"));
+		btnProducto.setIcon(new ImageIcon("img/gestion/NuevoPaquete.png"));
 		btnProducto.setBackground(Color.DARK_GRAY);
 		btnProducto.setForeground(Color.WHITE);
 		
@@ -260,7 +260,7 @@ public class PedidosUI extends JPanel{
 		panel_1.add(btnQuitarProducto);
 		btnQuitarProducto.addActionListener(contPedidos.actionQuitarProductoDetalle());
 		btnQuitarProducto.setToolTipText("Quitar Producto");
-		btnQuitarProducto.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/desktop.png"));
+		btnQuitarProducto.setIcon(new ImageIcon("img/gestion/desktop.png"));
 		btnQuitarProducto.setBackground(Color.DARK_GRAY);
 		btnQuitarProducto.setForeground(Color.WHITE);
 		
@@ -307,7 +307,7 @@ public class PedidosUI extends JPanel{
  
 		pnlPedido.add(btnGuardarFactura);
 		btnGuardarFactura.addActionListener(contPedidos.actionGenerarFactura());
-		btnGuardarFactura.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/bien.png"));
+		btnGuardarFactura.setIcon(new ImageIcon("img/gestion/bien.png"));
 		btnGuardarFactura.setToolTipText("GenararFactura");
 		btnGuardarFactura.setForeground(Color.WHITE);
 		btnGuardarFactura.setBackground(Color.DARK_GRAY);
@@ -331,7 +331,7 @@ public class PedidosUI extends JPanel{
 		btnBuscar = new JButton("");
 		panel_2.add(btnBuscar);
 		btnBuscar.addActionListener(contPedidos.actionBuscarPedido());
-		btnBuscar.setIcon(new ImageIcon("/home/leo/git/santaclara/img/gestion/buscar.png"));
+		btnBuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
 		btnBuscar.setBackground(Color.DARK_GRAY);
 		btnBuscar.setForeground(Color.WHITE);
 		
