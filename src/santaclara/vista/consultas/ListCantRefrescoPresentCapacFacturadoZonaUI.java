@@ -8,38 +8,35 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.JButton;
-import javax.swing.JTable;
 
-import org.jdesktop.beansbinding.AutoBinding;
-import org.jdesktop.beansbinding.BeanProperty;
-import org.jdesktop.swingbinding.JComboBoxBinding;
-import org.jdesktop.swingbinding.JTableBinding;
-import org.jdesktop.swingbinding.SwingBindings;
+import net.miginfocom.swing.MigLayout;
 
 import com.toedter.calendar.JDateChooser;
 
-import santaclara.Servicio.ServicioAlmacen;
 import santaclara.controlador.consultas.ContListCantRefrecoPresentCapacFacturadoZona;
 import santaclara.modelo.Almacen;
-import santaclara.modelo.DetalleFactura;
+import santaclara.modelo.Capacidad;
+import santaclara.modelo.Presentacion;
+import santaclara.modelo.Zona;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.io.IOException;
-import java.util.List;
 
 @SuppressWarnings("serial")
 public class ListCantRefrescoPresentCapacFacturadoZonaUI extends VistaGenericaUI{
 
 	private JComboBox<Almacen> 		cmbAlmacen;
-	@SuppressWarnings("rawtypes")
-	private JTableBinding   binFacturas;
-    private JButton btnAtras;
+	private JComboBox<Presentacion> cmbPresentacion;
+	private JComboBox<Capacidad> 	cmbCapacidad;
+	private JComboBox<Zona> 	cmbZona;
     private JButton btnBuscar;
     private JLabel lblDesde;
     private JLabel lblHasta;
     private JLabel lblAlmacen;
+    private JLabel lblPresentacion;
+    private JLabel lblCapacidad;
+    private JLabel lblZona;
     private JDateChooser dateDesde;
     private JDateChooser dateHasta;
     private JButton btnActualizar;
@@ -50,8 +47,57 @@ public class ListCantRefrescoPresentCapacFacturadoZonaUI extends VistaGenericaUI
 
 		/**********************************************************************************************************************************************************/
 		dibujarPanelOpciones();
+		dibujarBotonAtras();
+		getBtnAtras().addActionListener(contListCantRefrecoPresentCapacFacturadoZona.Atras());
 		dibujarPanelTabla();
-	
+		
+		getPnBotones().setLayout(new MigLayout());
+		
+		lblDesde = new JLabel("Desde");
+		lblDesde.setForeground(Color.WHITE);
+		getPnBotones().add(lblDesde,"cell 1 0");
+		
+		dateDesde = new JDateChooser();
+		getPnBotones().add(dateDesde,"cell 2 0");
+		
+		lblHasta = new JLabel("Hasta");
+		lblHasta.setForeground(Color.WHITE);
+		getPnBotones().add(lblHasta,"cell 3 0");
+		
+		dateHasta = new JDateChooser();
+		getPnBotones().add(dateHasta,"cell 4 0");
+		
+		btnActualizar = new JButton("Actualizar");
+		btnActualizar.addActionListener(contListCantRefrecoPresentCapacFacturadoZona.Actualizar());
+		btnActualizar.setBackground(Color.DARK_GRAY);
+		btnActualizar.setForeground(Color.WHITE);
+		getPnBotones().add(btnActualizar,"cell 5 0");
+		
+		dibujarBotonSalir();
+		getBtnSalir().addActionListener(contListCantRefrecoPresentCapacFacturadoZona.Salir());
+		
+		lblZona = new JLabel("Zona");
+		lblZona.setForeground(Color.WHITE);
+		getPnBotones().add(lblZona,"cell 1 1");
+		
+		cmbZona = new JComboBox<Zona>();
+		cmbZona.setBackground(SystemColor.controlHighlight);
+		cmbZona.setRenderer(new ListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
+				// TODO Auto-generated method stub
+				Zona zona = (Zona) value;
+				if (zona.getId().equals(0)) return new JLabel("Todos");
+				return new JLabel(zona.getDescripcion());
+			}
+		});
+		getPnBotones().add(cmbZona,"cell 2 1");
+		
+		lblAlmacen = new JLabel("Almacen");
+		lblAlmacen.setForeground(Color.WHITE);
+		getPnBotones().add(lblAlmacen,"cell 3 1");
+		
 		cmbAlmacen = new JComboBox<Almacen>();
 		cmbAlmacen.setBackground(SystemColor.controlHighlight);
 		cmbAlmacen.setRenderer(new ListCellRenderer() {
@@ -63,81 +109,47 @@ public class ListCantRefrescoPresentCapacFacturadoZonaUI extends VistaGenericaUI
 				return new JLabel(almacen.getUbicacion());
 			}
 		});
-		btnAtras = new JButton("Atras");
-		btnAtras.setForeground(Color.WHITE);
-		btnAtras.setFont(new Font("Dialog", Font.BOLD, 10));
-		btnAtras.setBackground(Color.DARK_GRAY);
-		getPnBotones().add(btnAtras);
+		getPnBotones().add(cmbAlmacen,"cell 4 1");
 		
-		lblDesde = new JLabel("Desde");
-		lblDesde.setForeground(Color.WHITE);
-		getPnBotones().add(lblDesde);
+		lblPresentacion = new JLabel("Presentacion");
+		lblPresentacion.setForeground(Color.WHITE);
+		getPnBotones().add(lblPresentacion,"cell 5 1");
 		
-		dateDesde = new JDateChooser();
-		getPnBotones().add(dateDesde);
+		cmbPresentacion = new JComboBox<Presentacion>();
+		cmbPresentacion.setBackground(SystemColor.controlHighlight);
+		cmbPresentacion.setRenderer(new ListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
+				// TODO Auto-generated method stub
+				Presentacion presentacion = (Presentacion) value;
+				return new JLabel(presentacion.getMaterial());
+			}
+		});
+		getPnBotones().add(cmbPresentacion,"cell 6 1");
 		
-		lblHasta = new JLabel("Hasta");
-		lblHasta.setForeground(Color.WHITE);
-		getPnBotones().add(lblHasta);
+		lblCapacidad = new JLabel("Capacidad");
+		lblCapacidad.setForeground(Color.WHITE);
+		getPnBotones().add(lblCapacidad,"cell 7 1");
 		
-		dateHasta = new JDateChooser();
-		getPnBotones().add(dateHasta);
-		
-		lblAlmacen = new JLabel("Almacen");
-		lblAlmacen.setForeground(Color.WHITE);
-		getPnBotones().add(lblAlmacen);
-		
-		getPnBotones().add(cmbAlmacen);
-		
-		btnActualizar = new JButton("Actualizar");
-		btnActualizar.addActionListener(contListCantRefrecoPresentCapacFacturadoZona.Actualizar());
-		btnActualizar.setBackground(Color.DARK_GRAY);
-		btnActualizar.setForeground(Color.WHITE);
-		getPnBotones().add(btnActualizar);
-	}
-
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void activarBinding(List<DetalleFactura> detalleFacturas) {
-		// TODO Auto-generated method stub
-		setTable(new JTable());
-		getScrollPanel().setViewportView(getTable());
-		binFacturas = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,detalleFacturas,getTable());
-	    
-	    BeanProperty idFactura  = BeanProperty.create("factura.id");
-	    BeanProperty fecha  = BeanProperty.create("factura.fechaCadenaStr");
-	    BeanProperty almacen = BeanProperty.create("factura.almacen.ubicacion");
-	    BeanProperty presentacion = BeanProperty.create("empaqueProducto.producto.presentacion.material");
-	    BeanProperty capacidad = BeanProperty.create("empaqueProducto.producto.capacidad.volumenStr");
-	    BeanProperty zonaDescripcion = BeanProperty.create("factura.clienteZona");
-	    BeanProperty cantidad = BeanProperty.create("cantidad");
-	    
-
-	    binFacturas.addColumnBinding(idFactura).setColumnClass(String.class).setColumnName("Nro Factura");
-	    binFacturas.addColumnBinding(fecha).setColumnClass(String.class).setColumnName("Fecha");
-	    binFacturas.addColumnBinding(zonaDescripcion).setColumnClass(String.class).setColumnName("Zona");
-	    
-	    binFacturas.addColumnBinding(almacen).setColumnClass(String.class).setColumnName("Almacen");
-	    binFacturas.addColumnBinding(presentacion).setColumnClass(String.class).setColumnName("Presentacion");
-	    
-	    binFacturas.addColumnBinding(capacidad).setColumnClass(String.class).setColumnName("Capacidad");
-	   
-	    binFacturas.addColumnBinding(cantidad).setColumnClass(String.class).setColumnName("Cantidad");
-	    
-
-	    binFacturas.bind();
+		cmbCapacidad = new JComboBox<Capacidad>();
+		cmbCapacidad.setBackground(SystemColor.controlHighlight);
+		cmbCapacidad.setRenderer(new ListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
+				// TODO Auto-generated method stub
+				Capacidad capacidad = (Capacidad) value;
+				if (capacidad.getId().equals(0))return new JLabel("Todos");
+				return new JLabel(capacidad.getVolumen().toString());
+				
+			}
+		}); 
+	
+		getPnBotones().add(cmbCapacidad,"cell 8 1");
+	
 	}
     
-    @SuppressWarnings("rawtypes")
-	public void cargarCmbAlmacen() throws NumberFormatException, IOException{
-    	List<Almacen> almacenes = new ServicioAlmacen().getAlmacenes();
-    	Almacen almacen = new Almacen(0,"Todos");
-    	almacenes.add(almacen);
-    	JComboBoxBinding jcomboAlmacen = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,almacenes,cmbAlmacen);
-	    
-	    jcomboAlmacen.bind();
-    }
-
 	public JComboBox<Almacen> getCmbAlmacen() {
 		return cmbAlmacen;
 	}
@@ -146,87 +158,113 @@ public class ListCantRefrescoPresentCapacFacturadoZonaUI extends VistaGenericaUI
 	public void setCmbAlmacen(JComboBox<Almacen> cmbAlmacen) {
 		this.cmbAlmacen = cmbAlmacen;
 	}
-
-
-	@SuppressWarnings("rawtypes")
-	public JTableBinding getBinFacturas() {
-		return binFacturas;
+	
+	public JComboBox<Presentacion> getCmbPresentacion() {
+		return cmbPresentacion;
 	}
 
-
-	@SuppressWarnings("rawtypes")
-	public void setBinFacturas(JTableBinding binFacturas) {
-		this.binFacturas = binFacturas;
+	public void setCmbPresentacion(JComboBox<Presentacion> cmbPresentacion) {
+		this.cmbPresentacion = cmbPresentacion;
 	}
 
+	public JComboBox<Capacidad> getCmbCapacidad() {
+		return cmbCapacidad;
+	}
+
+	public void setCmbCapacidad(JComboBox<Capacidad> cmbCapacidad) {
+		this.cmbCapacidad = cmbCapacidad;
+	
+	} 
 
 	public JLabel getLblDesde() {
 		return lblDesde;
 	}
 
-
 	public void setLblDesde(JLabel lblDesde) {
 		this.lblDesde = lblDesde;
 	}
-
 
 	public JDateChooser getDateDesde() {
 		return dateDesde;
 	}
 
-
 	public void setDateDesde(JDateChooser dateDesde) {
 		this.dateDesde = dateDesde;
 	}
-
 
 	public JLabel getLblHasta() {
 		return lblHasta;
 	}
 
-
 	public void setLblHasta(JLabel lblHasta) {
 		this.lblHasta = lblHasta;
 	}
-
 
 	public JDateChooser getDateHasta() {
 		return dateHasta;
 	}
 
-
 	public void setDateHasta(JDateChooser dateHasta) {
 		this.dateHasta = dateHasta;
 	}
-
 
 	public JLabel getLblAlmacen() {
 		return lblAlmacen;
 	}
 
-
 	public void setLblAlmacen(JLabel lblAlmacen) {
 		this.lblAlmacen = lblAlmacen;
 	}
-
-	public JButton getBtnAtras() {
-		return btnAtras;
+	
+	public JLabel getLblPresentacion() {
+		return lblPresentacion;
 	}
 
-
-	public void setBtnAtras(JButton btnAtras) {
-		this.btnAtras = btnAtras;
+	public void setLblPresentacion(JLabel lblPresentacion) {
+		this.lblPresentacion = lblPresentacion;
+	}
+	
+	public JLabel getLblCapacidad() {
+		return lblCapacidad;
 	}
 
+	public void setLblCapacidad(JLabel lblCapacidad) {
+		this.lblCapacidad = lblCapacidad;
+	}
 
 	public JButton getBtnBuscar() {
 		return btnBuscar;
 	}
 
-
 	public void setBtnBuscar(JButton btnBuscar) {
 		this.btnBuscar = btnBuscar;
 	}
+
+	public JComboBox<Zona> getCmbZona() {
+		return cmbZona;
+	}
+
+	public void setCmbZona(JComboBox<Zona> cmbZona) {
+		this.cmbZona = cmbZona;
+	}
+
+	public JLabel getLblZona() {
+		return lblZona;
+	}
+
+	public void setLblZona(JLabel lblZona) {
+		this.lblZona = lblZona;
+	}
+
+	public JButton getBtnActualizar() {
+		return btnActualizar;
+	}
+
+	public void setBtnActualizar(JButton btnActualizar) {
+		this.btnActualizar = btnActualizar;
+	}
+	
+	
 }
 
 

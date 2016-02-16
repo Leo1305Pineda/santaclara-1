@@ -35,6 +35,7 @@ import com.toedter.calendar.JDateChooser;
 public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
 
 	private JComboBox<Almacen> 		cmbAlmacen;
+	
 	@SuppressWarnings("rawtypes")
 	private JTableBinding   binFacturas;
     private JButton btnBuscar;

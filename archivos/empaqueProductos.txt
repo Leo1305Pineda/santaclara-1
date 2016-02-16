@@ -18,7 +18,7 @@ idProducto:22
 cantidad:24
 id:8
 idProducto:13
-cantidad:12
+cantidad:6
 id:9
 idProducto:24
 cantidad:12

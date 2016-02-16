@@ -9,9 +9,17 @@ import java.util.Stack;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+
+import santaclara.modelo.Almacen;
+import santaclara.modelo.Capacidad;
+import santaclara.modelo.Presentacion;
+import santaclara.modelo.Producto;
+import santaclara.modelo.Sabor;
+import santaclara.modelo.Zona;
 
 public abstract class ContGeneral implements IContGeneral {
 
@@ -132,5 +140,38 @@ public abstract class ContGeneral implements IContGeneral {
 		}
 		return tabla1;			
 	}
-	
+
+	@SuppressWarnings("rawtypes")
+	public void setSelectedValue(JComboBox comboBox,Integer id)
+    {	
+        for (int i = 0; i < comboBox.getItemCount(); i++)
+        {
+        	comboBox.setSelectedIndex(i);
+        	Boolean enc=false;
+        	switch (comboBox.getSelectedItem().getClass().getName().toString()) {
+			case "santaclara.modelo.Almacen":
+				enc = (((Almacen)comboBox.getSelectedItem()).getId().equals(id)); 
+					break;
+			case "santaclara.modelo.Capacidad":
+				enc = (((Capacidad)comboBox.getSelectedItem()).getId().equals(id)); 
+					break;
+			case "santaclara.modelo.Presentacion":
+				enc = (((Presentacion)comboBox.getSelectedItem()).getId().equals(id)); 
+					break;
+			case "santaclara.modelo.Zona":
+				enc = (((Zona)comboBox.getSelectedItem()).getId().equals(id)); 
+					break;
+			case "santaclara.modelo.Producto":
+				enc = (((Producto)comboBox.getSelectedItem()).getId().equals(id)); 
+					break;
+			case "santaclara.modelo.Sabor":
+				enc = (((Sabor)comboBox.getSelectedItem()).getId().equals(id)); 
+					break;
+			default:
+				break;
+			}
+        	if (enc) break;
+        }
+    }
+
 }

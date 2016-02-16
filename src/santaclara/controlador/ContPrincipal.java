@@ -34,7 +34,7 @@ public  class ContPrincipal {
 	   
 	}
 
-	private void ejecutar() {
+	public void ejecutar() {
 		// TODO Auto-generated method stub
 		vista = new PrincipalUI(this);
 		try {

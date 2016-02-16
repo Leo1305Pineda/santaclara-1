@@ -356,8 +356,6 @@ public class ProductoAlmacenesUI extends VistaGenericaUI {
 	public void setContProductoAlmacenes(ContProductoAlmacenes contProductoAlmacenes) {
 		this.contProductoAlmacenes = contProductoAlmacenes;
 	}
-	
-	
 }
 
 

@@ -8,38 +8,28 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.JButton;
-import javax.swing.JTable;
-
-import org.jdesktop.beansbinding.AutoBinding;
-import org.jdesktop.beansbinding.BeanProperty;
-import org.jdesktop.swingbinding.JComboBoxBinding;
-import org.jdesktop.swingbinding.JTableBinding;
-import org.jdesktop.swingbinding.SwingBindings;
 
 import com.toedter.calendar.JDateChooser;
 
-import santaclara.Servicio.ServicioAlmacen;
 import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
 import santaclara.modelo.Almacen;
-import santaclara.modelo.DetalleFactura;
+import santaclara.modelo.Producto;
+
 import santaclara.vista.herramientas.VistaGenericaUI;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.io.IOException;
-import java.util.List;
 
 @SuppressWarnings("serial")
 public class DetalleFacturaMesAlmacenUI extends VistaGenericaUI{
 
 	private JComboBox<Almacen> 		cmbAlmacen;
-	@SuppressWarnings("rawtypes")
-	private JTableBinding   binFacturas;
-    private JButton btnAtras;
+	private JComboBox<Producto> 		cmbProducto;
     private JButton btnBuscar;
     private JLabel lblDesde;
     private JLabel lblHasta;
     private JLabel lblAlmacen;
+    private JLabel lblProducto;
     private JDateChooser dateDesde;
     private JDateChooser dateHasta;
     private JButton btnActualizar;
@@ -50,6 +40,8 @@ public class DetalleFacturaMesAlmacenUI extends VistaGenericaUI{
 
 		/**********************************************************************************************************************************************************/
 		dibujarPanelOpciones();
+		dibujarBotonAtras();
+		getBtnAtras().addActionListener(contDetalleFacturaMesAlmacen.Atras());
 		dibujarPanelTabla();
 	
 		cmbAlmacen = new JComboBox<Almacen>();
@@ -63,11 +55,19 @@ public class DetalleFacturaMesAlmacenUI extends VistaGenericaUI{
 				return new JLabel(almacen.getUbicacion());
 			}
 		});
-		btnAtras = new JButton("Atras");
-		btnAtras.setForeground(Color.WHITE);
-		btnAtras.setFont(new Font("Dialog", Font.BOLD, 10));
-		btnAtras.setBackground(Color.DARK_GRAY);
-		getPnBotones().add(btnAtras);
+		
+		cmbProducto = new JComboBox<Producto>();
+		cmbProducto.setBackground(SystemColor.controlHighlight);
+		cmbProducto.setRenderer(new ListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
+				// TODO Auto-generated method stub
+				Producto producto = (Producto) value;
+				if(producto.getId().equals(0))return new JLabel("Todos");
+					return new JLabel(producto.getDescripcion());
+			}
+		});
 		
 		lblDesde = new JLabel("Desde");
 		lblDesde.setForeground(Color.WHITE);
@@ -89,48 +89,22 @@ public class DetalleFacturaMesAlmacenUI extends VistaGenericaUI{
 		
 		getPnBotones().add(cmbAlmacen);
 		
+		lblProducto = new JLabel("Producto");
+		lblProducto.setForeground(Color.WHITE);
+		getPnBotones().add(lblProducto);
+		
+		getPnBotones().add(cmbProducto);
+		
 		btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(contDetalleFacturaMesAlmacen.Actualizar());
 		btnActualizar.setBackground(Color.DARK_GRAY);
 		btnActualizar.setForeground(Color.WHITE);
 		getPnBotones().add(btnActualizar);
+		
+		dibujarBotonSalir();
+		getBtnSalir().addActionListener(contDetalleFacturaMesAlmacen.Salir());
 	}
-
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void activarBinding(List<DetalleFactura> detalleFacturas) {
-		// TODO Auto-generated method stub
-		setTable(new JTable());
-		getScrollPanel().setViewportView(getTable());
-		binFacturas = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,detalleFacturas,getTable());
-	    
-	    BeanProperty idFactura  = BeanProperty.create("factura.id");
-	    BeanProperty fecha  = BeanProperty.create("factura.fechaCadenaStr");
-	    BeanProperty almacen = BeanProperty.create("factura.almacen.ubicacion");
-	    BeanProperty producto = BeanProperty.create("empaqueProducto.descripcionEmpaque");
-	    BeanProperty cantidad = BeanProperty.create("cantidad");
-	    
-
-	    binFacturas.addColumnBinding(idFactura).setColumnClass(String.class).setColumnName("Nro Factura");
-	    binFacturas.addColumnBinding(fecha).setColumnClass(String.class).setColumnName("Fecha");
-	    binFacturas.addColumnBinding(almacen).setColumnClass(String.class).setColumnName("Almacen");
-	    binFacturas.addColumnBinding(producto).setColumnClass(String.class).setColumnName("Producto");
-	    binFacturas.addColumnBinding(cantidad).setColumnClass(String.class).setColumnName("Cantidad");
-	    
-
-	    binFacturas.bind();
-	}
-    
-    @SuppressWarnings("rawtypes")
-	public void cargarCmbAlmacen() throws NumberFormatException, IOException{
-    	List<Almacen> almacenes = new ServicioAlmacen().getAlmacenes();
-    	Almacen almacen = new Almacen(0,"Todos");
-    	almacenes.add(almacen);
-    	JComboBoxBinding jcomboAlmacen = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,almacenes,cmbAlmacen);
-	    
-	    jcomboAlmacen.bind();
-    }
-
+	
 	public JComboBox<Almacen> getCmbAlmacen() {
 		return cmbAlmacen;
 	}
@@ -141,17 +115,14 @@ public class DetalleFacturaMesAlmacenUI extends VistaGenericaUI{
 	}
 
 
-	@SuppressWarnings("rawtypes")
-	public JTableBinding getBinFacturas() {
-		return binFacturas;
+	public JComboBox<Producto> getCmbProducto() {
+		return cmbProducto;
 	}
 
 
-	@SuppressWarnings("rawtypes")
-	public void setBinFacturas(JTableBinding binFacturas) {
-		this.binFacturas = binFacturas;
+	public void setCmbProducto(JComboBox<Producto> cmbProducto) {
+		this.cmbProducto = cmbProducto;
 	}
-
 
 	public JLabel getLblDesde() {
 		return lblDesde;
@@ -201,16 +172,15 @@ public class DetalleFacturaMesAlmacenUI extends VistaGenericaUI{
 	public void setLblAlmacen(JLabel lblAlmacen) {
 		this.lblAlmacen = lblAlmacen;
 	}
-
-	public JButton getBtnAtras() {
-		return btnAtras;
+	
+	public JLabel getLblProducto() {
+		return lblProducto;
 	}
 
 
-	public void setBtnAtras(JButton btnAtras) {
-		this.btnAtras = btnAtras;
+	public void setLblProducto(JLabel lblProducto) {
+		this.lblProducto = lblProducto;
 	}
-
 
 	public JButton getBtnBuscar() {
 		return btnBuscar;
