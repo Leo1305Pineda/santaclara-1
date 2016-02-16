@@ -10,18 +10,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.swingbinding.JComboBoxBinding;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+
+import santaclara.Servicio.ServicioAlmacen;
 import santaclara.Servicio.ServicioFactura;
+import santaclara.Servicio.ServicioZona;
 import santaclara.controlador.ContGeneral;
 import santaclara.controlador.ContPrincipal;
 import santaclara.controlador.IContGeneral;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.Factura;
+import santaclara.modelo.Zona;
 import santaclara.vista.consultas.MontoFacturadoMesZonaTipoPagoUI;
 
 public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IContGeneral {
@@ -29,6 +37,8 @@ public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IC
 	private static MontoFacturadoMesZonaTipoPagoUI vista;
 	private static List<Factura> facturas ;
 	Double valueAcum = new Double(0.0);
+	
+	private List<Zona> zonas = new ArrayList<Zona>();
 	
 	public ContMontoFacturadoMesZonaTipoPago() {
 		// TODO Auto-generated constructor stub
@@ -42,7 +52,7 @@ public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IC
 		facturas = new ArrayList<Factura>();
 		
 		dibujar(vista,this);
-		vista.cargarCmbAlmacen();
+		cargarCmbAlmacen();
 		setSelectedValue(vista.getCmbAlmacen(), null);
 		vista.getDateHasta().setMaxSelectableDate(new Date());
 		vista.getDateHasta().setDate(new Date());
@@ -56,6 +66,10 @@ public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IC
 		{
 			facturas.add(factura);
 		}
+		
+		zonas = new ServicioZona().getZonas();
+		cargarCmbZona();
+		setSelectedValue(vista.getCmbZona(), null);
 	}
 	@Override
 	public JPanel getVista() {
@@ -78,6 +92,44 @@ public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IC
 		}
 		return facturas;
 	}
+	
+	public List<Factura> getFilterByCmbTipoPago(List<Factura> facturas){
+		List<Factura> facturasAux = new ArrayList<Factura>();
+		if(!vista.getCmbTipoCliente().getSelectedItem().equals("Todos"))
+		{
+			for(Factura factura: facturas)
+			{	
+				if (factura.getTipoPago().equals(vista.getCmbTipoCliente().getSelectedItem()))
+				{
+					facturasAux.add(factura);
+				}
+				else if (factura.getTipoPago().equals(vista.getCmbTipoCliente().getSelectedItem()))
+				{
+					facturasAux.add(factura);
+				}
+			}
+			return facturasAux;
+		}
+		return facturas;
+	}
+	
+	
+	public List<Factura> getFilterByCmbZona(List<Factura> facturas){
+		List<Factura> detalleFacturasAux = new ArrayList<Factura>();
+		if(!((Zona)vista.getCmbZona().getSelectedItem()).getId().equals(0))
+		{
+			for(Factura factura: facturas)
+			{
+				if (factura.getCliente().getRuta().getZona().getId().equals(((Zona)vista.getCmbZona().getSelectedItem()).getId()))
+				{
+					detalleFacturasAux.add(factura);
+				}			
+			}
+			return detalleFacturasAux;
+		}
+		return facturas;
+	}
+
 	
 	public List<Factura> getFilterByDate(List<Factura> facturas){
 		List<Factura> facturasAux = new ArrayList<Factura>();
@@ -137,7 +189,7 @@ public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IC
 			case "TipoPago": 
 				if (factura.getEstado()==null)return  new Long(0);
 				else if (factura.getEstado()==true)return  new Long(1);
-				else return  new Long(2);	
+				else return  new Long(2);
 			default:	return null;
 			}
 		}
@@ -256,11 +308,19 @@ public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IC
 		 * */
 		
 		List<List<Factura>> listGroup = new ArrayList<List<Factura>>();
-		List<Factura> listOrder = new ArrayList<Factura>();
+		List<Factura> listFactura = new ArrayList<Factura>();
 	
-		listOrder = getOrderBy("Date", getFilterByDate(getFilterByCmbAlmacen(facturas)));
+		listFactura = getFilterByCmbAlmacen(facturas);
+		
+		listFactura = getFilterByCmbTipoPago(listFactura);
+		
+		listFactura = getFilterByCmbZona(listFactura);
+		
+		listFactura = getFilterByDate(listFactura);
+		
+		listFactura = getOrderBy("Date", listFactura);
 	
-		listGroup = getGroupBy("Month",listOrder);
+		listGroup = getGroupBy("Month",listFactura);
 	
 		listGroup = getOrderListGroupBy("Zona", listGroup);
 	
@@ -270,36 +330,36 @@ public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IC
 	
 		listGroup = getGroupListGroupBy("TipoPago", listGroup);
 	
-		listOrder = getConvertListGroupToListOrderBy(listGroup, null);
+		listFactura = getConvertListGroupToListOrderBy(listGroup, null);
 
-		listOrder = getFilterByLineNull(2, listOrder);
+		listFactura = getFilterByLineNull(2, listFactura);
 
-		listOrder = getAcumCantidad(listOrder);
+		listFactura = getAcumCantidad(listFactura);
 		
-		vista.activarBinding(listOrder);
+		activarBinding(listFactura);
 	}	
 		
-	@SuppressWarnings("rawtypes")
-	public void setSelectedValue(JComboBox comboBox,Integer id)
-    {	
-        for (int i = 0; i < comboBox.getItemCount(); i++)
-        {
-        	comboBox.setSelectedIndex(i);
-        	Boolean enc=false;
-        	switch (comboBox.getSelectedItem().getClass().getName().toString()) {
-			case "santaclara.modelo.Almacen":
-				enc = (((Almacen)comboBox.getSelectedItem()).getId().equals(id)); 
-					break;
-			default:
-				break;
-			}
-        	if (enc) break;
-        }
-    }
-
 	public ActionListener Atras() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Atras();
+			}
+		};
+	}
+	
+	public ActionListener Salir(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				quitarVista();
+			}
+		};
 	}
 
 	public ActionListener buscar() {
@@ -375,38 +435,50 @@ public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IC
 			}
 		};
 	}
-	
-	void printListOrdenBy(List<Factura> listOrder,String title){
-		System.out.println("/***************Start Print  ".concat(title).concat("********************"));
-		for(Factura factura : listOrder){
-			if (factura==null)
-			{
-				System.out.println("new line");
-			}
-			else
-			{
-				System.out.println("data: "+ factura.getId());
-			}
-		}
-		System.out.println("/***************End Print Size List "+listOrder.size()+"********************");
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void activarBinding(List<Factura> Facturas) {
+		// TODO Auto-generated method stub
+		vista.setTable(new JTable());
+		vista.getScrollPanel().setViewportView(vista.getTable());
+		JTableBinding binFacturas = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,Facturas,vista.getTable());
+	    
+	    BeanProperty idFactura  = BeanProperty.create("id");
+	    BeanProperty fecha  = BeanProperty.create("fechaCadenaStr");
+	    BeanProperty almacen = BeanProperty.create("almacen.ubicacion");
+	    BeanProperty zonaDescripcion = BeanProperty.create("cliente.ruta.zona.descripcion");
+	    BeanProperty tipoPago = BeanProperty.create("tipoPagoCreditoContado");
+	    BeanProperty monto = BeanProperty.create("totalAPagar");
+	    
+
+	    binFacturas.addColumnBinding(idFactura).setColumnClass(String.class).setColumnName("Nro Factura");
+	    binFacturas.addColumnBinding(fecha).setColumnClass(String.class).setColumnName("Fecha");
+	    binFacturas.addColumnBinding(almacen).setColumnClass(String.class).setColumnName("Almacen");
+	    binFacturas.addColumnBinding(zonaDescripcion).setColumnClass(String.class).setColumnName("Zona");
+	    binFacturas.addColumnBinding(tipoPago).setColumnClass(String.class).setColumnName("Tipo Pago");
+	    
+	    binFacturas.addColumnBinding(monto).setColumnClass(String.class).setColumnName("Monto");
+	    
+	    binFacturas.bind();
 	}
-	
-	void printListGroupBy(List<List<Factura>> listGroup,String title){
-		System.out.println("/***************Start Print  ".concat(title).concat("********************"));
-		for(List<Factura> facturas :listGroup){
-			
-			if (facturas==null)
-			{
-				System.out.println("new line");
-			}
-			else
-			{
-				printListOrdenBy(facturas,title);
-			}
-			
-		}
-		System.out.println("/***************End Print  Size List "+listGroup.size()+" ".concat(title).concat("********************\n"));
-	}
-	
+   
+    @SuppressWarnings("rawtypes")
+   	public void cargarCmbAlmacen() throws NumberFormatException, IOException{
+       	List<Almacen> almacenes = new ServicioAlmacen().getAlmacenes();
+       	Almacen almacen = new Almacen(0,"Todos");
+       	almacenes.add(almacen);
+       	JComboBoxBinding jcomboAlmacen = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,almacenes,vista.getCmbAlmacen());
+   	    
+   	    jcomboAlmacen.bind();
+       }
+
+    @SuppressWarnings("rawtypes")
+	public void cargarCmbZona() throws NumberFormatException, IOException{
+    	Zona zona = new Zona();
+    	zona.setId(0);
+    	zonas.add(zona);
+    	JComboBoxBinding jcomboZona = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,zonas,vista.getCmbZona());
+	    jcomboZona.bind();
+    }
 }
 

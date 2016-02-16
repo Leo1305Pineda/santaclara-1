@@ -10,18 +10,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.swingbinding.JComboBoxBinding;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+
+import santaclara.Servicio.ServicioAlmacen;
+import santaclara.Servicio.ServicioCapacidad;
 import santaclara.Servicio.ServicioDetalleFactura;
+import santaclara.Servicio.ServicioPresentacion;
+import santaclara.Servicio.ServicioZona;
 import santaclara.controlador.ContGeneral;
 import santaclara.controlador.ContPrincipal;
 import santaclara.controlador.IContGeneral;
 import santaclara.modelo.Almacen;
+import santaclara.modelo.Capacidad;
 import santaclara.modelo.DetalleFactura;
+import santaclara.modelo.Presentacion;
+import santaclara.modelo.Zona;
 import santaclara.vista.consultas.ListCantRefrescoPresentCapacFacturadoZonaUI;
 
 public class ContListCantRefrecoPresentCapacFacturadoZona extends ContGeneral implements IContGeneral {
@@ -29,6 +41,11 @@ public class ContListCantRefrecoPresentCapacFacturadoZona extends ContGeneral im
 	private static ListCantRefrescoPresentCapacFacturadoZonaUI vista;
 	private static List<DetalleFactura> detalleFacturas ;
 	Integer acumCantidad = new Integer(0);
+	
+	private List<Zona> zonas = new ArrayList<Zona>();
+	private List<Almacen> almacenes = new ArrayList<Almacen>();
+	private List<Presentacion> presentaciones = new ArrayList<Presentacion>();
+	private List<Capacidad> capacidades = new ArrayList<Capacidad>();
 	
 	public ContListCantRefrecoPresentCapacFacturadoZona() {
 		// TODO Auto-generated constructor stub
@@ -40,8 +57,20 @@ public class ContListCantRefrecoPresentCapacFacturadoZona extends ContGeneral im
 		setContPrincipal(contPrincipal);
 		vista = new  ListCantRefrescoPresentCapacFacturadoZonaUI(this);
 		dibujar(vista,this);
-		vista.cargarCmbAlmacen();
+		zonas = new ServicioZona().getZonas();
+		almacenes = new ServicioAlmacen().getAlmacenes();
+		capacidades = new ServicioCapacidad().getCapacidades();
+		presentaciones = new ServicioPresentacion().getPresentaciones();
+		
+		cargarCmbAlmacen();
 		setSelectedValue(vista.getCmbAlmacen(), null);
+		cargarCmbPresentacion();
+		setSelectedValue(vista.getCmbPresentacion(), null);
+		cargarCmbCapacidad();
+		setSelectedValue(vista.getCmbCapacidad(), null);
+		cargarCmbZona();
+		setSelectedValue(vista.getCmbZona(), null);
+		
 		vista.getDateHasta().setMaxSelectableDate(new Date());
 		vista.getDateHasta().setDate(new Date());
 		vista.getDateDesde().setDate(new Date());
@@ -69,6 +98,56 @@ public class ContListCantRefrecoPresentCapacFacturadoZona extends ContGeneral im
 		}
 		return detalleFacturas;
 	}
+	
+	public List<DetalleFactura> getFilterByCmbZona(List<DetalleFactura> detalleFacturas){
+		List<DetalleFactura> detalleFacturasAux = new ArrayList<DetalleFactura>();
+		if(!((Zona)vista.getCmbZona().getSelectedItem()).getId().equals(0))
+		{
+			for(DetalleFactura detalleFactura: detalleFacturas)
+			{
+				if (detalleFactura.getFactura().getCliente().getRuta().getZona().getId().equals(((Zona)vista.getCmbZona().getSelectedItem()).getId()))
+				{
+					detalleFacturasAux.add(detalleFactura);
+				}			
+			}
+			return detalleFacturasAux;
+		}
+		return detalleFacturas;
+	}
+	
+	public List<DetalleFactura> getFilterByCmbPresentacion(List<DetalleFactura> detalleFacturas){
+		List<DetalleFactura> detalleFacturasAux = new ArrayList<DetalleFactura>();
+		if(!((Presentacion)vista.getCmbPresentacion().getSelectedItem()).getId().equals(0))
+		{
+			for(DetalleFactura detalleFactura: detalleFacturas)
+			{
+				if (detalleFactura.getEmpaqueProducto().getProducto().getPresentacion().getId().equals(((Presentacion)vista.getCmbPresentacion().getSelectedItem()).getId()))
+				{
+					detalleFacturasAux.add(detalleFactura);
+				}			
+			}
+			return detalleFacturasAux;
+		}
+		return detalleFacturas;
+	}
+	
+	
+	public List<DetalleFactura> getFilterByCmbCapacidad(List<DetalleFactura> detalleFacturas){
+		List<DetalleFactura> detalleFacturasAux = new ArrayList<DetalleFactura>();
+		if(!((Capacidad)vista.getCmbCapacidad().getSelectedItem()).getId().equals(0))
+		{
+			for(DetalleFactura detalleFactura: detalleFacturas)
+			{
+				if (detalleFactura.getEmpaqueProducto().getProducto().getCapacidad().getId().equals(((Capacidad)vista.getCmbCapacidad().getSelectedItem()).getId()))
+				{
+					detalleFacturasAux.add(detalleFactura);
+				}			
+			}
+			return detalleFacturasAux;
+		}
+		return detalleFacturas;
+	}
+	
 	
 	public List<DetalleFactura> getFilterByDate(List<DetalleFactura> detalleFacturas){
 		List<DetalleFactura> detalleFacturasAux = new ArrayList<DetalleFactura>();
@@ -248,7 +327,17 @@ public class ContListCantRefrecoPresentCapacFacturadoZona extends ContGeneral im
 		List<List<DetalleFactura>> listGroup = new ArrayList<List<DetalleFactura>>();
 		List<DetalleFactura> listOrder = new ArrayList<DetalleFactura>();
 		
-		listOrder = getOrderBy("Zona", getFilterByDate(getFilterByCmbAlmacen(detalleFacturas)));
+		listOrder = getFilterByCmbAlmacen(detalleFacturas);
+		
+		listOrder = getFilterByDate(listOrder);
+		
+		listOrder = getFilterByCmbZona(listOrder);
+		
+		listOrder = getFilterByCmbCapacidad(listOrder);
+		
+		listOrder = getFilterByCmbPresentacion(listOrder);
+		
+		listOrder = getOrderBy("Zona", listOrder);
 		
 		listGroup = getGroupBy("Zona",listOrder);
 		
@@ -266,7 +355,7 @@ public class ContListCantRefrecoPresentCapacFacturadoZona extends ContGeneral im
 		
 		listOrder = getAcumCantidad(listOrder);
 		
-		vista.activarBinding(listOrder);
+		activarBinding(listOrder);
 	}	
 	
 	void printListOrdenBy(List<DetalleFactura> listOrder,String title){
@@ -301,29 +390,30 @@ public class ContListCantRefrecoPresentCapacFacturadoZona extends ContGeneral im
 		System.out.println("/***************End Print  Size List "+listGroup.size()+" ".concat(title).concat("********************\n"));
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public void setSelectedValue(JComboBox comboBox,Integer id)
-    {	
-        for (int i = 0; i < comboBox.getItemCount(); i++)
-        {
-        	comboBox.setSelectedIndex(i);
-        	Boolean enc=false;
-        	switch (comboBox.getSelectedItem().getClass().getName().toString()) {
-			case "santaclara.modelo.Almacen":
-				enc = (((Almacen)comboBox.getSelectedItem()).getId().equals(id)); 
-					break;
-			default:
-				break;
-			}
-        	if (enc) break;
-        }
-    }
 
 	public ActionListener Atras() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				ActivarAtras(null);
+			}
+		};
 	}
 
+	public ActionListener Salir(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				quitarVista();
+			}
+		};
+	}
+	
 	public ActionListener buscar() {
 		// TODO Auto-generated method stub
 		return null;
@@ -394,5 +484,75 @@ public class ContListCantRefrecoPresentCapacFacturadoZona extends ContGeneral im
 			}
 		};
 	}
+	
+	   @SuppressWarnings({ "rawtypes", "unchecked" })
+		public void activarBinding(List<DetalleFactura> detalleFacturas) {
+			// TODO Auto-generated method stub
+		
+		   	vista.setTable(new JTable());
+			vista.getScrollPanel().setViewportView(vista.getTable());
+		   
+		   	JTableBinding binFacturas = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,detalleFacturas,vista.getTable());
+		    
+		   	BeanProperty idFactura  = BeanProperty.create("factura.id");
+		    BeanProperty fecha  = BeanProperty.create("factura.fechaCadenaStr");
+		    BeanProperty almacen = BeanProperty.create("factura.almacen.ubicacion");
+		    BeanProperty presentacion = BeanProperty.create("empaqueProducto.producto.presentacion.material");
+		    BeanProperty capacidad = BeanProperty.create("empaqueProducto.producto.capacidad.volumenStr");
+		    BeanProperty zonaDescripcion = BeanProperty.create("factura.clienteZona");
+		    BeanProperty cantidad = BeanProperty.create("cantidad");
+		    
+
+		    binFacturas.addColumnBinding(idFactura).setColumnClass(String.class).setColumnName("Nro Factura");
+		    binFacturas.addColumnBinding(fecha).setColumnClass(String.class).setColumnName("Fecha");
+		    binFacturas.addColumnBinding(zonaDescripcion).setColumnClass(String.class).setColumnName("Zona");
+		    
+		    binFacturas.addColumnBinding(almacen).setColumnClass(String.class).setColumnName("Almacen");
+		    binFacturas.addColumnBinding(presentacion).setColumnClass(String.class).setColumnName("Presentacion");
+		    
+		    binFacturas.addColumnBinding(capacidad).setColumnClass(String.class).setColumnName("Capacidad");
+		   
+		    binFacturas.addColumnBinding(cantidad).setColumnClass(String.class).setColumnName("Cantidad");
+		    
+
+		    binFacturas.bind();
+		}
+	    
+	    @SuppressWarnings("rawtypes")
+		public void cargarCmbAlmacen() throws NumberFormatException, IOException{
+	    	Almacen almacen = new Almacen(0,"Todos");
+	    	almacenes.add(almacen);
+	    	JComboBoxBinding jcomboAlmacen = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,almacenes,vista.getCmbAlmacen());
+		    
+		    jcomboAlmacen.bind();
+	    }
+	    
+		@SuppressWarnings("rawtypes")
+		public void cargarCmbPresentacion() throws NumberFormatException, IOException{
+	    	Presentacion presentacion = new Presentacion(0,"Todos");
+	    	presentaciones.add(presentacion);
+	    	JComboBoxBinding jcomboPresentacion = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,presentaciones,vista.getCmbPresentacion());
+		    
+		    jcomboPresentacion.bind();
+	    }
+		
+		@SuppressWarnings("rawtypes")
+		public void cargarCmbCapacidad() throws NumberFormatException, IOException{
+	    	Capacidad capacidad = new Capacidad();
+	    	capacidad.setId(0);
+	    	capacidades.add(capacidad);
+	    	JComboBoxBinding jcomboCapacidad = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,capacidades,vista.getCmbCapacidad());
+		    
+		    jcomboCapacidad.bind();
+	    }
+		
+		@SuppressWarnings("rawtypes")
+		public void cargarCmbZona() throws NumberFormatException, IOException{
+	    	Zona zona = new Zona();
+	    	zona.setId(0);
+	    	zonas.add(zona);
+	    	JComboBoxBinding jcomboZona = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,zonas,vista.getCmbZona());
+		    jcomboZona.bind();
+	    }
 }
 

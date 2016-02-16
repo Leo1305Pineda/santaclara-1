@@ -2,7 +2,6 @@ package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -60,15 +59,13 @@ public class ContIniciarSesion extends ContGeneral implements IContGeneral     {
 		};
 	}
 
-
-	public ContIniciarSesion(ContPrincipal contPrincipal) {
+	public ContIniciarSesion(ContPrincipal contPrincipal){
 		super();
 		setContPrincipal(contPrincipal);
 		vista = new IniciarSesionUI(this);
 		dibujar(vista,ContIniciarSesion.this);
 	}
-
-
+		
 	@Override
 	public JPanel getVista() {
 		// TODO Auto-generated method stub
