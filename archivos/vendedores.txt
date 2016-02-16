@@ -1,13 +1,13 @@
 id:2
 idRutas:,1,2,12,
 id:3
-idRutas:,3,5,0,
+idRutas:,3,5,16,
 id:9
 idRutas:,2,9,
 id:10
 idRutas:,1,2,
 id:11
-idRutas:,0,
+idRutas:,16,
 id:12
 idRutas:,9,2,7,
 id:13

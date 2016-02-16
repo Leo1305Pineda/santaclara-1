@@ -2,12 +2,21 @@ package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
 
 import santaclara.Servicio.ServicioPresentacion;
 import santaclara.Servicio.ServicioProducto;
@@ -19,13 +28,16 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 	
 	private ServicioPresentacion servicioPresentacion;
 	private PresentacionesUI vista;
+	private List<Presentacion> presentaciones = new ServicioPresentacion().getPresentaciones();
+	private Presentacion presentacion = new Presentacion();
 	
 	public ContPresentaciones(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		servicioPresentacion = new ServicioPresentacion();
-		vista = new PresentacionesUI(this,servicioPresentacion.getPresentaciones());
+		vista = new PresentacionesUI(this);
 		dibujar(vista,this);
+		activarBinding(presentaciones);
 	}
 
 	@Override
@@ -40,41 +52,10 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.activarNuevoPresentacion();
-				vista.getPnTabla().setVisible(false);
+				vista.getTable().clearSelection();
+				presentacion = new Presentacion();
+				cargarPresentacion(presentacion);
 			}
-		};
-	}
-
-	public ActionListener modificar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (vista.getTable().getSelectedRow()>=0)
-				{
-					Presentacion presentacion  = new Presentacion();
-					try {
-						presentacion = servicioPresentacion.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-					} catch (NumberFormatException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					if (presentacion != null)
-					{
-						vista.activarNuevoPresentacion();
-						vista.getScrollPanel().setVisible(false);
-						
-						vista.getTxtId().setText(presentacion.getId().toString());
-						vista.getTxtNombre().setText(presentacion.getMaterial());
-					}
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(vista,"Seleccione la fila");
-				}
-		}
 		};
 	}
 
@@ -84,11 +65,7 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				Presentacion presentacion = new Presentacion();
-				
-				if (vista.getTxtId().getText().equals("")) presentacion.setId(null);
-					else presentacion.setId(new Integer(vista.getTxtId().getText().toString())); 
+				// TODO Auto-generated method stub 
 				
 				if (vista.getTxtNombre().getText().equals("")) JOptionPane.showMessageDialog(vista,"Campos Vacios: Nombre Material");
 					else
@@ -97,14 +74,9 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 									presentacion.setMaterial(vista.getTxtNombre().getText().toString());
 									
 									JOptionPane.showMessageDialog(vista,servicioPresentacion.guardar(presentacion));
-									// agregarlo a la lista
-									vista.getPresentaciones().add(presentacion);
+									presentaciones = servicioPresentacion.getPresentaciones();
 									
-									vista.getBinPresentaciones().unbind();
-									vista.getBinPresentaciones().bind();
-									vista.activarBinding(servicioPresentacion.getPresentaciones());
-									vista.quitarNuevo();
-									
+									activarBinding(servicioPresentacion.getPresentaciones());
 									
 								} catch (IOException e1) {
 								// TODO Auto-generated catch block
@@ -123,23 +95,18 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				JTable tabla1 = new JTable();
-				tabla1 = vista.getTable();
-				Boolean enc = false;
-				for(int i = 0;i<tabla1.getRowCount();i++)
+				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				if(fila>=0)
 				{
-					if (tabla1.getValueAt(i, 0).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
-						tabla1.getValueAt(i, 1).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim()))
-					{
-						tabla1.setRowSelectionInterval(i,i);
-						enc = true;
-						break;
-					}
+					cargarPresentacion(presentaciones.get(fila));
 				}
-				if (!enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
-				vista.setTable(tabla1);
-				vista.setTxtABuscar("");;
-				
+				else 
+				{
+					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
+					presentacion = new Presentacion();
+					cargarPresentacion(presentacion);
+				}
 			}
 		};
 	}
@@ -190,9 +157,7 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-						Presentacion presentacion;
-						presentacion = servicioPresentacion.getPresentacion(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
-						
+						presentacion = presentaciones.get(vista.getTable().getSelectedRow());
 						ServicioProducto servicioProducto = new ServicioProducto();
 						
 						List<Producto> productos = servicioProducto.getProductos();
@@ -208,12 +173,10 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 						if(enc==false)
 						{
 							servicioPresentacion.eliminar(presentacion);
-						
-							vista.getBinPresentaciones().unbind();
-							vista.getBinPresentaciones().bind();				
-							vista.activarBinding(servicioPresentacion.getPresentaciones());
+							presentacion = new Presentacion();
+							presentaciones = servicioPresentacion.getPresentaciones();
+							activarBinding(presentaciones);
 							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-							vista.quitarNuevo();
 						}
 						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
 								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: Producto");
@@ -224,5 +187,74 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 				}
 			}
 		};
+	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void activarBinding(List<Presentacion> presentaciones) {
+		// TODO Auto-generated method stub
+		vista.remove(vista.getPnPresentacion());
+		vista.getPnTabla().setVisible(true);
+		vista.setTable(new JTable());
+		vista.getScrollPanel().setViewportView(vista.getTable());	
+		JTableBinding binPresentaciones = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,presentaciones,vista.getTable());
+		
+		BeanProperty idPresentacion  = BeanProperty.create("id");
+		BeanProperty materialPresentacion = BeanProperty.create("material");
+
+		binPresentaciones.addColumnBinding(idPresentacion).setColumnClass(Integer.class).setColumnName("id");;
+	    binPresentaciones.addColumnBinding(materialPresentacion).setColumnClass(String.class).setColumnName("Material");
+	    binPresentaciones.bind();
+
+	    vista.getTable().addKeyListener(mostrarCapacidad_keypress());
+		vista.getTable().addMouseListener(mostrarCapacidad());
+ 
+		vista.remove(vista.getPnPresentacion());
+		vista.repaint();
+	}
+	
+	public MouseAdapter mostrarCapacidad() {
+		// TODO Auto-generated method stub
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent evento) {
+				if (evento.getClickCount()==1)
+				{
+					presentacion = presentaciones.get(vista.getTable().getSelectedRow());
+					cargarPresentacion(presentacion);
+				}
+			}
+		};
+	}
+
+	public KeyAdapter mostrarCapacidad_keypress() {
+		// TODO Auto-generated method stub
+		return new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				Integer contFila = presentaciones.size();
+				 
+				if(e.getKeyCode()==38 )
+				{
+					if(fila<=0) cargarPresentacion(presentaciones.get(0));
+					else cargarPresentacion(presentaciones.get(fila-1));
+				}
+				else if(e.getKeyCode()==40 )
+				{
+					if(fila+1>=contFila) cargarPresentacion(presentaciones.get(contFila-1));
+					else cargarPresentacion(presentaciones.get(fila+1));
+				}
+
+			}
+		};
+	}  
+
+	public void cargarPresentacion(Presentacion presentacion) {
+		// TODO Auto-generated method stub	
+		vista.remove(vista.getPnPresentacion());
+		vista.dibujarPanelPresentaciones();;
+		
+		if (vista.getTable().getSelectedRow() >= 0 )
+		{
+			vista.getTxtNombre().setText(presentacion.getMaterial());	
+		}
 	}
 }

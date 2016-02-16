@@ -1,0 +1,55 @@
+inicio del proceso para elaborar el codigo para la defensa 
+
+1- PrincipalUI
+
+linea 63-64 modificar Nombre de la Variable  MntReporte por Mnt"Tunombre".
+	seleccionar y presionar shift+alt+r y renombrar.
+
+linea 292-300 implementacion
+
+linea 634-644 set Y get 
+	Eliminar este rango de linea 
+	click derecho source generar set y get.
+
+2- ContPrincipal
+
+linea 205-210 validacion
+	remplazar el getMntReporte por el get"TuNombre"
+
+linea 215-237 llamado a los controladores
+	renombra el ContReporte por el Cont"Tunombre"
+
+3- ContReporte ó ContConsulta
+
+abrir el paquete santaclara.controlador.Reporte ó abrir el paquete santaclara.controlador.consulta
+	renombrar la Clase ContReporte ó ContConsulta a Cont"TuNombre"
+	seleccionar y presionar shift+alt+r renombrar y enter
+
+4- ReporteUI ó ConsultaUI
+
+abrir el paquete santaclara.vista.reporte ó abrir el paquete santaclara.vista.consulta
+	renombrar la Clase ReporteUI ó ConsultaUI a "TuNombre"UI
+	seleccionar y presionar shift+alt+r  renombrar y enter
+
+5-dejo desarrollado el codigo estandar basico. segun los requerimiento de la profesora
+dejo de su parte realizar el copiado y pegado.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

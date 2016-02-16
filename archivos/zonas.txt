@@ -1,5 +1,3 @@
-id:0
-descripcion:Centro Barquisimeto.
 id:1
 descripcion:Norte Barquisimeto.
 id:2
@@ -24,3 +22,5 @@ id:11
 descripcion:CentrOeste Barquisimeto.
 id:12
 descripcion:Este Cabudare.
+id:13
+descripcion:Centro Barquisimeto.

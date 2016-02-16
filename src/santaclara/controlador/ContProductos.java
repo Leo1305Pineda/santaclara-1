@@ -2,6 +2,10 @@ package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,30 +14,50 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.swingbinding.JComboBoxBinding;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+
+import santaclara.Servicio.ServicioCapacidad;
 import santaclara.Servicio.ServicioEmpaqueProducto;
+import santaclara.Servicio.ServicioPresentacion;
 import santaclara.Servicio.ServicioProducto;
-import santaclara.dao.impl.PresentacionDAO;
+import santaclara.Servicio.ServicioSabor;
 import santaclara.modelo.Capacidad;
+import santaclara.modelo.Producto;
 import santaclara.modelo.EmpaqueProducto;
 import santaclara.modelo.Presentacion;
-import santaclara.modelo.Producto;
 import santaclara.modelo.Sabor;
 import santaclara.vista.ProductosUI;
 
 public class ContProductos extends ContGeneral implements IContGeneral {
 
 	private ProductosUI vista;
+	private Producto producto;
 	private ServicioProducto servicioProducto = new ServicioProducto();;
-	
-	private PresentacionDAO presentacionDAO = new PresentacionDAO();	
+	private List<Producto> productos = new ServicioProducto().getProductos();
+	private List<Sabor> sabores = new ServicioSabor().getSabores();
+	private List<Capacidad> capacidades = new ServicioCapacidad().getCapacidades();
+	private List<Presentacion> presentaciones = new ServicioPresentacion().getPresentaciones();
+	private List<EmpaqueProducto> empaqueProductos = new ServicioEmpaqueProducto().getEmpaqueProductos();
+	@SuppressWarnings("rawtypes")
+	private JTableBinding   binProductos;
 	
 	public ContProductos(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
-		vista = new ProductosUI(this,servicioProducto.getProductos(),
-					servicioProducto.getCapacidades(),
-					servicioProducto.getSabores(),presentacionDAO.getPresentaciones());
+		vista = new ProductosUI(this);
 		dibujar(vista,this);
+		productos = new ServicioProducto().getProductos();
+		activarBinding(productos);
+		sabores = new ServicioSabor().getSabores();
+		cargarCmbSabor();
+		presentaciones = new ServicioPresentacion().getPresentaciones();
+		cargarCmbPresentacion();
+		capacidades = new ServicioCapacidad().getCapacidades();
+		cargarCmbCapacidad();
 	}
 
 	@Override
@@ -67,12 +91,12 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 					producto.setIva(vista.getCheckIva().getState());
 				
 				    servicioProducto.guardar(producto);
+				    
+				    productos = servicioProducto.getProductos();
+				    
 					// agregarlo a la lista
-					vista.getProductos().add(producto);
-					vista.getBinProductos().unbind();
-					vista.getBinProductos().bind();
-					vista.activarBinding(servicioProducto.getProductos());
-					vista.quitarNuevo();
+					activarBinding(productos);
+				//	vista.quitarNuevo();
 					vista.getScrollPanel().setVisible(true);
 				    JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 				} catch (Exception exe) {
@@ -103,27 +127,17 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				JTable tabla1 = new JTable();
-				tabla1 = vista.getTable();
-				Boolean enc = true;
-				for(int i = 0;i<tabla1.getRowCount();i++)
+				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				if(fila>=0)
 				{
-					if (tabla1.getValueAt(i, 0).equals(vista.getTxtABuscar().getText())||
-						tabla1.getValueAt(i, 1).equals(vista.getTxtABuscar().getText())||
-						tabla1.getValueAt(i, 2).equals(vista.getTxtABuscar().getText())||
-						tabla1.getValueAt(i, 3).equals(vista.getTxtABuscar().getText())||
-						tabla1.getValueAt(i, 4).equals(vista.getTxtABuscar().getText())||
-						tabla1.getValueAt(i, 5).equals(vista.getTxtABuscar().getText()))
-					{
-						tabla1.setRowSelectionInterval(i,i);;
-						enc = false;
-						break;
-					}
+					cargarProducto(productos.get(fila));
 				}
-				if (enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
-				vista.setTable(tabla1);
-				vista.setTxtABuscar("");
-				vista.quitarNuevo();
+				else 
+				{
+					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
+					cargarProducto(new Producto());
+				}
 			}
 		};
 	}
@@ -136,12 +150,8 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 				if (vista.getTable().getSelectedRow()>0)
 				{
 					try {
-						Producto producto;
-						producto=servicioProducto.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
+						producto=productos.get(vista.getTable().getSelectedRow());
 						
-						ServicioEmpaqueProducto servicioEmpaque = new ServicioEmpaqueProducto();
-						
-						List<EmpaqueProducto> empaqueProductos = servicioEmpaque.getEmpaqueProductos();
 						Boolean enc = new Boolean(false);
 						for(EmpaqueProducto empaqueProducto: empaqueProductos)
 						{
@@ -154,11 +164,10 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 						if(enc==false)
 						{
 							servicioProducto.eliminar(producto);
-							vista.getBinProductos().unbind();
-							vista.getBinProductos().bind();				
-							vista.activarBinding(servicioProducto.getProductos());
+							productos =servicioProducto.getProductos();
+							producto = new Producto();
+							activarBinding(productos);
 							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-							vista.quitarNuevo();
 						}
 						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
 								" Este producto esta siendo utilizado en otra clase ");
@@ -176,7 +185,6 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 		};
 	}
 
-
 	public ActionListener nuevo() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -184,8 +192,9 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.activarNuevoProducto();
-				vista.getScrollPanel().setVisible(false);
+				vista.getTable().clearSelection();
+				producto = new Producto();
+				cargarProducto(producto);
 			}
 		};
 	}
@@ -200,42 +209,6 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 				quitarVista();
 			}
 		};
-	}
-
-	public ActionListener modificar(){
-	return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				try {
-						if (vista.getTable().getSelectedRow()>=0)
-						{
-							Producto producto = new Producto();
-							producto = servicioProducto.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
-							if (producto != null)
-							{
-								vista.activarNuevoProducto();
-								vista.getScrollPanel().setVisible(false);
-								vista.getTxtId().setText(producto.getId().toString());
-								vista.getTxtNombre().setText(producto.getNombre());
-								vista.getTxtPrecio().setValue(producto.getPrecio());
-								setSelectedValue(vista.getCmbPresentacion(),producto.getPresentacion().getId());
-								setSelectedValue(vista.getCmbCapacidad(),producto.getCapacidad().getId());
-								setSelectedValue(vista.getCmbSabor(),producto.getSabor().getId());
-							}
-						}
-						else
-						{
-							JOptionPane.showMessageDialog(vista,"Seleccione el Producto");
-						}	
-				}catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		}; 
-
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -325,15 +298,118 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 				ActivarAtras(null);
 			}
 		};
-	}
-
-	public ActionListener quitarNuevo() {
+	}	
+	
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void activarBinding(List<Producto> lsProductos) {
 		// TODO Auto-generated method stub
-		return new  ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				vista.quitarNuevo();
+		
+    	vista.getPnTabla().setVisible(true);
+		vista.setTable(new JTable());
+		vista.getScrollPanel().setViewportView(vista.getTable());
+		
+		binProductos = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,lsProductos,vista.getTable());
+	    BeanProperty nombreProducto = BeanProperty.create("nombre");
+	    BeanProperty idProducto  = BeanProperty.create("id");
+	    BeanProperty capacidadProducto  = BeanProperty.create("capacidad.volumenStr");
+	    BeanProperty presentacionProducto = BeanProperty.create("presentacion.material");
+	    BeanProperty saborProducto = BeanProperty.create("sabor.sabor");
+	    BeanProperty precioProducto = BeanProperty.create("precioStr");
+
+	    binProductos.addColumnBinding(idProducto).setColumnClass(Integer.class).setColumnName("id");;
+	    binProductos.addColumnBinding(nombreProducto).setColumnClass(String.class).setColumnName("Nombre");
+	    binProductos.addColumnBinding(capacidadProducto).setColumnClass(String.class).setColumnName("Capacidad");
+	    binProductos.addColumnBinding(presentacionProducto).setColumnClass(String.class).setColumnName("Presentacion");;
+	    binProductos.addColumnBinding(saborProducto).setColumnClass(String.class).setColumnName("Sabor");;
+	    binProductos.addColumnBinding(precioProducto).setColumnClass(String.class).setColumnName("Precio");;
+
+	    binProductos.bind();
+		vista.getTable().addKeyListener(mostrarProducto_keypress());
+		vista.getTable().addMouseListener(mostrarProducto());
+	    
+	    vista.remove(vista.getPnlProducto());
+		vista.repaint();
+	}
+    
+    @SuppressWarnings("rawtypes")
+	public void cargarCmbSabor(){
+    	JComboBoxBinding jcomboSabor = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,sabores,vista.getCmbSabor());
+	    jcomboSabor.bind();
+	    
+    }
+    @SuppressWarnings("rawtypes")
+	public void cargarCmbCapacidad(){
+	    JComboBoxBinding jcomboCapacidad = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,capacidades,vista.getCmbCapacidad());
+	    jcomboCapacidad.bind();	
+    }
+    
+    @SuppressWarnings("rawtypes")
+	public void cargarCmbPresentacion(){
+	    JComboBoxBinding jcomboPresentacion = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,presentaciones,vista.getCmbPresentacion());
+	    jcomboPresentacion.bind();
+    }
+    
+	public MouseAdapter mostrarProducto() {
+		// TODO Auto-generated method stub
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent evento) {
+				if (evento.getClickCount()==1)
+				{
+					producto = (Producto) productos.get(vista.getTable().getSelectedRow());
+					cargarProducto(producto);
+				}
 			}
 		};
-	}	
+	}
+
+	public KeyAdapter mostrarProducto_keypress() {
+		// TODO Auto-generated method stub
+		return new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				Integer contFila = productos.size();
+				 
+				if(e.getKeyCode()==38 )
+				{
+					if(fila<=0) cargarProducto((Producto) productos.get(0));
+					else cargarProducto((Producto)productos.get(fila-1));
+				}
+				else if(e.getKeyCode()==40 )
+				{
+					if(fila+1>=contFila) cargarProducto((Producto)productos.get(contFila-1));
+					else cargarProducto((Producto)productos.get(fila+1));
+				}
+
+			}
+		};
+	}  
+
+	public void cargarProducto(Producto producto) {
+		// TODO Auto-generated method stub	
+		vista.remove(vista.getPnlProducto());
+		vista.dibujarPnlProducto();
+		cargarCmbCapacidad();
+		cargarCmbPresentacion();
+		cargarCmbSabor();
+		
+		if (vista.getTable().getSelectedRow() >= 0 )
+		{
+			vista.getTxtId().setText("");
+			vista.getTxtNombre().setText("");
+			if(producto.getId() != null)
+			{
+				vista.getTxtId().setText(producto.getId().toString());
+			}
+			vista.getTxtId().setText(producto.getId().toString());
+			vista.getTxtNombre().setText(producto.getNombre());
+			vista.getTxtPrecio().setValue(producto.getPrecio());
+			setSelectedValue(vista.getCmbPresentacion(),producto.getPresentacion().getId());
+			setSelectedValue(vista.getCmbCapacidad(),producto.getCapacidad().getId());
+			setSelectedValue(vista.getCmbSabor(),producto.getSabor().getId());
+			vista.getCheckIva().setState(producto.getIva());
+			
+		}
+	}
 }
 

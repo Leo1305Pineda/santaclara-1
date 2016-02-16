@@ -14,12 +14,20 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.swingbinding.JComboBoxBinding;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+
 import santaclara.Servicio.ServicioDomicilioComercio;
 import santaclara.Servicio.ServicioSalp;
+import santaclara.Servicio.ServicioZona;
 import santaclara.controlador.ContGeneral;
 import santaclara.controlador.ContPrincipal;
 import santaclara.controlador.IContGeneral;
 import santaclara.modelo.Cliente;
+import santaclara.modelo.Zona;
 import santaclara.vista.consultas.ListClienteZonaTipoUI;
 
 public class ContListClienteTipoZona extends ContGeneral implements IContGeneral {
@@ -27,6 +35,8 @@ public class ContListClienteTipoZona extends ContGeneral implements IContGeneral
 	private static ListClienteZonaTipoUI vista;
 	private static List<Cliente> clientes ;
 	Double valueAcum = new Double(0.0);
+	
+	private List<Zona> zonas = new ArrayList<Zona>();
 	
 	public ContListClienteTipoZona() {
 		// TODO Auto-generated constructor stub
@@ -41,11 +51,31 @@ public class ContListClienteTipoZona extends ContGeneral implements IContGeneral
 		clientes = new ArrayList<>();
 		clientes.addAll(new ServicioDomicilioComercio().getDomicilioComercios());
 		clientes.addAll(new ServicioSalp().getSalps());
+		
+		zonas = new ServicioZona().getZonas();
+		cargarCmbZona();
+		setSelectedValue(vista.getCmbZona(), null);
 	}
 	@Override
 	public JPanel getVista() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public List<Cliente> getFilterByCmbZona(List<Cliente> clientes){
+		List<Cliente> detalleFacturasAux = new ArrayList<Cliente>();
+		if(!((Zona)vista.getCmbZona().getSelectedItem()).getId().equals(0))
+		{
+			for(Cliente cliente: clientes)
+			{
+				if (cliente.getRuta().getZona().getId().equals(((Zona)vista.getCmbZona().getSelectedItem()).getId()))
+				{
+					detalleFacturasAux.add(cliente);
+				}			
+			}
+			return detalleFacturasAux;
+		}
+		return clientes;
 	}
 	
 	public List<Cliente> getFilterByCmbCliente(List<Cliente> clientes){
@@ -214,7 +244,11 @@ public class ContListClienteTipoZona extends ContGeneral implements IContGeneral
 		
 		listCliente.addAll(clientes);
 	
-		listCliente = getOrderBy("Zona", getFilterByCmbCliente(listCliente));
+		listCliente = getFilterByCmbCliente(listCliente);
+		
+		listCliente = getFilterByCmbZona(listCliente);
+		
+		listCliente = getOrderBy("Zona", listCliente);
 		
 		listGroup = getGroupBy("Zona",listCliente);
 		
@@ -226,14 +260,32 @@ public class ContListClienteTipoZona extends ContGeneral implements IContGeneral
 	
 		listCliente = getFilterByLineNull(2, listCliente);
 		
-		vista.activarBinding(listCliente);
+		activarBinding(listCliente);
 		
 		
 	}	
 
 	public ActionListener Atras() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Atras();
+			}
+		};
+	}
+	
+	public ActionListener Salir(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				quitarVista();
+			}
+		};
 	}
 
 	public ActionListener buscar() {
@@ -297,39 +349,45 @@ public class ContListClienteTipoZona extends ContGeneral implements IContGeneral
 			}
 		};
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void activarBinding(java.util.List listOrder) {
+		// TODO Auto-generated method stub
+		vista.setTable(new JTable());
+		vista.getScrollPanel().setViewportView(vista.getTable());
+		
+		JTableBinding BinClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,(java.util.List<Object>) listOrder,vista.getTable());
+	    
+	    BeanProperty id  = BeanProperty.create("id");
+	    BeanProperty rif  = BeanProperty.create("rif");
+	    BeanProperty razonsocial = BeanProperty.create("razonsocial");
+	    BeanProperty direccion = BeanProperty.create("direccion");
+	    BeanProperty telefono = BeanProperty.create("telefono");
+	    BeanProperty ruta = BeanProperty.create("ruta.nombre");
+	    BeanProperty zona = BeanProperty.create("ruta.zona.descripcion");
+	    BeanProperty tipo = BeanProperty.create("tipoStr");
+	    
 
-	
-	void printListOrdenBy(List<Cliente> listOrder,String title){
-		System.out.println("/***************Start Print  ".concat(title).concat("********************"));
-		for(Cliente factura : listOrder){
-			if (factura==null)
-			{
-				System.out.println("new line");
-			}
-			else
-			{
-				System.out.println("data: "+ factura.getId());
-			}
-		}
-		System.out.println("/***************End Print Size List "+listOrder.size()+"********************");
+	    BinClientes.addColumnBinding(id).setColumnClass(String.class).setColumnName("Id");
+	    BinClientes.addColumnBinding(rif).setColumnClass(String.class).setColumnName("Rif");
+	    BinClientes.addColumnBinding(razonsocial).setColumnClass(String.class).setColumnName("Razon Social");
+	    BinClientes.addColumnBinding(direccion).setColumnClass(String.class).setColumnName("Direccion");
+	    BinClientes.addColumnBinding(telefono).setColumnClass(String.class).setColumnName("Telefono");
+	    
+	    BinClientes.addColumnBinding(ruta).setColumnClass(String.class).setColumnName("Ruta");
+	    BinClientes.addColumnBinding(zona).setColumnClass(String.class).setColumnName("Zona");
+        BinClientes.addColumnBinding(tipo).setColumnClass(String.class).setColumnName("Tipo");
+    
+	    BinClientes.bind();
 	}
-	
-	void printListGroupBy(List<List<Cliente>> listGroup,String title){
-		System.out.println("/***************Start Print  ".concat(title).concat("********************"));
-		for(List<Cliente> facturas :listGroup){
-			
-			if (facturas==null)
-			{
-				System.out.println("new line");
-			}
-			else
-			{
-				printListOrdenBy(facturas,title);
-			}
-			
-		}
-		System.out.println("/***************End Print  Size List "+listGroup.size()+" ".concat(title).concat("********************\n"));
-	}
-	
+
+	@SuppressWarnings("rawtypes")
+	public void cargarCmbZona() throws NumberFormatException, IOException{
+    	Zona zona = new Zona();
+    	zona.setId(0);
+    	zonas.add(zona);
+    	JComboBoxBinding jcomboZona = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,zonas,vista.getCmbZona());
+	    jcomboZona.bind();
+    }	
 }
 

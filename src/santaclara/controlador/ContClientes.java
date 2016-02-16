@@ -11,8 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
- 
+
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.swingbinding.JComboBoxBinding;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
 
 import santaclara.Servicio.ServicioDomicilioComercio;
 import santaclara.Servicio.ServicioCliente;
@@ -28,18 +34,20 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	
 	private ClientesUI 		vista;
 	private Cliente 		cliente = new Cliente();
-	private List<Ruta> 		rutas  = new ArrayList<Ruta>();
-	private ServicioSalp    servicioSalp;
-	private ServicioDomicilioComercio servicioDomicilioComercio;
+	private List<Ruta> 		rutas  = new ServicioRuta().getRutas();
+	private ServicioSalp    servicioSalp = new ServicioSalp();
+	private ServicioDomicilioComercio servicioDomicilioComercio = new ServicioDomicilioComercio();
 	
+	@SuppressWarnings("rawtypes")
+	private List  clientes = new ArrayList<Cliente>();
 	
 	public ContClientes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
-		servicioSalp = new ServicioSalp();
-		servicioDomicilioComercio = new ServicioDomicilioComercio();
 		setContPrincipal(contPrincipal);
-		vista = new ClientesUI(this, servicioSalp.getSalps(), new ServicioRuta().getRutas());
+		vista = new ClientesUI(this);
 		dibujar(vista,this);
+		activarBindingSalp(servicioSalp.getSalps());
+		activarJComboBoxBindingRuta();
 	}
 
 	@Override
@@ -50,16 +58,16 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	
 	public ActionListener nuevo(){
 		return new ActionListener() {
-			
+			 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.LimpiarTxt();
 				cliente = new Cliente();
-				vista.activarNuevoCliente();
+				cargarCliente(cliente);
+				vista.getTable().clearSelection();
 			}
 		};
-	}
+	}	
 	/*
 	 * forma binaria  0000000  7 dias de la semana lunes-sabado 
 	 * */
@@ -71,7 +79,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		cadena.append( ( jueves ? "1":"0") );
 		cadena.append( ( viernes ? "1":"0") );
 		cadena.append( ( sabado ? "1":"0") );
-		System.out.println(Integer.valueOf(cadena.toString(),2));
+	//	System.out.println(Integer.valueOf(cadena.toString(),2));
 		return Integer.valueOf(cadena.toString(),2);
 	}
 	
@@ -97,7 +105,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 						salp.setTelefono(vista.getTxtTelefono().getText());
 						salp.setRuta((Ruta)vista.getCmbRutas().getSelectedItem());
 						servicioSalp.guardar(salp);
-						vista.activarBindingSalp(servicioSalp.getSalps());							
+						activarBindingSalp(servicioSalp.getSalps());							
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
 					}
 					else
@@ -129,12 +137,15 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 								vista.getCheckJueve().isSelected(), vista.getCheckVierne().isSelected(),
 								vista.getCheckSabado().isSelected()));
 						servicioDomicilioComercio.guardar(domicilioComercio);
-						vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());								
+						activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());								
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa");							
 					}
-					vista.LimpiarTxt();
+					vista.getBtnEliminar().setVisible(true);
+					vista.getTxtABuscar().setVisible(true);
+					vista.getBtnABuscar().setVisible(true);
+					vista.remove(vista.getPnCliente());
 					vista.repaint();
-					cliente = new Cliente();
+					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -212,26 +223,17 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				JTable tabla1 = new JTable();
-				tabla1 = vista.getTable();
-				Boolean enc = false;
-				for(int i = 0;i<tabla1.getRowCount();i++)
+				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				if(fila>=0)
 				{
-					if (tabla1.getValueAt(i, 0).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
-						tabla1.getValueAt(i, 1).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
-						tabla1.getValueAt(i, 2).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
-						tabla1.getValueAt(i, 3).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
-						tabla1.getValueAt(i, 4).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim()))
-					{
-						tabla1.setRowSelectionInterval(i,i);
-						enc = true;
-						break;
-					}
+					cargarCliente((Cliente)clientes.get(fila));
 				}
-				if (!enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
-				vista.setTable(tabla1);
-				vista.getTxtABuscar().setText("");
-				
+				else 
+				{
+					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
+					cargarCliente(new Cliente());
+				}
 			}
 		};
 	}
@@ -248,7 +250,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 				// TODO Auto-generated method stub
 					if (vista.getTable().getSelectedRow()>=0)
 					{
-						Cliente cliente = (Cliente) vista.getClientes().get(vista.getTable().getSelectedRow());
+						Cliente cliente = (Cliente) clientes.get(vista.getTable().getSelectedRow());
 						//cliente = new ServicioCliente().buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
 						ActivarAtras(cliente);
 					}
@@ -283,7 +285,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 					try {				
 							if(vista.getCmbTipoCliente().getSelectedItem().equals("Salp"))
 							{	
-								Cliente cliente = (Cliente) vista.getClientes().get(vista.getTable().getSelectedRow());
+								Cliente cliente = (Cliente) clientes.get(vista.getTable().getSelectedRow());
 								new ServicioSalp().eliminar((Salp)cliente);
 								new ServicioCliente().eliminar(cliente);
 								JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
@@ -299,7 +301,6 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 						} catch (Exception e) {
 							// TODO: handle exception
 							e.printStackTrace();
-							System.out.print(e.getMessage());
 							JOptionPane.showMessageDialog(vista,e.getMessage());
 						}
 					}
@@ -312,9 +313,9 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	void MostrarTabla() throws NumberFormatException, IOException{
 			
 		if(vista.getCmbTipoCliente().getSelectedItem().equals("Salp"))
-			vista.activarBindingSalp( servicioSalp.getSalps());
+			activarBindingSalp( servicioSalp.getSalps());
 		else 
-			vista.activarBindingDomicilioComercios(
+			activarBindingDomicilioComercios(
 						servicioDomicilioComercio.getDomicilioComercios());
 	}
 	
@@ -325,22 +326,24 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				try {
-					vista.LimpiarTxt();
+				try {		
+						vista.getBtnEliminar().setVisible(true);
+						vista.getTxtABuscar().setVisible(true);
+						vista.getBtnABuscar().setVisible(true);
 						if(vista.getCmbTipoCliente().getSelectedItem().equals("Salp"))
 						{
-							vista.activarBindingSalp(new ServicioSalp().getSalps());
+							activarBindingSalp(new ServicioSalp().getSalps());
 						}
 						else if(vista.getCmbTipoCliente().getSelectedItem().equals("Domicilio")||
 								vista.getCmbTipoCliente().getSelectedItem().equals("Comercial")) {
 	
 							if(rutas.isEmpty())
 							{
-								vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());
+								activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());
 							}
 							else
 							{
-								vista.activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios(rutas));	
+								activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios(rutas));	
 							}
 						}
 					} catch (NumberFormatException | IOException e) {
@@ -366,8 +369,8 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			public void mouseClicked(MouseEvent evento) {
 				if (evento.getClickCount()==1)
 				{
-					cliente = (Cliente) vista.getClientes().get(vista.getTable().getSelectedRow());
-					vista.cargarCliente();
+					cliente = (Cliente) clientes.get(vista.getTable().getSelectedRow());
+					cargarCliente(cliente);
 				}
 			}
 		};
@@ -377,19 +380,29 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		// TODO Auto-generated method stub
 		return new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==38 || e.getKeyCode()==40 )
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				Integer contFila = clientes.size();
+				 
+				if(e.getKeyCode()==38 )
 				{
-					cliente = (Cliente) vista.getClientes().get(vista.getTable().getSelectedRow());
-					vista.cargarCliente();
+					if(fila<=0) cargarCliente((Cliente) clientes.get(0));
+					else cargarCliente((Cliente)clientes.get(fila-1));
 				}
+				else if(e.getKeyCode()==40 )
+				{
+					if(fila+1>=contFila) cargarCliente((Cliente)clientes.get(contFila-1));
+					else cargarCliente((Cliente)clientes.get(fila+1));
+				}
+
 			}
 		};
-	}  
+	}
+	
 	public void actualizarContCliente(Object objetContCachePresente,Object objetClassVista){
 			if (objetContCachePresente instanceof ContRutas && objetClassVista != null)
 			{
 				this.cliente.setRuta((Ruta)objetClassVista);
-				vista.cargarCliente();
+				cargarCliente(cliente);
 			}
 	}
 
@@ -398,7 +411,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		{	
 			dibujar(vista,this); 
 		}
-		vista.cargarCliente();
+		cargarCliente(cliente);
 	}
 	
 	public Cliente getCliente() {
@@ -409,5 +422,126 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		this.cliente = cliente;
 	}
 	
+	public void cargarCliente(Cliente cliente) {
+		// TODO Auto-generated method stub
+		vista.remove(vista.getPnCliente());
+		vista.dibujarPanelCliente();
+		activarJComboBoxBindingRuta();
+ 			if (vista.getTable().getSelectedRow() >= 0 )
+			{
+				if(cliente.getId() != null)
+				{
+					vista.getTxtId().setText(cliente.getId().toString());
+				}
+				vista.getTxtDireccion().setText(cliente.getDireccion());
+				vista.getTxtRazonSocial().setText(cliente.getRazonsocial());
+				vista.getTxtRif().setText(cliente.getRif());
+				vista.getTxtTelefono().setText(cliente.getTelefono());
+				if(cliente instanceof DomicilioComercio)
+				{
+					vista.getPnCheckDia().setVisible(true);
+					vista.mostrarDiaVisita( ((DomicilioComercio) cliente ).getDiaVisita());
+				}
+				else
+				{
+					vista.getPnCheckDia().setVisible(false);
+				}
+				if(cliente.getRuta() != null && cliente.getRuta().getId() !=null )
+				{
+					vista.getLblRuta().setText("Ruta:");
+					for(int i = 0; i < rutas.size(); i++)
+					{	
+						Ruta ruta = rutas.get(i);
+						if (ruta.getId().equals(cliente.getRuta().getId()))
+						{
+							vista.getCmbRutas().setSelectedIndex(i);
+						}
+					}
+				}
+			}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	 
+	public void activarBindingSalp(List<Salp>  salps) {
+		// TODO Auto-generated method stub
+		clientes = salps;
+		vista.getPnTabla().setVisible(true);
+		vista.setTable(new JTable());
+		vista.getScrollPanel().setViewportView(vista.getTable());
+		JTableBinding binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,salps,vista.getTable());
+		BeanProperty idCliente  = BeanProperty.create("id");
+		BeanProperty rif = BeanProperty.create("rif");
+		BeanProperty razonSocial = BeanProperty.create("razonsocial");
+		BeanProperty direccion = BeanProperty.create("direccion");
+		BeanProperty telefono = BeanProperty.create("telefono");
+		BeanProperty rutaCliente = BeanProperty.create("ruta.nombre");
+			
+		binClientes.addColumnBinding(idCliente).setColumnClass(Integer.class).setColumnName("idCliente");
+		binClientes.addColumnBinding(rif).setColumnClass(String.class).setColumnName("rif");
+		binClientes.addColumnBinding(razonSocial).setColumnClass(String.class).setColumnName("Razon Social");
+		binClientes.addColumnBinding(direccion).setColumnClass(String.class).setColumnName("Direccion");
+		binClientes.addColumnBinding(telefono).setColumnClass(String.class).setColumnName("Telefono");
+		binClientes.addColumnBinding(rutaCliente).setColumnClass(String.class).setColumnName("Ruta");
+		binClientes.bind();
+		vista.getTable().addKeyListener(mostrarCliente_keypress());
+		vista.getTable().addMouseListener(mostrarCliente());
+		
+		vista.remove(vista.getPnCliente());
+		vista.repaint();
+	}
+
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void activarBindingDomicilioComercios(List<DomicilioComercio>  domicilioComercios) {
+		// TODO Auto-generated method stub
+		clientes = domicilioComercios;
+		vista.getPnTabla().setVisible(true);
+		vista.setTable(new JTable());
+		vista.getScrollPanel().setViewportView(vista.getTable());
+
+		List<DomicilioComercio> aux = new ArrayList<DomicilioComercio>();
+		
+		for(Object obj : domicilioComercios)
+		{	
+			DomicilioComercio domicilioComercio = (DomicilioComercio) obj;
+			if(domicilioComercio.getTipo().equals("C") && vista.getCmbTipoCliente().getSelectedItem().equals("Comercial")) 
+				aux.add(domicilioComercio);
+			else if(domicilioComercio.getTipo().equals("D")  && vista.getCmbTipoCliente().getSelectedItem().equals("Domicilio"))
+				aux.add(domicilioComercio);
+		}
+		domicilioComercios = aux;
+		this.clientes = domicilioComercios;
+	
+		JTableBinding binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,domicilioComercios,vista.getTable());
+		
+		BeanProperty idCliente  = BeanProperty.create("id");
+		BeanProperty rif = BeanProperty.create("rif");
+		BeanProperty razonSocial = BeanProperty.create("razonsocial");
+		BeanProperty direccion = BeanProperty.create("direccion");
+		BeanProperty telefono = BeanProperty.create("telefono");
+		BeanProperty rutaCliente = BeanProperty.create("ruta.nombre");
+
+		binClientes.addColumnBinding(idCliente).setColumnClass(Integer.class).setColumnName("idCliente");
+		binClientes.addColumnBinding(rif).setColumnClass(String.class).setColumnName("rif");
+		binClientes.addColumnBinding(razonSocial).setColumnClass(String.class).setColumnName("Razon Social");
+		binClientes.addColumnBinding(direccion).setColumnClass(String.class).setColumnName("Direccion");
+		binClientes.addColumnBinding(telefono).setColumnClass(String.class).setColumnName("Telefono");
+		binClientes.addColumnBinding(rutaCliente).setColumnClass(String.class).setColumnName("Ruta");
+		binClientes.bind();
+		
+		vista.getTable().addKeyListener(mostrarCliente_keypress());
+		vista.getTable().addMouseListener(mostrarCliente());
+ 
+		vista.remove(vista.getPnCliente());
+		vista.repaint();
+}
+	
+	@SuppressWarnings("rawtypes")
+	public void activarJComboBoxBindingRuta(){
+		JComboBoxBinding jcomboRutas = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,rutas,vista.getCmbRutas());
+	    jcomboRutas.bind();
+	}
+
 	
 }

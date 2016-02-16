@@ -43,55 +43,7 @@ public class ContConcesionarios extends ContGeneral implements IContGeneral {
 		vista = new ConcesionarioUI(this,servicioConcesionario.getConcecionarios(),servicioRuta.getRutas());
 		dibujar(vista,this); 
 	}
-	
  
-/*
-	public void Modificar() {
-		// TODO Auto-generated method stub
-		try {	
-				JefeVenta jefeVenta  = new JefeVenta();
-				jefeVenta = servicioJefeVenta.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-				if (jefeVenta != null)
-				{
-					//vista.activarNuevo();
-					vista.getTxtId().setText(jefeVenta.getId().toString());
-					vista.getTxtNombre().setText(jefeVenta.getNombre());
-					vista.getTxtCedula().setText(jefeVenta.getCedula());
-					vista.getTxtContrasena().setText(jefeVenta.getContrasena());
-					vista.getTxtUserName().setText(jefeVenta.getUsername());
-					vista.getTxtReContrasena().setText(jefeVenta.getContrasena());//Temporal
-					setSelectedValue(vista.getCmbZona(),jefeVenta.getZona().getId());
-
-				}
-				else JOptionPane.showMessageDialog(vista,"Seleccione la fila");
-				
-			} catch (NumberFormatException | IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	}
-*/	
-	/*
-	@SuppressWarnings("rawtypes")
-	public void setSelectedValue(JComboBox comboBox,Integer id)
-	{	
-		for (int i = 0; i < comboBox.getItemCount(); i++)
-		{
-			comboBox.setSelectedIndex(i);
-			Boolean enc=false;
-			switch (comboBox.getSelectedItem().getClass().getName().toString()) {
-			case "santaclara.modelo.Zona":
-				enc = (((Zona)comboBox.getSelectedItem()).getId().equals(id)); 
-				break;
-			default:
-				break;
-			}
-			if (enc) break;
-		}
-	}
- */
-
-	
 	public ActionListener buscar() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -310,7 +262,7 @@ public class ContConcesionarios extends ContGeneral implements IContGeneral {
 					concesionario.setContrasena(vista.getTxtContrasena().getText().toString());
 					concesionario.setRuta((Ruta) vista.getCmbRuta().getSelectedItem());	
 					concesionario.setCamion(vista.getCamion());;
-					new ContCamiones(getContPrincipal(),concesionario);
+					new ContCamiones(getContPrincipal());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

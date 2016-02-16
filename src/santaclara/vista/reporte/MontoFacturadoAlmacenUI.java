@@ -35,10 +35,9 @@ import com.toedter.calendar.JDateChooser;
 public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
 
 	private JComboBox<Almacen> 		cmbAlmacen;
+	
 	@SuppressWarnings("rawtypes")
 	private JTableBinding   binFacturas;
-
-	private JButton btnAtras;
     private JButton btnBuscar;
     private JLabel lblDesde;
     private JLabel lblHasta;
@@ -55,6 +54,8 @@ public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
 		/**********************************************************************************************************************************************************/
 		dibujarPanelOpciones();
 		dibujarPanelTabla();
+		dibujarBotonAtras();
+		getBtnAtras().addActionListener(contReportMontFacturadoAlmacen.Atras());
 	
 		cmbAlmacen = new JComboBox<Almacen>();
 		cmbAlmacen.setBackground(SystemColor.controlHighlight);
@@ -67,13 +68,6 @@ public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
 				return new JLabel(almacen.getUbicacion());
 			}
 		});
-
-		btnAtras = new JButton("Atras");
-		btnAtras.setForeground(Color.WHITE);
-		btnAtras.setFont(new Font("Dialog", Font.BOLD, 10));
-		btnAtras.setBackground(Color.DARK_GRAY);
-
-		getPnBotones().add(btnAtras);
 		
 		lblDesde = new JLabel("Desde");
 		lblDesde.setForeground(Color.WHITE);
@@ -213,16 +207,6 @@ public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
 	public void setLblAlmacen(JLabel lblAlmacen) {
 		this.lblAlmacen = lblAlmacen;
 	}
-
-	public JButton getBtnAtras() {
-		return btnAtras;
-	}
-
-
-	public void setBtnAtras(JButton btnAtras) {
-		this.btnAtras = btnAtras;
-	}
-
 
 	public JButton getBtnBuscar() {
 		return btnBuscar;

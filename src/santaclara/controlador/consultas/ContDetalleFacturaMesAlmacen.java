@@ -10,18 +10,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.swingbinding.JComboBoxBinding;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+
+import santaclara.Servicio.ServicioAlmacen;
 import santaclara.Servicio.ServicioDetalleFactura;
+import santaclara.Servicio.ServicioProducto;
 import santaclara.controlador.ContGeneral;
 import santaclara.controlador.ContPrincipal;
 import santaclara.controlador.IContGeneral;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.DetalleFactura;
+import santaclara.modelo.Producto;
 import santaclara.vista.consultas.DetalleFacturaMesAlmacenUI;
 
 public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGeneral {
@@ -29,6 +37,9 @@ public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGe
 	private static DetalleFacturaMesAlmacenUI vista;
 	private static List<DetalleFactura> detalleFacturas ;
 	Integer acumCantidad = new Integer(0);
+
+	private List<Almacen> almacenes = new ArrayList<Almacen>();
+	private List<Producto> productos = new ArrayList<Producto>();
 	
 	public ContDetalleFacturaMesAlmacen() {
 		// TODO Auto-generated constructor stub
@@ -40,8 +51,16 @@ public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGe
 		setContPrincipal(contPrincipal);
 		vista = new DetalleFacturaMesAlmacenUI(this);
 		dibujar(vista,this);
-		vista.cargarCmbAlmacen();
+		
+		almacenes = new ServicioAlmacen().getAlmacenes();
+		productos = new ServicioProducto().getProductos();
+		
+		cargarCmbAlmacen();
 		setSelectedValue(vista.getCmbAlmacen(), null);
+		
+		cargarcmbProducto();
+		setSelectedValue(vista.getCmbProducto(), null);
+		
 		vista.getDateHasta().setMaxSelectableDate(new Date());
 		vista.getDateHasta().setDate(new Date());
 		vista.getDateDesde().setDate(new Date());
@@ -61,6 +80,22 @@ public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGe
 			for(DetalleFactura detalleFactura: detalleFacturas)
 			{
 				if (detalleFactura.getFactura().getAlmacen().getId().equals(((Almacen)vista.getCmbAlmacen().getSelectedItem()).getId()))
+				{
+					detalleFacturasAux.add(detalleFactura);
+				}			
+			}
+			return detalleFacturasAux;
+		}
+		return detalleFacturas;
+	}
+	
+	public List<DetalleFactura> getFilterByCmbProducto(List<DetalleFactura> detalleFacturas){
+		List<DetalleFactura> detalleFacturasAux = new ArrayList<DetalleFactura>();
+		if(!((Producto)vista.getCmbProducto().getSelectedItem()).getId().equals(0))
+		{
+			for(DetalleFactura detalleFactura: detalleFacturas)
+			{
+				if (detalleFactura.getEmpaqueProducto().getProducto().getId().equals(((Producto)vista.getCmbProducto().getSelectedItem()).getId()))
 				{
 					detalleFacturasAux.add(detalleFactura);
 				}			
@@ -243,7 +278,13 @@ public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGe
 		List<List<DetalleFactura>> listGroup = new ArrayList<List<DetalleFactura>>();
 		List<DetalleFactura> listOrder = new ArrayList<DetalleFactura>();
 	
-		listOrder = getOrderBy("Date", getFilterByDate(getFilterByCmbAlmacen(detalleFacturas)));
+		listOrder = getFilterByCmbAlmacen(detalleFacturas);
+		
+		listOrder = getFilterByCmbProducto(listOrder);
+		
+		listOrder = getFilterByDate(listOrder);
+		
+		listOrder = getOrderBy("Date", listOrder);
 	
 		listGroup = getGroupBy("Month",listOrder);
 	
@@ -261,7 +302,7 @@ public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGe
 	
 		listOrder = getAcumCantidad(listOrder);
 		
-		vista.activarBinding(listOrder);
+		activarBinding(listOrder);
 	}	
 	
 	void printListOrdenBy(List<DetalleFactura> listOrder,String title){
@@ -296,27 +337,27 @@ public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGe
 		System.out.println("/***************End Print  Size List "+listGroup.size()+" ".concat(title).concat("********************\n"));
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public void setSelectedValue(JComboBox comboBox,Integer id)
-    {	
-        for (int i = 0; i < comboBox.getItemCount(); i++)
-        {
-        	comboBox.setSelectedIndex(i);
-        	Boolean enc=false;
-        	switch (comboBox.getSelectedItem().getClass().getName().toString()) {
-			case "santaclara.modelo.Almacen":
-				enc = (((Almacen)comboBox.getSelectedItem()).getId().equals(id)); 
-					break;
-			default:
-				break;
-			}
-        	if (enc) break;
-        }
-    }
-
 	public ActionListener Atras() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Atras();
+			}
+		};
+	}
+	
+	public ActionListener Salir(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				quitarVista();
+			}
+		};
 	}
 
 	public ActionListener buscar() {
@@ -392,6 +433,47 @@ public class ContDetalleFacturaMesAlmacen extends ContGeneral implements IContGe
 			}
 		};
 	}
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void activarBinding(List<DetalleFactura> detalleFacturas) {
+		// TODO Auto-generated method stub
+		vista.setTable(new JTable());
+		vista.getScrollPanel().setViewportView(vista.getTable());
+		JTableBinding	binFacturas = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,detalleFacturas,vista.getTable());
+	    
+	    BeanProperty idFactura  = BeanProperty.create("factura.id");
+	    BeanProperty fecha  = BeanProperty.create("factura.fechaCadenaStr");
+	    BeanProperty almacen = BeanProperty.create("factura.almacen.ubicacion");
+	    BeanProperty producto = BeanProperty.create("empaqueProducto.descripcionEmpaque");
+	    BeanProperty cantidad = BeanProperty.create("cantidad");
+	
+	    binFacturas.addColumnBinding(idFactura).setColumnClass(String.class).setColumnName("Nro Factura");
+	    binFacturas.addColumnBinding(fecha).setColumnClass(String.class).setColumnName("Fecha");
+	    binFacturas.addColumnBinding(almacen).setColumnClass(String.class).setColumnName("Almacen");
+	    binFacturas.addColumnBinding(producto).setColumnClass(String.class).setColumnName("Producto");
+	    binFacturas.addColumnBinding(cantidad).setColumnClass(String.class).setColumnName("Cantidad");
+	    
 
+	    binFacturas.bind();
+	}
+    
+    @SuppressWarnings("rawtypes")
+	public void cargarCmbAlmacen() throws NumberFormatException, IOException{
+    	Almacen almacen = new Almacen(0,"Todos");
+    	almacenes.add(almacen);
+    	JComboBoxBinding jcomboAlmacen = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,almacenes,vista.getCmbAlmacen());
+	    
+	    jcomboAlmacen.bind();
+    }
+
+	@SuppressWarnings("rawtypes")
+	public void cargarcmbProducto() throws NumberFormatException, IOException{
+    	Producto producto = new Producto();
+    	producto.setId(0);
+    	productos.add(producto);
+    	JComboBoxBinding jcomboProducto = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,productos,vista.getCmbProducto());
+	    
+	    jcomboProducto.bind();
+    }
+	
 }
 

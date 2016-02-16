@@ -2,10 +2,21 @@ package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
 
 import santaclara.Servicio.ServicioAlmacen;
 import santaclara.modelo.Almacen;
@@ -15,18 +26,16 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 	
 	private ServicioAlmacen servicioAlmacen;
 	private AlmacenesUI vista;
-	
-	public ContAlmacenes() throws NumberFormatException, IOException{
-		servicioAlmacen = new ServicioAlmacen();
-		vista = new AlmacenesUI(this,servicioAlmacen.getAlmacenes());
-	}
+	private Almacen almacen = new Almacen();
+	private List<Almacen> almacenes = new ServicioAlmacen().getAlmacenes();
 	
 	public ContAlmacenes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		servicioAlmacen = new ServicioAlmacen();
-		vista = new AlmacenesUI(this,servicioAlmacen.getAlmacenes());
+		vista = new AlmacenesUI(this);
 		dibujar(vista,this);
+		activarBinding(almacenes);
 	}
 
 	@Override
@@ -44,41 +53,11 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.activarNuevoAlmacen();
-				vista.getPnTabla().setVisible(false);
+				vista.getTable().clearSelection();
+				almacen = new Almacen();
+				cargarAlmacen(almacen);
+				
 			}
-		};
-	}
-
-	public ActionListener modificar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (vista.getTable().getSelectedRow()>=0)
-				{
-					Almacen almacen  = new Almacen();
-					try {
-						almacen = servicioAlmacen.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-						if (almacen != null)
-						{
-							vista.activarNuevoAlmacen();
-							vista.getScrollPanel().setVisible(false);
-							vista.getTxtId().setText(almacen.getId().toString());
-							vista.getTxtUbicacion().setText(almacen.getUbicacion());
-						}
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(vista,e1.getMessage());
-						e1.printStackTrace();
-					}
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(vista,"Seleccione el Almacen");
-				}
-		}
 		};
 	}
 
@@ -89,11 +68,7 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				Almacen almacen = new Almacen();
-				
-				if (vista.getTxtId().getText().equals("")) almacen.setId(null);
-					else almacen.setId(new Integer(vista.getTxtId().getText().toString())); 
-				
+				 
 				if (vista.getTxtUbicacion().getText().equals(""))
 					JOptionPane.showMessageDialog(vista,"Campos Vacios: Ubicacion");
 				else
@@ -101,12 +76,8 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 					try {								
 						almacen.setUbicacion(vista.getTxtUbicacion().getText().toString());								
 						JOptionPane.showMessageDialog(vista,servicioAlmacen.guardar(almacen));
-						// agregarlo a la lista
-						vista.getAlmacenes().add(almacen);
-						vista.getBinAlmacenes().unbind();
-						vista.getBinAlmacenes().bind();
-						vista.activarBinding(servicioAlmacen.getAlmacenes());
-						vista.quitarNuevo();
+						almacenes = servicioAlmacen.getAlmacenes();
+						activarBinding(almacenes);
 									
 					} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -125,23 +96,17 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				JTable tabla1 = new JTable();
-				tabla1 = vista.getTable();
-				Boolean enc = false;
-				for(int i = 0;i<tabla1.getRowCount();i++)
+				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				if(fila>=0)
 				{
-					if (tabla1.getValueAt(i, 0).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
-						tabla1.getValueAt(i, 1).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim()))
-					{
-						tabla1.setRowSelectionInterval(i,i);
-						enc = true;
-						break;
-					}
+					cargarAlmacen(almacenes.get(fila));
 				}
-				if (!enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
-				vista.setTable(tabla1);
-				vista.setTxtABuscar("");;
-				
+				else 
+				{
+					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
+					cargarAlmacen(new Almacen());
+				}
 			}
 		};
 	}
@@ -170,12 +135,11 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 				try {
 					if (vista.getTable().getSelectedRow()>=0)
 					{
-						Almacen almacen = new Almacen();
-						almacen = servicioAlmacen.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
+						almacen = almacenes.get(vista.getTable().getSelectedRow());
 						ActivarAtras(almacen);
 					}
 					else ActivarAtras(null);
-				} catch (NumberFormatException | IOException e1) {
+				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -205,18 +169,11 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 				try {
 					if (vista.getTable().getSelectedRow()>=0)
 					{
-						Almacen almacen;
-						almacen = servicioAlmacen.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-						if (almacen != null)
-						{
-							almacen = servicioAlmacen.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
-							servicioAlmacen.eliminar(almacen);
-							vista.getBinAlmacenes().unbind();
-							vista.getBinAlmacenes().bind();				
-							vista.activarBinding(servicioAlmacen.getAlmacenes());
-							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-							vista.quitarNuevo();
-						}
+						almacen = almacenes.get(vista.getTable().getSelectedRow());
+						servicioAlmacen.eliminar(almacen);
+						activarBinding(servicioAlmacen.getAlmacenes());
+						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+				
 					}
 					else
 					{
@@ -229,16 +186,76 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 			}
 		};
 	}
-
-	public ActionListener quitarNuevo() {
+	
+	public MouseAdapter mostrarAlmacen() {
 		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
+		return new MouseAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.quitarNuevo();
+			public void mouseClicked(MouseEvent evento) {
+				if (evento.getClickCount()==1)
+				{
+					almacen = almacenes.get(vista.getTable().getSelectedRow());
+					cargarAlmacen(almacen);
+				}
 			}
 		};
-	} 
+	}
+
+	public KeyAdapter mostrarAlmacen_keypress() {
+		// TODO Auto-generated method stub
+		return new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				Integer fila = new Integer(vista.getTable().getSelectedRow());
+				Integer contFila = almacenes.size();
+				 
+				if(e.getKeyCode()==38 )
+				{
+					if(fila<=0) cargarAlmacen(almacenes.get(0));
+					else cargarAlmacen(almacenes.get(fila-1));
+				}
+				else if(e.getKeyCode()==40 )
+				{
+					if(fila+1>=contFila) cargarAlmacen(almacenes.get(contFila-1));
+					else cargarAlmacen(almacenes.get(fila+1));
+				}
+
+			}
+		};
+	}  
+
+	public void cargarAlmacen(Almacen almacen) {
+		// TODO Auto-generated method stub	
+		vista.remove(vista.getPnAlmacen());
+		vista.dibujarPanelAlmacen();
+		
+		if (vista.getTable().getSelectedRow() >= 0 )
+		{
+			vista.getTxtUbicacion().setText(almacen.getUbicacion());
+			
+		}
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void activarBinding(List<Almacen> almacenes) {
+		// TODO Auto-generated method stub
+	 
+		vista.remove(vista.getPnAlmacen());
+		vista.getPnTabla().setVisible(true);
+		vista.setTable(new JTable());
+		vista.getScrollPanel().setViewportView(vista.getTable());	
+		JTableBinding binAlmacenes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,almacenes,vista.getTable());
+		BeanProperty idAlmacen  = BeanProperty.create("id");
+		BeanProperty ubicacionAlmacen = BeanProperty.create("ubicacion");
+		binAlmacenes.addColumnBinding(idAlmacen).setColumnClass(Integer.class).setColumnName("id");;
+	    binAlmacenes.addColumnBinding(ubicacionAlmacen).setColumnClass(String.class).setColumnName("Ubicacion");
+	    binAlmacenes.bind();
+	    
+	    vista.getTable().addKeyListener(mostrarAlmacen_keypress());
+	 	vista.getTable().addMouseListener(mostrarAlmacen());
+	  
+	 	vista.remove(vista.getPnAlmacen());
+		vista.repaint();
+
+	}
+
 }

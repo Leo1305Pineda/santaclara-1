@@ -3,12 +3,17 @@ package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Stack;
-
+import java.util.Stack; 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
+ 
+import santaclara.controlador.consultas.ContConsulta;
+import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
+import santaclara.controlador.consultas.ContListCantRefrecoPresentCapacFacturadoZona;
+import santaclara.controlador.consultas.ContListCantRefrescoSaborVendidoAlmacen;
+import santaclara.controlador.consultas.ContListClienteTipoZona; 
+import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen; 
+import santaclara.controlador.reportes.ContReporte;
 import santaclara.modelo.Camion;
 import santaclara.modelo.Usuario;
 import santaclara.vista.PrincipalUI;
@@ -23,13 +28,15 @@ public  class ContPrincipal {
 	private Stack<Object> cacheObjet = new Stack<Object>();
 	private Boolean editorActivo = new Boolean(false);
 	
+	private ContAlmacenes 	contAnimaciones ;
+	
 	public static void main(String[] args) {
 	   ContPrincipal controlador = new  ContPrincipal();
 	   controlador.ejecutar();   
 	   
 	}
 
-	private void ejecutar() {
+	public void ejecutar() {
 		// TODO Auto-generated method stub
 		vista = new PrincipalUI(this);
 		try {
@@ -183,18 +190,91 @@ public  class ContPrincipal {
 		 
 						ActivarConcenionario(null,null,null);
 					}
-				} catch (Exception e1) {
+					else if(e.getSource().equals(vista.getMntReporte())){
+						ActivarReporte();
+					}
+					else if(e.getSource().equals(vista.getMntConsulta())){
+						ActivarConsulta();
+					}
+	 			} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 					JOptionPane.showMessageDialog(null,e1.getMessage());
 				}
-
 			}
-
-
 		};
 	}
+ 
 	
+	public void ActivarReporte(){
+		
+		try {
+			
+			controlador = new ContReporte(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	public void ActivarConsulta(){
+	
+		try {
+		
+			controlador = new ContConsulta(ContPrincipal.this);
+			}
+			catch (Exception e1) {
+				// 	TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	}
+	
+	public void ActivarConsultaDetalleFacturaMesAlmacen(){
+		
+		try {
+			
+			controlador = new ContDetalleFacturaMesAlmacen(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	public void ActivarListCantRefrescoSaborVendidoAlmacen(){
+		
+		try {
+			
+			controlador = new ContListCantRefrescoSaborVendidoAlmacen(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	public void ActivarListCantRefrescoPresentCapacFacturadoZona(){
+		
+		try {
+			
+			controlador = new ContListCantRefrecoPresentCapacFacturadoZona(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	public void ActivarListClienteZonaTipo(){
+		
+		try {
+			
+			controlador = new ContListClienteTipoZona(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	} 
+  
 	private void ActivarConcenionario(ContGeneral contLlamador, ContGeneral contllamado, Object mensaje) throws Exception {
 		// TODO Auto-generated method stub
 
@@ -456,4 +536,15 @@ public  class ContPrincipal {
 		}
 	}
 	
+  
+
+	public ContAlmacenes getContAnimaciones() {
+		return contAnimaciones;
+	}
+
+	public void setContAnimaciones(ContAlmacenes contAnimaciones) {
+		this.contAnimaciones = contAnimaciones;
+	}
+
+	 
 }
