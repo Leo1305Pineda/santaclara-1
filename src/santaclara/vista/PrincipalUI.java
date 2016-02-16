@@ -286,9 +286,8 @@ public class PrincipalUI {
 		 
 		menuBar.setVisible(false);;
 		frame.setVisible(true); 
-		
-		/*** defensa    */
-		
+	
+		/*** 
 		mntReporte = new JMenuItem("TuNombre"); 
 		mntReporte.setIcon(new ImageIcon("img/gestion/consulta14.png"));
 		mnReportes.add(mntReporte);
@@ -299,7 +298,7 @@ public class PrincipalUI {
 		mnConsulta.add(mntConsulta);
 		mntConsulta.addActionListener(controlador.activarMenu());
 		
-		/***  fin   */
+	 fin   */
 		
 	}
 	
