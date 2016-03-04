@@ -1,6 +1,12 @@
-package santaclara.modelo;
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
 
-import java.util.List;
+package santaclara.modelo;
 
 public class Zona {
 	
@@ -11,11 +17,13 @@ public class Zona {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Zona(String descripcion, List<Ruta> rutas) {
+	 
+	public Zona(Integer id, String descripcion) {
 		super();
+		this.id = id;
 		this.descripcion = descripcion;
 	}
-	 
+
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -29,6 +37,4 @@ public class Zona {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	 
 }

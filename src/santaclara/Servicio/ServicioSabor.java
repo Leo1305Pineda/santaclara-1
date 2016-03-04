@@ -1,6 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +19,7 @@ public class ServicioSabor {
 	private SaborDAO saborDAO = new SaborDAO();
 	private List<Sabor> sabores = new ArrayList<Sabor>();
 		
-	public List<Sabor> getSabores() throws NumberFormatException, IOException{
+	public List<Sabor> getSabores() throws Exception{
 		// TODO Auto-generated method stub
 		
 		return saborDAO.getSabores();
@@ -27,12 +34,12 @@ public class ServicioSabor {
 		this.saborDAO = saborDAO;
 	}
 
-	public Sabor buscar(Integer id) throws IOException {
+	public Sabor buscar(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		return saborDAO.getSabor(id);
 	}
 
-	public String guardar(Sabor sabor) throws IOException {
+	public String guardar(Sabor sabor) throws Exception {
 		// TODO Auto-generated method stub
 		
 		sabores = saborDAO.getSabores();
@@ -52,11 +59,11 @@ public class ServicioSabor {
 		
 	}
 	
-	public Sabor getSabor(Integer id) throws IOException{
+	public Sabor getSabor(Integer id) throws Exception{
 		return saborDAO.getSabor(id);
 	}
 	
-	public void eliminar(Sabor sabor) throws IOException{
+	public void eliminar(Sabor sabor) throws Exception{
 		saborDAO.eliminar(sabor);
 	}
 	

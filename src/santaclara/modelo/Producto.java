@@ -1,25 +1,37 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.modelo;
 
  
 public class Producto {
+	
 	private Integer id;
-	private Capacidad capacidad;
-	private Presentacion presentacion;
-	private Sabor sabor;
 	private String nombre;
 	private Double precio;
 	private Double descuento;
 	private Boolean iva;
+	private Capacidad capacidad;
+	private Presentacion presentacion;
+	private Sabor sabor;
 	
-	public Producto(Integer id,Capacidad capacidad, Presentacion presentacion,
-			Sabor sabor, String nombre,Double precio) {
+	public Producto(Integer id, String nombre, Double precio, Double descuento,
+			Boolean iva, Capacidad capacidad, Presentacion presentacion,
+			Sabor sabor) {
 		super();
 		this.id = id;
+		this.nombre = nombre;
+		this.precio = precio;
+		this.descuento = descuento;
+		this.iva = iva;
 		this.capacidad = capacidad;
 		this.presentacion = presentacion;
 		this.sabor = sabor;
-		this.nombre = nombre;
-		this.precio = precio;
 	}
 
 	public Integer getId() {
@@ -104,6 +116,13 @@ public class Producto {
 		if (iva.booleanValue()==true) return "Exento";
 		else if (iva.booleanValue()==false) return "12.000";
 		else return "";
+	}
+	
+	
+	public String getIva2Str() {
+		if (iva.booleanValue()==true) return "exento";
+		 return "gravado";
+		
 	}
 	
 	public String getDescripcion(){

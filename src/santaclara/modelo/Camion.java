@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.modelo;
 
 public class Camion {
@@ -10,6 +18,21 @@ public class Camion {
 	private String  marca;
 	private String  ano;
 	
+	public Camion() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Camion(Integer id, String placa, String color, Double capacidad,
+			String modelo, String marca, String ano) {
+		super();
+		this.id = id;
+		this.placa = placa;
+		this.color = color;
+		this.capacidad = capacidad;
+		this.modelo = modelo;
+		this.marca = marca;
+		this.ano = ano;
+	}
 	public Integer getId() {
 		return id;
 	}

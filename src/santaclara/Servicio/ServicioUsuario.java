@@ -1,6 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,25 +29,25 @@ public class ServicioUsuario {
 	
 	private List<Usuario> usuarios = new ArrayList<Usuario>();
 		
-	public List<Usuario> getUsuarios() throws NumberFormatException, IOException{
+	public List<Usuario> getUsuarios() throws Exception{
 		// TODO Auto-generated method stub
 		
 		return usuarioDAO.getUsuarios();
 	}
 
-	public List<JefeVenta> getJefeVentas() throws NumberFormatException, IOException{
+	public List<JefeVenta> getJefeVentas() throws Exception{
 		// TODO Auto-generated method stub
 		
 		return jefeVentaDAO.getJefeVentas();
 	}
 	
-	public List<Vendedor> getVendedores() throws NumberFormatException, IOException{
+	public List<Vendedor> getVendedores() throws Exception{
 		// TODO Auto-generated method stub
 		
 		return vendedorDAO.getVendedores();
 	}
 	
-	public List<Concesionario> getConcesionarios() throws NumberFormatException, IOException{
+	public List<Concesionario> getConcesionarios() throws Exception{
 		// TODO Auto-generated method stub
 		
 		return concesionarioDAO.getConcecionarios();
@@ -56,12 +63,12 @@ public class ServicioUsuario {
 	}
 
  
-	public Usuario buscar(String username) throws IOException {
+	public Usuario buscar(String username) throws Exception {
 		// TODO Auto-generated method stub
 		return usuarioDAO.getUsuario(username);
 	}
 
-	public Usuario buscarCedula(String cedula) throws IOException {
+	public Usuario buscarCedula(String cedula) throws Exception {
 		// TODO Auto-generated method stub
 		return usuarioDAO.getUsuarioCedula(cedula);
 	}
@@ -90,11 +97,11 @@ public class ServicioUsuario {
 		
 	}
 	
-	public Usuario getUsuario(Integer id) throws IOException{
+	public Usuario getUsuario(Integer id) throws Exception{
 		return usuarioDAO.getUsuario(id);
 	}
 	
-	public void eliminar(Usuario usuario) throws IOException{
+	public void eliminar(Usuario usuario) throws Exception{
 		usuarioDAO.eliminar(usuario);
 	}
 	

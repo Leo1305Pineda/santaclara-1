@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
@@ -7,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -29,14 +38,16 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 	private ServicioCamion servicioCamion;
 	private CamionesUI vista;
 	private Camion camion = new Camion();
-	private List<Camion> camiones = new ServicioCamion().getCamiones();
+	private List<Camion> camiones = new ArrayList();
 	
-	public ContCamiones(ContPrincipal contPrincipal ) throws NumberFormatException, IOException {
+	public ContCamiones(ContPrincipal contPrincipal ) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		servicioCamion = new ServicioCamion();
+		camiones = servicioCamion.getCamiones();
 		vista = new CamionesUI(this);
 		dibujar(vista,this);
+		vista.getPnCamion().setVisible(false);
 		activarBinding(camiones);
 	}
 
@@ -53,7 +64,8 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.getPnTabla().setVisible(false);
+				cargarCamion(new Camion());
+				vista.getTable().clearSelection();
 			}
 		};
 	}
@@ -94,7 +106,7 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 						camiones.add(camion);
 						activarBinding(servicioCamion.getCamiones());
 						
-					} catch (IOException e1) {
+					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						JOptionPane.showConfirmDialog(null,e1.getMessage());
 						e1.printStackTrace();
@@ -198,7 +210,7 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
 								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: Vendedor Concesionario");
 						
-				} catch (IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -211,6 +223,7 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 		// TODO Auto-generated method stub
 		vista.setCamiones(camiones);
 		vista.remove(vista.getPnCamion());
+		this.camiones = camiones;
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
 		vista.getScrollPanel().setViewportView(vista.getTable());	
@@ -236,7 +249,6 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 	    vista.getTable().addKeyListener(mostrarCamion_keypress());
 	 	vista.getTable().addMouseListener(mostrarCamion()); 
 	  
-	 	vista.remove(vista.getPnCamion());
 	 	vista.repaint();
 	}
 	
@@ -278,17 +290,18 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 
 	public void cargarCamion(Camion camion) {
 		// TODO Auto-generated method stub	
-		vista.remove(vista.getPnCamion());
-		vista.dibujarPanelCamion();
+		vista.getPnCamion().setVisible(true);
 		
-		if (vista.getTable().getSelectedRow() >= 0 )
+		vista.getTxtId().setText("");
+		vista.getTxtPlaca().setText("");
+		vista.getTxtMarca().setText("");
+		vista.getTxtModelo().setText("");
+		vista.getTxtYear().setText("");
+		vista.getTxtColor().setText("");
+		vista.getTxtCapacidad().setValue(new Double(0));
+		
+		if (vista.getTable().getSelectedRow() >= 0 && camion.getId() != null)
 		{
-			vista.getTxtId().setText("");
-	
-			if(camion.getId() != null)
-			{
-				vista.getTxtId().setText(camion.getId().toString());
-			}
 			vista.getTxtId().setText(camion.getId().toString());
 			vista.getTxtPlaca().setText(camion.getPlaca());
 			vista.getTxtMarca().setText(camion.getMarca());

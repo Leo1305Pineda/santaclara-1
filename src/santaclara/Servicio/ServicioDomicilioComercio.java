@@ -1,7 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +19,7 @@ public class ServicioDomicilioComercio {
 	
 	private DomicilioComercioDAO domicilioComercioDAO = new DomicilioComercioDAO();
 		
-	public List<DomicilioComercio> getDomicilioComercios() throws NumberFormatException, IOException{
+	public List<DomicilioComercio> getDomicilioComercios() throws Exception{
 		// TODO Auto-generated method stub
 		
 		return domicilioComercioDAO.getDomicilioComercios();
@@ -28,30 +34,30 @@ public class ServicioDomicilioComercio {
 		this.domicilioComercioDAO = domicilioComercioDAO;
 	}
 
-	public DomicilioComercio buscar(Integer id) throws IOException {
+	public DomicilioComercio buscar(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		return domicilioComercioDAO.getDomicilioComercio(id);
 	}
 	
-	public Boolean isbuscar(Integer id) throws IOException {
+	public Boolean isbuscar(Integer id) throws Exception {
 		DomicilioComercio domicilioComercio = domicilioComercioDAO.getDomicilioComercio(id);
 		if (domicilioComercio != null) return true; 
 		return false;
 	} 
 
-	public void guardar(DomicilioComercio domicilioComercio) throws IOException {
+	public void guardar(DomicilioComercio domicilioComercio) throws Exception {
 		// TODO Auto-generated method stub
 		domicilioComercioDAO.guardar(domicilioComercio);
 	}
 	
-	public DomicilioComercio getdDomicilioComercio(Integer id) throws IOException{
+	public DomicilioComercio getdDomicilioComercio(Integer id) throws Exception{
 		return domicilioComercioDAO.getDomicilioComercio(id);
 	}
 	
-	public void eliminar(DomicilioComercio domicilioComercio) throws IOException{
+	public void eliminar(DomicilioComercio domicilioComercio) throws Exception{
 		domicilioComercioDAO.eliminar(domicilioComercio);
 	}
-	public List<DomicilioComercio> getDomicilioComercios(Ruta ruta) throws FileNotFoundException{
+	public List<DomicilioComercio> getDomicilioComercios(Ruta ruta) throws Exception{
 		List<DomicilioComercio> domicilioComercios = new DomicilioComercioDAO().getDomicilioComercios();
 		List<DomicilioComercio> domicilioComercios2 = new ArrayList<DomicilioComercio>();
 		for(DomicilioComercio domicilioComercio : domicilioComercios)
@@ -61,7 +67,7 @@ public class ServicioDomicilioComercio {
 		return domicilioComercios2;
 	}
 	
-	public List<DomicilioComercio> getDomicilioComercios(List<Ruta> rutas) throws NumberFormatException, IOException{
+	public List<DomicilioComercio> getDomicilioComercios(List<Ruta> rutas) throws Exception{
 		// TODO Auto-generated method stub
 		if (rutas == null)
 		{

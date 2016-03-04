@@ -1,22 +1,137 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import santaclara.dao.IClienteDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Cliente;
 
 public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 
-	private String ruta = "archivos/Clientes.txt";
+	@Override
+	public List<Cliente> getClientes() throws Exception {
+		// TODO Auto-generated method stub
+		List<Cliente> clientes = new ArrayList<Cliente>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id, rif, razonsocial, direccion, telefono, idruta FROM clientes Order by id;"); 
+		
+		if(rSet==null) return null;
+		
+			while(rSet.next())clientes.add(
+					new Cliente(
+							rSet.getInt("id"),rSet.getString("rif") , 
+							rSet.getString("razonsocial"), rSet.getString("direccion"), 
+							rSet.getString("telefono"),new RutaDAO().getRuta(rSet.getInt("idruta")))); 
+		return clientes;
+	}
+	
+	@Override
+	public void guardar(Cliente cliente) throws Exception {
+		// TODO Auto-generated method stub
+		if (cliente.getId()==null){
+			new PostgreSql().ejecutar( 
+					"INSERT INTO clientes(rif, razonsocial, direccion, telefono, idruta) "
+					+ "VALUES ("
+					+"' " +cliente.getRif()				+"', "
+					+"' " +cliente.getRazonsocial()		+"', "
+					+"' " +cliente.getDireccion()		+"', "
+					+"' " +cliente.getTelefono()		+"', "
+					+"  " +cliente.getRuta().getId()	+" "
+					+ ");");	
+		}
+		else{
+			new PostgreSql().ejecutar(
+					"UPDATE clientes SET   "
+					+" rif         ='" +cliente.getRif() +"', "
+					+" razonsocial ='" +cliente.getRazonsocial() 	+"', "
+					+" direccion   ='" +cliente.getDireccion()		+"', "
+					+" telefono    ='" +cliente.getTelefono() 		+"', "
+					+" idruta      = " +cliente.getRuta().getId() 	+"  "
+					+" WHERE    id = " +cliente.getId()+";");
+		}
+	}
 
 	@Override
-	public List<Cliente> getClientes() throws FileNotFoundException {
+	public void eliminar(Cliente cliente) throws Exception {
+		// TODO Auto-generated method stub
+		if(cliente!=null) new PostgreSql().ejecutar(
+								"DELETE FROM clientes "
+								+"WHERE id = "+cliente.getId() +" ;");
+	}
+
+	@Override
+	public Cliente getCliente(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				" SELECT id, rif, razonsocial, direccion, telefono, idruta   "
+				+" FROM clientes     "
+				+" WHERE id ="+id+" ;");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		return new Cliente(
+				rSet.getInt("id"),rSet.getString("rif") , 
+				rSet.getString("razonsocial"), rSet.getString("direccion"), 
+				rSet.getString("telefono"),new RutaDAO().getRuta(rSet.getInt("idruta")));
+		
+	}
+
+	public Cliente getCliente(String rif) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"   SELECT id, rif, razonsocial, direccion, telefono, idruta FROM clientes    "
+				+"  WHERE rif ='"+rif+"' ;");
+
+		if(rSet == null) return null;
+
+		while(rSet.next())
+		{
+			return new Cliente(
+				rSet.getInt("id"),rSet.getString("rif") , 
+				rSet.getString("razonsocial"), rSet.getString("direccion"), 
+				rSet.getString("telefono"),new RutaDAO().getRuta(rSet.getInt("idruta"))); 	
+		}
+			
+			
+	return null;
+		
+	}
+
+	@Override
+	public Boolean getCliente(Cliente cliente) throws Exception {
+		// TODO Auto-generated method stub
+		List<Cliente> clientes = getClientes();
+		for(Cliente cliente1 :clientes)
+		{
+				if(cliente1.getRazonsocial().equals(cliente.getRazonsocial())&&
+						!cliente1.getId().equals(cliente.getId()))
+				{ 
+					return true;
+				}
+		}
+		return false;
+    }
+	
+	/**
+ * 
+ 	private String ruta = "archivos/Clientes.txt";
+
+	@Override
+	public List<Cliente> getClientes() throws Exception {
 		// TODO Auto-generated method stub
 		// Listar Todos lo Clientes 
 		List<Cliente> clientes = new ArrayList<Cliente>();
@@ -46,7 +161,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		return clientes;
 	}
 	@Override
-	public void guardar(Cliente cliente) throws IOException {
+	public void guardar(Cliente cliente) throws Exception {
 		// TODO Auto-generated method stub
 		List<Cliente> clientes = getClientes();
 		//buscar codigo el ultimo codigo Asignado 
@@ -81,7 +196,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 	}
 
 	@Override
-	public void eliminar(Cliente cliente) throws IOException {
+	public void eliminar(Cliente cliente) throws Exception {
 		// TODO Auto-generated method stub
 		if (cliente != null)
 		{
@@ -99,7 +214,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 	}
 
 	@Override
-	public Cliente getCliente(Integer id) throws FileNotFoundException {
+	public Cliente getCliente(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		List<Cliente> clientes = getClientes();
 		for(Cliente cliente1 :clientes)
@@ -112,7 +227,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		return null;
     }
 	
-	public Boolean getCliente(Cliente cliente) throws FileNotFoundException {
+	public Boolean getCliente(Cliente cliente) throws Exception {
 		// TODO Auto-generated method stub
 		List<Cliente> clientes = getClientes();
 		for(Cliente cliente1 :clientes)
@@ -135,7 +250,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		super();  
 	}
 	
-	public void guardarTodo(List<Cliente> clientes ) throws IOException
+	public void guardarTodo(List<Cliente> clientes ) throws Exception
 	{
 		FileWriter fw = new FileWriter(ruta);
 		for(Cliente cliente :clientes)
@@ -151,7 +266,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 	}
 
 
-	public void Mostrar() throws IOException{
+	public void Mostrar() throws Exception{
 		List<Cliente> clientes = getClientes();
 		System.out.println("Listar Todos los Clientes");
 		for(Cliente cliente1 :clientes)
@@ -172,17 +287,8 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 			
 		}
 	}
-	/*
- 	La Estructura de los Archivos sera la Siguiente 
-  	id:1
-	rif:V-19827297
-	razonsocial:Rhonal Alfredo
-	direccion:Barrio el Jebe Sector la Estrella
-	telefono:04161556613
-	ruta:1
-  * */
 	@Override
-	public Cliente getCliente(String rif) throws FileNotFoundException {
+	public Cliente getCliente(String rif) throws Exception {
 		// TODO Auto-generated method stub
 		List<Cliente> clientes = getClientes();
 		for(Cliente cliente1 :clientes)
@@ -194,6 +300,19 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		}
 		return null;
 	}
+
+ 
+ */
+	
+	/*
+ 	La Estructura de los Archivos sera la Siguiente 
+  	id:1
+	rif:V-19827297
+	razonsocial:Rhonal Alfredo
+	direccion:Barrio el Jebe Sector la Estrella
+	telefono:04161556613
+	ruta:1
+  * */
 	
 } 
 

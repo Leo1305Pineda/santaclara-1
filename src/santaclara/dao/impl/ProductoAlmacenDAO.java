@@ -1,19 +1,121 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import santaclara.dao.IProductoAlmacenDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.ProductoAlmacen;
 
 public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenDAO {
-	private String ruta = "archivos/productoAlmacenes.txt";
+
 	@Override
-	public List<ProductoAlmacen> getProductoAlmacenes() throws NumberFormatException, IOException {
+	public List<ProductoAlmacen> getProductoAlmacenes() throws Exception {
+		// TODO Auto-generated method stub
+		List<ProductoAlmacen> productoAlmaceness = new ArrayList<ProductoAlmacen>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT idempaqueproducto, idalmacen, stock, stockmin, existencia FROM productoAlmacenes "); 
+		
+		if(rSet==null) return null;
+		
+			while(rSet.next())productoAlmaceness.add(
+					new ProductoAlmacen( 
+							new EmpaqueProductoDAO().getEmpaqueProducto(rSet.getInt("idempaqueproducto")) ,
+							new AlmacenDAO().getAlmacen(rSet.getInt("idalmacen")),
+							rSet.getInt("stock"),
+							rSet.getInt("stockmin"),
+							rSet.getInt("existencia"))); 
+		return productoAlmaceness;
+	}
+	
+	@Override
+	public void guardar(ProductoAlmacen productoAlmacen) throws Exception {
+		// TODO Auto-generated method stub
+		
+		
+		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes();
+		Boolean enc = false;//true = Modifica , false = Guarda
+		for(ProductoAlmacen productoAlmacen1: productoAlmacenes)
+		{
+			if(productoAlmacen1.getAlmacen().getId().equals(productoAlmacen.getAlmacen().getId())&&
+					productoAlmacen1.getEmpaqueProducto().getId().equals(productoAlmacen.getEmpaqueProducto().getId()))
+			{
+				new PostgreSql().ejecutar(
+						"UPDATE productoAlmacenes SET"
+						+" stock     		 = " +productoAlmacen.getStock() 					+", "
+						+" stockmin			 = " +productoAlmacen.getStockMin() 				+", "
+						+" existencia		 = " +productoAlmacen.getExistencia() 				+" "
+						+" WHERE "
+						+" idempaqueproducto = " +productoAlmacen.getEmpaqueProducto().getId()	+" "
+						+" AND "
+						+" idalmacen         = " +productoAlmacen.getAlmacen().getId() 			+" "
+						+" ;");
+						
+				enc = true;
+				break;
+			}
+		}
+		if(enc == false )new PostgreSql().ejecutar( 
+				"INSERT INTO productoAlmacenes(idempaqueproducto, idalmacen, stock, stockmin, existencia) "
+				+ "VALUES ("
+				+" " +productoAlmacen.getEmpaqueProducto().getId()	+", "
+				+" " +productoAlmacen.getAlmacen().getId()			+", "
+				+" " +productoAlmacen.getStock()					+", "
+				+" " +productoAlmacen.getStockMin()					+", "
+				+" " +productoAlmacen.getExistencia()				+"  "
+				+");");	
+
+	}
+
+	@Override
+	public void eliminar(ProductoAlmacen productoAlmacen) throws Exception {
+		// TODO Auto-generated method stub
+		if(productoAlmacen!=null) new PostgreSql().ejecutar(
+								"DELETE FROM productoAlmacenes "
+								+" WHERE "
+								+" idempaqueproducto = " +productoAlmacen.getEmpaqueProducto().getId()	+" "
+								+" AND "
+								+" idalmacen         = " +productoAlmacen.getAlmacen().getId() 			+" "
+								+" ;");
+	}
+
+	@Override
+	public ProductoAlmacen getProductoAlmacen(Integer idProducto,Integer idAlmacen) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT idempaqueproducto, idalmacen, stock, stockmin, existencia FROM productoAlmacenes "
+						+" WHERE "
+						+" idempaqueproducto = " +idProducto +" "
+						+" AND "
+						+" idalmacen         = " +idAlmacen	 +" "
+						+" ;");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		return new ProductoAlmacen( 
+				new EmpaqueProductoDAO().getEmpaqueProducto(rSet.getInt("idempaqueproducto")) ,
+				new AlmacenDAO().getAlmacen(rSet.getInt("idalmacen")),
+				rSet.getInt("stock"),
+				rSet.getInt("stockmin"),
+				rSet.getInt("existencia"));
+	}
+	
+	/*
+	 	private String ruta = "archivos/productoAlmacenes.txt";
+	@Override
+	public List<ProductoAlmacen> getProductoAlmacenes() throws Exception{
 		// TODO Auto-generated method stub
 		List<ProductoAlmacen> productoAlmacenes = new ArrayList<ProductoAlmacen>();
 		File file = new File(ruta);
@@ -46,7 +148,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	}
 
 	@Override
-	public void guardar(ProductoAlmacen productoAlmacen) throws IOException {
+	public void guardar(ProductoAlmacen productoAlmacen) throws Exception {
 		// TODO Auto-generated method stub
 		
 		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes();
@@ -70,7 +172,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	}
 
 	@Override
-	public void eliminar(ProductoAlmacen productoAlmacen) throws IOException {
+	public void eliminar(ProductoAlmacen productoAlmacen) throws Exception {
 		// TODO Auto-generated method stub
 		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes();
 		for(ProductoAlmacen productoAlmacen1: productoAlmacenes)
@@ -96,7 +198,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	}
 
 	@Override
-	public ProductoAlmacen getProductoAlmacen(Integer idProducto,Integer idAlmacen) throws NumberFormatException, IOException {
+	public ProductoAlmacen getProductoAlmacen(Integer idProducto,Integer idAlmacen) throws Exception{
 		// TODO Auto-generated method stub
 		List<ProductoAlmacen> productoAlmacenes = getProductoAlmacenes();
 		for(ProductoAlmacen productoAlmacen1 : productoAlmacenes)
@@ -126,6 +228,9 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 		fw.close();
 	}
 
+	 * 
+	 * */
+	
 /*
  * idEmpaqueProducto::0
 idAlmacen:0

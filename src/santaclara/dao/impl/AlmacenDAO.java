@@ -1,19 +1,90 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import santaclara.dao.IAlmacenDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Almacen;
 
 public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
-	private String ruta = "archivos/almacenes.txt";
+
+	private Almacen almacen;
+	
+	public AlmacenDAO( ) {
+		super();  
+	}
+	
 	@Override
+	public List<Almacen> getAlmacenes() throws Exception {
+		// TODO Auto-generated method stub
+		List<Almacen> almacenes = new ArrayList<Almacen>();
+	
+		ResultSet rSet = new PostgreSql().getSelect("Select id,ubicacion From almacenes"); 
+		
+		if(rSet!=null)
+		{
+			while(rSet.next())
+			{
+				almacen = new Almacen(rSet.getInt(1),rSet.getString(2));
+				almacenes.add(almacen); 
+			}
+		}
+		return almacenes;	
+	}
+	
+	@Override
+	public void guardar(Almacen almacen) throws Exception {
+		// TODO Auto-generated method stub
+		if (almacen.getId()==null){
+			new PostgreSql().ejecutar( 
+					"INSERT INTO almacenes(ubicacion)"
+					+ " VALUES ("
+					+ "'" +almacen.getUbicacion()+ "');");	
+		}
+		else{
+			new PostgreSql().ejecutar(
+					"UPDATE almacenes SET"
+					+" ubicacion   = " + "'" +almacen.getUbicacion() +"'"
+					+" WHERE id    = " +almacen.getId()              +";");
+		}
+
+	}
+
+	@Override
+	public void eliminar(Almacen almacen) throws Exception {
+		// TODO Auto-generated method stub
+		if(almacen!=null) new PostgreSql().ejecutar(
+								"DELETE FROM almacenes "
+								+"WHERE id = " +almacen.getId()+";");
+	}
+
+	@Override
+	public Almacen getAlmacen(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		ResultSet rSet = new PostgreSql().getSelect(
+								"SELECT id,ubicacion FROM almacenes "
+								+ "WHERE id = "+id +" ;"); 
+		
+		if(rSet == null) return null;
+		
+		rSet.next();
+		return new Almacen(rSet.getInt(1),rSet.getString(2));
+		
+	}
+
+	/*****   Para el manejo con txt	
+	 @Override	
+	private String ruta = "archivos/almacenes.txt";
 	
 	public List<Almacen> getAlmacenes() throws FileNotFoundException {
 		// TODO Auto-generated method stub
@@ -31,9 +102,9 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 		scaner.close();
 		return almacenes;
 	}
-
-	@Override
-	public void guardar(Almacen almacen) throws IOException {
+	
+@Override
+	public void guardar(Almacen almacen) throws Exception {
 		// TODO Auto-generated method stub
 		List<Almacen> almacenes = getAlmacenes();
 		//buscar codigo el ultimo codigo Asignado 
@@ -63,9 +134,9 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 		guardarTodo(almacenes);
 
 	}
-
+	
 	@Override
-	public void eliminar(Almacen almacen) throws IOException {
+	public void eliminar(Almacen almacen) throws Exception {
 		// TODO Auto-generated method stub
 		List<Almacen> almacenes = getAlmacenes();
 		for(Almacen almacene1 :almacenes)
@@ -79,8 +150,23 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 		guardarTodo(almacenes);
 	}
 
+@Override
+	public void eliminar(Almacen almacen) throws Exception {
+		// TODO Auto-generated method stub
+		List<Almacen> almacenes = getAlmacenes();
+		for(Almacen almacene1 :almacenes)
+		{
+			if(almacene1.getId().equals(almacen.getId()))
+			{
+				almacenes.remove(almacene1);
+				break;
+			}
+		} 
+		guardarTodo(almacenes);
+	}
+	
 	@Override
-	public Almacen getAlmacen(Integer id) throws FileNotFoundException {
+	public Almacen getAlmacen(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		List<Almacen> almacenes = getAlmacenes();
 		for(Almacen almacene1 :almacenes)
@@ -91,14 +177,6 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 			}
 		}
 		return null;
-	}
-	public AlmacenDAO(String ruta) {
-		super();
-		this.ruta = ruta;
-	}
-
-	public AlmacenDAO( ) {
-		super();  
 	}
 	
 	public void guardarTodo(List<Almacen> almacenes) throws IOException
@@ -111,16 +189,11 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 		}
 		fw.close();
 	}
+
+*/
 	
-	public void Mostrar() throws IOException {
-		// TODO Auto-generated method stub
-		List<Almacen> almacenes = getAlmacenes();
-		for(Almacen almacen1 :almacenes)
-		{
-			System.out.println("id: "+almacen1.getId());
-			System.out.println("Ubicacion: "+almacen1.getUbicacion()+"\n");
-		}
-	}
+	
+	
 	/*Estructura
 	 * id:1
 	 * ubicacion:Zoma industrial I

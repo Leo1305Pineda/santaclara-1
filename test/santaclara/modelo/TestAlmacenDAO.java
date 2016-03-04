@@ -2,8 +2,6 @@ package santaclara.modelo;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
@@ -14,14 +12,14 @@ import santaclara.dao.impl.AlmacenDAO;
 public class TestAlmacenDAO {
 
 	@Test
-	public void almacenTest() throws FileNotFoundException{
+	public void almacenTest() throws Exception{
 		IAlmacenDAO almacenDAO = new AlmacenDAO();
 		assertNotNull(almacenDAO);
 		assertEquals(2,almacenDAO.getAlmacenes().size());
 	}
 	
 	@Test
-	public void addRemoveAlmacenTest() throws IOException {
+	public void addRemoveAlmacenTest() throws Exception {
 		IAlmacenDAO almacenDAO = new AlmacenDAO();
 		List<Almacen> almacenes= almacenDAO.getAlmacenes();
 		
@@ -33,7 +31,6 @@ public class TestAlmacenDAO {
 		assertEquals(almacenes.size()+1,almacenDAO.getAlmacenes().size());
 		almacenDAO.eliminar(almacen);
 		assertEquals(almacenes.size(),almacenDAO.getAlmacenes().size());
-		almacenDAO.Mostrar();
 	}
 
 }

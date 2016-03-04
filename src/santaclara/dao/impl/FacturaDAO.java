@@ -1,21 +1,244 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 
 import santaclara.dao.IFacturaDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Factura;
 
 public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
-	private String ruta = "archivos/facturas.txt";
+
+	@Override
+	public List<Factura> getFacturas() throws Exception {
+		// TODO Auto-generated method stub
+		List<Factura> Facturas = new ArrayList<Factura>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id, estado, fecha, idcliente, idvendedor,"
+				+ " idalmacen, subtotalexento, subtotalgravado, descuento,"
+				+ " ivasobrebs, iva, totalapagar FROM facturas "
+				+";");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		Boolean estado = null;
+		 switch (rSet.getString("estado")) {
+		 case "Facturado":estado = true;	
+		 break;
+		 case "Pendiente":estado = false;
+		 break;
+		 case "Pedido":estado = null;
+		 break;
+		 default:
+		 break;
+		 }
+		
+		while (rSet.next())Facturas.add(
+				new Factura(
+				rSet.getInt("id"),
+				rSet.getDate("fecha"),
+				new ClienteDAO().getCliente(rSet.getInt("idcliente")),
+				new VendedorDAO().getVendedor(rSet.getInt("idvendedor")),
+				new AlmacenDAO().getAlmacen(rSet.getInt("idalmacen")),
+				estado, 
+				rSet.getDouble("subtotalexento"),
+				rSet.getDouble("subtotalgravado"),
+				rSet.getDouble("descuento"),
+				rSet.getDouble("ivasobrebs"),
+				rSet.getDouble("iva"),
+				rSet.getDouble("totalapagar")));
+ 
+		return Facturas;
+	}
+	
+	@Override
+	public void guardar(Factura factura) throws Exception {
+		// TODO Auto-generated method stub
+		try {
+		if (factura.getId()==null){
+			
+			String linea = new String();
+			
+			if(factura.getEstado()!=null)
+			{
+				if(factura.getEstado()==true)
+				{
+					linea = "Facturado";
+				}
+				else if(factura.getEstado()==false)
+				{
+					linea = "Pendiente";
+				}	
+			}
+			else
+			{
+				linea = "Pedido";	
+			}
+			
+			new PostgreSql().ejecutar( 
+					"INSERT INTO facturas( estado, fecha, idcliente,"
+					+ " idvendedor, idalmacen, subtotalexento," 
+					+"subtotalgravado, descuento, ivasobrebs, iva, totalapagar) "
+					+" VALUES ("
+					+"'" +linea							+"', "
+					+"'" +factura.getFechaStr("-")		+"',  "
+					+" " +factura.getCliente().getId()	+" , "
+					+" " +factura.getVendedor().getId() +" , "
+					+" " +factura.getAlmacen().getId()	+" , "
+					+" " +factura.getSubTotalExento()	+" , "
+					+" " +factura.getSubTotalGravado()	+" , "
+					+" " +factura.getDescuento()		+" , "
+					+" " +factura.getIvaSobreBs()		+" , "
+					+" " +factura.getIva()				+" , "
+					+" " +factura.getTotalAPagar()		+"   "
+					+ ");");	
+		}
+		else
+		{
+			String linea = new String();
+			
+			if(factura.getEstado()!=null)
+			{
+				if(factura.getEstado()==true)
+				{
+					linea = "Facturado";
+				}
+				else if(factura.getEstado()==false)
+				{
+					linea = "Pendiente";
+				}	
+			}
+			else
+			{
+				linea = "Pedido";	
+			}
+ 
+			new PostgreSql().ejecutar(
+					"UPDATE facturas SET"
+					+" estado 			= '" +linea							+"', "
+					+" fecha  			= '" +factura.getFechaStr("-")		+"',  "
+					+" idcliente 		=  " +factura.getCliente().getId()	+" , "
+					+" idvendedor 		=  " +factura.getVendedor().getId() +" , "
+					+" idalmacen 		=  " +factura.getAlmacen().getId()	+" , "
+					+" subtotalexento 	=  " +factura.getSubTotalExento()	+" , "
+					+" subtotalgravado 	=  " +factura.getSubTotalGravado()	+" , "
+					+" descuento 		= " +factura.getDescuento()			+" , "
+					+" ivasobrebs 		= " +factura.getIvaSobreBs()		+" , "
+					+" iva 				= " +factura.getIva()				+" , "
+					+" totalapagar 		= " +factura.getTotalAPagar()		+"   "
+					+" WHERE    	id  = " +factura.getId()				+" "
+					+ ";");
+		}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void eliminar(Factura factura) throws Exception {
+		// TODO Auto-generated method stubid
+	}
+
+	@Override
+	public Factura getFactura(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		List<Factura> facturas = getPedidoFacturados();
+		for(Factura factura1 :facturas)
+		{
+			if(factura1.getId().equals(id))
+			{
+				return factura1;
+			}
+		}
+		return null;
+
+	}
+
+	public List<Factura> getPedidoFacturados()throws Exception{
+		return confGetFactura(true);
+	}
+	
+	public List<Factura> getPedidoPendientes()throws Exception{
+		return confGetFactura(false);
+	}
+	
+	public List<Factura> getPedidos()throws Exception{
+		return confGetFactura(null);
+	}
+	@Override
+	// Permite retornar Datos selectivos
+	public List<Factura> confGetFactura(Boolean condicion) throws Exception {
+		List<Factura> Facturas = new ArrayList<Factura>();
+		
+		String valorCondicion = new String();
+		if(condicion==true) valorCondicion = "Facturado";	
+		else if(condicion==false) valorCondicion = "Pendiente";
+		else valorCondicion = "Pedido";
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id, estado, fecha, idcliente, idvendedor,"
+				+ " idalmacen, subtotalexento, subtotalgravado, descuento,"
+				+ " ivasobrebs, iva, totalapagar FROM facturas "
+				+" WHERE estado = '"+valorCondicion+"' "
+				+ ";");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		Boolean estado = null;
+		 switch (rSet.getString("estado")) {
+		 case "Facturado":estado = true;	
+		 break;
+		 case "Pendiente":estado = false;
+		 break;
+		 case "Pedido":estado = null;
+		 break;
+		 default:
+		 break;
+		 }
+		
+		while (rSet.next())Facturas.add(
+				new Factura(
+				rSet.getInt("id"),
+				rSet.getDate("fecha"),
+				new ClienteDAO().getCliente(rSet.getInt("idcliente")),
+				new VendedorDAO().getVendedor(rSet.getInt("idvendedor")),
+				new AlmacenDAO().getAlmacen(rSet.getInt("idalmacen")),
+				estado, 
+				rSet.getDouble("subtotalexento"),
+				rSet.getDouble("subtotalgravado"),
+				rSet.getDouble("descuento"),
+				rSet.getDouble("ivasobrebs"),
+				rSet.getDouble("iva"),
+				rSet.getDouble("totalapagar")));
+ 
+		return Facturas;
+
+	}
+
+	public Integer ultimaFactura() throws Exception{
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT MAX(id) AS ultimaID  FROM facturas"
+				+ " ;" );
+		rSet.next();
+		return rSet.getInt("ultimaID");
+	}
+	
+	
+	/*@Override
+ 	private String ruta = "archivos/facturas.txt";
 	
 	public FacturaDAO() {
 		super();
@@ -28,7 +251,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 	}
 
 	@Override
-	public List<Factura> getFacturas() throws FileNotFoundException{
+	public List<Factura> getFacturas() throws Exception{
 		// TODO Auto-generated method stub
 		List<Factura> facturas = new ArrayList<Factura>();
 		File file = new File(ruta);
@@ -90,26 +313,21 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		return facturas;
 	}
  
-	public List<Factura> getPedidoFacturados()throws FileNotFoundException{
+	public List<Factura> getPedidoFacturados()throws Exception{
 		return confGetFactura(true);
 	}
 	
-	public List<Factura> getPedidoPendientes()throws FileNotFoundException{
+	public List<Factura> getPedidoPendientes()throws Exception{
 		return confGetFactura(false);
 	}
 	
-	public List<Factura> getPedidos()throws FileNotFoundException{
+	public List<Factura> getPedidos()throws Exception{
 		return confGetFactura(null);
 	}
 	
 	@Override
 	// Permite retornar Datos selectivos
-	public List<Factura> confGetFactura(Boolean condicion) throws FileNotFoundException {
-		/*Variable que Permite la Validacion de la Busqueda de los Archivos
-		 * estado == True 	:  	Facturados
-		 * estado == false  :   Pendientes
-		 * estado == null   :   Pedido
-		 */
+	public List<Factura> confGetFactura(Boolean condicion) throws Exception {
 		List<Factura> facturas = new ArrayList<Factura>();
 		File file = new File(ruta);
  		Scanner scaner = new Scanner(file);
@@ -176,7 +394,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 	}
 
 	
-	public Integer ultimaFactura() throws FileNotFoundException{
+	public Integer ultimaFactura() throws Exception{
 		int i = 0;
 		for(Factura factura1 : getFacturas())
 		{
@@ -189,7 +407,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 	}
 	
 	@Override
-	public void guardar(Factura factura) throws IOException {
+	public void guardar(Factura factura) throws Exception {
 		// TODO Auto-generated method stub
 		List<Factura> facturas = getFacturas();
 		//buscar codigo el ultimo codigo Asignado 
@@ -224,7 +442,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 	}
 
 	@Override
-	public void eliminar(Factura factura) throws IOException {
+	public void eliminar(Factura factura) throws Exception {
 		// TODO Auto-generated method stub
 		List<Factura> facturas = getFacturas();
 		for(Factura factura1 :facturas)
@@ -239,7 +457,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 	}
 
 	@Override
-	public Factura getFactura(Integer id) throws FileNotFoundException {
+	public Factura getFactura(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		List<Factura> facturas = getPedidoFacturados();
 		for(Factura factura1 :facturas)
@@ -253,7 +471,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 
 	}
 	
-	public void guardarTodo(List<Factura> facturas ) throws IOException
+	public void guardarTodo(List<Factura> facturas ) throws Exception
 	{
 		FileWriter fw = new FileWriter(ruta);
 		for(Factura factura :facturas)
@@ -291,6 +509,9 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		fw.close();
 	}
 
+ * */	
+	
+	
 /*
  * id:0 
  * estado:Pedido 

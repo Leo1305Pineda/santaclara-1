@@ -2,8 +2,6 @@ package santaclara.modelo;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
@@ -14,14 +12,14 @@ import santaclara.dao.impl.CamionDAO;
 public class TestCamionDAO {
 
 	@Test
-	public void camionesTest() throws FileNotFoundException {
+	public void camionesTest() throws Exception {
 		ICamionDAO camionDAO = new CamionDAO();
 		assertNotNull(camionDAO);
-		assertEquals(4,camionDAO.getCamiones().size());
+		assertEquals(6,camionDAO.getCamiones().size());
 	}
 	
 	@Test
-	public void addRemoveCamionTest() throws IOException {
+	public void addRemoveCamionTest() throws Exception {
 		ICamionDAO camionDAO = new CamionDAO();
 		List<Camion> camiones= camionDAO.getCamiones();
 		
@@ -35,12 +33,11 @@ public class TestCamionDAO {
 		
 		camionDAO.guardar(camion);
 		assertNotNull(camion.getId());
-		assertNotEquals(3,camionDAO.getCamiones().size());
+		assertNotEquals(5,camionDAO.getCamiones().size());
 		assertEquals(camiones.size()+1,camionDAO.getCamiones().size());
 
 		camionDAO.eliminar(camion);
 		assertEquals(camiones.size(),camionDAO.getCamiones().size());
-		camionDAO.Mostrar();
 	}
 
 }

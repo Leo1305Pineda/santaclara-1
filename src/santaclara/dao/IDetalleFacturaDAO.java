@@ -1,25 +1,31 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import santaclara.modelo.DetalleFactura;
 
 public interface IDetalleFacturaDAO extends IGenericoDAO {
 
-	public List<DetalleFactura>  getDetalles() throws FileNotFoundException, NumberFormatException, IOException;
+	public List<DetalleFactura>  getDetalles() throws Exception;
 	
-	public List<DetalleFactura>  getDetalleFacturados() throws FileNotFoundException, NumberFormatException, IOException;
+	public List<DetalleFactura>  getDetalleFacturados() throws Exception;
 	
-	public List<DetalleFactura>  getDetallePedidos() throws FileNotFoundException, NumberFormatException, IOException;
+	public List<DetalleFactura>  getDetallePedidos() throws Exception;
 	
-	public List<DetalleFactura>  getDetallePendientes() throws FileNotFoundException, NumberFormatException, IOException;
+	public List<DetalleFactura>  getDetallePendientes() throws Exception;
 	
-	public void	guardar(List<DetalleFactura> detalleFactura) throws IOException;
+	public void	guardar(List<DetalleFactura> detalleFactura) throws Exception;
 	
-	public void eliminar(DetalleFactura detalleFactura) throws   IOException;
+	public void eliminar(DetalleFactura detalleFactura) throws   Exception;
 	
-	public DetalleFactura getDetalleFactura(Integer idFactura,Integer idProducto) throws FileNotFoundException, NumberFormatException, IOException;
+	public DetalleFactura getDetalleFactura(Integer idFactura,Integer idProducto) throws Exception;
 
 }

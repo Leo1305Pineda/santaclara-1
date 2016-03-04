@@ -1,24 +1,129 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import santaclara.Servicio.ServicioCliente;
 import santaclara.dao.IDomicilioComercioDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Cliente;
 import santaclara.modelo.DomicilioComercio;
 
 public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioComercioDAO{
 
-	private String ruta = "archivos/domicilioComercio.txt";
+	@Override
+	public List<DomicilioComercio> getDomicilioComercios() throws Exception {
+		// TODO Auto-generated method stub
+		List<DomicilioComercio> domicilioComercios = new ArrayList<DomicilioComercio>();
+		try {	
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT idcliente, tipo, diavisita FROM domiciliocomercio Order by idcliente;"); 
+		
+		if(rSet==null) return null;	
+			while(rSet.next())domicilioComercios.add(
+					new DomicilioComercio(new ClienteDAO().getCliente(rSet.getInt("idcliente")),rSet.getString("tipo"),rSet.getInt("diavisita"))); 
+		
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	
+		
+		return domicilioComercios;
+	}
+	
+	@Override
+	public void guardar(DomicilioComercio domociliocomercio) throws Exception {
+		// TODO Auto-generated method stub
+		if (domociliocomercio.getId()==null){
+			try {
+
+				new PostgreSql().ejecutar(
+						"  BEGIN;"
+						+ ""
+						+" INSERT INTO clientes(rif, razonsocial,direccion, telefono,idruta)"
+						+" VALUES ("
+						+" '" +domociliocomercio.getRif()			+"', " 
+						+" '" +domociliocomercio.getRazonsocial()	+"', "
+						+" '" +domociliocomercio.getDireccion()		+"', "
+						+" '" +domociliocomercio.getTelefono()		+"', "
+						+"  " +domociliocomercio.getRuta().getId()	+"   "
+						+ ");"
+						+ "                                  "
+						+ "INSERT INTO domiciliocomercio(idcliente,tipo,diavisita) "
+						+ " VALUES ((SELECT max(id) FROM clientes),"
+						+ " '"+ domociliocomercio.getTipo()      +"',"
+						+ "  "+ domociliocomercio.getDiaVisita() +" "
+						+ "); "
+						+ "                                                                 "
+						+ " COMMIT;");
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+				
+		}
+		else{
+			new PostgreSql().ejecutar(
+					" BEGIN;"
+					+ "     "
+					+ "UPDATE clientes SET   "
+					+" rif         ='" +domociliocomercio.getRif() 			+"', "
+					+" razonsocial ='" +domociliocomercio.getRazonsocial() 	+"', "
+					+" direccion   ='" +domociliocomercio.getDireccion()	+"', "
+					+" telefono    ='" +domociliocomercio.getTelefono() 	+"', "
+					+" idruta      = " +domociliocomercio.getRuta().getId() +"  "
+					+" WHERE    id = " +domociliocomercio.getId()+";"
+					+"               "
+					+"UPDATE domiciliocomercio SET     " 
+					+" tipo ='" +domociliocomercio.getTipo()         		+"', "
+					+" diavisita = " +domociliocomercio.getDiaVisita()   	+" "
+					+" WHERE    idcliente = " +domociliocomercio.getId() 	+" "
+					+ "; "
+					+ "                                                                 "
+					+ " COMMIT;");
+		}
+	}
 
 	@Override
-	public List<DomicilioComercio> getDomicilioComercios() throws FileNotFoundException {
+	public void eliminar(DomicilioComercio domiciliocomercio) throws Exception {
+		// TODO Auto-generated method stub
+		if(domiciliocomercio!=null) new PostgreSql().ejecutar(
+								"  DELETE FROM domiciliocomercio "
+								+" WHERE idcliente = "+domiciliocomercio.getId() +" ;");
+	}
+
+	@Override
+	public DomicilioComercio getDomicilioComercio(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"  SELECT idcliente, tipo, diavisita FROM domiciliocomercio  WHERE idcliente ="+id+" ;");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		Cliente cliente = new ClienteDAO().getCliente(rSet.getInt("idcliente"));
+		
+		return new DomicilioComercio(cliente,rSet.getString("tipo"),rSet.getInt("diavisita"));
+		
+	}
+
+	/**	
+	 * 
+	 private String ruta = "archivos/domicilioComercio.txt";
+
+	@Override
+	public List<DomicilioComercio> getDomicilioComercios() throws Exception {
 		// TODO Auto-generated method stub
 		List<DomicilioComercio> domicilioComercios = new ArrayList<DomicilioComercio>();
 		ClienteDAO clienteDAO = new ClienteDAO();
@@ -57,7 +162,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 	}
 
 	@Override
-	public void guardar(DomicilioComercio domicilioComercio) throws IOException {
+	public void guardar(DomicilioComercio domicilioComercio) throws Exception {
 		// TODO Auto-generated method stub
 		List<Cliente> clientes = new ServicioCliente().getClientes();
 		List<DomicilioComercio> domicilioComercios = getDomicilioComercios();
@@ -114,7 +219,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 	}
 
 	@Override
-	public void eliminar(DomicilioComercio domicilioComercio) throws IOException {
+	public void eliminar(DomicilioComercio domicilioComercio) throws Exception {
 		// TODO Auto-generated method stub
 		List<DomicilioComercio> domicilioComercios = getDomicilioComercios();
 		for(DomicilioComercio domiciliocomercio1 :domicilioComercios)
@@ -129,7 +234,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 	}
 
 	@Override
-	public DomicilioComercio getDomicilioComercio(Integer id) throws FileNotFoundException {
+	public DomicilioComercio getDomicilioComercio(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		List<DomicilioComercio> domicilioComercios = getDomicilioComercios();
 		for(DomicilioComercio domicilioComercio1 :domicilioComercios)
@@ -143,7 +248,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 
 	}
 
-	public void guardarTodo(List<DomicilioComercio> domicilioComercios ) throws IOException
+	public void guardarTodo(List<DomicilioComercio> domicilioComercios ) throws Exception
 	{
 		FileWriter fw = new FileWriter(ruta);
 		for(DomicilioComercio domicilioComercio :domicilioComercios)
@@ -158,7 +263,8 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 		fw.close();
 	}
 	
-	
+
+	 */
 	
 	/*
  	La Estructura de los Archivos sera la Siguiente 

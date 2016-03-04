@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.modelo;
 
 import java.text.SimpleDateFormat;
@@ -45,6 +53,14 @@ public class Visita {
 		if (fecha==null)return "";
 		else{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			return sdf.format(fecha);
+		} 
+	}
+	
+	public String getFechaStr(String separador) {
+		if (fecha==null)return "";
+		else{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd"+separador+"MM"+separador+"yyyy");
 			return sdf.format(fecha);
 		} 
 	}
@@ -97,8 +113,8 @@ public class Visita {
 	}
 	public String getEstadoStr() {
 		if (estado == null) return "";
-		if (getEstado().equals(true))return "Hecha";
-		else return "Por Hacer";
+		if (getEstado().equals(true))return "hecho";
+		else return "pendiente";
 		
 	}
 	public void setEstado(Boolean estado) {
@@ -119,7 +135,7 @@ public class Visita {
 	
 	public void setFecha(String cadena) {
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			this.fecha = sdf.parse(cadena);
 		} catch (Exception e) {
 			// TODO: handle exception

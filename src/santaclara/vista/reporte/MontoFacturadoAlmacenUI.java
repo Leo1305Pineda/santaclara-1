@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.vista.reporte;
 
 import java.awt.BorderLayout;
@@ -128,7 +136,7 @@ public class MontoFacturadoAlmacenUI  extends VistaGenericaUI {
 	}
     
     @SuppressWarnings("rawtypes")
-	public void cargarCmbAlmacen() throws NumberFormatException, IOException{
+	public void cargarCmbAlmacen() throws Exception{
     	List<Almacen> almacenes = new ServicioAlmacen().getAlmacenes();
     	Almacen almacen = new Almacen(0,"Todos");
     	almacenes.add(almacen);

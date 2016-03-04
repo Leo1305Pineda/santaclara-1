@@ -1,6 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +19,7 @@ public class ServicioPresentacion {
 	private PresentacionDAO presentacionDAO = new PresentacionDAO();
 	private List<Presentacion> presentaciones = new ArrayList<Presentacion>();
 		
-	public List<Presentacion> getPresentaciones() throws NumberFormatException, IOException{
+	public List<Presentacion> getPresentaciones() throws Exception{
 		// TODO Auto-generated method stub
 		
 		return presentacionDAO.getPresentaciones();
@@ -27,12 +34,12 @@ public class ServicioPresentacion {
 		this.presentacionDAO = presentacionDAO;
 	}
 
-	public Presentacion buscar(Integer id) throws IOException {
+	public Presentacion buscar(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		return presentacionDAO.getPresentacion(id);
 	}
 
-	public String guardar(Presentacion presentacion) throws IOException {
+	public String guardar(Presentacion presentacion) throws Exception {
 		// TODO Auto-generated method stub
 		
 		presentaciones = presentacionDAO.getPresentaciones();
@@ -52,11 +59,11 @@ public class ServicioPresentacion {
 		
 	}
 	
-	public Presentacion getPresentacion(Integer id) throws IOException{
+	public Presentacion getPresentacion(Integer id) throws Exception{
 		return presentacionDAO.getPresentacion(id);
 	}
 	
-	public void eliminar(Presentacion presentacion) throws IOException{
+	public void eliminar(Presentacion presentacion) throws Exception{
 		presentacionDAO.eliminar(presentacion);
 	}
 	

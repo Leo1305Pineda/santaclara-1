@@ -1,23 +1,122 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import santaclara.dao.IConcesionarioDAO;
-import santaclara.modelo.Camion;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Concesionario;
-import santaclara.modelo.Ruta;
-import santaclara.modelo.Usuario;
 
 public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
+	
+	@Override
+	public List<Concesionario> getConcecionarios() throws Exception {
+		// TODO Auto-generated method stub
+		List<Concesionario> concesionarios = new ArrayList<Concesionario>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id, idcamion, idruta FROM concesionarios Order by id;"); 
+		
+		if(rSet==null) return null;
+		
+			while(rSet.next())concesionarios.add(
+					new Concesionario(new UsuarioDAO().getUsuario(rSet.getInt("id")),
+							new CamionDAO().getCamion(rSet.getInt("idcamion")), 
+							new RutaDAO().getRuta(rSet.getInt("idruta")))); 
+		return concesionarios;
+	}
+	
+	@Override
+	public void guardar(Concesionario concesionario) throws Exception {
+		// TODO Auto-generated method stub
+		if (concesionario.getId()==null){
+			new PostgreSql().ejecutar( 
+					"BEGIN;"
+							+ "    "
+							+ "INSERT INTO usuarios(username,cedula,nombre,contrasena) "
+							+"VALUES ("
+							+"'" +concesionario.getUsername()	  		+ "', "
+							+"'" +concesionario.getCedula()	  			+ "', "
+							+"'" +concesionario.getNombre()     		+ "', "
+							+"'" +concesionario.getContrasena() 		+ "'  "
+							+ "); "
+							+ "           "
+							+"INSERT INTO vendedores(id, idrutas) "
+							+"VALUES ("
+							+ " (select max(id) from usuarios) "		+", "
+							+ " " + concesionario.getCamion().getId() 	+", "
+							+ " " + concesionario.getRuta().getId() 	+"  "
+							+ ");"
+							+ "       "
+							+ "COMMIT;");	
+		}
+		else{
+			new PostgreSql().ejecutar(
+					" UPDATE  usuarios  SET "
+							+" username   ='" +concesionario.getUsername()		+ "', " 
+							+" cedula     ='" +concesionario.getCedula()		+ "', "
+							+" nombre     ='" +concesionario.getNombre()		+ "', "
+							+" contrasena ='" +concesionario.getContrasena() 	+ "'  "
+							+" WHERE id   = " +concesionario.getId()			+ ";  "
+							+"              "							
+							+" UPDATE vendedores SET "
+							+" idcamion   = " +concesionario.getCamion().getId()+ " "
+							+" idruta     = " +concesionario.getRuta().getId()  + " "
+							+" WHERE id   = " +concesionario.getId()			 + ";  "
+							+ " ");
+		}
+	}
 
-	private String ruta = "archivos/concesionarios.txt";
+	@Override
+	public void eliminar(Concesionario concesionario) throws Exception {
+		// TODO Auto-generated method stub
+		if(concesionario!=null) new PostgreSql().ejecutar(
+								"DELETE FROM concesionarios "
+								+"WHERE id = "+concesionario.getId() +" ;");
+	}
+
+	@Override
+	public Concesionario getConcesionario(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id, idcamion, idruta FROM concesionarios "
+				+ "WHERE id ="+id+" ;");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		return new Concesionario(new UsuarioDAO().getUsuario(rSet.getInt("id")),
+				new CamionDAO().getCamion(rSet.getInt("idcamion")), 
+				new RutaDAO().getRuta(rSet.getInt("idruta")));
+		
+	}
+
+	public Concesionario getConcecionariosCedula(String cedula) {
+		// TODO Auto-generated method stub
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id, idcamion, idruta FROM concesionarios "
+				+ "WHERE id ="+id+" ;");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		return new Concesionario(new UsuarioDAO().getUsuario(rSet.getInt("id")),
+				new CamionDAO().getCamion(rSet.getInt("idcamion")), 
+				new RutaDAO().getRuta(rSet.getInt("idruta")));
+	}
+
+/*
+ 	private String ruta = "archivos/concesionarios.txt";
 	
 	public ConcesionarioDAO(String ruta) {
 		super();
@@ -28,7 +127,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 		super();  
 	}
 	
-	public void guardarTodo(List<Concesionario> concesionarios) throws IOException
+	public void guardarTodo(List<Concesionario> concesionarios) throws Exception
 	{
 		FileWriter fw = new FileWriter(ruta);
 		for(Concesionario concesionario : concesionarios)
@@ -44,7 +143,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 	}
 
 	@Override
-	public List<Concesionario> getConcecionarios() throws FileNotFoundException {
+	public List<Concesionario> getConcecionarios() throws Exception {
 		// TODO Auto-generated method stub
 		List<Concesionario> concesionarios = new ArrayList<Concesionario>();
 		File file = new File(ruta);
@@ -90,7 +189,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 	}
 
 	@Override
-	public void guardar(Concesionario concesionario) throws IOException {
+	public void guardar(Concesionario concesionario) throws Exception {
 		// TODO Auto-generated method stub
 		List<Concesionario> concesionarios = getConcecionarios();
 		//buscar codigo el ultimo codigo Asignado 
@@ -156,7 +255,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 		return concesionario; 
 }
 	@Override
-	public void eliminar(Concesionario concesionario) throws IOException {
+	public void eliminar(Concesionario concesionario) throws Exception {
 		List<Concesionario> concecionarios =getConcecionarios();
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		for(Concesionario concesionario1 :concecionarios)
@@ -174,7 +273,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 
 	@Override
 	public Concesionario getConcesionario(Integer id)
-			throws FileNotFoundException {
+			throws Exception {
 		// TODO Auto-generated method stub
 		List<Concesionario> concesionarios = getConcecionarios();
 		for(Concesionario concecionario : concesionarios)
@@ -187,34 +286,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 		return null;
 	}
 
-	public Concesionario getConcesionario(String nombreUsuario) throws FileNotFoundException {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-		List<Concesionario> concesionarios = getConcecionarios();
-		for(Concesionario concecionario : concesionarios)
-		{
-			if(concecionario.getUsername().equals(nombreUsuario))
-			{
-				return concecionario;
-			}
-		}
-		return null;
-	}
-
-	public Concesionario getConcecionariosCedula(String cedula) throws FileNotFoundException {
-		// TODO Auto-generated method stub
-		List<Concesionario> concesionarios = getConcecionarios();
-		for(Concesionario concecionario : concesionarios)
-		{
-			if(concecionario.getCedula().equals(cedula))
-			{
-				return concecionario;
-			}
-		}
-		return null;
-	}
-
-	
+ * */	
 	
 } 
 

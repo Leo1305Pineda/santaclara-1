@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 import java.awt.Color;
@@ -7,7 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -129,7 +136,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 	}
 	
 	@SuppressWarnings("deprecation")
-	void cargarImagen2() throws NumberFormatException, IOException, ParseException{
+	void cargarImagen2() throws Exception{
 		for(Visita visita: consultaVisitas(mesActual,yearActual))
 		{
 			System.out.println(new SimpleDateFormat("dd,MM,yyyy").format(visita.getFecha())+" = "+mesActual+"/"+yearActual);
@@ -178,7 +185,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 		}
 	}
 	
-	public List<Visita> consultaVisitas(Integer mes,Integer anno) throws NumberFormatException, IOException
+	public List<Visita> consultaVisitas(Integer mes,Integer anno) throws Exception
 	{
 		switch (vista.getComboTipoUser().getSelectedItem().toString()) 
 		{
@@ -212,8 +219,6 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 
 	}
 	
-	
-	
 	@SuppressWarnings("rawtypes")
 	public ListCellRenderer setRendererComboUsuario(){
 		return new ListCellRenderer() {
@@ -241,44 +246,34 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 
 	@SuppressWarnings("rawtypes")
 	public void CargarComboUsuario(){
-		if (vista.getComboTipoUser().getSelectedItem().equals("Concesionario")){
-			List<Usuario> usuarios = new ArrayList<Usuario>();
-			List<Concesionario> concesionarios= new ArrayList<Concesionario>();
-		
-			try {
+		try {
+			if (vista.getComboTipoUser().getSelectedItem().equals("Concesionario")){
+				List<Usuario> usuarios = new ArrayList<Usuario>();
+				List<Concesionario> concesionarios= new ArrayList<Concesionario>();
+			
 				concesionarios = new ServicioConcesionario().getConcecionarios();
 				for(Concesionario concesionario : concesionarios){
 					usuarios.add((Usuario)concesionario);
 				}
-			} catch (NumberFormatException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+					
+				JComboBoxBinding jcomboUsuario = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,usuarios,vista.getComboUsuario());
+				jcomboUsuario.bind();	
 			}
-		
-			JComboBoxBinding jcomboUsuario = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,usuarios,vista.getComboUsuario());
-
-			jcomboUsuario.bind();	
-		}
-		else{
-			List<Usuario> usuarios = new ArrayList<Usuario>();
-			List<JefeVenta> jefeVentas= new ArrayList<JefeVenta>();
+			else
+			{
+				List<Usuario> usuarios = new ArrayList<Usuario>();
+				List<JefeVenta> jefeVentas= new ArrayList<JefeVenta>();
 	
-		try {
-			jefeVentas = new ServicioJefeVenta().getJefeVentas();
-				for(JefeVenta jefeVenta : jefeVentas){
-					usuarios.add((Usuario)jefeVenta);
-				}
-			} catch (NumberFormatException | IOException e) {
+				jefeVentas = new ServicioJefeVenta().getJefeVentas();
+				for(JefeVenta jefeVenta : jefeVentas)usuarios.add((Usuario)jefeVenta);
+		
+				JComboBoxBinding jcomboUsuario = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,usuarios,vista.getComboUsuario());
+				jcomboUsuario.bind();
+			}
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		
-		JComboBoxBinding jcomboUsuario = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,usuarios,vista.getComboUsuario());
-
-		
-			jcomboUsuario.bind();
-		}
-
 	}
 	
 	public ActionListener ActivarComboUsuario() throws IOException{

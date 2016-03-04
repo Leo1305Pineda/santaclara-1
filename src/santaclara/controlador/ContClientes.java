@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
@@ -6,7 +14,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -287,7 +294,6 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 							{	
 								Cliente cliente = (Cliente) clientes.get(vista.getTable().getSelectedRow());
 								new ServicioSalp().eliminar((Salp)cliente);
-								new ServicioCliente().eliminar(cliente);
 								JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
 								MostrarTabla();
 							}
@@ -310,7 +316,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 		};
 	}
 	
-	void MostrarTabla() throws NumberFormatException, IOException{
+	void MostrarTabla() throws NumberFormatException, Exception{
 			
 		if(vista.getCmbTipoCliente().getSelectedItem().equals("Salp"))
 			activarBindingSalp( servicioSalp.getSalps());
@@ -346,7 +352,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 								activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios(rutas));	
 							}
 						}
-					} catch (NumberFormatException | IOException e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						}
@@ -465,7 +471,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	 
 	public void activarBindingSalp(List<Salp>  salps) {
 		// TODO Auto-generated method stub
-		clientes = salps;
+		this.clientes = salps;
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
 		vista.getScrollPanel().setViewportView(vista.getTable());
@@ -495,7 +501,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void activarBindingDomicilioComercios(List<DomicilioComercio>  domicilioComercios) {
 		// TODO Auto-generated method stub
-		clientes = domicilioComercios;
+		this.clientes = domicilioComercios;
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
 		vista.getScrollPanel().setViewportView(vista.getTable());

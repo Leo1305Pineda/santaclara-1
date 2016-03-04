@@ -1,8 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +24,13 @@ public class ServicioCliente {
 	private RutaDAO rutaDAO = new  RutaDAO();
 	private ZonaDAO zonaDAO = new ZonaDAO();
 	
-	public List<Ruta>  getRutas() throws NumberFormatException, IOException
+	public List<Ruta>  getRutas() throws Exception
 	{	
 		return rutaDAO.getRutas();
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<Cliente> getClientes() throws IOException
+	public List<Cliente> getClientes() throws Exception
 	{
 		List clientesAux = new ArrayList<>();
 		
@@ -35,12 +40,12 @@ public class ServicioCliente {
 		return clientesAux;
 	}
 	
-	public List<Zona> getZonas() throws IOException 
+	public List<Zona> getZonas() throws Exception 
 	{
 		return zonaDAO.getZonas();
 	}
 	
-	public Boolean guardar(Cliente cliente) throws IOException {
+	public Boolean guardar(Cliente cliente) throws Exception {
 		// TODO Auto-generated method stub
 		// if el es nuevo que no este otro con el mismo nombre 
 		if (!this.clienteDAO.getCliente(cliente))//mientras que el nombre no se repita 
@@ -51,22 +56,22 @@ public class ServicioCliente {
 		return false;//no Guardo
 	}
 	
-	public Cliente buscar(int id) throws IOException{
+	public Cliente buscar(int id) throws Exception{
 		
 		return clienteDAO.getCliente(id);
 	}
-	public void eliminar (Cliente cliente)throws IOException{
+	public void eliminar (Cliente cliente)throws Exception{
 		clienteDAO.eliminar(cliente);
 	}
-	public void modificar (Cliente cliente) throws IOException{
+	public void modificar (Cliente cliente) throws Exception{
 		clienteDAO.guardar(cliente);
 	}
 
-	public Cliente getCliente(String rif) throws FileNotFoundException {
+	public Cliente getCliente(String rif) throws Exception {
 		// TODO Auto-generated method stub
 		return clienteDAO.getCliente(rif);
 	}
-	public List<Cliente> getClientes(Ruta ruta) throws FileNotFoundException{
+	public List<Cliente> getClientes(Ruta ruta) throws Exception{
 		List<Cliente> clientes = new ClienteDAO().getClientes();
 		List<Cliente> clientes2 = new ArrayList<Cliente>();
 		for(Cliente cliente : clientes)

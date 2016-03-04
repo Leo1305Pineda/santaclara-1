@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.vista;
 
 import javax.swing.JPanel;
@@ -36,7 +44,6 @@ public class CamionesUI extends VistaGenericaUI {
 	private JSpinner txtCapacidad;
 	private JPanel pnCamion;
 	private JButton btnGuardar;
-	private JButton btnCancelar;
 	private JLabel lblPlaca;
 	private JTextField txtPlaca;
 	private JTextField txtId;
@@ -150,11 +157,7 @@ public class CamionesUI extends VistaGenericaUI {
 		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
 		pnCamion.add(btnGuardar);
 		
-		btnCancelar = new JButton("Cancelar");
-		pnCamion.add(btnCancelar);
-		
 		add(pnCamion,BorderLayout.SOUTH);
-		btnCancelar.setVisible(false);
 		repaint();
 
 	}
@@ -197,14 +200,6 @@ public class CamionesUI extends VistaGenericaUI {
 
 	public void setBtnGuardar(JButton btnGuardar) {
 		this.btnGuardar = btnGuardar;
-	}
-
-	public JButton getBtnCancelar() {
-		return btnCancelar;
-	}
-
-	public void setBtnCancelar(JButton btnCancelar) {
-		this.btnCancelar = btnCancelar;
 	}
 
 	public JLabel getLblPlaca() {

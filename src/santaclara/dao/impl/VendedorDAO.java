@@ -1,21 +1,191 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import santaclara.dao.IVendedorDAO;
-import santaclara.modelo.Ruta;
-import santaclara.modelo.Usuario;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Vendedor;
+import santaclara.modelo.Ruta;
 
 public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 
-	private String ruta = "archivos/vendedores.txt";
+	@SuppressWarnings("resource")
+	@Override
+	public List<Vendedor> getVendedores() throws Exception {
+		// TODO Auto-generated method stub
+		List<Vendedor> vendedores = new ArrayList<Vendedor>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				" SELECT u .* , v.id, v.idrutas "
+				+ " FROM vendedores v , usuarios u "
+				+ " WHERE v.id = u.id"
+				+ " Order by id;"); 
+		
+		if(rSet==null) return null;
+		
+		while(rSet.next())
+		{
+			Scanner sc = new Scanner(rSet.getString("idrutas")).useDelimiter("-");
+			 List<Ruta> rutas = new ArrayList<Ruta>();
+			 if (sc.hasNext())
+			 {
+				
+				 while(sc.hasNext())
+				 {
+					 Ruta ruta = new Ruta();
+					 ruta.setId(sc.nextInt());
+					//guardar demas datos de la rutas
+					 RutaDAO rutaDAO = new RutaDAO();
+					 ruta = rutaDAO.getRuta(ruta.getId());
+					 rutas.add(ruta);
+				 }
+			 }
+			 
+			vendedores.add(
+					new Vendedor(rSet.getInt("id"),
+							rSet.getString("username"),
+							rSet.getString("cedula"),
+							rSet.getString("nombres"),
+							rSet.getString("contrasena"), rutas));
+		} 
+		return vendedores;
+	}
+	
+	public String getRutasStr(List<Ruta> rutas){
+		String lineaRutas = new String("-");
+		
+		if (rutas==null) lineaRutas = "";	
+		else
+		{
+			for(Ruta ruta : rutas) 
+			{
+				lineaRutas =  lineaRutas+ruta.getId().toString()+"-";
+			}
+		}
+			return lineaRutas;
+	}
+	
+	@Override
+	public void guardar(Vendedor vendedor) throws Exception {
+		// TODO Auto-generated method stub
+		if (vendedor.getId()==null)
+		{
+			String lineaRutas =	getRutasStr(vendedor.getRutas());
+			
+			new PostgreSql().ejecutar( 
+					"BEGIN;"
+					+ "    "
+					+ "INSERT INTO usuarios(username,cedula,nombre,contrasena) "
+					+"VALUES ("
+					+"'" +vendedor.getUsername()	  		+ "', "
+					+"'" +vendedor.getCedula()	  			+ "', "
+					+"'" +vendedor.getNombre()     			+ "', "
+					+"'" +vendedor.getContrasena() 			+ "'  "
+					+ "); "
+					+ "           "
+					+"INSERT INTO vendedores(id, idrutas) "
+					+"VALUES ("
+					+ " (select max(id) from usuarios) "	+", "
+					+ "' " + lineaRutas +"'  "
+					+ ");"
+					+ "       "
+					+ "COMMIT;");
+		}
+		else
+		{
+			String lineaRutas =	getRutasStr(vendedor.getRutas());
+			
+			new UsuarioDAO().guardar(vendedor);
+			new PostgreSql().ejecutar(
+					" UPDATE  usuarios  SET "
+					+" username   ='" +vendedor.getUsername()	+ "', " 
+					+" cedula     ='" +vendedor.getCedula()		+ "', "
+					+" nombre     ='" +vendedor.getNombre()		+ "', "
+					+" contrasena ='" +vendedor.getContrasena() + "'  "
+					+" WHERE id   = " +vendedor.getId()			+ ";  "
+					+"              "							
+					+" UPDATE vendedores SET "
+					+" idrutas     = '" +lineaRutas              + "' "
+					+" WHERE id   = " +vendedor.getId()			 + ";  "
+					+ " ");
+		}
+	}
+
+	@Override
+	public void eliminar(Vendedor vendedor) throws Exception {
+		// TODO Auto-generated method stub
+		if(vendedor!=null) new PostgreSql().ejecutar(
+				" DELETE FROM vendedores "
+				+" WHERE id = " + vendedor.getId() +" "
+				+" ;");		
+		new UsuarioDAO().eliminar(vendedor);
+	}
+
+	@SuppressWarnings("resource")
+	@Override
+	public Vendedor getVendedor(Integer id) throws Exception { 
+		// TODO Auto-generated method stub
+		ResultSet rSet = new PostgreSql().getSelect(
+				" SELECT u .* , v.id, v.idrutas "
+				+ " FROM vendedores v , usuarios u "
+				+ " WHERE v.id = u.id AND "
+				+ "v.id = " +id
+				+ " Order by id;"); 
+		
+		if(rSet==null) return null;
+		
+		Scanner sc = new Scanner(rSet.getString("idrutas")).useDelimiter("-");
+		 List<Ruta> rutas = new ArrayList<Ruta>();
+		 if (sc.hasNext())
+		 {
+			
+			 while(sc.hasNext())
+			 {
+				 Ruta ruta = new Ruta();
+				 ruta.setId(sc.nextInt());
+				//guardar demas datos de la rutas
+				 RutaDAO rutaDAO = new RutaDAO();
+				 ruta = rutaDAO.getRuta(ruta.getId());
+				 rutas.add(ruta);
+			 }
+		 }
+			rSet.next();
+			
+			return new Vendedor(rSet.getInt("id"),
+						rSet.getString("username"),
+						rSet.getString("cedula"),
+						rSet.getString("nombres"),
+						rSet.getString("contrasena"), rutas); 
+
+	}
+	
+	public Boolean getVendedor(Vendedor vendedor) throws Exception {
+		// TODO Auto-generated method stub
+		List<Vendedor> vendedores = getVendedores();
+		for(Vendedor vendedor1 :vendedores)
+		{
+				if(vendedor1.getUsername().equals(vendedor.getUsername())&&
+						!vendedor1.getId().equals(vendedor.getId()))
+				{ 
+					return true;
+				}
+		}
+		return false;
+    }
+
+	/*
+	 private String ruta = "archivos/vendedores.txt";
 	
 	public VendedorDAO(String ruta) {
 		super();
@@ -28,7 +198,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 	
 	@SuppressWarnings("resource")
 	@Override
-	public List<Vendedor> getVendedores() throws FileNotFoundException {
+	public List<Vendedor> getVendedores() throws Exception {
 		// TODO Auto-generated method stub
 		List<Vendedor> vendedores = new ArrayList<Vendedor>();
 		
@@ -86,7 +256,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 	return vendedores;
 	}
 	@Override
-	public void guardar(Vendedor vendedor) throws IOException {
+	public void guardar(Vendedor vendedor) throws Exception {
 		// TODO Auto-generated method stub
 		UsuarioDAO usuarioDAO = new UsuarioDAO(); 
 		List<Usuario> usuarios = usuarioDAO.getUsuarios();
@@ -130,7 +300,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 		guardarTodo(vendedores);
 	}
 	
-	private Vendedor getVendedor(Usuario usuario) throws FileNotFoundException{
+	private Vendedor getVendedor(Usuario usuario) throws Exception{
 				Vendedor vendedor = new Vendedor();
 				vendedor.setId(usuario.getId());
 				vendedor.setCedula(usuario.getCedula());
@@ -141,7 +311,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 				return vendedor; 
 	}
 	@Override
-	public void eliminar(Vendedor vendedor) throws IOException {
+	public void eliminar(Vendedor vendedor) throws Exception {
 		// TODO Auto-generated method stub
 		List<Vendedor> vendedores = getVendedores();
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -158,7 +328,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 	}
 
 	@Override
-	public Vendedor getVendedor(Integer id) throws FileNotFoundException {
+	public Vendedor getVendedor(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		List<Vendedor> vendedores = getVendedores();
 		for(Vendedor vendedor: vendedores)
@@ -171,7 +341,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 		return null;
 	}
 	
-	public void guardarTodo(List<Vendedor> vendedores) throws IOException
+	public void guardarTodo(List<Vendedor> vendedores) throws Exception
 	{
 		
 		FileWriter fw = new FileWriter(ruta);
@@ -194,7 +364,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 		fw.close();
 	}
 	
-	public Boolean getVendedor(Vendedor vendedor) throws FileNotFoundException {
+	public Boolean getVendedor(Vendedor vendedor) throws Exception {
 		// TODO Auto-generated method stub
 		List<Vendedor> vendedores = getVendedores();
 		for(Vendedor vendedor1 :vendedores)
@@ -207,6 +377,9 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 		}
 		return false;
     }
+
+	 * */
+	
 	/*Estructura 
 	 * id:1
 	 * idRutas:,1,2,

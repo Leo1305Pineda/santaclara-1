@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 
@@ -14,19 +22,20 @@ import santaclara.Servicio.ServicioUsuario;
 import santaclara.modelo.Usuario;
 import santaclara.vista.UsuariosUI;
 
+
 public class ContUsuarios extends ContGeneral implements IContGeneral{
 	
 	private ServicioUsuario servicioUsuario = new ServicioUsuario();
 	private ServicioCamion servicioCamion;
 	private UsuariosUI vista;
 	
+	@SuppressWarnings({ "unchecked" })
 	public ContUsuarios(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		
 		servicioUsuario = new ServicioUsuario();
 		servicioCamion = new ServicioCamion();
-		
 		vista = new UsuariosUI(this, servicioUsuario.getUsuarios());
 		dibujar(vista,this);
 	}
@@ -40,36 +49,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 	public UsuariosUI getVistaUsuario(){
 		return vista;
 	}
-	
 
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				JTable tabla1 = new JTable();
-				tabla1 = vista.getTable();
-				Boolean enc = false;
-				for(int i = 0;i<tabla1.getRowCount();i++)
-				{
-					if (tabla1.getValueAt(i, 0).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
-						tabla1.getValueAt(i, 1).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim()))
-					{
-						tabla1.setRowSelectionInterval(i,i);
-						enc = true;
-						break;
-					}
-				}
-				if (!enc) JOptionPane.showMessageDialog(vista,"No Encontrado");
-				vista.setTable(tabla1);
-				vista.getTxtABuscar().setText("");
-				
-			}
-		};
-	}
-	
 	public void setVista(UsuariosUI vista) {
 		this.vista = vista;
 	}
@@ -108,7 +88,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 	}
 
 	
-	void MostrarTabla() throws NumberFormatException, IOException{
+	void MostrarTabla() throws Exception{
 		vista.getBinUsuarios().unbind();
 		vista.getBinUsuarios().bind();				
 		vista.activarBinding(servicioUsuario.getUsuarios());
@@ -135,15 +115,16 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 					else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Concesionario")){
 						vista.activarBindingConcesionarios(servicioUsuario.getConcesionarios());
 					}
-				} catch (NumberFormatException | IOException e)
+				} catch (Exception e)
 				{
 					e.printStackTrace();
+					JOptionPane.showConfirmDialog(null,e.getMessage());
 				}
 			}
 		};
 	}
-	
 
+	
 	public ServicioUsuario getServicioUsuario() {
 		return servicioUsuario;
 	}
@@ -160,6 +141,5 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 	public void setServicioCamion(ServicioCamion servicioCamion) {
 		this.servicioCamion = servicioCamion;
 	}
-	
-	
+
 }
