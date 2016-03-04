@@ -1,6 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
  
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack; 
@@ -8,6 +15,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
  
 import santaclara.controlador.consultas.ContConsulta;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import javax.swing.JLabel;
+
+import santaclara.controlador.consultas.ContConsultadeMontoTotalporRefresco;
+
 import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
 import santaclara.controlador.consultas.ContListCantRefrecoPresentCapacFacturadoZona;
 import santaclara.controlador.consultas.ContListCantRefrescoSaborVendidoAlmacen;
@@ -15,7 +32,10 @@ import santaclara.controlador.consultas.ContListClienteTipoZona;
 import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen; 
 import santaclara.controlador.reportes.ContReporte;
 import santaclara.modelo.Camion;
+import santaclara.dbPostgresql.controlador.ContPostgreSql;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Usuario;
+import santaclara.thread.animacion.Animado;
 import santaclara.vista.PrincipalUI;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
@@ -26,9 +46,13 @@ public  class ContPrincipal {
 	private Usuario		 usuario;
 	private Stack<String> cache = new Stack<String>();
 	private Stack<Object> cacheObjet = new Stack<Object>();
-	private Boolean editorActivo = new Boolean(false);
+	private Boolean editorActivo = new Boolean(false); 
 	
 	private ContAlmacenes 	contAnimaciones ;
+	
+	private PostgreSql postgreSql;
+	
+	private Animado animado ;
 	
 	public static void main(String[] args) {
 	   ContPrincipal controlador = new  ContPrincipal();
@@ -57,12 +81,12 @@ public  class ContPrincipal {
 		vista.getFrame().setContentPane(panel);
 		vista.getFrame().resize(VistaGenericaUI.getWidthPantalla(),VistaGenericaUI.getHeightPantalla());
 		vista.getFrame().repaint();
-
 	}
 	
 	void quitarPanel(){
-		vista.getFrame().getContentPane().removeAll();
-		vista.getFrame().repaint();
+	//	vista.getFrame().getContentPane().removeAll();
+	//	vista.getFrame().add(new JPanel());	
+		cerrarSecion();
 	}
 
 	public Usuario getUsuario() {
@@ -95,12 +119,15 @@ public  class ContPrincipal {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.getMenuBar().setVisible(false);
-				usuario = null;
-				controlador = new ContIniciarSesion(ContPrincipal.this); 
-				
+				cerrarSecion(); 
 			}
 		};
+	}
+	
+	public void cerrarSecion(){
+		vista.getMenuBar().setVisible(false);
+		usuario = null;
+		controlador = new ContIniciarSesion(ContPrincipal.this);
 	}
 
 	public ActionListener activarMenu() {
@@ -109,7 +136,8 @@ public  class ContPrincipal {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				try {
+				try{
+					animado.detener();
 					if(e.getSource().equals(vista.getMntAlmacen()))
 					{
 							ActivarAlmacenes();
@@ -126,13 +154,17 @@ public  class ContPrincipal {
 					{
 						ActivarClientes(null,"",null);
 					}
+					else if(e.getSource().equals(vista.getMntConcesionario()))
+					{
+						ActivarUsuarios();
+					}
 					else if(e.getSource().equals(vista.getMntEmpaqueProductos()))
 					{
 						ActivarEmpaqueProductos();
 					}
 					else if(e.getSource().equals(vista.getMntJefeVenta()))
 					{
-							ActivarJefeVenta();
+						ActivarUsuarios();
 					}
 					else if(e.getSource().equals(vista.getMntPresentaciones()))
 					{
@@ -164,7 +196,7 @@ public  class ContPrincipal {
 					}
 					else if(e.getSource().equals(vista.getMntVendedores()))
 					{
-						ActivarVendedores();
+						ActivarUsuarios();
 					}
 					else if(e.getSource().equals(vista.getMntVisitas()))
 					{
@@ -185,10 +217,23 @@ public  class ContPrincipal {
 					else if(e.getSource().equals(vista.getMntReportMontFacturaAlmacen())){
 						ActivarReportFacturadoAlmacen();
 					}
-					else if(e.getSource().equals(vista.getMntConcesionarios()))
-					{
-		 
-						ActivarConcenionario(null,null,null);
+					else if(e.getSource().equals(vista.getMntReportMontFacturaVendedor())){
+						ActivarReportFacturadoVendedor();
+					}
+					else if(e.getSource().equals(vista.getMntConsultaDetalleFacturaMesAlmacen())){
+						ActivarConsultaDetalleFacturaMesAlmacen();
+					}
+					else if(e.getSource().equals(vista.getMntListCantRefrescoSaborVendidoAlmacen())){
+						ActivarListCantRefrescoSaborVendidoAlmacen();
+					}
+					else if(e.getSource().equals(vista.getMntListCantRefrescoPresentCapacFacturadoZona())){
+						ActivarListCantRefrescoPresentCapacFacturadoZona();
+					}
+					else if(e.getSource().equals(vista.getMntListClienteZonaTipo())){
+						ActivarListClienteZonaTipo();
+					}
+					else if(e.getSource().equals(vista.getMntMontoFacturadoMesZonaTipoPago())){
+						ActivarMontoFacturadoMesZonaTipoPago();
 					}
 					else if(e.getSource().equals(vista.getMntReporte())){
 						ActivarReporte();
@@ -196,15 +241,35 @@ public  class ContPrincipal {
 					else if(e.getSource().equals(vista.getMntConsulta())){
 						ActivarConsulta();
 					}
-	 			} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					JOptionPane.showMessageDialog(null,e1.getMessage());
-				}
+					else if(e.getSource().equals(vista.getMntPostgreSqlAjustes())){
+						ActivarPostgreSqlAjustes();
+					}
+					else if(e.getSource().equals(vista.getMntPgAdmin3())){
+						ejecutarComando("pgadmin3");
+					}
 			}
+			catch(Exception e1)
+			{
+				JOptionPane.showConfirmDialog(null,e1.getMessage());
+				e1.printStackTrace();
+			}
+
+			}
+ 
 		};
 	}
  
+	
+	public void ActivarPostgreSqlAjustes(){
+		try {
+			controlador = new ContPostgreSql(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
 	
 	public void ActivarReporte(){
 		
@@ -222,7 +287,7 @@ public  class ContPrincipal {
 	
 		try {
 		
-			controlador = new ContConsulta(ContPrincipal.this);
+			controlador = new ContConsultadeMontoTotalporRefresco(ContPrincipal.this);
 			}
 			catch (Exception e1) {
 				// 	TODO Auto-generated catch block
@@ -351,31 +416,7 @@ public  class ContPrincipal {
 			controlador = new ContProductos(ContPrincipal.this);
 
 	}
-	
-	public Stack<String> getCache() {
-		return cache;
-	}
-
-	public void setCache(Stack<String> cache) {
-		this.cache = cache;
-	}
-
-	public Boolean getEditorActivo() {
-		return editorActivo;
-	}
-
-	public void setEditorActivo(Boolean editorActivo) {
-		this.editorActivo = editorActivo;
-	}
-
-	public Stack<Object> getCacheObjet() {
-		return cacheObjet;
-	}
-
-	public void setCacheObjet(Stack<Object> cacheObjet) {
-		this.cacheObjet = cacheObjet;
-	}
-
+	 
 
 	
 	public void ActivarPresentaciones()   throws Exception {
@@ -479,14 +520,8 @@ public  class ContPrincipal {
 			case "santaclara.controlador.ContProductos":
 				ActivarProductos();
 				break;
-			case "santaclara.controlador.ContPresentaciones": 
-				ActivarPresentaciones();
-				break;
-			case "santaclara.controlador.ContVendedores":
-				ActivarVendedores();
-				break;
 			case "santaclara.controlador.ContClientes":
-				ActivarClientes(obtetContCache,obtetContCachePresente,mensaje);
+				
 				break;
 			case "santaclara.controlador.ContRutas":
 				ActivarRutas();
@@ -506,37 +541,129 @@ public  class ContPrincipal {
 			case "santaclara.controlador.ContProductoAlmacenes":	
 				ActivarProductoAlmacenes();
 				break;
-			case "santaclara.controlador.ContCamiones":	
-				ActivarCamiones((ContGeneral)obtetContCache,(ContGeneral)obtetContCachePresente,mensaje);
-				break;
 			case "santaclara.controlador.ContConcesionarios":
 				ActivarConcenionario((ContGeneral)obtetContCache,(ContGeneral)obtetContCachePresente,mensaje);
 				break;
-			case "santaclara.controlador.ContUsuarios":
+			case "santaclara.controlador.ContPresentaciones":
+					ActivarPresentaciones();
+			break;
+			case "santaclara.controlador.ContVendedores":		
+				ActivarVendedores();
+			break;
+			case "santaclara.controlador.ContCamiones":	
+				ActivarCamiones((ContGeneral)obtetContCache,(ContGeneral)obtetContCachePresente,mensaje);
+			break;
+			case "santaclara.controlador.ContUsuarios": 
 				ActivarUsuarios();
-				break;
-			case "santaclara.controlador.ContZonas":
+			break;
+			case "santaclara.controlador.ContZonas":	
 				ActivarZonas();
-				break;
+			break;
 			case "santaclara.controlador.ContVisitas":
 				ActivarVisitas();
-				break;
-			case "santaclara.controlador.ContCalendario":
+			break;
+			case "santaclara.controlador.ContCalendario":	
 				ActivarCalendarios();
-				break;
-			case "santaclara.controlador.ContPedidos":
+			break;
+			case "santaclara.controlador.ContPedidos":	
 				ActivarPedidos(obtetContCache,obtetContCachePresente,mensaje);
-				break;
-			case "santaclara.controlador.reportes.ContReportMontFacturadoAlmacen":
+			break;
+			case "santaclara.controlador.reportes.ContReportMontFacturadoAlmacen":	
 				ActivarReportFacturadoAlmacen();
-				break;
- 			default:
+			break;
+			case "santaclara.controlador.reportes.ContReportMontFacturadoVendedor":
+				ActivarReportFacturadoVendedor();
+			break;
+			case "santaclara.controlador.cansultas.ContDetalleFacturaMesAlmacen":	
+				ActivarConsultaDetalleFacturaMesAlmacen();
+			break;
+			case "santaclara.controlador.cansultas.ContListCantRefrescoSaborVendidoAlmacen":	
+				ActivarListCantRefrescoSaborVendidoAlmacen();;
+			break;
+			case "santaclara.controlador.cansultas.ContMontoFacturadoMesZonaTipoPago":	
+				ActivarMontoFacturadoMesZonaTipoPago();;
+			break;
+			case "santaclara.dbPostgresql.controlador.ContPostgreSql":	
+				ActivarPostgreSqlAjustes();
+			break;
+			default:
 				break;
 			}
 		}
 	}
 	
-  
+ 	private void ActivarMontoFacturadoMesZonaTipoPago() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void ActivarReportFacturadoVendedor() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void ejecutarComando(String comando){
+		try{
+			Runtime runtime = Runtime.getRuntime();
+			Process process;
+
+			process = runtime.exec(comando);
+			InputStream is = process.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+	
+			String line;
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	public void dibujarImagen(JPanel panel,JLabel lblImagen,Object ubicacion){
+		if(ubicacion.equals("")) panel.add(lblImagen);
+		else panel.add(lblImagen,ubicacion);
+		
+		vista.getFrame().repaint();
+	}
+
+	
+	public void activarAnimacionSantaclara(JPanel vista){
+		
+		JLabel lblImagen = new JLabel();
+		lblImagen.setForeground(Color.WHITE);
+		animado = new Animado("animacionSantaclara",lblImagen,500);
+		animado.star();
+		dibujarImagen(vista,lblImagen,BorderLayout.SOUTH);
+		
+	}	
+	
+	
+	public Stack<String> getCache() {
+		return cache;
+	}
+
+	public void setCache(Stack<String> cache) {
+		this.cache = cache;
+	}
+
+	public Boolean getEditorActivo() {
+		return editorActivo;
+	}
+
+	public void setEditorActivo(Boolean editorActivo) {
+		this.editorActivo = editorActivo;
+	}
+
+	public Stack<Object> getCacheObjet() {
+		return cacheObjet;
+	}
+
+	public void setCacheObjet(Stack<Object> cacheObjet) {
+		this.cacheObjet = cacheObjet;
+	} 
 
 	public ContAlmacenes getContAnimaciones() {
 		return contAnimaciones;
@@ -545,6 +672,16 @@ public  class ContPrincipal {
 	public void setContAnimaciones(ContAlmacenes contAnimaciones) {
 		this.contAnimaciones = contAnimaciones;
 	}
+ 
+	public PostgreSql getPostgreSql() {
+		return postgreSql;
+	}
 
-	 
+	public void setPostgreSql(PostgreSql postgreSql) {
+		this.postgreSql = postgreSql;
+	}
+
+	public PrincipalUI getVista() {
+		return vista;
+	}  
 }

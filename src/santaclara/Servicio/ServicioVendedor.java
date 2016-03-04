@@ -1,7 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,17 +24,17 @@ public class ServicioVendedor {
 	private RutaDAO rutaDAO = new RutaDAO();
 	private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-	public List<Vendedor>  getVendedores() throws NumberFormatException, IOException
+	public List<Vendedor>  getVendedores() throws Exception
 	{	
 		return vendedorDAO.getVendedores();
 	}
 	
-	public List<Ruta> getRutas() throws NumberFormatException,IOException
+	public List<Ruta> getRutas() throws Exception
 	{
 		return rutaDAO.getRutas();
 	}
 	
-	public Vendedor buscar(Integer id) throws FileNotFoundException{
+	public Vendedor buscar(Integer id) throws Exception{
 		return vendedorDAO.getVendedor(id);
 	}
 	
@@ -45,26 +51,26 @@ public class ServicioVendedor {
 		vendedorDAO.guardar(vendedor);
 	}
 	
-	public void guardar(Ruta ruta)throws IOException{
+	public void guardar(Ruta ruta)throws Exception{
 		rutaDAO.guardar(ruta);
 	}
 	
-	public Boolean  getUsuario(Integer id)throws IOException{
+	public Boolean  getUsuario(Integer id)throws Exception{
 		if  (vendedorDAO.getVendedor(id)!=null) return true;
 		return false;
 	}
 
-	public Vendedor getVendedor(Integer id) throws FileNotFoundException {
+	public Vendedor getVendedor(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		return vendedorDAO.getVendedor(id);
 	}
 
-	public void eliminar(Vendedor vendedor) throws IOException {
+	public void eliminar(Vendedor vendedor) throws Exception {
 		// TODO Auto-generated method stub
 		vendedorDAO.eliminar(vendedor);
 	}
 	
-	public List<Vendedor>  getVendedores(Integer idRuta) throws IOException
+	public List<Vendedor>  getVendedores(Integer idRuta) throws Exception
 	{	
 		List<Vendedor> vendedors = new ArrayList<Vendedor>();
 		for(Vendedor vendedor:getVendedores()){

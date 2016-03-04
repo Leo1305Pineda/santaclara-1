@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 import java.awt.Color;
@@ -55,7 +63,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		this.factura.setAlmacen(almacen);
 	}
 
-	public ContPedidos(ContPrincipal contPrincipal) throws IOException {
+	public ContPedidos(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		vista = new PedidosUI(this);
@@ -77,7 +85,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		vista.getLblRuta().setText("Ruta:");
 	}
 	
-	public void cargarClientelbl(Cliente cliente) throws IOException{
+	public void cargarClientelbl(Cliente cliente) throws Exception{
 		
 		if (cliente.getId()==null)
 		{
@@ -96,7 +104,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		
 	}
 	
-	public void setPnlClienteTitle(Integer id) throws IOException{
+	public void setPnlClienteTitle(Integer id) throws Exception{
 	
 		if (new ServicioDomicilioComercio().isbuscar(id).equals(false))
 		{
@@ -486,7 +494,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 					}
 					
 					
-				} catch (NumberFormatException | IOException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -746,7 +754,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 					factura.setId(null);
  
 					actualizarVista();
-				} catch (IOException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -754,7 +762,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		};
 	}
 
-	public void actualizarVista() throws IOException{
+	public void actualizarVista() throws Exception{
 		if (vista != null)dibujar(vista,this);//Actualiza la vista
 		if (factura.getAlmacen()!=null) cargarAlmacenlbl(factura.getAlmacen());
 		if (factura.getCliente()!=null) cargarClientelbl(factura.getCliente());
@@ -823,7 +831,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		return factura.getCliente();
 	}
 
-	public void setCliente(Cliente cliente) throws IOException {
+	public void setCliente(Cliente cliente) throws Exception {
 		this.factura.setCliente(cliente);
 		actualizarVista();
 	}
@@ -832,7 +840,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		return factura.getVendedor();
 	}
 
-	public void setVendedor(Usuario vendedor) throws IOException {
+	public void setVendedor(Usuario vendedor) throws Exception {
 		this.factura.setVendedor(vendedor);;
 		actualizarVista();
 	}
@@ -841,7 +849,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 		return factura.getAlmacen();
 	}
 
-	public void setAlmacen(Almacen almacen) throws IOException {
+	public void setAlmacen(Almacen almacen) throws Exception {
 		this.factura.setAlmacen(almacen);
 		actualizarVista();
 	}
@@ -943,7 +951,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			setCliente(cliente);
 			setFactura(factura);
 			setDetalleFacturas(detalleFacturas);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -1004,7 +1012,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 				detalleFacturas.clear();
 				try {
 					actualizarVista();
-				} catch (IOException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

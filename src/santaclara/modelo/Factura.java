@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.modelo;
 
 import java.text.ParseException;
@@ -124,16 +132,7 @@ public class Factura {
 			this.fecha = sdf.parse(cadena);
 	}
 		
-	public String getFechaStr(Date fecha) {
-		if (fecha==null)return "";
-		else{
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			return " "+sdf.format(fecha);
- 
-			} 
-		}
-		
-		public String getFechaStr() {
+	public String getFechaStr() {
 			if (fecha==null)return "";
 			else{
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -142,6 +141,22 @@ public class Factura {
 			} 
 		}
 
+		public String getFechaStr(String separador) {
+			if (fecha==null)return "";
+			else{
+				SimpleDateFormat sdf = new SimpleDateFormat("dd"+separador+"MM"+separador+"yyyy");
+				return sdf.format(fecha);
+			} 
+		}
+		
+		public String getFechaStr(Date fecha) {
+			if (fecha==null)return "";
+			else{
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				return sdf.format(fecha);
+			} 
+		}
+		
 		@SuppressWarnings("deprecation")
 		public String getFechaCadenaStr() {
 			if (fecha==null)return "";

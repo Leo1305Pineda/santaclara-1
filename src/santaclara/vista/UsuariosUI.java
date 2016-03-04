@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.vista;
 
 import java.awt.BorderLayout;
@@ -67,19 +75,13 @@ public class UsuariosUI  extends VistaGenericaUI  {
 	
 
 	private JPanel pnUsuario;
-	
 	private JButton btnAtras;
 	private JButton btnSalir;
-	private JButton btnABuscar;
-	private JTextField txtABuscar;
 	private JLabel lblTipoUsuario;
 	private JComboBox<String> cmbTipoUsuario ;
 
-	
 	@SuppressWarnings("rawtypes")
 	private JTableBinding binUsuarios;
-
-	
 	private List usuarios = new ArrayList<Usuario>();
 	
 	
@@ -90,20 +92,6 @@ public class UsuariosUI  extends VistaGenericaUI  {
 		dibujarPanelOpciones();
 		dibujarPanelTabla();
 
-		
-		txtABuscar = new JTextField();
-		txtABuscar.setForeground(Color.WHITE);
-		txtABuscar.setBackground(new Color(64, 64, 64));
-		txtABuscar.setColumns(10);
-		
-		btnABuscar = new JButton("");
-		btnABuscar.addActionListener(contUsuarios.buscar());
-		btnABuscar.setVerticalAlignment(SwingConstants.TOP);
-		btnABuscar.setBackground(Color.DARK_GRAY);
-		btnABuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
-		getPanelBuscar().add(btnABuscar);
-		
-		
 		lblTipoUsuario = new JLabel("Tipo Usuario:");
 		lblTipoUsuario.setForeground(Color.WHITE);
 		lblTipoUsuario.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
@@ -251,14 +239,6 @@ public class UsuariosUI  extends VistaGenericaUI  {
 		this.btnSalir = btnSalir;
 	}
 
-	public JButton getBtnABuscar() {
-		return btnABuscar;
-	}
-
-	public void setBtnABuscar(JButton btnABuscar) {
-		this.btnABuscar = btnABuscar;
-	}
- 
 	@SuppressWarnings("rawtypes")
 	public JComboBox getCmbTipoUsuario() {
 		return cmbTipoUsuario;
@@ -279,13 +259,6 @@ public class UsuariosUI  extends VistaGenericaUI  {
 	}
 
 
-	public JTextField getTxtABuscar() {
-		return txtABuscar;
-	}
-
-	public void setTxtABuscar(JTextField txtABuscar) {
-		this.txtABuscar = txtABuscar;
-	}
 
 	public List<Usuario> getUsuarios() {
 		return usuarios;

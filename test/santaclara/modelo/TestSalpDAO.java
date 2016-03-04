@@ -2,8 +2,6 @@ package santaclara.modelo;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +13,14 @@ import santaclara.modelo.Salp;
 public class TestSalpDAO {
 
 	@Test
-	public void salpTest() throws FileNotFoundException {
+	public void salpTest() throws Exception {
 		SalpDAO salpDAO = new SalpDAO();
 		assertNotNull(salpDAO);
 		assertEquals(2,salpDAO.getSalps().size());
 	}
 
 	@Test
-	public void addRemoveSalpTest() throws IOException {
+	public void addRemoveSalpTest() throws Exception {
 		SalpDAO salpDAO = new SalpDAO();
 		List<Salp> salps= salpDAO.getSalps();
 		

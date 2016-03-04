@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
@@ -6,7 +14,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -77,7 +84,7 @@ public class ContSabores extends ContGeneral implements IContGeneral{
 									sabores = servicioSabor.getSabores();
 									activarBinding(sabores);
 									
-								} catch (IOException e1) {
+								} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								JOptionPane.showConfirmDialog(null,e1.getMessage());
 								e1.printStackTrace();
@@ -177,7 +184,7 @@ public class ContSabores extends ContGeneral implements IContGeneral{
 						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
 								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: EmpaqueProducto");
 						
-				} catch (IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

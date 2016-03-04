@@ -1,6 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +24,7 @@ public class ServicioProductoAlmacen {
 	private List<ProductoAlmacen> productoAlmacenes;
 	
 	
-	public List<ProductoAlmacen>  getProductoAlmacen() throws NumberFormatException, IOException
+	public List<ProductoAlmacen>  getProductoAlmacen() throws Exception
 	{	
 		return productoAlmacenDAO.getProductoAlmacenes();
 	}
@@ -27,12 +34,12 @@ public class ServicioProductoAlmacen {
 		return productoAlmacenDAO.getProductoAlmacenes();	
 	}
 	
-	public List<Almacen> getAlmacenes() throws IOException
+	public List<Almacen> getAlmacenes() throws Exception
 	{
 		return almacenDAO.getAlmacenes();
 	}
 	
-	public String guardar(ProductoAlmacen productAlmacen) throws IOException {
+	public String guardar(ProductoAlmacen productAlmacen) throws Exception {
 		// TODO Auto-generated method stub
 		
 			productoAlmacenes = productoAlmacenDAO.getProductoAlmacenes();
@@ -61,15 +68,15 @@ public class ServicioProductoAlmacen {
 			return "Operacion Exitosa ";
 	}
 	
-	public void eliminar(ProductoAlmacen productoAlmacen) throws IOException{
+	public void eliminar(ProductoAlmacen productoAlmacen) throws Exception{
 		productoAlmacenDAO.eliminar(productoAlmacen);
 	}
 	
-	public void modificar(ProductoAlmacen productoAlmacen) throws IOException{
+	public void modificar(ProductoAlmacen productoAlmacen) throws Exception{
 		productoAlmacenDAO.guardar(productoAlmacen);
 	}
 	
-	public ProductoAlmacen getProductoAlmacen(Integer idEmpaqueProducto,Integer idAlmacen)throws IOException{
+	public ProductoAlmacen getProductoAlmacen(Integer idEmpaqueProducto,Integer idAlmacen)throws Exception{
 		return productoAlmacenDAO.getProductoAlmacen(idEmpaqueProducto, idAlmacen);
 	}
 	

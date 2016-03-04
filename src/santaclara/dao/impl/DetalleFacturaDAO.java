@@ -1,23 +1,158 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import santaclara.Servicio.ServicioEmpaqueProducto;
 import santaclara.dao.IDetalleFacturaDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.DetalleFactura;
-import santaclara.modelo.Factura;
 
 public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO{
-	private String ruta = "archivos/detalleFacturas.txt";
+	
+	@Override
+	public List<DetalleFactura> getDetalles() throws Exception {
+		// TODO Auto-generated method stub
+		List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				" SELECT  idfactura, idempaqueproducto,"
+				+ " cantidad, precio, descuento, iva, total "
+				+ " FROM detalleFacturas Order by idfactura;"); 
+		
+		if(rSet==null) return null;
+		
+			while(rSet.next())detalleFacturas.add(
+					new DetalleFactura(
+							new FacturaDAO().getFactura(rSet.getInt("idfactura")),
+							new EmpaqueProductoDAO().getEmpaqueProducto(rSet.getInt("idempaqueproducto")),
+							rSet.getInt("cantidad"), 
+							rSet.getDouble("precio"), 
+							rSet.getDouble("descuento"),
+							rSet.getDouble("iva"),
+							rSet.getDouble("total"))); 
+		return detalleFacturas;
+	}
+	
+	@Override
+	public void guardar(List<DetalleFactura> detalleFacturas) throws Exception {
+		// TODO Auto-generated method stub
+			if (!detalleFacturas.isEmpty()){
+				for(DetalleFactura detalleFactura: detalleFacturas)
+				{	
+					new PostgreSql().ejecutar( 
+							"BEGIN;"
+							+ "DELETE FROM detallefacturas "
+							+ "WHERE          "
+							+ " idfactura   = "+detalleFactura.getFactura().getId()				+ "   "
+							+ "AND               "
+							+ "idempaqueproducto = "+detalleFactura.getEmpaqueProducto().getId()+ "  "
+							+ ""
+							+ "INSERT INTO detallefacturas(idfactura, idempaqueproducto, cantidad, precio, descuento, iva, total) "
+							+" VALUES ("
+							+" " +detalleFactura.getFactura().getId()	  		+ " , "
+							+" " +detalleFactura.getEmpaqueProducto().getId()	+ " , "
+							+" " +detalleFactura.getCantidad()     				+ " , "
+							+" " +detalleFactura.getPrecio()			 		+ " , "
+							+" " +detalleFactura.getDescuento()			 		+ " , "
+							+" " +detalleFactura.getIva()				 		+ " , "
+							+" " +detalleFactura.getTotal()				 		+ "   "
+							+ ");"
+							+ "       "
+							+ "COMMIT;"
+							);	
+						
+				}	
+			}
+		}
+
+	@Override
+	public void eliminar(DetalleFactura detalleFactura) throws Exception {
+		// TODO Auto-generated method stub
+		if(detalleFactura!=null) new PostgreSql().ejecutar(
+				 "DELETE FROM detallefacturas "
+				 +" WHERE          "
+				 +" idfactura   = "+detalleFactura.getFactura().getId()					
+				 +" AND               "
+				 +" idempaqueproducto = "+detalleFactura.getEmpaqueProducto().getId() 	+ " ; ");
+	}
+
+	@Override
+	public DetalleFactura getDetalleFactura(Integer idFactura,Integer idProducto) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				" SELECT  idfactura, idempaqueproducto,"
+				+ " cantidad, precio, descuento, iva, total "
+				+ " FROM detalleFacturas "
+				+ " WHERE idfactura = " +idFactura + ""
+				+ " AND "
+				+ " idempaqueproducto = " +idProducto
+				+ ";"); 
+		
+		if(rSet==null) return null;
+		rSet.next();
+		return	new DetalleFactura(
+							new FacturaDAO().getFactura(rSet.getInt("idfactura")),
+							new EmpaqueProductoDAO().getEmpaqueProducto(rSet.getInt("idempaqueproducto")),
+							rSet.getInt("cantidad"), 
+							rSet.getDouble("precio"), 
+							rSet.getDouble("descuento"),
+							rSet.getDouble("iva"),
+							rSet.getDouble("total")); 		
+	}
+	
+	public List<DetalleFactura> getDetalleFacturados() throws Exception{
+		// TODO Auto-generated method stub
+		return confGetDetalle("Facturado");
+	}
+
+	public List<DetalleFactura> getDetallePedidos() throws Exception {
+	// TODO Auto-generated method stub
+		return confGetDetalle("Pedido");
+	}
+
+	public List<DetalleFactura> getDetallePendientes() throws Exception {
+	// TODO Auto-generated method stub
+		return confGetDetalle("Pendiente");
+	}
+
+	private List<DetalleFactura> confGetDetalle(String condicion) throws Exception{
+		// TODO Auto-generated method stub
+	List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT d.* FROM detalleFacturas d , facturas f "
+				+ " WHERE d.idfactura = f.id AND f.estado = ' " + condicion +"' "
+				+ ";"); 
+		
+		if(rSet==null) return null;
+		
+			while(rSet.next())detalleFacturas.add(
+					new DetalleFactura(
+							new FacturaDAO().getFactura(rSet.getInt("idfactura")),
+							new EmpaqueProductoDAO().getEmpaqueProducto(rSet.getInt("idempaqueproducto")),
+							rSet.getInt("cantidad"), 
+							rSet.getDouble("precio"), 
+							rSet.getDouble("descuento"),
+							rSet.getDouble("iva"),
+							rSet.getDouble("total"))); 
+		return detalleFacturas;
+	}
+	
+	/*
+	 private String ruta = "archivos/detalleFacturas.txt";
 	private List<Factura> facturas;
 	@Override
-	public List<DetalleFactura> getDetalles() throws NumberFormatException, IOException {
+	public List<DetalleFactura> getDetalles() throws NumberFormatException, Exception {
 		// TODO Auto-generated method stub
 		facturas = new FacturaDAO().getPedidoFacturados();
 		
@@ -51,34 +186,26 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 
 	}
 	 
-	public List<DetalleFactura> getDetalleFacturados() throws NumberFormatException, IOException {
+	public List<DetalleFactura> getDetalleFacturados() throws Exception{
 			// TODO Auto-generated method stub
-		/*Funcion que Permite la Validacion de la Busqueda de los Archivos
-		 * confGetDetalle(true) 	:  	Facturados
-		 */
+		
 		return confGetDetalle(true);
 		}
 	
-	public List<DetalleFactura> getDetallePedidos() throws NumberFormatException, IOException {
+	public List<DetalleFactura> getDetallePedidos() throws Exception {
 		// TODO Auto-generated method stub
-		/*Funcion que Permite la Validacion de la Busqueda de los Archivos
-		 * confGetDetalle(null) 	:  	Pedidos
-		 */
+		
 		return confGetDetalle(null);
 	}
 
-	public List<DetalleFactura> getDetallePendientes() throws NumberFormatException, IOException {
+	public List<DetalleFactura> getDetallePendientes() throws Exception {
 		// TODO Auto-generated method stub
-		/*Funcion que Permite la Validacion de la Busqueda de los Archivos
-		 * confGetDetalle(false) 	:  	Pendientes
-		 */
+		
 		return confGetDetalle(false);
 	}
 
-	public List<DetalleFactura> confGetDetalle(Boolean condicion) throws NumberFormatException, IOException{
-		/*Variable que Permite la Validacion de la Busqueda de los Archivos
-		 * estadoFactura == True 	:  	Facturados
-		 */
+	public List<DetalleFactura> confGetDetalle(Boolean condicion) throws Exception{
+		
 		if(condicion == true) facturas = new FacturaDAO().getPedidoFacturados();
 		else if (condicion == false) facturas = new FacturaDAO().getPedidoPendientes();
 		else facturas = new FacturaDAO().getPedidos();
@@ -134,7 +261,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 	
 	@Override
 	//Guarda y Permite modificarel pedido
-	public void guardar(List<DetalleFactura> detalleFacturas) throws IOException {
+	public void guardar(List<DetalleFactura> detalleFacturas) throws Exception {
 		// TODO Auto-generated method stub
 		
 		List<DetalleFactura> detalleFacturasAux = getDetalles();
@@ -146,7 +273,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 	}
 
 	@Override
-	public void eliminar(DetalleFactura detalleFactura) throws IOException {
+	public void eliminar(DetalleFactura detalleFactura) throws Exception {
 		// TODO Auto-generated method stub
 		List<DetalleFactura> detalleFacturas = getDetallePedidos();
 		for(DetalleFactura detalleFactura1 :detalleFacturas)
@@ -163,7 +290,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 	}
 
 	@Override
-	public DetalleFactura getDetalleFactura(Integer idFactura,Integer idProducto) throws NumberFormatException, IOException {
+	public DetalleFactura getDetalleFactura(Integer idFactura,Integer idProducto) throws Exception{
 		// TODO Auto-generated method stub
 		List<DetalleFactura> detalleFacturas = getDetalles();
 		for(DetalleFactura detalleFactura1 :detalleFacturas)
@@ -191,7 +318,8 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		}
 		fw.close();
 	}
-	
+
+	 * */	
 /*Estructura
  * idFactura:1
 idProducto:1

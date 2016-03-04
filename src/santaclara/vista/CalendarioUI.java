@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.vista;
 
 import javax.swing.JButton;
@@ -386,7 +394,7 @@ public class CalendarioUI extends JPanel{
 		
 		btnNuevo_1 = new JButton("Activar.");
 		btnNuevo_1.setBounds(531, 9, 129, 21);
-		btnNuevo_1.setIcon(new ImageIcon("/home/leo/git/santaclara/img/calendario/9.png"));
+		btnNuevo_1.setIcon(new ImageIcon("img/calendario/9.png"));
 		btnNuevo_1.setForeground(Color.WHITE);
 		btnNuevo_1.setBackground(Color.DARK_GRAY);
 		pnlConsulta.add(btnNuevo_1);

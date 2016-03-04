@@ -1,6 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +19,7 @@ public class ServicioCapacidad {
 	private CapacidadDAO capacidadDAO = new CapacidadDAO();
 	private List<Capacidad> capacidades = new ArrayList<Capacidad>();
 		
-	public List<Capacidad> getCapacidades() throws NumberFormatException, IOException{
+	public List<Capacidad> getCapacidades() throws Exception{
 		// TODO Auto-generated method stub
 		
 		return capacidadDAO.getCapacidades();
@@ -27,12 +34,12 @@ public class ServicioCapacidad {
 		this.capacidadDAO = capacidadDAO;
 	}
 
-	public Capacidad buscar(Integer id) throws IOException {
+	public Capacidad buscar(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		return capacidadDAO.getCapacidad(id);
 	}
 
-	public String guardar(Capacidad capacidad) throws IOException {
+	public String guardar(Capacidad capacidad) throws Exception {
 		// TODO Auto-generated method stub
 		
 		capacidades = capacidadDAO.getCapacidades();
@@ -52,11 +59,11 @@ public class ServicioCapacidad {
 		
 	}
 	
-	public Capacidad getCapacidad(Integer id) throws IOException{
+	public Capacidad getCapacidad(Integer id) throws Exception{
 		return capacidadDAO.getCapacidad(id);
 	}
 	
-	public void eliminar(Capacidad presentacion) throws IOException{
+	public void eliminar(Capacidad presentacion) throws Exception{
 		capacidadDAO.eliminar(presentacion);
 	}
 	

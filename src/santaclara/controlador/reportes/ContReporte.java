@@ -1,8 +1,15 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador.reportes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +42,7 @@ public class ContReporte extends ContGeneral implements IContGeneral {
 		return null;
 	}
 
-	public ContReporte(ContPrincipal contPrincipal) throws NumberFormatException, IOException {
+	public ContReporte(ContPrincipal contPrincipal) throws Exception{
 		super();
 		// TODO Auto-generated constructor stub
 		//se prepara para dibujar la vista en el panel principal

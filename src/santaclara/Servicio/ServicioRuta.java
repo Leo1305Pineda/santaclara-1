@@ -1,8 +1,14 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import santaclara.dao.impl.RutaDAO;
@@ -15,39 +21,33 @@ public class ServicioRuta {
 	private RutaDAO rutaDAO = new RutaDAO();
 	private ZonaDAO zonaDAO = new ZonaDAO();
 	
-	public List<Ruta> getRutas() throws FileNotFoundException{
+	public List<Ruta> getRutas() throws Exception{
 		return rutaDAO.getRutas();
 	}
 	
-	public List<Zona> getZonas() throws IOException{
+	public List<Zona> getZonas() throws Exception{
 		return zonaDAO.getZonas();
 	}
 	
-	public Boolean guardar(Ruta ruta) throws IOException {
+	public void guardar(Ruta ruta) throws Exception {
 		// TODO Auto-generated method stub
-		// if el es nuevo que no este otro con el mismo nombre 
-		if (!this.rutaDAO.getRuta(ruta))//mientras que el nombre no se repita 
-		{
 			rutaDAO.guardar(ruta);
-			return true;//Guardo 
-		}
-		return false;//no Guardo
 	}
 	
-	public Ruta buscar(int id) throws IOException{
+	public Ruta buscar(int id) throws Exception{
 		
 		return rutaDAO.getRuta(id);
 	}
 	
-	public void eliminar (Ruta ruta)throws IOException{
+	public void eliminar (Ruta ruta)throws Exception{
 		rutaDAO.eliminar(ruta);
 	}
 	
-	public void modificar (Ruta ruta) throws IOException{
+	public void modificar (Ruta ruta) throws Exception{
 		rutaDAO.guardar(ruta);
 	}
 
-	public List<Ruta> getRutas(Zona zona) throws FileNotFoundException {
+	public List<Ruta> getRutas(Zona zona) throws Exception {
 		// TODO Auto-generated method stub
 		return rutaDAO.getRutas(zona);
 	}

@@ -1,18 +1,79 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
 import santaclara.dao.IZonaDAO; 
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Zona;
 
 public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
 
+	@Override
+	public List<Zona> getZonas() throws Exception {
+		// TODO Auto-generated method stub
+		List<Zona> zonas = new ArrayList<Zona>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id,descripcion FROM zonas Order by id;"); 
+		
+		if(rSet==null) return null;
+		
+			while(rSet.next())zonas.add(
+					new Zona(rSet.getInt("id"),rSet.getString("descripcion"))); 
+		return zonas;
+	}
+	
+	@Override
+	public void guardar(Zona zona) throws Exception {
+		// TODO Auto-generated method stub
+		if (zona.getId()==null){
+			new PostgreSql().ejecutar( 
+					"INSERT INTO zonas(descripcion) "
+					+ "VALUES ("
+					+"'" +zona.getDescripcion()+"'"
+							+ ");");	
+		}
+		else{
+			new PostgreSql().ejecutar(
+					"UPDATE zonas SET"
+					+" descripcion ='" +zona.getDescripcion() +"' "
+					+" WHERE    id = " +zona.getId()+";");
+		}
+	}
+
+	@Override
+	public void eliminar(Zona zona) throws Exception {
+		// TODO Auto-generated method stub
+		if(zona!=null) new PostgreSql().ejecutar(
+								"DELETE FROM zonas "
+								+"WHERE id = "+zona.getId() +" ;");
+	}
+
+	@Override
+	public Zona getZona(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id,descripcion FROM zonas "
+				+ "WHERE id ="+id+" ;");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		return new Zona(rSet.getInt("id"),rSet.getString("descripcion"));
+		
+	}
+
+	/**	
 	private String ruta = "archivos/zonas.txt";
 	
 	@Override
@@ -110,5 +171,4 @@ public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
  * id:0
 descripcion:centro
 */ 
-	
 }

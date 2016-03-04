@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
@@ -6,7 +14,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -27,10 +34,10 @@ import santaclara.vista.ZonasUI;
 
 public class ContZonas extends ContGeneral implements IContGeneral{
 	
-	private ServicioZona servicioZona;
-	private ZonasUI vista;
-	private List<Zona> Zonas = new ServicioZona().getZonas();
-	private Zona Zona = new Zona();
+	private ServicioZona servicioZona = new ServicioZona();
+	private List<Zona> Zonas = servicioZona.getZonas();
+	private ZonasUI vista ;
+	private Zona zona = new Zona();
 	
 	public ContZonas(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -53,9 +60,8 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				cargarZona(new Zona());
 				vista.getTable().clearSelection();
-				Zona = new Zona();
-				cargarZona(Zona);
 			}
 		};
 	}
@@ -67,24 +73,19 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub 
-				
-				if (vista.getTxtNombre().getText().equals("")) JOptionPane.showMessageDialog(vista,"Campos Vacios: Nombre Material");
-					else
-						{
-							try {
-									Zona.setDescripcion(vista.getTxtNombre().getText().toString());
-									
-									JOptionPane.showMessageDialog(vista,servicioZona.guardar(Zona));
-									Zonas = servicioZona.getZonas();
-									
-									activarBinding(servicioZona.getZonas());
-									
-								} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								JOptionPane.showConfirmDialog(null,e1.getMessage());
-								e1.printStackTrace();
-								}
-						}
+				try {
+					zona = new Zona(null,vista.getTxtNombre().getText());
+					if (zona.getDescripcion().equals(""))throw new Exception("Campos Vacios: Nombre Material");	
+					
+					servicioZona.guardar(zona); 	
+					activarBinding(servicioZona.getZonas());
+					cargarZona(new Zona());
+					JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						JOptionPane.showMessageDialog(vista,e.getMessage());
+					}	
 			}
 		};
 	}
@@ -105,20 +106,10 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 				else 
 				{
 					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					Zona = new Zona();
-					cargarZona(Zona);
+					cargarZona(new Zona());
 				}
 			}
 		};
-	}
-
-	public ServicioZona getServicioZonas() {
-		return servicioZona;
-	}
-
-	public void setServicioZonas(
-			ServicioZona servicioPresentaciones) {
-		this.servicioZona = servicioPresentaciones;
 	}
 
 	public void setVista(ZonasUI vista) {
@@ -128,7 +119,6 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 	public ActionListener atras() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -157,14 +147,14 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-						Zona = Zonas.get(vista.getTable().getSelectedRow());
+						zona = Zonas.get(vista.getTable().getSelectedRow());
 						ServicioRuta ServicioRuta = new ServicioRuta();
 						
 						List<Ruta> rutas = ServicioRuta.getRutas();
 						Boolean enc = new Boolean(false);
 						for(Ruta ruta: rutas)
 						{
-							if(ruta.getZona().getId().equals(Zona.getId()))
+							if(ruta.getZona().getId().equals(zona.getId()))
 								{
 									enc=true;
 									break;
@@ -172,16 +162,15 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 						}
 						if(enc==false)
 						{
-							servicioZona.eliminar(Zona);
-							Zona = new Zona();
-							Zonas = servicioZona.getZonas();
-							activarBinding(Zonas);
+							servicioZona.eliminar(zona);
+							cargarZona(new Zona());
+							activarBinding(servicioZona.getZonas());
 							JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 						}
 						else JOptionPane.showMessageDialog(vista,"Operacion Fallida\n"+
 								" Objeto Existente en otra Clase? \n Elimine la relacion Exixtente en: Producto");
 						
-				} catch (IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -191,7 +180,8 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Zona> Zonas) {
 		// TODO Auto-generated method stub
-		vista.remove(vista.getPnZona());
+		this.Zonas = Zonas;
+	
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
 		vista.getScrollPanel().setViewportView(vista.getTable());	
@@ -206,9 +196,7 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 
 	    vista.getTable().addKeyListener(mostrarZona_keypress());
 		vista.getTable().addMouseListener(mostrarZona());
- 
-		vista.remove(vista.getPnZona());
-		vista.repaint();
+
 	}
 	
 	public MouseAdapter mostrarZona() {
@@ -218,8 +206,7 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			public void mouseClicked(MouseEvent evento) {
 				if (evento.getClickCount()==1)
 				{
-					Zona = Zonas.get(vista.getTable().getSelectedRow());
-					cargarZona(Zona);
+					cargarZona(Zonas.get(vista.getTable().getSelectedRow()));
 				}
 			}
 		};
@@ -247,14 +234,15 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 		};
 	}  
 
-	public void cargarZona(Zona presentacion) {
+	public void cargarZona(Zona zona) {
 		// TODO Auto-generated method stub	
-		vista.remove(vista.getPnZona());
-		vista.dibujarPanelZonas();;
+		this.zona = zona;
+		vista.getTxtNombre().setText("");
 		
-		if (vista.getTable().getSelectedRow() >= 0 )
+		if (vista.getTable().getSelectedRow() >= 0 && zona!=null)
 		{
-			vista.getTxtNombre().setText(presentacion.getDescripcion());	
+			vista.getTxtNombre().setText(zona.getDescripcion());	
 		}
+		vista.getPnZona().setVisible(true);
 	}
 }

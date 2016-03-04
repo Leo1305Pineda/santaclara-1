@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 import java.awt.BorderLayout;
@@ -7,7 +15,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -30,9 +37,10 @@ import santaclara.vista.RutasUI;
 public class ContRutas extends ContGeneral implements IContGeneral {
 	
 	private RutasUI vista;
-	private List<Ruta> rutas = new ServicioRuta().getRutas();
-	private List<Zona> zonas = new ServicioZona().getZonas();
 	private ServicioRuta servicioRuta = new ServicioRuta();
+	private List<Ruta> rutas = servicioRuta.getRutas();
+	private List<Zona> zonas = new ServicioZona().getZonas();
+	
 	private Ruta ruta = new Ruta();
 	
 	public ContRutas(ContPrincipal contPrincipal) throws Exception {
@@ -82,11 +90,10 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 					try {						
 						servicioRuta.eliminar(rutas.get(vista.getTable().getSelectedRow()));
 						rutas = servicioRuta.getRutas();
-						ruta = new Ruta();
 						activarBinding(servicioRuta.getRutas());
+						cargarRuta(new Ruta());
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-		
-					} catch (IOException e1) {
+					} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 					}
@@ -106,36 +113,30 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String msg="";
-				if (vista.getTxtId().getText().equals("")) ruta.setId(null); 
-					else ruta.setId(new Integer(vista.getTxtId().getText().toString()));
+				try {
 				
-				if (vista.getTxtNombre().getText().equals("")) msg=" Nombre, ";
-				else ruta.setNombre(vista.getTxtNombre().getText());
-				
-				ruta.setZona((Zona)vista.getCmbZona().getSelectedItem());
-				
-				if (msg!="") JOptionPane.showMessageDialog(vista,"Campos Vacios: "+msg);
-				else
-				{
-					try {
-							if (!servicioRuta.guardar(ruta))
-							{
-								JOptionPane.showMessageDialog(vista,"Nombre de la Ruta Existente");
-							}
-							else
-								{
-									activarBinding(servicioRuta.getRutas());   
-									JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-								}
-							vista.remove(vista.getPanelRuta());
+					String msg="";
+					if (vista.getTxtId().getText().equals("")) ruta.setId(null); 
+						else ruta.setId(new Integer(vista.getTxtId().getText().toString()));
 					
-						} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						JOptionPane.showConfirmDialog(null,e1.getMessage());
-						e1.printStackTrace();
-						}
-				}
+					if (vista.getTxtNombre().getText().equals("")) msg=" Nombre, ";
+					else ruta.setNombre(vista.getTxtNombre().getText());
+					
+					ruta.setZona((Zona)vista.getCmbZona().getSelectedItem());
+					
+					if (msg!="") JOptionPane.showMessageDialog(vista,"Campos Vacios: "+msg);
+					else
+					{
+						servicioRuta.guardar(ruta);
+						activarBinding( servicioRuta.getRutas());
+						cargarRuta(new Ruta());
+						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+					}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showConfirmDialog(null,e1.getMessage());
+					e1.printStackTrace();
+					}
 			}
 		};
 	}
@@ -147,9 +148,8 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Ruta ruta = new Ruta(); 
-				cargarRuta(ruta);
 				vista.getTable().clearSelection();
+				cargarRuta(new Ruta());
 			}
 		};
 	}
@@ -250,27 +250,22 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 	}
 	
 	public void cargarRuta(Ruta ruta) {
-		// TODO Auto-generated method stub	
-		
-		if (vista.getTable().getSelectedRow() >= 0 )
-		{
-			vista.getTxtId().setText("");
-			vista.getTxtNombre().setText("");
-			if(ruta.getId() != null)
-			{
-				vista.getTxtId().setText(ruta.getId().toString());
-			}
-			vista.getTxtNombre().setText(ruta.getNombre());
-			setSelectedValue(vista.getCmbZona(), ruta.getId());
-			
-			vista.add(vista.getPanelRuta(),BorderLayout.SOUTH);
-			vista.getBtnCancelar().setVisible(false);
+		// TODO Auto-generated method stub
+		vista.add(vista.getPanelRuta(),BorderLayout.SOUTH);
+		vista.getBtnCancelar().setVisible(false);
+		this.ruta = ruta;
+		vista.getTxtNombre().setText("");
+		if (vista.getTable().getSelectedRow() >= 0 && this.ruta != null)
+		{	
+			setSelectedValue(vista.getCmbZona(), this.ruta.getZona().getId());
+			vista.getTxtNombre().setText(this.ruta.getNombre());
 		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Ruta> rutas) {
 		// TODO Auto-generated method stub
+		this.rutas = rutas;
 		
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());

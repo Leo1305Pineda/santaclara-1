@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
 import santaclara.dao.impl.ConcesionarioDAO;
@@ -26,7 +34,6 @@ public class ServicioIniciarSesion {
 		}
 		if (usuario.getContrasena().equals(contrasena))
 		{
-
 			//cargar elTipo de USuario 
 			Vendedor vendedor = vendedorDAO.getVendedor(usuario.getId());
 			if(vendedor != null)

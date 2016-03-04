@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.modelo;
 
 public class DetalleFactura {
@@ -16,17 +24,22 @@ public class DetalleFactura {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public DetalleFactura(EmpaqueProducto producto,Integer cantidad, Double precio, Factura factura,
-			Double iva, Double total) {
+	
+	
+	public DetalleFactura(Factura factura, EmpaqueProducto empaqueProducto,
+			Integer cantidad, Double precio, Double descuento, Double iva, 
+			Double total) {
 		super();
-		this.empaqueProducto = producto;
+		this.factura = factura;
+		this.empaqueProducto = empaqueProducto;
 		this.cantidad = cantidad;
 		this.precio = precio;
-		this.factura = factura;
-		this.iva = iva;
+		this.descuento = descuento;
 		this.total = total;
+		this.iva = iva;
 	}
-	
+
+
 	public Integer getCantidad() {
 		return cantidad;
 	}

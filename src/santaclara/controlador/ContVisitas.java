@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 import java.awt.Color;
@@ -10,8 +18,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -203,10 +209,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 							vista.getComboUsuario().getSelectedItem().getClass().getName().equals("santaclara.modelo.Concesionario"))
 						activarBinding(new ServicioVisita().ConsultaConcesionario((Concesionario)vista.getComboUsuario().getSelectedItem()));
 					else {}//ConsultaConcesionario
-				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -235,7 +238,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 				for(Concesionario concesionario : concesionarios){
 					usuarios.add((Usuario)concesionario);
 				}
-			} catch (NumberFormatException | IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -253,7 +256,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 				for(JefeVenta jefeVenta : jefeVentas){
 					usuarios.add((Usuario)jefeVenta);
 				}
-			} catch (NumberFormatException | IOException e) {
+			} catch (Exception e) {
 			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -288,68 +291,53 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 					boolean arg2, boolean arg3, int row, int column) {
 				// TODO Auto-generated method stub
 				JPanel celda = new JPanel();
-				JLabel label = new JLabel();	
-				
+				JLabel label = new JLabel();
+				try
+				{
 				if(value ==null) label.setText("");
-				else label.setText(value.toString());
+				else label.setText(value.toString());				
 				
 				for(int c=0;c<vista.getTabla().getColumnCount() ;c++)
 				{  
 					String campo = new String(vista.getTabla().getColumnName(c));
 					switch(campo){ 
-						case "Fecha":{
-							try {
-								if(column==c && label.getText() != "")
-								{
-									Date fecha = new Date();
-									SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-									fecha = sdf.parse(label.getText());
-									
-									switch (fecha.getDay()) {
-									case 0:label.setText("Dom. "+label.getText());				
-										break;
-									case 1:label.setText("Lun. "+label.getText());				
-										break;
-									case 2:label.setText("Mar. "+label.getText());				
-										break;
-									case 3:label.setText(";Mie. "+label.getText());				
-										break;
-									case 4:label.setText("Jue. "+label.getText());				
-										break;
-									case 5:label.setText("Vie. "+label.getText());				
-										break;
-									case 6:label.setText("Sab. "+label.getText());				
-										break;
-
-									default:label.setText("");
-										break;
-									}
-
-								}								
-								if (vista.getTabla().getValueAt(row,c).equals(""))celda.setBackground(Color.lightGray);
-								else celda.setBackground(Color.cyan);
+					case "Fecha":{
+						if(column==c && label.getText() != "")
+						{
+							Date fecha = new Date();
+							SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+							fecha = sdf.parse(label.getText());
 								
-								if(label.getText().equals("")&& column == c)  
-								{
-									celda.setLayout(null);
-									vista.getBoton().setIcon(new ImageIcon("img/gestion/mas.png"));
-									vista.getBoton().setBackground(Color.lightGray);
-									vista.getBoton().setFont(new Font("Dialog", Font.BOLD, 10));
-									vista.getBoton().setForeground(Color.green);
-									vista.getBoton().setBounds(2, 0, 20, 20);
-									celda.add(vista.getBoton());
-								}
-								else
-									{
-										celda.add(label);
-										celda.setLayout(new GridLayout(1, 0, 0, 0));
-									}
-							} catch (ParseException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+							switch (fecha.getDay()) {
+							case 0:label.setText("Dom. "+label.getText());	break;
+							case 1:label.setText("Lun. "+label.getText());	break;
+							case 2:label.setText("Mar. "+label.getText());	break;
+							case 3:label.setText(";Mie. "+label.getText());	break;
+							case 4:label.setText("Jue. "+label.getText());	break;
+							case 5:label.setText("Vie. "+label.getText());	break;
+							case 6:label.setText("Sab. "+label.getText());	break;
+							default:label.setText("");	break;
 							}
+						}								
+						if (vista.getTabla().getValueAt(row,c).equals(""))celda.setBackground(Color.lightGray);
+						else celda.setBackground(Color.cyan);
+							
+						if(label.getText().equals("")&& column == c)  
+						{
+							celda.setLayout(null);
+							vista.getBoton().setIcon(new ImageIcon("img/gestion/mas.png"));
+							vista.getBoton().setBackground(Color.lightGray);
+							vista.getBoton().setFont(new Font("Dialog", Font.BOLD, 10));
+							vista.getBoton().setForeground(Color.green);
+							vista.getBoton().setBounds(2, 0, 20, 20);
+							celda.add(vista.getBoton());
+						}
+						else
+						{
+							celda.add(label);
+							celda.setLayout(new GridLayout(1, 0, 0, 0));
+						}
 						}break;
-						
 						case "Estado":{
 							if(label.getText().equals("") && column == c)celda.setBackground(Color.lightGray);
 							else if (label.getText().equals("Hecha") && column == c)celda.setBackground(Color.yellow);
@@ -357,27 +345,23 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 							else ;
 						}break;
 						case "Cliente":{
-							try {
-								if(column == c)
+							if(column == c)
+							{
+								DomicilioComercio domicilioComercio = new ServicioDomicilioComercio().buscar(new Integer(label.getText()));
+								if(domicilioComercio != null)
 								{
-									DomicilioComercio domicilioComercio = new ServicioDomicilioComercio().buscar(new Integer(label.getText()));
-									if(domicilioComercio != null)
-									{
-										if(domicilioComercio.getTipo().equals("D"))label.setText("Domicilio");
-										else label.setText("Comencio");
-									}
-									else if ((new ServicioSalp().buscar(new Integer(label.getText()))!=null)) label.setText("Salp");
-									else label.setText("");
+									if(domicilioComercio.getTipo().equals("D"))label.setText("Domicilio");
+									else label.setText("Comencio");
 								}
-							} catch (NumberFormatException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+								else if ((new ServicioSalp().buscar(new Integer(label.getText()))!=null)) label.setText("Salp");
+								else label.setText("");
+								}
 						}break;
 					}
+				}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				return celda;
 			}
@@ -454,7 +438,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 				try {
 						CargarInfoCliente(vista.getTabla().getValueAt(fila, columna).toString());
 						CargarInfoUsuario();
-					} catch (IOException e1) {
+					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
@@ -517,7 +501,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 		frame.setVisible(true);	
 	}
 	
-	void CargarInfoCliente(String rif) throws FileNotFoundException{
+	void CargarInfoCliente(String rif) throws Exception{
 		Cliente cliente = new ServicioCliente().getCliente(rif);
 		vista.getLblrif().setText(cliente.getRif());
 		vista.getLblRazonSocial().setText(cliente.getRazonsocial());
@@ -527,7 +511,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 		
 	} 
 	
-	void CargarInfoUsuario() throws IOException{
+	void CargarInfoUsuario() throws Exception{
 		Usuario usuario = (Usuario)vista.getComboUsuario().getSelectedItem();
 		if (vista.getComboTipoUser().getSelectedItem().equals("JefeVenta"))
 		{
@@ -579,7 +563,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 		};
 	}
 
-	public ActionListener ActivarEliminar() throws IOException {
+	public ActionListener ActivarEliminar() throws Exception {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
 			
@@ -607,7 +591,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 				
 						}
 						else 	JOptionPane.showMessageDialog(vista,"Visita no Existente ");
-						} catch (IOException e1) {
+						} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
@@ -652,7 +636,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 	                			vista.getChckbxEstado().setSelected(false);
 	                			
 	                		}
-							} catch (NumberFormatException | FileNotFoundException e1) {
+							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
