@@ -1,22 +1,126 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import santaclara.dao.IProductoDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Producto;
 
 public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
-
-	private String ruta = "archivos/productos.txt";
 	
 	@Override
-	public List<Producto> getProductos() throws NumberFormatException, IOException {
+	public List<Producto> getProductos() throws Exception {
+		// TODO Auto-generated method stub
+		List<Producto> productos = new ArrayList<Producto>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id, nombre, precio, descuento, estadoiva, "
+				+ "idcapacidad, idpresentacion,idsabor FROM "
+				+ "productos Order by id;"); 
+		
+		if(rSet==null) return null;
+		
+			while(rSet.next())
+			{
+				Boolean estadoiva = false;
+				if(rSet.getString("estadoiva").equals("gravado")) estadoiva = true;
+				Producto producto = new Producto(
+						rSet.getInt("id"),
+						rSet.getString("nombre"),
+						rSet.getDouble("precio"),
+						rSet.getDouble("descuento"),
+						estadoiva,
+						new CapacidadDAO().getCapacidad(rSet.getInt("idcapacidad")),
+						new PresentacionDAO().getPresentacion(rSet.getInt("idpresentacion")),
+						new SaborDAO().getSabor(rSet.getInt("idsabor")));
+			productos.add(producto);
+			}
+		return productos;
+	}
+	
+	@Override
+	public void guardar(Producto producto) throws Exception {
+		// TODO Auto-generated method stub
+		if (producto.getId()==null){
+			new PostgreSql().ejecutar( 
+					"INSERT INTO productos(nombre, precio, descuento, estadoiva, "
+				+ "idcapacidad, idpresentacion,idsabor) "
+					+ "VALUES ("
+					+"'" +producto.getNombre()					+"', "
+					+" " +producto.getPrecio()					+" , "
+					+" " +producto.getDescuento()				+" , "
+					+"'" +producto.getIva2Str()					+"', "
+					+" " +producto.getCapacidad().getId()		+" , "
+					+" " +producto.getPresentacion().getId()	+" , "
+					+" " +producto.getSabor().getId()			+"  "
+							+ ");");	
+		}
+		else{
+			new PostgreSql().ejecutar(
+					" UPDATE productos SET  "
+					+" nombre 			= '" +producto.getNombre() 				+"', "
+					+" precio 			=  " +producto.getPrecio()				+" , "
+					+" descuento 		=  " +producto.getDescuento()			+" , "
+					+" estadoiva 		= '" +producto.getIva2Str() 			+"', "
+					+" idcapacidad 		=  " +producto.getCapacidad().getId()	+" , "
+					+" idpresentacion 	=  " +producto.getPresentacion().getId()+" , "
+					+" idsabor 			=  " +producto.getSabor().getId() 		+"   "
+					+" WHERE    id = " +producto.getId()						+"   "
+					+ ";");
+		}
+	}
+
+	@Override
+	public void eliminar(Producto producto) throws Exception {
+		// TODO Auto-generated method stub
+		if(producto!=null) new PostgreSql().ejecutar(
+								" DELETE FROM productos "
+								+" WHERE id = "+producto.getId() +" ;");
+	}
+
+	@Override
+	public Producto getProducto(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id, nombre, precio, descuento, estadoiva, "
+				+ "idcapacidad, idpresentacion,idsabor FROM productos "
+				+ "WHERE id ="+id+" ;");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		Boolean estadoiva = false;
+		if(rSet.getString("estadoiva").equals("gravado")) estadoiva = true;
+		return new Producto(
+				rSet.getInt("id"),
+				rSet.getString("nombre"),
+				rSet.getDouble("precio"),
+				rSet.getDouble("descuento"),
+				estadoiva.booleanValue(),
+				new CapacidadDAO().getCapacidad(rSet.getInt("idcapacidad")),
+				new PresentacionDAO().getPresentacion(rSet.getInt("idpresentacion")),
+				new SaborDAO().getSabor(rSet.getInt("idsabor")));
+		
+	}
+
+	
+}
+
+	/*private String ruta = "archivos/productos.txt";
+	
+	@Override
+	public List<Producto> getProductos() throws Exception {
 		// TODO Auto-generated method stub 
 		List<Producto> productos = new ArrayList<Producto>();
 		File file = new File(ruta);
@@ -58,7 +162,7 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 	}
 
 	@Override
-	public void	guardar(Producto producto) throws IOException {
+	public void	guardar(Producto producto) throws Exception {
 		// TODO Auto-generated method stub
 		List<Producto> productos = getProductos();
 		//buscar codigo el ultimo codigo Asignado 
@@ -97,7 +201,7 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 	}
 
 	@Override
-	public void eliminar(Producto producto) throws IOException {
+	public void eliminar(Producto producto) throws Exception {
 		// TODO Auto-generated method stub
 		List<Producto> productos = getProductos();
 		for(Producto producto1 :productos)
@@ -113,7 +217,7 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 	}
 
 	@Override
-	public Producto getProducto(Integer id) throws NumberFormatException, IOException {
+	public Producto getProducto(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		List<Producto> productos = getProductos();
 		for(Producto producto1 :productos)
@@ -136,7 +240,7 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 		super();  
 	}
 	
-	public void guardarTodo(List<Producto> productos ) throws IOException
+	public void guardarTodo(List<Producto> productos ) throws Exception
 	{
 		FileWriter fw = new FileWriter(ruta);
 		for(Producto producto :productos)
@@ -176,5 +280,5 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 
   * */
 	
-} 
+
 

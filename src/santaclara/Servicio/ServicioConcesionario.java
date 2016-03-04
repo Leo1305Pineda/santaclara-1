@@ -1,6 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +19,7 @@ public class ServicioConcesionario {
 	private ConcesionarioDAO concesionarioDAO = new ConcesionarioDAO();
 	private List<Concesionario> concesionarios = new ArrayList<Concesionario>();
 		
-	public List<Concesionario> getConcecionarios() throws NumberFormatException, IOException{
+	public List<Concesionario> getConcecionarios() throws Exception{
 		// TODO Auto-generated method stub
 		
 		return concesionarioDAO.getConcecionarios();
@@ -27,7 +34,7 @@ public class ServicioConcesionario {
 		this.concesionarioDAO = concesionarioDAO;
 	}
 
-	public Concesionario buscar(Integer id) throws IOException {
+	public Concesionario buscar(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		return concesionarioDAO.getConcesionario(id);
 	}
@@ -98,20 +105,20 @@ public class ServicioConcesionario {
 			}
 		}
 	}
-	public Concesionario getConcesionario(Integer id) throws IOException{
+	public Concesionario getConcesionario(Integer id) throws Exception{
 		return concesionarioDAO.getConcesionario(id);
 	}
 	
-	public void eliminar(Concesionario concesionario) throws IOException{
+	public void eliminar(Concesionario concesionario) throws Exception{
 		concesionarioDAO.eliminar(concesionario);
 	}
 	
-	public Boolean  getUsuario(Integer id)throws IOException{
+	public Boolean  getUsuario(Integer id)throws Exception{
 		if  (concesionarioDAO.getConcesionario(id)!=null) return true;
 		return false;
 	}
 	
-	public List<Concesionario> getConcecionarios(Integer idRuta) throws NumberFormatException, IOException{
+	public List<Concesionario> getConcecionarios(Integer idRuta) throws Exception{
 		// TODO Auto-generated method stub
 		List<Concesionario> concesionariosAux = new ArrayList<Concesionario>();
 		for (Concesionario concesionario : getConcecionarios() )

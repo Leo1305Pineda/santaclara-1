@@ -3,8 +3,6 @@ package santaclara.modelo;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
@@ -17,14 +15,14 @@ import santaclara.modelo.Concesionario;
 public class TestConcesionarioDAO {
 
 	@Test
-	public void concesionariosTest() throws FileNotFoundException {
+	public void concesionariosTest() throws Exception {
 		IConcesionarioDAO concesionarioDAO = new ConcesionarioDAO();
 		assertNotNull(concesionarioDAO);
 		assertEquals(3,concesionarioDAO.getConcecionarios().size());
 	}
 
 	@Test
-	public void addRemoveConcesionarioTest() throws IOException {
+	public void addRemoveConcesionarioTest() throws Exception {
 		IConcesionarioDAO concesionarioDAO = new ConcesionarioDAO();
 		List<Concesionario> concesionarios = concesionarioDAO.getConcecionarios();
 		

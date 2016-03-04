@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
@@ -216,7 +224,7 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 						ActivarAtras(productoAlmacen);
 					}
 					else ActivarAtras(null);
-				} catch (NumberFormatException | IOException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

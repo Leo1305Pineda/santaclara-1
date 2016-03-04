@@ -2,8 +2,6 @@ package santaclara.reporte;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,14 +15,14 @@ public class TestReportMontoFacturadoAlmacen {
 	private ServicioFactura servicioFactura = new ServicioFactura();
 	
 	@Test
-	public void reporteTest() throws FileNotFoundException{
+	public void reporteTest() throws Exception{
 	
 		assertNotNull(servicioFactura);
 		assertEquals(2,servicioFactura.getFacturas().size());
 	}
 	
 	@Test
-	public void MontoFacturaTest() throws IOException {
+	public void MontoFacturaTest() throws Exception {
 		List<Factura> facturas= servicioFactura.getFacturas();
 		List<Factura> facturasAux = new ArrayList<Factura>();
 		Double monto = new Double(0);

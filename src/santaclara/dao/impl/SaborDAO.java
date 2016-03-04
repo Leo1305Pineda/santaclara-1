@@ -1,18 +1,81 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import santaclara.dao.ISaborDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Sabor;
 
 public class SaborDAO extends GenericoDAO implements ISaborDAO{
 	
+	@Override
+	public List<Sabor> getSabores() throws Exception {
+		// TODO Auto-generated method stub
+		List<Sabor> sabores = new ArrayList<Sabor>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id,sabor FROM sabores Order by id;"); 
+		
+		if(rSet==null) return null;
+		
+			while(rSet.next())sabores.add(
+					new Sabor (rSet.getInt("id"),rSet.getString("sabor"))); 
+		return sabores;
+	}
+	
+	@Override
+	public void guardar(Sabor sabor) throws Exception {
+		// TODO Auto-generated method stub
+		
+			if (sabor.getId()==null){
+				new PostgreSql().ejecutar( 
+						"INSERT INTO sabores(sabor) "
+						+ "VALUES ("
+						+"'" +sabor.getSabor()+"');");	
+			}
+			else{
+				new PostgreSql().ejecutar(
+						"UPDATE sabores SET     "
+						+" sabor ='" +sabor.getSabor() +"' "
+						+" WHERE    id = " +sabor.getId()+";");
+			}
+	}
+
+	@Override
+	public void eliminar(Sabor sabor) throws Exception {
+		// TODO Auto-generated method stub
+		if(sabor!=null) new PostgreSql().ejecutar(
+								"DELETE FROM sabores "
+								+"WHERE id = "+sabor.getId() +" ;");
+	}
+
+	@Override
+	public Sabor getSabor(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id,sabor FROM sabores "
+				+ "WHERE id ="+id+" ;");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		return new Sabor(rSet.getInt("id"),rSet.getString("sabor"));
+		
+	}
+}
+	
+	/*
 	private String ruta = "archivos/sabores.txt";
 
 	@Override
@@ -109,4 +172,4 @@ public class SaborDAO extends GenericoDAO implements ISaborDAO{
 
 	 * */
 
-}
+

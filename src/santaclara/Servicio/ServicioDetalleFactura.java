@@ -1,6 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,27 +18,27 @@ import santaclara.modelo.Factura;
 public class ServicioDetalleFactura {
  
 	//retorna todo el detalle factura facturado y en pedido
-	public List<DetalleFactura> getDetalles() throws NumberFormatException, IOException{
+	public List<DetalleFactura> getDetalles() throws Exception{
 		return new DetalleFacturaDAO().getDetalles();
 	}
 	//returna solo el detalle facturado
-	public List<DetalleFactura> getDetalleFacturas() throws NumberFormatException, IOException{
+	public List<DetalleFactura> getDetalleFacturas() throws Exception{
 		
 		return new DetalleFacturaDAO().getDetalleFacturados();
 	}
 	
-	public List<DetalleFactura> getDetallePendientes() throws NumberFormatException, IOException{
+	public List<DetalleFactura> getDetallePendientes() throws Exception{
 		
 		return new DetalleFacturaDAO().getDetallePendientes();
 	}
 	
-	public List<DetalleFactura> getDetallePedidos() throws NumberFormatException, IOException{
+	public List<DetalleFactura> getDetallePedidos() throws Exception{
 		
 		return new DetalleFacturaDAO().getDetallePedidos();
 	}
 	
  
-	public List<DetalleFactura> getDetalleFacturas(Factura factura) throws NumberFormatException, IOException {
+	public List<DetalleFactura> getDetalleFacturas(Factura factura) throws Exception{
 		// TODO Auto-generated method stub
 		List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();
 		for(DetalleFactura detalleFactura : getDetalleFacturas()){
@@ -43,11 +50,11 @@ public class ServicioDetalleFactura {
 	}
 	 
 	
-	public void guardar(List<DetalleFactura> detalle) throws IOException{
+	public void guardar(List<DetalleFactura> detalle) throws Exception{
 		new DetalleFacturaDAO().guardar(detalle);
 		}
 
-	public void eliminar(DetalleFactura detallePedido) throws IOException{
+	public void eliminar(DetalleFactura detallePedido) throws Exception{
 		new DetalleFacturaDAO().eliminar(detallePedido);
 	}
 	/*

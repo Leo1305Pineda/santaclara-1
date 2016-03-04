@@ -1,19 +1,115 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import santaclara.dao.ICamionDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Camion;
 
 public class CamionDAO  extends GenericoDAO implements ICamionDAO {
+	
+	@Override
+	public List<Camion> getCamiones() throws Exception {
+		// TODO Auto-generated method stub
+		List<Camion> camiones = new ArrayList<Camion>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				" SELECT id, placa, color, capacidad, modelo, marca, ano "
+				+" FROM camiones Order by id;"); 
+		
+		if(rSet==null) return null;
+		
+			while(rSet.next())camiones.add(
+					new Camion(
+							rSet.getInt("id"), 
+							rSet.getString("placa"), 
+							rSet.getString("color"),
+							rSet.getDouble("capacidad") , 
+							rSet.getString("modelo"), 
+							rSet.getString("marca"), 
+							rSet.getString("ano"))); 
+		return camiones;
+	}
+	
+	@Override
+	public void guardar(Camion camion) throws Exception {
+		// TODO Auto-generated method stub
+		try {
+			if (camion.getId()==null){
+				new PostgreSql().ejecutar(
+						" INSERT INTO camiones( placa, color, capacidad, modelo, marca, ano)   "
+						+ " VALUES("
+						+ " '"+ camion.getPlaca() 		+"', "
+						+ " '"+ camion.getColor() 		+"', "
+						+ "  "+ camion.getCapacidad() 	+" , "
+						+ " '"+ camion.getModelo() 		+"', "
+						+ " '"+ camion.getMarca() 		+"', "
+						+ " '"+ camion.getAno() 		+"'  "
+						+ ");");	
+			}
+			else{
+				new PostgreSql().ejecutar(
+						"UPDATE camiones SET"
+						+" placa 	= '" +camion.getPlaca() 	+"', "
+						+" color 	= '" +camion.getColor() 	+"', "
+						+" capacidad = " +camion.getCapacidad() +" , "
+						+" modelo 	= '" +camion.getModelo() 	+"', "
+						+" marca 	= '" +camion.getMarca() 	+"', "
+						+" ano 		= '" +camion.getAno() 		+"' "
+						+" WHERE id =  " +camion.getId()        +";");
+			}
 
-	private String ruta = "archivos/camiones.txt";
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		
+			}
+
+	@Override
+	public void eliminar(Camion camion) throws Exception {
+		// TODO Auto-generated method stub
+		if(camion!=null) new PostgreSql().ejecutar(
+								" DELETE FROM camiones "
+								+" WHERE id = "+camion.getId() +" ;");
+	}
+
+	@Override
+	public Camion getCamion(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				" SELECT id, placa, color, capacidad, modelo, marca, ano "
+				+" FROM camiones WHERE id ="+id+";");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		return new Camion(
+				rSet.getInt("id"), 
+				rSet.getString("placa"), 
+				rSet.getString("color"),
+				rSet.getDouble("capacidad") , 
+				rSet.getString("modelo"), 
+				rSet.getString("marca"), 
+				rSet.getString("ano"));
+	}
+	
+	/*
+	 
+	 private String ruta = "archivos/camiones.txt";
 	
 	@Override
 	public List<Camion> getCamiones() throws FileNotFoundException {
@@ -135,7 +231,11 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 			System.out.println("ano: "+camion1.getAno()+"\n");
 		}
 	}
-/*
+ 
+	 
+	 * */
+	
+	/*
  *Estructura
 id:11
 placa:koej22

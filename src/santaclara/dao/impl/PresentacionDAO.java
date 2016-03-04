@@ -1,19 +1,83 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import santaclara.dao.IPresentacionDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Presentacion;
 
 public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 	
-	private String ruta = "archivos/presentaciones.txt";
+	public List<Presentacion> getPresentaciones() throws Exception {
+		// TODO Auto-generated method stub
+		List<Presentacion> presentaciones = new ArrayList<Presentacion>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id,material FROM presentaciones Order by id;"); 
+		
+		if(rSet==null) return null;
+		
+			while(rSet.next())presentaciones.add(
+					new Presentacion(rSet.getInt("id"),rSet.getString("material"))); 
+		return presentaciones;
+	}
+	
+	@Override
+	public void guardar(Presentacion presentacion) throws Exception {
+		// TODO Auto-generated method stub
+		if (presentacion.getId()==null){
+			new PostgreSql().ejecutar( 
+					" INSERT INTO presentaciones(material) "
+					+ " VALUES ("
+					+"'" +presentacion.getMaterial()+"'"
+							+ ");");	
+		}
+		else{
+			new PostgreSql().ejecutar(
+					"UPDATE presentaciones SET"
+					+" material ='" +presentacion.getMaterial() +"' "
+					+" WHERE    id = " +presentacion.getId()+";");
+		}
+	}
+
+	@Override
+	public void eliminar(Presentacion presentacion) throws Exception {
+		// TODO Auto-generated method stub
+		if(presentacion!=null) new PostgreSql().ejecutar(
+								"DELETE FROM presentaciones "
+								+"WHERE id = "+presentacion.getId() +" ;");
+	}
+
+	@Override
+	public Presentacion getPresentacion(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT id,material FROM presentaciones "
+				+ "WHERE id ="+id+" ;");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		return new Presentacion(rSet.getInt("id"),rSet.getString("material"));
+		
+	}
+	
+
+	
+	
+	/*private String ruta = "archivos/presentaciones.txt";
 
 	@Override
 	public List<Presentacion> getPresentaciones() throws FileNotFoundException {
@@ -104,5 +168,5 @@ public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 			}
 		}
 		return null;
-	}
+	}*/
 }

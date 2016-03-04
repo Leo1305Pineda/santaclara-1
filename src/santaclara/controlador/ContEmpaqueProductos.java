@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
@@ -6,7 +14,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -22,6 +29,7 @@ import org.jdesktop.swingbinding.SwingBindings;
 
 import santaclara.Servicio.ServicioEmpaqueProducto;
 import santaclara.Servicio.ServicioProducto;
+import santaclara.dao.impl.EmpaqueProductoDAO;
 import santaclara.modelo.EmpaqueProducto;
 import santaclara.modelo.Producto;
 import santaclara.vista.EmpaqueProductosUI;
@@ -35,7 +43,6 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 	private List<EmpaqueProducto> empaqueProductos = new ServicioEmpaqueProducto().getEmpaqueProductos();
 	private EmpaqueProducto empaqueProducto;
 	private List<Producto> 		productos = new ServicioProducto().getProductos();
-
 	
 	public ContEmpaqueProductos(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -60,33 +67,23 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				// se va hacer las validaciones del controlador 
-
-				empaqueProducto = new EmpaqueProducto();
-				String msg="";
-				
-				if(vista.getTxtCantidad().getValue().equals(0))empaqueProducto.setCantidad(0);
-					else empaqueProducto.setCantidad((Integer) vista.getTxtCantidad().getValue());
-				
-				empaqueProducto.setProducto((Producto)vista.getCmbProducto().getSelectedItem());
-				
-				if (msg!="") JOptionPane.showMessageDialog(vista,"Campos Vacios: "+msg);
-					else
-						{
-							try {
-									JOptionPane.showMessageDialog(vista,servicioEmpaqueProducto.guardar(empaqueProducto));
-									// agregarlo a la lista
-									empaqueProductos.add(empaqueProducto);
-									activarBinding(servicioEmpaqueProducto.getEmpaqueProductos());
-									vista.getScrollPanel().setVisible(true);
+				// TODO Auto-generated method stub 
+				try {
+					
+					empaqueProducto = new EmpaqueProducto();
+					empaqueProducto.setCantidad((Integer) vista.getTxtCantidad().getValue());
+					empaqueProducto.setProducto((Producto)vista.getCmbProducto().getSelectedItem());
+					
+					if(new EmpaqueProductoDAO().getEmpaqueProducto(empaqueProducto)) throw new Exception("EL Producto y la cantidad ya existen ");
+					
+					servicioEmpaqueProducto.guardar(empaqueProducto);
+					activarBinding(servicioEmpaqueProducto.getEmpaqueProductos());
+					cargarEmpaqueProducto(new EmpaqueProducto());
 									
-								} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								JOptionPane.showConfirmDialog(null,e1.getMessage());
-								e1.printStackTrace();
-								}
-						}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showConfirmDialog(vista,e1.getMessage());
+				}
 			}
 		};
 	}
@@ -118,20 +115,17 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (vista.getTable().getSelectedRow()>=0)
-				{
-					try {
-						servicioEmpaqueProducto.eliminar(empaqueProductos.get(vista.getTable().getSelectedRow()));				
-						activarBinding(servicioEmpaqueProducto.getEmpaqueProductos());
-						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-					} catch (IOException e1) {
+				try {
+				if (vista.getTable().getSelectedRow()<0) throw new Exception("Seleccione el EmpaqueProducto ");
+			
+					servicioEmpaqueProducto.eliminar(empaqueProductos.get(vista.getTable().getSelectedRow()));				
+					activarBinding(servicioEmpaqueProducto.getEmpaqueProductos());
+					JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+					cargarEmpaqueProducto(new EmpaqueProducto());
+			
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					}
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(vista,"Seleccione el EmpaqueProducto ");
+					JOptionPane.showMessageDialog(vista,e1.getMessage());
 				}
 			}
 		};
@@ -146,8 +140,7 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 				// TODO Auto-generated method stub
 				
 					vista.getTable().clearSelection();
-					empaqueProducto = new EmpaqueProducto();
-					cargarEmpaqueProducto(empaqueProducto);
+					cargarEmpaqueProducto(new EmpaqueProducto());
 			}
 		};
 	}
@@ -214,7 +207,7 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 						ActivarAtras(empaqueProducto);
 					}
 					else 	ActivarAtras(null);
-				} catch (NumberFormatException | IOException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -223,15 +216,16 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void activarBinding(List<EmpaqueProducto> EmpaqueProductos) {
+	public void activarBinding(List<EmpaqueProducto> empaqueProductos) {
 		// TODO Auto-generated method stub
-		vista.remove(vista.getPanelEmpaqueProducto());
+		this.empaqueProductos = empaqueProductos;
+		
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
 		vista.getScrollPanel().setViewportView(vista.getTable());
 		
 		JTableBinding   binEmpaqueProductos = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,
-    			EmpaqueProductos,vista.getTable());
+    			empaqueProductos,vista.getTable());
 		BeanProperty idEmpaqueProducto  = BeanProperty.create("id");
 	    
 		BeanProperty nombreProducto = BeanProperty.create("producto.nombre");
@@ -298,6 +292,7 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 
 	public void cargarEmpaqueProducto(EmpaqueProducto empaqueProducto) {
 		// TODO Auto-generated method stub
+		this.empaqueProducto = empaqueProducto;
 		vista.remove(vista.getPanelEmpaqueProducto());
 		vista.dibujarPanelEmpaqueProducto();
 		cargarCmbProducto();

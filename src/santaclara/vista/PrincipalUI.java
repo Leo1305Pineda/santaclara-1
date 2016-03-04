@@ -1,9 +1,18 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.vista;
 
 import java.awt.EventQueue; 
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem; 
 import javax.swing.JMenuBar;
@@ -15,7 +24,8 @@ import santaclara.modelo.Usuario;
 import santaclara.vista.herramientas.VistaGenericaUI; 
 
 
-public class PrincipalUI {
+@SuppressWarnings("serial")
+public class PrincipalUI extends JPanel {
 
 	private JFrame frame;
 	private JMenuBar menuBar = new JMenuBar();
@@ -27,6 +37,7 @@ public class PrincipalUI {
 	private 	JMenu mnFacturacion;
 	private 	JMenu mnReportes;
 	private 	JMenu mnConsulta;
+	private 	JMenu mnBaseDato;
 	private 	JMenu mnSalir;
 	private 	JMenuItem mntCerrar;
 	
@@ -57,15 +68,21 @@ public class PrincipalUI {
 	private 	JMenuItem mntListCantRefrescoPresentCapacFacturadoZona;
 	private		JMenuItem mntListClienteZonaTipo;
 	private		JMenuItem mntMontoFacturadoMesZonaTipoPago;
+	
+	private 	JMenuItem mntPostgreSqlAjustes;
+	private 	JMenuItem mntPgAdmin3;
 
 	/**** codigo para la defensa  */
 	 
 	 private    JMenuItem mntReporte;
-	 private    JMenuItem mntConsulta;
+	 private    JMenuItem mntConsultadeMontoTotalporRefresco;
 	 
 	/**** fin */
 	
-	
+	/**** para la animacion con imagenes */
+	 
+	 private JLabel lblAnimacion;
+	 
 	/**
 	 * Launch the application.
 	 */
@@ -124,6 +141,9 @@ public class PrincipalUI {
 		
 		mnConsulta = new JMenu("Consulta");
 		menuBar.add(mnConsulta);
+		
+		mnBaseDato = new JMenu("Base de Dato");
+		menuBar.add(mnBaseDato);
 
 		/***************************** Botones para catalogo **********************************/
 		
@@ -293,13 +313,22 @@ public class PrincipalUI {
 		mnReportes.add(mntReporte);
 		mntReporte.addActionListener(controlador.activarMenu());
 		
-		mntConsulta = new JMenuItem("TuNombre"); 
-		mntConsulta.setIcon(new ImageIcon("img/gestion/consulta15.png"));
-		mnConsulta.add(mntConsulta);
-		mntConsulta.addActionListener(controlador.activarMenu());
+		mntConsultadeMontoTotalporRefresco = new JMenuItem("Consulta de Monto Total por Refresco"); 
+		mntConsultadeMontoTotalporRefresco.setIcon(new ImageIcon("img/gestion/consulta15.png"));
+		mnConsulta.add(mntConsultadeMontoTotalporRefresco);
+		mntConsultadeMontoTotalporRefresco.addActionListener(controlador.activarMenu());
 		
-	
+		mntPostgreSqlAjustes = new JMenuItem("Ajustes de Conexion");
+		mntPostgreSqlAjustes.setIcon(new ImageIcon("img/gestion/db.png"));
+		mntPostgreSqlAjustes.setToolTipText("Configuracion de la Base de Dato");
+		mnBaseDato.add(mntPostgreSqlAjustes);
+		mntPostgreSqlAjustes.addActionListener(controlador.activarMenu());
 		
+		mntPgAdmin3 = new JMenuItem("pgAdmin III");
+		mntPgAdmin3.setIcon(new ImageIcon("img/gestion/pgAdmin3.png"));
+		mntPgAdmin3.setToolTipText("pgAdmin III");
+		mnBaseDato.add(mntPgAdmin3);
+		mntPgAdmin3.addActionListener(controlador.activarMenu());
 	}
 	
 	public void dibujarMenu(Usuario usuario )
@@ -635,11 +664,54 @@ public class PrincipalUI {
 	}
 
 	public JMenuItem getMntConsulta() {
-		return mntConsulta;
+		return mntConsultadeMontoTotalporRefresco;
 	}
 
 	public void setMntConsulta(JMenuItem mntConsulta) {
-		this.mntConsulta = mntConsulta;
-	} 
+		this.mntConsultadeMontoTotalporRefresco = mntConsulta;
+	}
+
+	public JMenu getMnBaseDato() {
+		return mnBaseDato;
+	}
+
+	public void setMnBaseDato(JMenu mnBaseDato) {
+		this.mnBaseDato = mnBaseDato;
+	}
+
+	public JMenuItem getMntPostgreSqlAjustes() {
+		return mntPostgreSqlAjustes;
+	}
+
+	public void setMntPostgreSqlAjustes(JMenuItem mntPostgreSqlAjustes) {
+		this.mntPostgreSqlAjustes = mntPostgreSqlAjustes;
+	}
+
+	public JMenuItem getMntConsultadeMontoTotalporRefresco() {
+		return mntConsultadeMontoTotalporRefresco;
+	}
+
+	public void setMntConsultadeMontoTotalporRefresco(
+			JMenuItem mntConsultadeMontoTotalporRefresco) {
+		this.mntConsultadeMontoTotalporRefresco = mntConsultadeMontoTotalporRefresco;
+	}
+
+	public JMenuItem getMntPgAdmin3() {
+		return mntPgAdmin3;
+	}
+
+	public void setMntPgAdmin3(JMenuItem mntPgAdmin3) {
+		this.mntPgAdmin3 = mntPgAdmin3;
+	}
+
+	public JLabel getLblAnimacion() {
+		return lblAnimacion;
+	}
+
+	public void setLblAnimacion(JLabel lblAnimacion) {
+		this.lblAnimacion = lblAnimacion;
+	}
+	
+	
 	
 }

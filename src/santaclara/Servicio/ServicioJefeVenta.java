@@ -1,6 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +19,7 @@ public class ServicioJefeVenta {
 	private JefeVentaDAO jefeVentaDAO = new JefeVentaDAO();
 	private List<JefeVenta> jefeVentas = new ArrayList<JefeVenta>();
 		
-	public List<JefeVenta> getJefeVentas() throws NumberFormatException, IOException{
+	public List<JefeVenta> getJefeVentas() throws Exception{
 		// TODO Auto-generated method stub
 		
 		return jefeVentaDAO.getJefeVentas();
@@ -27,12 +34,12 @@ public class ServicioJefeVenta {
 		this.jefeVentaDAO = jefeVentaDAO;
 	}
 
-	public JefeVenta buscar(Integer id) throws IOException {
+	public JefeVenta buscar(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		return jefeVentaDAO.getJefeVenta(id);
 	}
 
-	public String guardar(JefeVenta jefeVenta) throws IOException {
+	public String guardar(JefeVenta jefeVenta) throws Exception {
 		// TODO Auto-generated method stub
 		
 		jefeVentas = jefeVentaDAO.getJefeVentas();  
@@ -65,25 +72,25 @@ public class ServicioJefeVenta {
 		
 	}
 	 
-	public JefeVenta buscar(String username) throws IOException {
+	public JefeVenta buscar(String username) throws Exception {
 		// TODO Auto-generated method stub
 		return jefeVentaDAO.getJefeVenta(username);
 	}
 
-	public JefeVenta buscarCedula(String cedula) throws IOException {
+	public JefeVenta buscarCedula(String cedula) throws Exception {
 		// TODO Auto-generated method stub
 		return jefeVentaDAO.getJefeVentaCedula(cedula);
 	}
 		 
-	public JefeVenta getJefeVenta(Integer id) throws IOException{
+	public JefeVenta getJefeVenta(Integer id) throws Exception{
 		return jefeVentaDAO.getJefeVenta(id);
 	}
 	
-	public void eliminar(JefeVenta jefeVenta) throws IOException{
+	public void eliminar(JefeVenta jefeVenta) throws Exception{
 		jefeVentaDAO.eliminar(jefeVenta);
 	}
 	
-	public Boolean  getUsuario(Integer id)throws IOException{
+	public Boolean  getUsuario(Integer id)throws Exception{
 		if  (jefeVentaDAO.getJefeVenta(id)!=null) return true;
 		return false;	}
 	

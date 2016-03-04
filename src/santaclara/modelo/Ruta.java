@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.modelo;
 
 public class Ruta {
@@ -10,7 +18,7 @@ public class Ruta {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Ruta(Integer id, Zona zona, String nombre, String sector) {
+	public Ruta(Integer id, String nombre,Zona zona) {
 		super();
 		this.id = id;
 		this.zona = zona;

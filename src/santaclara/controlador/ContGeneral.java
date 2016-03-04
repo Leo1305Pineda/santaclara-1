@@ -1,19 +1,25 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Stack;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.Capacidad;
 import santaclara.modelo.Presentacion;
@@ -22,13 +28,12 @@ import santaclara.modelo.Sabor;
 import santaclara.modelo.Zona;
 
 public abstract class ContGeneral implements IContGeneral {
-
 	
 	private ContPrincipal 	 contPrincipal;
-//	  JLabel lblImagen = new JLabel();
+	private PostgreSql postgreSql;
 		
 	public void dibujar(JPanel vista,Object cacheobject)
-	{
+	{	
 		contPrincipal.agregarPanel(vista);
 		if(!this.contPrincipal.getCacheObjet().empty())
 		{
@@ -44,11 +49,12 @@ public abstract class ContGeneral implements IContGeneral {
 			}
 		}
 		else 
-			this.contPrincipal.getCacheObjet().push(cacheobject);
+			this.contPrincipal.getCacheObjet().push(cacheobject);			
 	}
 	
 	public void quitarVista(){//btnSalir
 		contPrincipal.quitarPanel();
+		
 		if (!this.contPrincipal.getCacheObjet().empty())
 		{
 			while(this.contPrincipal.getCacheObjet().size()>1)
@@ -57,18 +63,47 @@ public abstract class ContGeneral implements IContGeneral {
 			}
 		}
 	}
-	 
 	
+	public void activarConexiondb(JPanel vista) throws Exception{
 	
+		postgreSql = new PostgreSql(); //objeto que establece la conexion con postgreSql
+		postgreSql.activarConexion();
+	
+	}
+	
+	public void ejecutarComando(String comando){
+		try{
+			Runtime runtime = Runtime.getRuntime();
+			Process process;
+
+			process = runtime.exec(comando);
+			InputStream is = process.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+	
+			String line;
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
+		}
+	
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+
+	}
 	
 	public void ActivarAtras(Object object) {//btnAtras
 		
 		if(this.contPrincipal.getCacheObjet().size()>1)
+		{
 			this.contPrincipal.ActivarAtras(object);
+		}
 		else
+		{
 			quitarVista();
+		}
 	}
-
 
 	public ContPrincipal getContPrincipal() {
 		return contPrincipal;
@@ -96,34 +131,6 @@ public abstract class ContGeneral implements IContGeneral {
 		
 	}
 
-	public List<Icon> getImagenes(String ruta) throws FileNotFoundException {
-		// TODO Auto-generated method stub
-		List<Icon> iconos = new ArrayList<Icon>();
-		File file = new File(ruta.concat("conf.txt"));
- 		Scanner scanner = new Scanner(file);
-		while(scanner.hasNext())
-		{
-			iconos.add(new ImageIcon(ruta.concat(scanner.skip("imagen:").nextLine().toString().trim())));
-		}
-		scanner.close();
-		return iconos;
-	}
-	
-	public void runAnimacion(JLabel lblImagen,String folder,Integer tiempo){
-		List<Icon> imagenes = new ArrayList<Icon>();
-		try {
-			imagenes = getImagenes("img/animados/".concat(folder).concat("/"));
-	
-				//System.out.println(imagenes.size());
-				for(Icon icon : imagenes){
-					Thread.sleep(tiempo);
-					lblImagen.setIcon(icon);	
-				}
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
-	
 	public JTable buscar(JTable tabla1,String valueBuscar){
 		tabla1.clearSelection();
 		for(int i = 0;i<tabla1.getRowCount();i++)
@@ -173,5 +180,26 @@ public abstract class ContGeneral implements IContGeneral {
         	if (enc) break;
         }
     }
+	
+	
+	public PostgreSql getPostgreSql() {
+		return postgreSql;
+	}
 
+	public void setPostgreSql(PostgreSql postgreSql) {
+		this.postgreSql = postgreSql;
+	}
+	
+public void dibujarImagen(JPanel panel,JLabel lblImagen,Object ubicacion){
+		if(ubicacion.equals("")) panel.add(lblImagen);
+		else panel.add(lblImagen,ubicacion);
+		
+		contPrincipal.getVista().getFrame().repaint();
+	}
+	
+	public void quitarImagen(JLabel lblImagen){
+		
+		contPrincipal.getVista().getFrame().remove(lblImagen);
+		contPrincipal.getVista().getFrame().repaint();
+	}
 }

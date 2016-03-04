@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.modelo;
 import santaclara.modelo.Camion;
 import santaclara.modelo.Ruta;
@@ -7,9 +15,9 @@ public class Concesionario extends Usuario{
 	private Ruta ruta;
 	
 	
-	public Concesionario(Integer id, String username, String cedula, String nombres,
-			String contrasena,Camion camion, Ruta ruta) {
-		super( id, username, cedula,nombres ,contrasena);
+	public Concesionario(Usuario concesionario,Camion camion, Ruta ruta) {
+		super( concesionario.getId(), concesionario.getUsername(),
+				concesionario.getCedula(), concesionario.getNombre() ,concesionario.getContrasena());
 		this.camion = camion;
 		this.ruta = ruta;
 	}

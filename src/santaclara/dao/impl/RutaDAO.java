@@ -1,22 +1,87 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import santaclara.dao.IRutaDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Ruta;
+import santaclara.modelo.Zona;
 
 public class RutaDAO extends GenericoDAO implements IRutaDAO  {
+	
+	@Override
+	public List<Ruta> getRutas() throws Exception {
+		// TODO Auto-generated method stub
+		List<Ruta> rutas = new ArrayList<Ruta>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT r.id,r.nombre,r.idzona,z.descripcion "
+				+"FROM rutas r, zonas z WHERE r.idzona=z.id  Order by r.id "); 
+		
+		if(rSet==null) return null;
+		
+			while(rSet.next()) rutas.add(
+					new Ruta(rSet.getInt(1), rSet.getString(2),
+							new Zona(rSet.getInt(3),rSet.getString(4)))); 
+		return rutas;
+	}
+	
+	@Override
+	public void guardar(Ruta ruta) throws Exception {
+		// TODO Auto-generated method stub
+		if (ruta.getId()==null){
+			new PostgreSql().ejecutar(
+					"INSERT INTO rutas(nombre,idzona) "
+					+ "VALUES ("
+					+ "'" +ruta.getNombre()       + "', "
+					+ " " +ruta.getZona().getId() + ") ;");	
+		}
+		else{
+			new PostgreSql().ejecutar(
+					"UPDATE rutas SET  "
+					+"nombre   = '"  +ruta.getNombre()      + "',"
+					+"idzona   =  "  +ruta.getZona().getId()+ "  "
+					+"WHERE id =  "  +ruta.getId()     +";");
+		}
+	}
 
+	@Override
+	public void eliminar(Ruta ruta) throws Exception {
+		// TODO Auto-generated method stub
+		if(ruta!=null) new PostgreSql().ejecutar(
+				"DELETE FROM rutas "
+				+"WHERE id = "+ruta.getId() +";");
+	}
+
+	@Override
+	public Ruta getRuta(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT r.id,r.nombre,z.id,z.descripcion FROM rutas r, zonas z "
+				+ "WHERE r.id     = " + id 
+				+ "AND   r.idzona = z.id ;"); 
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		return new Ruta(rSet.getInt(1), rSet.getString(2),new Zona(rSet.getInt(3),rSet.getString(4)));
+	}
+	
+	/**	
 	private String ruta = "archivos/rutas.txt";
 	
 	@Override
-	public List<Ruta> getRutas() throws FileNotFoundException {
+	public List<Ruta> getRutas() throws NumberFormatException, Exception {
 		// TODO Auto-generated method stub
 		List<Ruta> rutas = new ArrayList<Ruta>();
 		File file = new File(ruta);
@@ -147,4 +212,5 @@ zona:1
 nombre:El jebe
 
  * */
+
 }

@@ -2,8 +2,6 @@ package santaclara.modelo;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
@@ -13,14 +11,14 @@ import santaclara.dao.impl.PresentacionDAO;
 public class TestPresentacionDAO {
 
 	@Test
-	public void presentacionTest() throws FileNotFoundException {
+	public void presentacionTest() throws Exception {
 		PresentacionDAO presentacionDAO = new PresentacionDAO();
 		assertNotNull(presentacionDAO);
 		//assertNull(presentacionDAO.getPresentaciones());
 		assertEquals(3,presentacionDAO.getPresentaciones().size());
 	}
 	@Test
-	public void addRemovePresentacionTest() throws IOException {
+	public void addRemovePresentacionTest() throws Exception {
 		PresentacionDAO presentacionDAO = new PresentacionDAO();
 		List<Presentacion> presentaciones= presentacionDAO.getPresentaciones();
 		

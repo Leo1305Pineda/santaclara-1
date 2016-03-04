@@ -2,8 +2,6 @@ package santaclara.modelo;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
@@ -15,7 +13,7 @@ import santaclara.modelo.Factura;
 public class TestFacturaDAO {
 
 	@Test
-	public void facturaTest() throws FileNotFoundException {
+	public void facturaTest() throws Exception {
 		FacturaDAO facturaDAO = new FacturaDAO();
 		assertNotNull(facturaDAO);
 		assertEquals(2,facturaDAO.getFacturas().size());
@@ -23,7 +21,7 @@ public class TestFacturaDAO {
 
 	@SuppressWarnings({ "unused", "null" })
 	@Test
-	public void addRemoveFacturaTest() throws IOException {
+	public void addRemoveFacturaTest() throws Exception {
 		FacturaDAO facturaDAO = new FacturaDAO();
 
 		List<Factura> facturas= facturaDAO.getFacturas();

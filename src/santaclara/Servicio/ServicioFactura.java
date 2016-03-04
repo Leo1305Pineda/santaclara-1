@@ -1,7 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,19 +36,19 @@ public class ServicioFactura {
 	        return new java.sql.Date(cal.getTimeInMillis());
 	    }
 
-	public List<Factura> getFacturas() throws FileNotFoundException{
+	public List<Factura> getFacturas() throws Exception{
 		return new FacturaDAO().getFacturas();
 	}
 	 
-	public List<Factura> getPedidoFacturados() throws FileNotFoundException{
+	public List<Factura> getPedidoFacturados() throws Exception{
 		return new FacturaDAO().getPedidoFacturados();
 	}
 	 
-	public List<Factura> getPedidoPendientes() throws FileNotFoundException{
+	public List<Factura> getPedidoPendientes() throws Exception{
 		return new FacturaDAO().getPedidoPendientes();
 	}
 	
-	public Factura getFactura(Integer id) throws FileNotFoundException{
+	public Factura getFactura(Integer id) throws Exception{
 		
 		for (Factura factura : getFacturas()){
 			if (factura.getId().equals(id)){
@@ -52,7 +58,7 @@ public class ServicioFactura {
 		return null; 
 	}
 	
-	public Cliente getCliente(Integer id) throws FileNotFoundException{
+	public Cliente getCliente(Integer id) throws Exception{
 		for(Factura factura : getFacturas()){
 			if (factura.getCliente().getId().equals(id))
 			{
@@ -62,7 +68,7 @@ public class ServicioFactura {
 		return null;
 	}
 	
-	public Almacen getAlmacen(Integer id) throws FileNotFoundException{
+	public Almacen getAlmacen(Integer id) throws Exception{
 		for(Factura factura : getFacturas()){
 			if (factura.getAlmacen().getId().equals(id))
 			{
@@ -72,7 +78,7 @@ public class ServicioFactura {
 		return null;
 	}
 	
-	public Usuario getVendedor(Integer id) throws FileNotFoundException{
+	public Usuario getVendedor(Integer id) throws Exception{
 		for(Factura factura : getFacturas()){
 			if (factura.getVendedor().getId().equals(id))
 			{
@@ -82,11 +88,11 @@ public class ServicioFactura {
 		return null;
 	}
 	
-	public void guardar(Factura factura) throws IOException{
+	public void guardar(Factura factura) throws Exception{
 		new FacturaDAO().guardar(factura);
 	}
 	
-	public Integer ultimaFactura()throws IOException{
+	public Integer ultimaFactura()throws Exception{
 		return new FacturaDAO().ultimaFactura();
 	}
 
@@ -96,7 +102,7 @@ public class ServicioFactura {
 		return 0;
 	}
 
-	public List<Factura> getFacturasGroupByCliente(Integer idCliente) throws FileNotFoundException{
+	public List<Factura> getFacturasGroupByCliente(Integer idCliente) throws Exception{
 		List<Factura> facturasGroupByCliente = new ArrayList<Factura>();
 		for(Factura factura1 : getFacturas()){
 			
@@ -113,7 +119,7 @@ public class ServicioFactura {
 	 * Solo los cliente salp opta por credito 
 	 * dicho creditose aprobara si en los ultimos 6 meses todas sus factura superan elmonto de 800.000 bsf 
 	 * y al menos tiene una por mes*/
-	public Boolean isCredito (Factura factura) throws NumberFormatException, IOException{
+	public Boolean isCredito (Factura factura) throws Exception{
 		
 		java.sql.Date fecha =  new java.sql.Date(factura.getFecha().getTime());// Fecha Actual
 		

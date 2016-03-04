@@ -1,3 +1,11 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
@@ -125,7 +133,7 @@ public class ContConcesionarios extends ContGeneral implements IContGeneral {
 		}
 	}
 	
-	public void Eliminar() throws NumberFormatException, IOException {
+	public void Eliminar() throws Exception{
 		// TODO Auto-generated method stub
 		Concesionario concesionario = servicioConcesionario.getConcesionario(
 				new Integer(vista.getTable().getValueAt(
@@ -142,7 +150,7 @@ public class ContConcesionarios extends ContGeneral implements IContGeneral {
 			}
 	}
 
-	void MostrarTabla() throws NumberFormatException, IOException{
+	void MostrarTabla() throws Exception{
 		vista.getBinUsuarios().unbind();
 		vista.getBinUsuarios().bind();
 		vista.activarBindingConcesionarios(servicioConcesionario.getConcecionarios());

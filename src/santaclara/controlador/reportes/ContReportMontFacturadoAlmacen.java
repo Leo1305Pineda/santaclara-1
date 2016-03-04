@@ -1,8 +1,15 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador.reportes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +69,7 @@ public class ContReportMontFacturadoAlmacen extends ContGeneral implements ICont
 		};
 	}
 	
-	public  void actualizarTabla() throws NumberFormatException, IOException {
+	public  void actualizarTabla() throws NumberFormatException, Exception {
 		// TODO Auto-generated method stub
 		pedidoFacturados = new ServicioFactura().getPedidoFacturados();
 		
@@ -140,7 +147,7 @@ public class ContReportMontFacturadoAlmacen extends ContGeneral implements ICont
 				// TODO Auto-generated method stub
 				try {
 					actualizarTabla();
-				} catch (NumberFormatException | IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

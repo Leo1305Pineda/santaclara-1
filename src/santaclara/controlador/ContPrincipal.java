@@ -1,12 +1,27 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.controlador;
  
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Stack;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import santaclara.controlador.consultas.ContConsulta;
+import santaclara.controlador.consultas.ContConsultadeMontoTotalporRefresco;
 import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
 import santaclara.controlador.consultas.ContListCantRefrecoPresentCapacFacturadoZona;
 import santaclara.controlador.consultas.ContListCantRefrescoSaborVendidoAlmacen;
@@ -15,7 +30,10 @@ import santaclara.controlador.consultas.ContMontoFacturadoMesZonaTipoPago;
 import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
 import santaclara.controlador.reportes.ContReportMontFacturadoVendedor;
 import santaclara.controlador.reportes.ContReporte;
+import santaclara.dbPostgresql.controlador.ContPostgreSql;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Usuario;
+import santaclara.thread.animacion.Animado;
 import santaclara.vista.PrincipalUI;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
@@ -26,9 +44,13 @@ public  class ContPrincipal {
 	private Usuario		 usuario;
 	private Stack<String> cache = new Stack<String>();
 	private Stack<Object> cacheObjet = new Stack<Object>();
-	private Boolean editorActivo = new Boolean(false);
+	private Boolean editorActivo = new Boolean(false); 
 	
 	private ContAlmacenes 	contAnimaciones ;
+	
+	private PostgreSql postgreSql;
+	
+	private Animado animado ;
 	
 	public static void main(String[] args) {
 	   ContPrincipal controlador = new  ContPrincipal();
@@ -51,16 +73,16 @@ public  class ContPrincipal {
 
 	@SuppressWarnings("deprecation")
 	void agregarPanel(JPanel panel)
-	{
+	{	
 		vista.getFrame().setContentPane(panel);
 		vista.getFrame().resize(VistaGenericaUI.getWidthPantalla(),VistaGenericaUI.getHeightPantalla());
 		vista.getFrame().repaint();
-
 	}
 	
 	void quitarPanel(){
-		vista.getFrame().getContentPane().removeAll();
-		vista.getFrame().repaint();
+	//	vista.getFrame().getContentPane().removeAll();
+	//	vista.getFrame().add(new JPanel());	
+		cerrarSecion();
 	}
 
 	public Usuario getUsuario() {
@@ -93,12 +115,15 @@ public  class ContPrincipal {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				vista.getMenuBar().setVisible(false);
-				usuario = null;
-				controlador = new ContIniciarSesion(ContPrincipal.this); 
-				
+				cerrarSecion(); 
 			}
 		};
+	}
+	
+	public void cerrarSecion(){
+		vista.getMenuBar().setVisible(false);
+		usuario = null;
+		controlador = new ContIniciarSesion(ContPrincipal.this);
 	}
 
 	public ActionListener activarMenu() {
@@ -107,6 +132,8 @@ public  class ContPrincipal {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				animado.detener();
+				 
 				if(e.getSource().equals(vista.getMntAlmacen()))
 				{
 						ActivarAlmacenes();
@@ -210,9 +237,28 @@ public  class ContPrincipal {
 				else if(e.getSource().equals(vista.getMntConsulta())){
 					ActivarConsulta();
 				}
+				else if(e.getSource().equals(vista.getMntPostgreSqlAjustes())){
+					ActivarPostgreSqlAjustes();
+				}
+				else if(e.getSource().equals(vista.getMntPgAdmin3())){
+					ejecutarComando("pgadmin3");
+				}
 			}
 		};
 	}
+	
+public void ActivarPostgreSqlAjustes(){
+		
+		try {
+			
+			controlador = new ContPostgreSql(ContPrincipal.this);
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
 	
 	public void ActivarReporte(){
 		
@@ -230,7 +276,7 @@ public  class ContPrincipal {
 	
 		try {
 		
-			controlador = new ContConsulta(ContPrincipal.this);
+			controlador = new ContConsultadeMontoTotalporRefresco(ContPrincipal.this);
 			}
 			catch (Exception e1) {
 				// 	TODO Auto-generated catch block
@@ -572,11 +618,52 @@ public void ActivarReportFacturadoVendedor(){
 			break;
 			case "santaclara.controlador.cansultas.ContMontoFacturadoMesZonaTipoPago":	ActivarMontoFacturadoMesZonaTipoPago();;
 			break;
+			case "santaclara.dbPostgresql.controlador.ContPostgreSql":	ActivarPostgreSqlAjustes();
+			break;
 			default:
 				break;
 			}
 		}
 	}
+	
+	public void ejecutarComando(String comando){
+		try{
+			Runtime runtime = Runtime.getRuntime();
+			Process process;
+
+			process = runtime.exec(comando);
+			InputStream is = process.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+	
+			String line;
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	public void dibujarImagen(JPanel panel,JLabel lblImagen,Object ubicacion){
+		if(ubicacion.equals("")) panel.add(lblImagen);
+		else panel.add(lblImagen,ubicacion);
+		
+		vista.getFrame().repaint();
+	}
+
+	
+	public void activarAnimacionSantaclara(JPanel vista){
+		
+		JLabel lblImagen = new JLabel();
+		lblImagen.setForeground(Color.WHITE);
+		animado = new Animado("animacionSantaclara",lblImagen,500);
+		animado.star();
+		dibujarImagen(vista,lblImagen,BorderLayout.SOUTH);
+		
+	}	
+	
 	
 	public Stack<String> getCache() {
 		return cache;
@@ -610,5 +697,15 @@ public void ActivarReportFacturadoVendedor(){
 		this.contAnimaciones = contAnimaciones;
 	}
 
-	
+	public PostgreSql getPostgreSql() {
+		return postgreSql;
+	}
+
+	public void setPostgreSql(PostgreSql postgreSql) {
+		this.postgreSql = postgreSql;
+	}
+
+	public PrincipalUI getVista() {
+		return vista;
+	} 
 }

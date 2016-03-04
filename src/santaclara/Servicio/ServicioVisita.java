@@ -1,7 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +33,7 @@ public class ServicioVisita {
 	
 	private List<Visita> visitas;
 	
-	public List<Visita>  getVisitas() throws NumberFormatException, IOException
+	public List<Visita>  getVisitas() throws Exception
 	{	
 		return visitaDAO.getVisitas();
 	}
@@ -58,17 +64,17 @@ public class ServicioVisita {
 			}
 			visitaDAO.guardar(visita); 
 	}
-	public Visita getVisita(Date fecha, Integer idUsuario ,Integer idCliente) throws FileNotFoundException{
+	public Visita getVisita(Date fecha, Integer idUsuario ,Integer idCliente) throws Exception{
 		return new VisitaDAO().getVisita(fecha, idUsuario, idCliente);
 	}
-	public Boolean isVisita(Date fecha, Integer idJefeVenta ,Integer idCliente) throws FileNotFoundException{
+	public Boolean isVisita(Date fecha, Integer idJefeVenta ,Integer idCliente) throws Exception{
 		return new VisitaDAO().isVisita(fecha, idJefeVenta, idCliente);
 	}
-	public void  Eliminar(Visita visita) throws IOException{
+	public void  Eliminar(Visita visita) throws Exception{
 		new VisitaDAO().eliminar(visita);
 	}
 	
-public List<Visita> ConsultaJefeVenta(JefeVenta jefeVenta) throws NumberFormatException, IOException{
+public List<Visita> ConsultaJefeVenta(JefeVenta jefeVenta) throws Exception{
 		
 		JefeVenta jefeVentaCombo = new JefeVenta();
 		jefeVentaCombo = jefeVenta;
@@ -118,7 +124,7 @@ public List<Visita> ConsultaJefeVenta(JefeVenta jefeVenta) throws NumberFormatEx
 		}
 		return null;
 	}
-public List<Visita> ConsultaJefeVenta(JefeVenta jefeVenta, Integer mes,Integer yearActual) throws NumberFormatException, IOException{
+public List<Visita> ConsultaJefeVenta(JefeVenta jefeVenta, Integer mes,Integer yearActual) throws Exception{
 	
 	JefeVenta jefeVentaCombo = new JefeVenta();
 	jefeVentaCombo = jefeVenta;
@@ -161,7 +167,7 @@ public List<Visita> ConsultaJefeVenta(JefeVenta jefeVenta, Integer mes,Integer y
 	return null;
 }
 
-public List<Visita> ConsultaConcesionario(Concesionario concesionario, Integer mes,Integer yearActual) throws NumberFormatException, IOException{
+public List<Visita> ConsultaConcesionario(Concesionario concesionario, Integer mes,Integer yearActual) throws Exception{
 	
 	Concesionario  concesionarioCombo = new Concesionario(); 
 	concesionarioCombo = concesionario;
@@ -195,7 +201,7 @@ public List<Visita> ConsultaConcesionario(Concesionario concesionario, Integer m
 	return null;
 }
 
-public List<Visita> ConsultaConcesionario(Concesionario concesionario) throws NumberFormatException, IOException{
+public List<Visita> ConsultaConcesionario(Concesionario concesionario) throws Exception{
 	
 	if(concesionario!=null)
 	{

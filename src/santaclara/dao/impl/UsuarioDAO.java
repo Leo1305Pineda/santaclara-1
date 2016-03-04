@@ -1,22 +1,117 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import santaclara.dao.IUsuarioDAO;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Usuario;
 
 public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 
-	private String ruta = "archivos/usuarios.txt";
+	@Override
+	public List<Usuario> getUsuarios() throws Exception {
+		// TODO Auto-generated method stub
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"Select id,username,cedula,nombre,contrasena From usuarios where id !=1"); 
+	
+		if(rSet==null) return null;
+		
+		while(rSet.next())usuarios.add(
+				new Usuario(rSet.getInt(1), rSet.getString(2), 
+						rSet.getString(3), rSet.getString(4), rSet.getString(5))); 
+		
+		return usuarios;
+	}
 	
 	@Override
-	public List<Usuario> getUsuarios() throws FileNotFoundException {
+	public void guardar(Usuario usuario) throws Exception {
+		// TODO Auto-generated method stub
+		if (usuario.getId()==null){
+			new PostgreSql().ejecutar(
+					"INSERT INTO usuarios(username,cedula,nombre,contrasena) "
+					+"VALUES ("
+					+"'" +usuario.getUsername()	  + "', "
+					+"'" +usuario.getCedula()	  + "', "
+					+"'" +usuario.getNombre()     + "', "
+					+"'" +usuario.getContrasena() + "');");	
+		}
+		else{
+			new PostgreSql().ejecutar(
+					"UPDATE usuarios SET"
+					+"ubicacion  ='" +usuario.getUsername()   +"',"
+					+"cedula     ='" +usuario.getCedula()	  +"',"
+					+"nombre     ='" +usuario.getNombre()	  +"',"
+					+"contrasena ='" +usuario.getContrasena() +"' "
+					+"WHERE id   ="  +usuario.getId()         +"; ");
+		}
+
+	}
+
+	@Override
+	public void eliminar(Usuario usuario) throws Exception {
+		// TODO Auto-generated method stub
+		if(usuario!=null) new PostgreSql().ejecutar(
+								  "DELETE FROM almacenes "
+								  + "WHERE id = "+usuario.getId() +";");
+	}
+
+	@Override
+	public Usuario getUsuario(String username) throws Exception {
+		// TODO Auto-generated method stub
+		ResultSet rSet = new PostgreSql().getSelect(
+								"Select id,username,cedula,nombre,contrasena From usuarios "
+								+"where username = '"+ username +"';"); 
+		
+		if(rSet==null) return null;
+
+		rSet.next();
+		return new Usuario(rSet.getInt(1), rSet.getString(2), rSet.getString(3), rSet.getString(4), rSet.getString(5));
+	}
+
+	public Usuario getUsuario(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		ResultSet rSet = new PostgreSql().getSelect(
+				"Select id,username,cedula,nombre,contrasena From usuarios "
+				+"where id = '"+ id +"';");  
+		
+		if(rSet==null) return null;
+		
+		rSet.next();
+		return new Usuario(
+				rSet.getInt("id"), rSet.getString("username"),
+				rSet.getString("cedula"), rSet.getString("nombre"),
+				rSet.getString("contrasena"));
+    }	
+	
+	public Usuario getUsuarioCedula(String cedula) throws Exception {
+		// TODO Auto-generated method stub
+		ResultSet rSet = new PostgreSql().getSelect(
+				"Select id,username,cedula,nombre,contrasena From usuarios "
+				+"where cedula = '"+ cedula +"';");  
+		
+		if(rSet==null) return null;
+		
+		rSet.next();
+		return new Usuario(rSet.getInt(1), rSet.getString(2), rSet.getString(3), rSet.getString(4), rSet.getString(5));
+	}
+	
+	/***Manejo con txt
+	 private String ruta = "archivos/usuarios.txt";
+	
+	@Override
+	public List<Usuario> getUsuarios() throws Exception {
 		// TODO Auto-generated method stub
 		// Listar Todos lo Usuario 
 		List<Usuario> usuarios = new ArrayList<Usuario>();
@@ -36,6 +131,7 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 		scanner.close();
 		return usuarios;
 	}
+	
 	@Override
 	public void guardar(Usuario usuario) throws IOException {
 		// TODO Auto-generated method stub
@@ -88,23 +184,24 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 		guardarTodo(usuarios);
 		
 	}
-
-	@Override
-	public Usuario getUsuario(String username) throws FileNotFoundException {
+	
+		@Override
+	public Usuario getUsuario(String username) throws Exception {
 		// TODO Auto-generated method stub
 		List<Usuario> usuarios = getUsuarios();
 		
 		for(Usuario usuario: usuarios)
 		{
-			if(usuario.getUsername().equals(username.trim()))
+			if(usuario.getUsername().equals(username))
 			{
 				return usuario;
 			}
 		}
 		return null;
-    }
 
-	public Usuario getUsuario(Integer id) throws FileNotFoundException {
+	}
+
+	public Usuario getUsuario(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		List<Usuario> usuarios = getUsuarios();
 		
@@ -116,17 +213,23 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 			}
 		}
 		return null;
-    }
+    }	
 	
-	public UsuarioDAO(String ruta) {
-		super();
-		this.ruta = ruta;
+	public Usuario getUsuarioCedula(String cedula) throws Exception {
+		// TODO Auto-generated method stub
+		List<Usuario> usuarios = getUsuarios();
+		
+		for(Usuario usuario: usuarios)
+		{
+			if(usuario.getCedula().equals(cedula))
+			{
+				return usuario;
+			}
+		}
+		return null;
 	}
 
-	public UsuarioDAO( ) {
-		super();  
-	}
-	
+		
 	public void guardarTodo(List<Usuario> usuarios) throws IOException
 	{
 		FileWriter fw = new FileWriter(ruta);
@@ -141,20 +244,7 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 		fw.close();
 	}
 	
-	public Usuario getUsuarioCedula(String cedula) throws FileNotFoundException {
-		// TODO Auto-generated method stub
-		List<Usuario> usuarios = getUsuarios();
-		
-		for(Usuario usuario: usuarios)
-		{
-			if(usuario.getCedula().equals(cedula))
-			{
-				return usuario;
-			}
-		}
-		return null;
-	}
-
+	 * /
 	
 	/*
  	La Estructura de los Archivos sera la Siguiente 

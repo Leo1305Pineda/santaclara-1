@@ -1,25 +1,100 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.dao.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import santaclara.Servicio.ServicioCliente;
 import santaclara.dao.ISalpDAO;
-import santaclara.modelo.Cliente;
+import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Salp;
-//import santaclara.dao.IFactura;
 
 public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 
-	private String ruta = "archivos/salps.txt";
+	@Override
+	public List<Salp> getSalps() throws Exception {
+		// TODO Auto-generated method stub
+		List<Salp> salps = new ArrayList<Salp>(); 
+		
+		ResultSet rSet = new PostgreSql().getSelect(
+				"SELECT idcliente FROM salp Order by idcliente;"); 
+		
+		if(rSet==null) return null;
+			while(rSet.next())salps.add(
+					new Salp(new ClienteDAO().getCliente(rSet.getInt("idcliente")))); 
+		return salps;
+	}
+	
+	@Override
+	public void guardar(Salp salp) throws Exception {
+		// TODO Auto-generated method stub
+		if (salp.getId()==null){
+			try {
+
+				new PostgreSql().ejecutar(
+						"  BEGIN;"
+						+ ""
+						+" INSERT INTO clientes(rif, razonsocial,direccion, telefono,idruta)"
+						+" VALUES ("
+						+" '" +salp.getRif()			+"', " 
+						+" '" +salp.getRazonsocial()	+"', "
+						+" '" +salp.getDireccion()		+"', "
+						+" '" +salp.getTelefono()		+"', "
+						+"  " +salp.getRuta().getId()	+"   "
+						+ ");"
+						+ "                                  "
+						+ "INSERT INTO salp(idcliente) "
+						+ " VALUES ((SELECT max(id) FROM clientes)); "
+						+ "                                                                 "
+						+ " COMMIT;");
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+				
+		}
+		else{
+			new ClienteDAO().guardar(salp);
+		}
+	}
 
 	@Override
-	public List<Salp> getSalps() throws FileNotFoundException {
+	public void eliminar(Salp salp) throws Exception {
+		// TODO Auto-generated method stub
+		if(salp!=null) new PostgreSql().ejecutar(
+								"BEGIN;"
+								+" DELETE FROM salp "
+								+" WHERE idcliente = "+salp.getId() +";  "
+								+"                   "
+								+" DELETE FROM clientes "
+								+" WHERE id = "+salp.getId() +";"
+								+ " "
+								+"COMMINT;"
+								+" ;");
+	}
+
+	@Override
+	public Salp getSalp(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		return new Salp(new ClienteDAO().getCliente(id)) ;
+		
+	}
+	
+	
+	/***
+	 * 	
+	 private String ruta = "archivos/salps.txt";
+
+	@Override
+	public List<Salp> getSalps() throws Exception {
 		// TODO Auto-generated method stub
 		List<Salp> salps = new ArrayList<Salp>();
 		ClienteDAO clienteDAO = new ClienteDAO();
@@ -56,7 +131,7 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 	}
 
 	@Override
-	public void guardar(Salp salp) throws IOException {
+	public void guardar(Salp salp) throws Exception {
 		// TODO Auto-generated method stub
 		List<Salp> salps = getSalps();
 		List<Cliente> clientes = new ServicioCliente().getClientes();
@@ -111,7 +186,7 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 	}
 
 	@Override
-	public void eliminar(Salp salp) throws IOException {
+	public void eliminar(Salp salp) throws Exception {
 		// TODO Auto-generated method stub		
 		List<Salp> salps = getSalps();
 		for(Salp salp1 :salps)
@@ -127,7 +202,7 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 	}
 
 	@Override
-	public Salp getSalp(Integer id) throws FileNotFoundException {
+	public Salp getSalp(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		List<Salp> salps = getSalps();
 		for(Salp salp1 :salps)
@@ -141,7 +216,7 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 
 	}
 
-	public void guardarTodo(List<Salp> salps ) throws IOException
+	public void guardarTodo(List<Salp> salps ) throws Exception
 	{
 		FileWriter fw = new FileWriter(ruta);
 		for(Salp salp1 :salps)
@@ -151,7 +226,8 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 		}
 		fw.close();
 	}
-	
+
+	 */
 	/*
  	La Estructura de los Archivos sera la Siguiente 
 idCliente:1

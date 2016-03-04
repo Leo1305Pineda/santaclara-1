@@ -1,6 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.Servicio;
 
-import java.io.IOException;
 import java.util.List;
 
 import santaclara.dao.impl.CapacidadDAO;
@@ -22,7 +29,7 @@ public class ServicioProducto {
 	private List<Producto> productos;
 	
 	
-	public List<Producto>  getProductos() throws NumberFormatException, IOException
+	public List<Producto>  getProductos() throws Exception
 	{	
 		return productoDAO.getProductos();
 	}
@@ -32,15 +39,15 @@ public class ServicioProducto {
 		return presentacionDAO.getPresentaciones();	
 	}
 	
-	public Presentacion getPresentacion(Integer id) throws IOException{
+	public Presentacion getPresentacion(Integer id) throws Exception{
 		return presentacionDAO.getPresentacion(id);
 	}
 	
-	public Sabor getSabor(Integer id)throws IOException{
+	public Sabor getSabor(Integer id)throws Exception{
 		return saborDAO.getSabor(id);
 	}
 	
-	public Capacidad getCapacidad(Integer id) throws IOException{
+	public Capacidad getCapacidad(Integer id) throws Exception{
 		return capacidadDAO.getCapacidad(id);  
 	}
 	
@@ -73,16 +80,16 @@ public class ServicioProducto {
 			productoDAO.guardar(producto); 
 	}
 	
-	public void eliminar(Producto producto) throws IOException{
+	public void eliminar(Producto producto) throws Exception{
 		
 		productoDAO.eliminar(producto);
 	}
 	
-	public void modificar(Producto producto) throws IOException{
+	public void modificar(Producto producto) throws Exception{
 		productoDAO.guardar(producto);
 	}
 	
-	public Producto buscar(Integer id)throws IOException{
+	public Producto buscar(Integer id)throws Exception{
 		return productoDAO.getProducto(id);
 	}
 }

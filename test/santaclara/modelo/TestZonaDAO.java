@@ -2,7 +2,6 @@ package santaclara.modelo;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import org.junit.Test;
@@ -14,7 +13,7 @@ public class TestZonaDAO {
 	private Scanner s;
 
 	@Test
-	public void saboresTest() throws FileNotFoundException {
+	public void saboresTest() throws Exception {
 		ZonaDAO zonaDAO = new ZonaDAO();
 		assertNotNull(zonaDAO);
 		assertEquals(5,zonaDAO.getZonas().size());

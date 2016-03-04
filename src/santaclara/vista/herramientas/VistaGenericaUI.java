@@ -1,6 +1,13 @@
+/*Seccion 6
+ * Gipsis Marin 19.828.553
+ *Leonardo Pineda 19.727.835
+ *Rhonal Chirinos 19.827.297
+ *Joan Puerta 19.323.522
+ *Vilfer Alvarez 18.735.720
+ */
+
 package santaclara.vista.herramientas;
 
- 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -27,6 +34,7 @@ public class VistaGenericaUI extends JPanel {
 	private JPanel pnOpciones;
 	private JPanel panelBuscar;
 	private JPanel pnBotones;
+	
 	private JScrollPane scrollPanel;
 	private JTable table;
 	private JButton btnAtras;
@@ -43,7 +51,6 @@ public class VistaGenericaUI extends JPanel {
 		setLayout(new BorderLayout());
 		//dibujarPanelOpciones();
 		//dibujarPanelTabla();
-
 	}
 	
 	protected void dibujarPanelTabla() {
@@ -220,4 +227,5 @@ public class VistaGenericaUI extends JPanel {
 	public void setTxtABuscar(JTextField txtABuscar) {
 		this.txtABuscar = txtABuscar;
 	}
+	
 }

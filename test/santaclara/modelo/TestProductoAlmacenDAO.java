@@ -1,7 +1,6 @@
 package santaclara.modelo;
 
 import static org.junit.Assert.*;
-import java.io.IOException;
 import java.util.List;
 import org.junit.Test;
 import santaclara.dao.impl.AlmacenDAO;
@@ -11,13 +10,13 @@ import santaclara.dao.impl.ProductoAlmacenDAO;
 public class TestProductoAlmacenDAO {
 
 	@Test
-	public void ProductoAlmacenDAOTest() throws NumberFormatException, IOException {
+	public void ProductoAlmacenDAOTest() throws Exception{
 		ProductoAlmacenDAO productoAlmacenDAO = new ProductoAlmacenDAO();
 		assertNotNull(productoAlmacenDAO);
 		assertEquals(3,productoAlmacenDAO.getProductoAlmacenes().size());
 	}
 	@Test
-	public void addRemoveAlmacenProductoTest() throws IOException {
+	public void addRemoveAlmacenProductoTest() throws Exception {
 		ProductoAlmacenDAO productoAlmacenDAO = new ProductoAlmacenDAO();
 		List<ProductoAlmacen> empaqueProductos = productoAlmacenDAO.getProductoAlmacenes();
 		

@@ -3,7 +3,6 @@ package santaclara.modelo;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -12,7 +11,7 @@ import santaclara.dao.impl.JefeVentaDAO;
 public class TestJefeVentaDAO {
 
 	@Test
-	public void JefeVentaTest() throws FileNotFoundException {
+	public void JefeVentaTest() throws Exception {
 		JefeVentaDAO jefeVentaDAO = new JefeVentaDAO();
 		assertNotNull(jefeVentaDAO);
 		assertEquals(3,jefeVentaDAO.getJefeVentas().size());
