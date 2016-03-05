@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.File;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -13,11 +15,11 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
-import santaclara.dbPostgresql.controlador.ContPostgreSql;
+import santaclara.dbPostgresql.controlador.ContAjusteBaseDatoSql;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
 @SuppressWarnings("serial")
-public class PostgreSqlUI extends VistaGenericaUI{
+public class AjusteBaseDatoUI extends VistaGenericaUI{
 
 	private JPanel pnConfPostgreSql;
 	
@@ -33,6 +35,7 @@ public class PostgreSqlUI extends VistaGenericaUI{
 	private JLabel lblUbicacionDB;
 	private JLabel lblPuerto;
 	private JLabel lblNombreDB;
+	private JLabel lblTipoBaseDato;
 	
 	private JTextField txtUser;
 	private JTextField txtPassword;
@@ -42,9 +45,11 @@ public class PostgreSqlUI extends VistaGenericaUI{
 	private JTextField txtPuerto;
 	private JTextField txtNombreDB;
 	
-	private ContPostgreSql contPostgreSql;
+	private JComboBox<String> cmbTipoBaseDato;
 	
-	public PostgreSqlUI(ContPostgreSql contPostgreSql) {
+	private ContAjusteBaseDatoSql contPostgreSql;
+	
+	public AjusteBaseDatoUI(ContAjusteBaseDatoSql contPostgreSql) {
 		super();
 		// TODO Auto-generated constructor stub
 		
@@ -81,6 +86,7 @@ public class PostgreSqlUI extends VistaGenericaUI{
 		
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void dibujarPanelConfPostgreSql(){
 		pnConfPostgreSql = new JPanel();
 		pnConfPostgreSql.setBackground(Color.DARK_GRAY);
@@ -89,65 +95,73 @@ public class PostgreSqlUI extends VistaGenericaUI{
 
 		Integer numColumn = new Integer(30);
 		
+		lblTipoBaseDato = new JLabel("Motor Base Dato:");
+		lblTipoBaseDato.setForeground(Color.WHITE);
+		pnConfPostgreSql.add(lblTipoBaseDato,"cell 0 0 ");
+		
+		cmbTipoBaseDato = new JComboBox<String>();
+		cmbTipoBaseDato.setModel(new DefaultComboBoxModel(new String[] {"PostgreSql", "MySql", "Oracle",}));
+		pnConfPostgreSql.add(cmbTipoBaseDato, "cell 1 0 ");
+		
 		lblUser = new JLabel("Usuario:");
 		lblUser.setForeground(Color.WHITE);
-		pnConfPostgreSql.add(lblUser, "cell 0 0");
+		pnConfPostgreSql.add(lblUser, "cell 0 1");
 		
 		txtUser = new JTextField();
 		txtUser.setColumns(numColumn);
-		pnConfPostgreSql.add(txtUser, "cell 1 0");
+		pnConfPostgreSql.add(txtUser, "cell 1 1");
 		
 		lblPassword = new JLabel("Contraseña:");
 		lblPassword.setForeground(Color.WHITE);
-		pnConfPostgreSql.add(lblPassword, "cell 0 1");
+		pnConfPostgreSql.add(lblPassword, "cell 0 2");
 		
 		txtPassword = new JTextField();
 		txtPassword.setColumns(numColumn);
-		pnConfPostgreSql.add(txtPassword, "cell 1 1");
+		pnConfPostgreSql.add(txtPassword, "cell 1 2");
 		
 		lblUbicacionDB = new JLabel("Ubicacion Dase de Dato:");
 		lblUbicacionDB.setForeground(Color.WHITE);
-		pnConfPostgreSql.add(lblUbicacionDB, "cell 0 2");
+		pnConfPostgreSql.add(lblUbicacionDB, "cell 0 3");
 		
 		txtUbicacionDB = new JTextField();
 		txtUbicacionDB.setColumns(numColumn);
 		txtUbicacionDB.setEditable(false);
-		pnConfPostgreSql.add(txtUbicacionDB, "cell 1 2");
+		pnConfPostgreSql.add(txtUbicacionDB, "cell 1 3");
 		
 		lblPuerto = new JLabel("Puerto:");
 		lblPuerto.setForeground(Color.WHITE);
-		pnConfPostgreSql.add(lblPuerto, "cell 0 3");
+		pnConfPostgreSql.add(lblPuerto, "cell 0 4");
 		
 		txtPuerto = new JTextField();
 		txtPuerto.setColumns(numColumn);
 		txtPuerto.setEditable(false);
-		pnConfPostgreSql.add(txtPuerto, "cell 1 3");
+		pnConfPostgreSql.add(txtPuerto, "cell 1 4");
 		
 		lblNombreDB = new JLabel("Base Dato:");
 		lblNombreDB.setForeground(Color.WHITE);
-		pnConfPostgreSql.add(lblNombreDB, "cell 0 4");
+		pnConfPostgreSql.add(lblNombreDB, "cell 0 5");
 		
 		txtNombreDB = new JTextField();
 		txtNombreDB.setColumns(numColumn);
 		txtNombreDB.setEditable(false);
-		pnConfPostgreSql.add(txtNombreDB, "cell 1 4");
+		pnConfPostgreSql.add(txtNombreDB, "cell 1 5");
 		
 		lblUrl = new JLabel("Url:");
 		lblUrl.setForeground(Color.WHITE);
-		pnConfPostgreSql.add(lblUrl, "cell 0 5");
+		pnConfPostgreSql.add(lblUrl, "cell 0 6");
 		
 		txtUrl = new JTextField();
 		txtUrl.setColumns(numColumn);
 		txtUrl.addKeyListener(contPostgreSql.activarCambioTxtUrl());
-		pnConfPostgreSql.add(txtUrl, "cell 1 5");
+		pnConfPostgreSql.add(txtUrl, "cell 1 6");
 		
 		lblClassName = new JLabel("Nombre del Driver:");
 		lblClassName.setForeground(Color.WHITE);
-		pnConfPostgreSql.add(lblClassName, "cell 0 6");
+		pnConfPostgreSql.add(lblClassName, "cell 0 7");
 		
 		txtClassName = new JTextField();
 		txtClassName.setColumns(numColumn);
-		pnConfPostgreSql.add(txtClassName, "cell 1 6");
+		pnConfPostgreSql.add(txtClassName, "cell 1 7");
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setVisible(false);
@@ -245,11 +259,11 @@ public class PostgreSqlUI extends VistaGenericaUI{
 		this.txtClassName = txtClassName;
 	}
 
-	public ContPostgreSql getContPostgreSql() {
+	public ContAjusteBaseDatoSql getContPostgreSql() {
 		return contPostgreSql;
 	}
 
-	public void setContPostgreSql(ContPostgreSql contPostgreSql) {
+	public void setContPostgreSql(ContAjusteBaseDatoSql contPostgreSql) {
 		this.contPostgreSql = contPostgreSql;
 	}
 
@@ -300,5 +314,14 @@ public class PostgreSqlUI extends VistaGenericaUI{
 	public void setTxtNombreDB(JTextField txtNombreDB) {
 		this.txtNombreDB = txtNombreDB;
 	}
+
+	public JComboBox<String> getCmbTipoBaseDato() {
+		return cmbTipoBaseDato;
+	}
+
+	public void setCmbTipoBaseDato(JComboBox<String> cmbTipoBaseDato) {
+		this.cmbTipoBaseDato = cmbTipoBaseDato;
+	}
+	
 	
 }

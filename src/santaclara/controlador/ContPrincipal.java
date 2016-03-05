@@ -30,8 +30,7 @@ import santaclara.controlador.consultas.ContMontoFacturadoMesZonaTipoPago;
 import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
 import santaclara.controlador.reportes.ContReportMontFacturadoVendedor;
 import santaclara.controlador.reportes.ContReporte;
-import santaclara.dbPostgresql.controlador.ContPostgreSql;
-import santaclara.dbPostgresql.modelo.PostgreSql;
+import santaclara.dbPostgresql.controlador.ContAjusteBaseDatoSql;
 import santaclara.modelo.Usuario;
 import santaclara.thread.animacion.Animado;
 import santaclara.vista.PrincipalUI;
@@ -47,8 +46,6 @@ public  class ContPrincipal {
 	private Boolean editorActivo = new Boolean(false); 
 	
 	private ContAlmacenes 	contAnimaciones ;
-	
-	private PostgreSql postgreSql;
 	
 	private Animado animado ;
 	
@@ -251,7 +248,7 @@ public void ActivarPostgreSqlAjustes(){
 		
 		try {
 			
-			controlador = new ContPostgreSql(ContPrincipal.this);
+			controlador = new ContAjusteBaseDatoSql(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -695,14 +692,6 @@ public void ActivarReportFacturadoVendedor(){
 
 	public void setContAnimaciones(ContAlmacenes contAnimaciones) {
 		this.contAnimaciones = contAnimaciones;
-	}
-
-	public PostgreSql getPostgreSql() {
-		return postgreSql;
-	}
-
-	public void setPostgreSql(PostgreSql postgreSql) {
-		this.postgreSql = postgreSql;
 	}
 
 	public PrincipalUI getVista() {

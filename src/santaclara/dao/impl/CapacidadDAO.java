@@ -13,20 +13,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.ICapacidadDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Capacidad;
 
 public class CapacidadDAO extends GenericoDAO implements ICapacidadDAO{
 	
+	public CapacidadDAO() {
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public List<Capacidad> getCapacidades() throws Exception {
 		
 		List<Capacidad> capacidades = new ArrayList<Capacidad>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id,volumen FROM capacidades Order by id;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())capacidades.add(
 					new Capacidad(rSet.getInt("id"),rSet.getDouble("volumen"))); 
@@ -37,13 +47,13 @@ public class CapacidadDAO extends GenericoDAO implements ICapacidadDAO{
 	public void guardar(Capacidad capacidad) throws Exception {
 		// TODO Auto-generated method stub
 		if (capacidad.getId()==null){
-			new PostgreSql().ejecutar( 
+			getConexion().ejecutar( 
 					"INSERT INTO capacidades(volumen) "
 					+ "VALUES ("
 					+" " +capacidad.getVolumen()+" );");	
 		}
 		else{
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"UPDATE capacidades SET"
 					+" volumen = " +capacidad.getVolumen() +"  "
 					+" WHERE    id = " +capacidad.getId()+";");
@@ -53,7 +63,7 @@ public class CapacidadDAO extends GenericoDAO implements ICapacidadDAO{
 	@Override
 	public void eliminar(Capacidad capacidad) throws Exception {
 		// TODO Auto-generated method stub
-		if(capacidad!=null) new PostgreSql().ejecutar(
+		if(capacidad!=null) getConexion().ejecutar(
 								"DELETE FROM capacidades "
 								+"WHERE id = "+capacidad.getId() +" ;");
 	}
@@ -62,11 +72,11 @@ public class CapacidadDAO extends GenericoDAO implements ICapacidadDAO{
 	public Capacidad getCapacidad(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id,volumen FROM capacidades "
 				+ "WHERE id ="+id+" ;");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
 		rSet.next();
 		return new Capacidad(rSet.getInt("id"),rSet.getDouble("volumen"));

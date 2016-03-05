@@ -13,21 +13,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.ICamionDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Camion;
 
 public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 	
+	public CamionDAO() {
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public List<Camion> getCamiones() throws Exception {
 		// TODO Auto-generated method stub
 		List<Camion> camiones = new ArrayList<Camion>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				" SELECT id, placa, color, capacidad, modelo, marca, ano "
 				+" FROM camiones Order by id;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())camiones.add(
 					new Camion(
@@ -46,7 +56,7 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 		// TODO Auto-generated method stub
 		try {
 			if (camion.getId()==null){
-				new PostgreSql().ejecutar(
+				getConexion().ejecutar(
 						" INSERT INTO camiones( placa, color, capacidad, modelo, marca, ano)   "
 						+ " VALUES("
 						+ " '"+ camion.getPlaca() 		+"', "
@@ -58,7 +68,7 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 						+ ");");	
 			}
 			else{
-				new PostgreSql().ejecutar(
+				getConexion().ejecutar(
 						"UPDATE camiones SET"
 						+" placa 	= '" +camion.getPlaca() 	+"', "
 						+" color 	= '" +camion.getColor() 	+"', "
@@ -81,7 +91,7 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 	@Override
 	public void eliminar(Camion camion) throws Exception {
 		// TODO Auto-generated method stub
-		if(camion!=null) new PostgreSql().ejecutar(
+		if(camion!=null) getConexion().ejecutar(
 								" DELETE FROM camiones "
 								+" WHERE id = "+camion.getId() +" ;");
 	}
@@ -90,11 +100,11 @@ public class CamionDAO  extends GenericoDAO implements ICamionDAO {
 	public Camion getCamion(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				" SELECT id, placa, color, capacidad, modelo, marca, ano "
 				+" FROM camiones WHERE id ="+id+";");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
 		rSet.next();
 		return new Camion(

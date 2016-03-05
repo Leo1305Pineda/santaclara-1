@@ -8,5 +8,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/miglayout15-swing.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/beansbinding-1.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/postgresql-9.4.1208.jre6.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.4.jar"/>
+	<classpathentry kind="lib" path="lib/JBuscar.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

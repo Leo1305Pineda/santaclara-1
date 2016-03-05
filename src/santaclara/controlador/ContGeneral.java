@@ -19,7 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.Capacidad;
 import santaclara.modelo.Presentacion;
@@ -30,7 +29,6 @@ import santaclara.modelo.Zona;
 public abstract class ContGeneral implements IContGeneral {
 	
 	private ContPrincipal 	 contPrincipal;
-	private PostgreSql postgreSql;
 		
 	public void dibujar(JPanel vista,Object cacheobject)
 	{	
@@ -62,13 +60,6 @@ public abstract class ContGeneral implements IContGeneral {
 				this.contPrincipal.getCacheObjet().pop();
 			}
 		}
-	}
-	
-	public void activarConexiondb(JPanel vista) throws Exception{
-	
-		postgreSql = new PostgreSql(); //objeto que establece la conexion con postgreSql
-		postgreSql.activarConexion();
-	
 	}
 	
 	public void ejecutarComando(String comando){
@@ -180,17 +171,8 @@ public abstract class ContGeneral implements IContGeneral {
         	if (enc) break;
         }
     }
-	
-	
-	public PostgreSql getPostgreSql() {
-		return postgreSql;
-	}
-
-	public void setPostgreSql(PostgreSql postgreSql) {
-		this.postgreSql = postgreSql;
-	}
-	
-public void dibujarImagen(JPanel panel,JLabel lblImagen,Object ubicacion){
+		
+	public void dibujarImagen(JPanel panel,JLabel lblImagen,Object ubicacion){
 		if(ubicacion.equals("")) panel.add(lblImagen);
 		else panel.add(lblImagen,ubicacion);
 		

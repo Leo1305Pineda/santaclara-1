@@ -13,22 +13,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IProductoDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Producto;
 
 public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 	
+	public ProductoDAO(){
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public List<Producto> getProductos() throws Exception {
 		// TODO Auto-generated method stub
 		List<Producto> productos = new ArrayList<Producto>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id, nombre, precio, descuento, estadoiva, "
 				+ "idcapacidad, idpresentacion,idsabor FROM "
 				+ "productos Order by id;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())
 			{
@@ -52,7 +62,7 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 	public void guardar(Producto producto) throws Exception {
 		// TODO Auto-generated method stub
 		if (producto.getId()==null){
-			new PostgreSql().ejecutar( 
+			getConexion().ejecutar( 
 					"INSERT INTO productos(nombre, precio, descuento, estadoiva, "
 				+ "idcapacidad, idpresentacion,idsabor) "
 					+ "VALUES ("
@@ -66,7 +76,7 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 							+ ");");	
 		}
 		else{
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					" UPDATE productos SET  "
 					+" nombre 			= '" +producto.getNombre() 				+"', "
 					+" precio 			=  " +producto.getPrecio()				+" , "
@@ -83,7 +93,7 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 	@Override
 	public void eliminar(Producto producto) throws Exception {
 		// TODO Auto-generated method stub
-		if(producto!=null) new PostgreSql().ejecutar(
+		if(producto!=null) getConexion().ejecutar(
 								" DELETE FROM productos "
 								+" WHERE id = "+producto.getId() +" ;");
 	}
@@ -92,12 +102,12 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 	public Producto getProducto(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id, nombre, precio, descuento, estadoiva, "
 				+ "idcapacidad, idpresentacion,idsabor FROM productos "
 				+ "WHERE id ="+id+" ;");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
 		rSet.next();
 		Boolean estadoiva = false;

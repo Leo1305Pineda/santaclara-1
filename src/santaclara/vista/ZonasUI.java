@@ -19,13 +19,19 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import net.miginfocom.swing.MigLayout;
+import santaclara.Servicio.ServicioZona;
 import santaclara.controlador.ContZonas;
+import santaclara.modelo.Zona;
 import santaclara.vista.herramientas.VistaGenericaUI;
-
 
 import javax.swing.JLabel;
 
+import componente.JDibujarTabla;
+import componente.jCampoBuscar;
+
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class ZonasUI extends VistaGenericaUI {
@@ -40,12 +46,24 @@ public class ZonasUI extends VistaGenericaUI {
 	private JTextField txtNombre;
 	private ContZonas contZonas;
 	
-	public ZonasUI(ContZonas contZonas) {
+	public ZonasUI(ContZonas contZonas) throws Exception {
 		this.contZonas = contZonas;
 		
 		dibujarPanelOpciones();
-		dibujarBuscar();
-		getBtnABuscar().addActionListener(contZonas.buscar());
+		List<Zona> auxiliar = new ServicioZona().getZonas(); 
+		List<jCampoBuscar> campos = new ArrayList<jCampoBuscar>();
+		campos.add(jCampoBuscar.crearCampoBusquedad("Id", "getId"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Nombre", "getDescripcion"));
+		dibujarBuscar(campos, auxiliar, new JDibujarTabla() {
+			
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			public void dibujarTabla(List arg0) {
+				// TODO Auto-generated method stub
+				ZonasUI.this.contZonas.activarBinding(arg0);
+			}
+		});
+		
 		dibujarPanelTabla();
 		dibujarBotonAtras();
 		getBtnAtras().addActionListener(contZonas.atras());

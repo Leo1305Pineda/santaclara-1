@@ -13,22 +13,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IDetalleFacturaDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.DetalleFactura;
 
 public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO{
 	
+	
+	public DetalleFacturaDAO() {
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public List<DetalleFactura> getDetalles() throws Exception {
 		// TODO Auto-generated method stub
 		List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				" SELECT  idfactura, idempaqueproducto,"
 				+ " cantidad, precio, descuento, iva, total "
 				+ " FROM detalleFacturas Order by idfactura;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())detalleFacturas.add(
 					new DetalleFactura(
@@ -48,7 +59,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 			if (!detalleFacturas.isEmpty()){
 				for(DetalleFactura detalleFactura: detalleFacturas)
 				{	
-					new PostgreSql().ejecutar( 
+					getConexion().ejecutar( 
 							"BEGIN;"
 							+ "DELETE FROM detallefacturas "
 							+ "WHERE          "
@@ -77,7 +88,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 	@Override
 	public void eliminar(DetalleFactura detalleFactura) throws Exception {
 		// TODO Auto-generated method stub
-		if(detalleFactura!=null) new PostgreSql().ejecutar(
+		if(detalleFactura!=null) getConexion().ejecutar(
 				 "DELETE FROM detallefacturas "
 				 +" WHERE          "
 				 +" idfactura   = "+detalleFactura.getFactura().getId()					
@@ -89,7 +100,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 	public DetalleFactura getDetalleFactura(Integer idFactura,Integer idProducto) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				" SELECT  idfactura, idempaqueproducto,"
 				+ " cantidad, precio, descuento, iva, total "
 				+ " FROM detalleFacturas "
@@ -98,7 +109,7 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 				+ " idempaqueproducto = " +idProducto
 				+ ";"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		rSet.next();
 		return	new DetalleFactura(
 							new FacturaDAO().getFactura(rSet.getInt("idfactura")),
@@ -129,12 +140,12 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		// TODO Auto-generated method stub
 	List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT d.* FROM detalleFacturas d , facturas f "
 				+ " WHERE d.idfactura = f.id AND f.estado = ' " + condicion +"' "
 				+ ";"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())detalleFacturas.add(
 					new DetalleFactura(

@@ -87,5 +87,31 @@ public class ProductoAlmacen {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public String getIdAlmacenStr() {
+		return	almacen.getId().toString();
+	}
 	
+	public String getUbicacionAlmacenStr() {
+		return	almacen.getId().toString();
+	}
+	
+	public String getIdEmpaqueProductoStr() {
+		return	empaqueProducto.getId().toString();
+	}
+	
+	public String getPresentacionStr() {
+		return	empaqueProducto.getProducto().getPresentacion().getMaterial();
+	}
+	
+	public String getCapacidadStr() {
+		return	empaqueProducto.getProducto().getCapacidad().getVolumen().toString();
+	}
+	
+	public String getSaborStr() {
+		return	empaqueProducto.getProducto().getSabor().getSabor();
+	}
+	
+	public String getProductoStr() {
+		return	empaqueProducto.getProducto().getNombre();
+	}
 }

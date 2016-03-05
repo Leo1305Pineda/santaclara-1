@@ -15,22 +15,34 @@ import java.util.Date;
 import java.util.List;
 
 import santaclara.dao.IVisitaDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Visita;
 
 public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
+
+	
+	
+	public VisitaDAO(){
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public List<Visita> getVisitas() throws Exception {
 		// TODO Auto-generated method stub
 		List<Visita> visitas = new ArrayList<Visita>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id, fecha, motivo, descripcion, valorvendedor, valorproducto,"
 				+ " estado, idusuario, idcliente "
 				+ "FROM visitas  ORDER BY id;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 	
 		
 			while(rSet.next())
@@ -59,7 +71,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		// TODO Auto-generated method stub
 		if (visita.getId()==null){
 			
-			new PostgreSql().ejecutar( 
+			getConexion().ejecutar( 
 					"INSERT INTO visitas( fecha, motivo, descripcion, valorvendedor, valorproducto, estado, idusuario, idcliente) "
 							+"VALUES ("
 							+ " '" +visita.getFechaStr()   		+"', "
@@ -72,7 +84,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 							+ "  " +visita.getCliente().getId()	+");");
 		}
 		else{			
-				new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 						"UPDATE visitas SET   "
 								+ "fecha         = '" +visita.getFechaStr("-")      +"', "
 								+ "motivo        = '" +visita.getMotivo()   		+"', "
@@ -89,7 +101,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 	@Override
 	public void eliminar(Visita visita) throws Exception {
 		// TODO Auto-generated method stub
-		if(visita!=null) new PostgreSql().ejecutar(
+		if(visita!=null) getConexion().ejecutar(
 				"DELETE FROM visitas "
 				+"WHERE id = "+visita.getId() +" ;");
 	}
@@ -99,7 +111,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 			throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id, fecha, motivo, descripcion, valorvendedor, valorproducto,"
 				+ " estado, idusuario, idcliente "
 				+ " FROM visitas "
@@ -107,7 +119,7 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 				+ " idusuario  =  " +idJefeVenta+ " AND"
 				+ " idcliente  =  "	+idCliente	+ ";");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 		
 		rSet.next();
 		

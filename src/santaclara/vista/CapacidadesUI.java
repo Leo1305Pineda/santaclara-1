@@ -11,6 +11,8 @@ package santaclara.vista;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -20,8 +22,12 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
+import componente.JDibujarTabla;
+import componente.jCampoBuscar;
 import net.miginfocom.swing.MigLayout;
+import santaclara.Servicio.ServicioCapacidad;
 import santaclara.controlador.ContCapacidades;
+import santaclara.modelo.Capacidad;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
 @SuppressWarnings("serial")
@@ -39,12 +45,24 @@ public class CapacidadesUI extends VistaGenericaUI {
 	
 	private ContCapacidades contCapacidades;
 	
-	public CapacidadesUI(ContCapacidades contCapacidades) {
+	public CapacidadesUI(ContCapacidades contCapacidades) throws Exception {
 		this.contCapacidades = contCapacidades;
 		
 		dibujarPanelOpciones();
-		dibujarBuscar();
-		getBtnABuscar().addActionListener(contCapacidades.buscar());
+		List<Capacidad> catalogo = new ServicioCapacidad().getCapacidades();
+		List<jCampoBuscar> campos = new ArrayList<jCampoBuscar>();
+		campos.add(jCampoBuscar.crearCampoBusquedad("id","getId"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("volumen","getVolumen"));
+		dibujarBuscar(campos,catalogo,new JDibujarTabla() {
+			
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			public void dibujarTabla(List resultados) {
+				// TODO Auto-generated method stub
+				CapacidadesUI.this.contCapacidades.activarBinding(resultados);
+			}
+		});
+
 		dibujarPanelTabla();
 		dibujarBotonAtras();
 		getBtnAtras().addActionListener(contCapacidades.atras());

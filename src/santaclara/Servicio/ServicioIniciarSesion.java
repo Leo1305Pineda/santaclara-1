@@ -17,6 +17,7 @@ import santaclara.modelo.JefeVenta;
 import santaclara.modelo.Usuario;
 import santaclara.modelo.Vendedor;
 
+
 public class ServicioIniciarSesion {
 
 	private UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -28,33 +29,28 @@ public class ServicioIniciarSesion {
 	public Usuario iniciarSesion(String username, String contrasena) throws Exception {
 		// TODO Auto-generated method stub
 		Usuario usuario = usuarioDAO.getUsuario(username);
-		if (usuario== null)
+		if (usuario!= null)
 		{
-			return null;
-		}
-		if (usuario.getContrasena().equals(contrasena))
-		{
-			//cargar elTipo de USuario 
-			Vendedor vendedor = vendedorDAO.getVendedor(usuario.getId());
-			if(vendedor != null)
+			if (usuario.getContrasena().equals(contrasena))
 			{
-				return vendedor;
-			}
-			Concesionario concesionario = concesionarioDAO.getConcesionario(usuario.getId());
-			if(concesionario != null )
-			{
-				return concesionario;
-			}
-			JefeVenta jefeVenta = jefeVentaDAO.getJefeVenta(usuario.getId());
-			if(jefeVenta != null)
-			{
-				return jefeVenta;
-			}
-			return usuario;
+				//cargar elTipo de USuario 
+				Vendedor vendedor = vendedorDAO.getVendedor(usuario.getId());
+				if(vendedor != null)
+				{
+					return vendedor;
+				}
+				Concesionario concesionario = concesionarioDAO.getConcesionario(usuario.getId());
+				if(concesionario != null )
+				{
+					return concesionario;
+				}
+				JefeVenta jefeVenta = jefeVentaDAO.getJefeVenta(usuario.getId());
+				if(jefeVenta != null)
+				{
+					return jefeVenta;
+				}
+			}				
 		}
-		else
-		{
-			return null;
-		}
+		return usuario;
 	}
 }

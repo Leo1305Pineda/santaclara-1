@@ -12,21 +12,34 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import santaclara.dao.IUsuarioDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Usuario;
 
 public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
+
+	public UsuarioDAO() {
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
 
 	@Override
 	public List<Usuario> getUsuarios() throws Exception {
 		// TODO Auto-generated method stub
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"Select id,username,cedula,nombre,contrasena From usuarios where id !=1"); 
 	
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 		while(rSet.next())usuarios.add(
 				new Usuario(rSet.getInt(1), rSet.getString(2), 
@@ -39,7 +52,7 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 	public void guardar(Usuario usuario) throws Exception {
 		// TODO Auto-generated method stub
 		if (usuario.getId()==null){
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"INSERT INTO usuarios(username,cedula,nombre,contrasena) "
 					+"VALUES ("
 					+"'" +usuario.getUsername()	  + "', "
@@ -48,7 +61,7 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 					+"'" +usuario.getContrasena() + "');");	
 		}
 		else{
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"UPDATE usuarios SET"
 					+"ubicacion  ='" +usuario.getUsername()   +"',"
 					+"cedula     ='" +usuario.getCedula()	  +"',"
@@ -62,7 +75,7 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 	@Override
 	public void eliminar(Usuario usuario) throws Exception {
 		// TODO Auto-generated method stub
-		if(usuario!=null) new PostgreSql().ejecutar(
+		if(usuario!=null) getConexion().ejecutar(
 								  "DELETE FROM almacenes "
 								  + "WHERE id = "+usuario.getId() +";");
 	}
@@ -70,41 +83,32 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 	@Override
 	public Usuario getUsuario(String username) throws Exception {
 		// TODO Auto-generated method stub
-		ResultSet rSet = new PostgreSql().getSelect(
-								"Select id,username,cedula,nombre,contrasena From usuarios "
-								+"where username = '"+ username +"';"); 
-		
-		if(rSet==null) return null;
-
-		rSet.next();
-		return new Usuario(rSet.getInt(1), rSet.getString(2), rSet.getString(3), rSet.getString(4), rSet.getString(5));
+		List<Usuario> usuarios = getUsuarios();
+		for(Usuario usuario: usuarios)
+		{
+			if(usuario.getUsername().equals(username))return usuario;
+		}
+		return null;
 	}
 
 	public Usuario getUsuario(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-		ResultSet rSet = new PostgreSql().getSelect(
-				"Select id,username,cedula,nombre,contrasena From usuarios "
-				+"where id = '"+ id +"';");  
-		
-		if(rSet==null) return null;
-		
-		rSet.next();
-		return new Usuario(
-				rSet.getInt("id"), rSet.getString("username"),
-				rSet.getString("cedula"), rSet.getString("nombre"),
-				rSet.getString("contrasena"));
+		List<Usuario> usuarios = getUsuarios();
+		for(Usuario usuario: usuarios)
+		{
+			if(usuario.getId().equals(id))return usuario;
+		}
+		return null;
     }	
 	
 	public Usuario getUsuarioCedula(String cedula) throws Exception {
 		// TODO Auto-generated method stub
-		ResultSet rSet = new PostgreSql().getSelect(
-				"Select id,username,cedula,nombre,contrasena From usuarios "
-				+"where cedula = '"+ cedula +"';");  
-		
-		if(rSet==null) return null;
-		
-		rSet.next();
-		return new Usuario(rSet.getInt(1), rSet.getString(2), rSet.getString(3), rSet.getString(4), rSet.getString(5));
+		List<Usuario> usuarios = getUsuarios();
+		for(Usuario usuario: usuarios)
+		{
+			if(usuario.getCedula().equals(cedula))return usuario;
+		}
+		return null;
 	}
 	
 	/***Manejo con txt

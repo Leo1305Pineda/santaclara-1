@@ -10,10 +10,9 @@ package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -34,15 +33,16 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 	private ServicioAlmacen servicioAlmacen;
 	private AlmacenesUI vista;
 	private Almacen almacen = new Almacen();
-	private List<Almacen> almacenes = new ServicioAlmacen().getAlmacenes();
+	private List<Almacen> almacenes =new ArrayList<Almacen>();
 	
 	public ContAlmacenes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		servicioAlmacen = new ServicioAlmacen();
-		vista = new AlmacenesUI(this);
+		List<Almacen> almacenesAux = servicioAlmacen.getAlmacenes();
+		vista = new AlmacenesUI(this,almacenesAux);
 		dibujar(vista,this);
-		activarBinding(almacenes);
+		activarBinding(almacenesAux);
 	}
 
 	@Override
@@ -95,28 +95,7 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 			}
 		};
 	}
-
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
-				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				if(fila>=0)
-				{
-					cargarAlmacen(almacenes.get(fila));
-				}
-				else 
-				{
-					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					cargarAlmacen(new Almacen());
-				}
-			}
-		};
-	}
+ 
 
 	public ServicioAlmacen getServicioAlmacenes() {
 		return servicioAlmacen;
@@ -207,7 +186,7 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 			}
 		};
 	}
-
+/*
 	public KeyAdapter mostrarAlmacen_keypress() {
 		// TODO Auto-generated method stub
 		return new KeyAdapter() {
@@ -229,6 +208,8 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 			}
 		};
 	}  
+	
+	*/
 
 	public void cargarAlmacen(Almacen almacen) {
 		// TODO Auto-generated method stub	
@@ -245,7 +226,7 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Almacen> almacenes) {
 		// TODO Auto-generated method stub
-	 
+		this.almacenes = almacenes;
 		vista.remove(vista.getPnAlmacen());
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
@@ -257,7 +238,7 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 	    binAlmacenes.addColumnBinding(ubicacionAlmacen).setColumnClass(String.class).setColumnName("Ubicacion");
 	    binAlmacenes.bind();
 	    
-	    vista.getTable().addKeyListener(mostrarAlmacen_keypress());
+	    //svista.getTable().addKeyListener(mostrarAlmacen_keypress());
 	 	vista.getTable().addMouseListener(mostrarAlmacen());
 	  
 	 	vista.remove(vista.getPnAlmacen());

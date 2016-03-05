@@ -13,23 +13,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IFacturaDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Factura;
 
 public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
+
+	public FacturaDAO() {
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public List<Factura> getFacturas() throws Exception {
 		// TODO Auto-generated method stub
 		List<Factura> Facturas = new ArrayList<Factura>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id, estado, fecha, idcliente, idvendedor,"
 				+ " idalmacen, subtotalexento, subtotalgravado, descuento,"
 				+ " ivasobrebs, iva, totalapagar FROM facturas "
 				+";");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
 		rSet.next();
 		Boolean estado = null;
@@ -86,7 +96,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 				linea = "Pedido";	
 			}
 			
-			new PostgreSql().ejecutar( 
+			getConexion().ejecutar( 
 					"INSERT INTO facturas( estado, fecha, idcliente,"
 					+ " idvendedor, idalmacen, subtotalexento," 
 					+"subtotalgravado, descuento, ivasobrebs, iva, totalapagar) "
@@ -123,8 +133,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 			{
 				linea = "Pedido";	
 			}
- 
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"UPDATE facturas SET"
 					+" estado 			= '" +linea							+"', "
 					+" fecha  			= '" +factura.getFechaStr("-")		+"',  "
@@ -187,14 +196,14 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 		else if(condicion==false) valorCondicion = "Pendiente";
 		else valorCondicion = "Pedido";
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id, estado, fecha, idcliente, idvendedor,"
 				+ " idalmacen, subtotalexento, subtotalgravado, descuento,"
 				+ " ivasobrebs, iva, totalapagar FROM facturas "
 				+" WHERE estado = '"+valorCondicion+"' "
 				+ ";");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
 		rSet.next();
 		Boolean estado = null;
@@ -229,7 +238,7 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 	}
 
 	public Integer ultimaFactura() throws Exception{
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT MAX(id) AS ultimaID  FROM facturas"
 				+ " ;" );
 		rSet.next();

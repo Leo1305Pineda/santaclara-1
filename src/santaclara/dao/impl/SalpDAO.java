@@ -13,20 +13,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.ISalpDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Salp;
 
 public class SalpDAO extends GenericoDAO implements  ISalpDAO{
+
+	
+	public SalpDAO(){
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public List<Salp> getSalps() throws Exception {
 		// TODO Auto-generated method stub
 		List<Salp> salps = new ArrayList<Salp>(); 
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT idcliente FROM salp Order by idcliente;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 			while(rSet.next())salps.add(
 					new Salp(new ClienteDAO().getCliente(rSet.getInt("idcliente")))); 
 		return salps;
@@ -38,7 +49,7 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 		if (salp.getId()==null){
 			try {
 
-				new PostgreSql().ejecutar(
+				getConexion().ejecutar(
 						"  BEGIN;"
 						+ ""
 						+" INSERT INTO clientes(rif, razonsocial,direccion, telefono,idruta)"
@@ -69,7 +80,7 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 	@Override
 	public void eliminar(Salp salp) throws Exception {
 		// TODO Auto-generated method stub
-		if(salp!=null) new PostgreSql().ejecutar(
+		if(salp!=null) getConexion().ejecutar(
 								"BEGIN;"
 								+" DELETE FROM salp "
 								+" WHERE idcliente = "+salp.getId() +";  "

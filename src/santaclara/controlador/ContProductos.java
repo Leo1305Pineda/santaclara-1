@@ -127,27 +127,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 		}
 	}
 
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
-				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				if(fila>=0)
-				{
-					cargarProducto(productos.get(fila));
-				}
-				else 
-				{
-					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					cargarProducto(new Producto());
-				}
-			}
-		};
-	}
+	
 	
 	public ActionListener eliminar() {
 		return new ActionListener() {
@@ -310,7 +290,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Producto> lsProductos) {
 		// TODO Auto-generated method stub
-		
+		this.productos=lsProductos;
     	vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
 		vista.getScrollPanel().setViewportView(vista.getTable());

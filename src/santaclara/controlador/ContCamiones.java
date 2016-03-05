@@ -113,29 +113,6 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			
 		};
 	}
-
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
-				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				if(fila>=0)
-				{
-					cargarCamion(camiones.get(fila));
-				}
-				else 
-				{
-					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					cargarCamion(new Camion());
-				}
-
-			}
-		};
-	}
 	
 	public void setVista(CamionesUI vista) {
 		this.vista = vista;
