@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import org.jdesktop.beansbinding.AutoBinding;
@@ -97,30 +96,7 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
-	
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
-				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				if(fila>=0)
-				{
-					cargarProductoAlmacen(productoAlmacenes.get(fila));
-				}
-				else 
-				{
-					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					productoAlmacen = new ProductoAlmacen();
-					cargarProductoAlmacen(productoAlmacen);
-				}
-			}
-		};
-	}
-	
+		
 	public ActionListener eliminar() {
 		return new ActionListener() {
 
@@ -269,6 +245,8 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void activarBinding(List<ProductoAlmacen> productoAlmacenes) {
 		// TODO Auto-generated method stub
+		this.productoAlmacenes = productoAlmacenes;
+		
 		vista.remove(vista.getPanelProductoAlmacen());
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
@@ -290,10 +268,10 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 	    BeanProperty stockMinProductoAlmacen = BeanProperty.create("stockMin");
 	    BeanProperty existenciaProductoAlmacen = BeanProperty.create("existencia");
 
-	    binProductoAlmacenes.addColumnBinding(idAlmacen).setColumnClass(String.class).setColumnName("Id");
+	    binProductoAlmacenes.addColumnBinding(idAlmacen).setColumnClass(String.class).setColumnName("Id Almacen");
 	    binProductoAlmacenes.addColumnBinding(nombreAlmacen).setColumnClass(String.class).setColumnName("Ubicacion del Almacen");
 	    
-	    binProductoAlmacenes.addColumnBinding(idEmpaqueProducto).setColumnClass(String.class).setColumnName("Id");
+	    binProductoAlmacenes.addColumnBinding(idEmpaqueProducto).setColumnClass(String.class).setColumnName("Id Empaque");
 	    binProductoAlmacenes.addColumnBinding(nombreProducto).setColumnClass(String.class).setColumnName("Producto");
 	    binProductoAlmacenes.addColumnBinding(presentacionProducto).setColumnClass(String.class).setColumnName("Presentacion");
 	    binProductoAlmacenes.addColumnBinding(capacidadProducto).setColumnClass(String.class).setColumnName("Capacidad");

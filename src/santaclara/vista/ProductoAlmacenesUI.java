@@ -25,12 +25,19 @@ import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
 
+import componente.JDibujarTabla;
+import componente.jCampoBuscar;
+
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 
+import santaclara.Servicio.ServicioProductoAlmacen;
 import santaclara.controlador.ContProductoAlmacenes;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.EmpaqueProducto;
+import santaclara.modelo.ProductoAlmacen;
 import santaclara.vista.herramientas.VistaGenericaUI;
 import net.miginfocom.swing.MigLayout;
 
@@ -63,12 +70,32 @@ public class ProductoAlmacenesUI extends VistaGenericaUI {
 	
 	private JTextField campo = new JTextField();
 	
-	public ProductoAlmacenesUI(ContProductoAlmacenes contProductoAlmacenes) {
+	public ProductoAlmacenesUI(ContProductoAlmacenes contProductoAlmacenes) throws Exception {
 		this.contProductoAlmacenes = contProductoAlmacenes;			
 		
 		dibujarPanelOpciones();
-		dibujarBuscar();
-		getBtnABuscar().addActionListener(contProductoAlmacenes.buscar());
+		List<ProductoAlmacen> catalogo = new ServicioProductoAlmacen().getProductoAlmacenes();
+		List<jCampoBuscar> campos = new ArrayList<jCampoBuscar>();
+		campos.add(jCampoBuscar.crearCampoBusquedad("Id Almacen","getIdAlmacenStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Ubicacion","getUbicacionAlmacenStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Id Empaque","getIdEmpaqueProductoStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Producto","getProductoStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Presentacion","getPresentacionStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Capacidad","getCapacidadStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Sabor","getSaborStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Stock","getStock"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("StockMin","getStockMin"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Existencia","getExistencia"));
+		dibujarBuscar(campos,catalogo,new JDibujarTabla() {
+			
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			public void dibujarTabla(List resultados) {
+				// TODO Auto-generated method stub
+				ProductoAlmacenesUI.this.contProductoAlmacenes.activarBinding(resultados);
+			}
+		});
+
 		dibujarPanelTabla();
 		dibujarBotonAtras();
 		getBtnAtras().addActionListener(contProductoAlmacenes.Atras());

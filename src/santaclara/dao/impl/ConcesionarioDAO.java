@@ -13,20 +13,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IConcesionarioDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Concesionario;
 
 public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 	
+	public ConcesionarioDAO(){
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public List<Concesionario> getConcecionarios() throws Exception {
 		// TODO Auto-generated method stub
 		List<Concesionario> concesionarios = new ArrayList<Concesionario>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id, idcamion, idruta FROM concesionarios Order by id;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())concesionarios.add(
 					new Concesionario(new UsuarioDAO().getUsuario(rSet.getInt("id")),
@@ -39,7 +49,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 	public void guardar(Concesionario concesionario) throws Exception {
 		// TODO Auto-generated method stub
 		if (concesionario.getId()==null){
-			new PostgreSql().ejecutar( 
+			getConexion().ejecutar( 
 					"BEGIN;"
 							+ "    "
 							+ "INSERT INTO usuarios(username,cedula,nombre,contrasena) "
@@ -60,7 +70,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 							+ "COMMIT;");	
 		}
 		else{
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					" UPDATE  usuarios  SET "
 							+" username   ='" +concesionario.getUsername()		+ "', " 
 							+" cedula     ='" +concesionario.getCedula()		+ "', "
@@ -79,7 +89,7 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 	@Override
 	public void eliminar(Concesionario concesionario) throws Exception {
 		// TODO Auto-generated method stub
-		if(concesionario!=null) new PostgreSql().ejecutar(
+		if(concesionario!=null) getConexion().ejecutar(
 								"DELETE FROM concesionarios "
 								+"WHERE id = "+concesionario.getId() +" ;");
 	}
@@ -88,11 +98,12 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 	public Concesionario getConcesionario(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id, idcamion, idruta FROM concesionarios "
-				+ "WHERE id ="+id+" ;");
+				+" WHERE id ="+id+" ;");
 
-		if(rSet == null) return null;
+		if(rSet==null) return null;
+		if(rSet.getFetchSize()==0)return null;
 
 		rSet.next();
 		return new Concesionario(new UsuarioDAO().getUsuario(rSet.getInt("id")),

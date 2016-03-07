@@ -25,15 +25,21 @@ import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
 
+import componente.JDibujarTabla;
+import componente.jCampoBuscar;
+
 import java.awt.Color;
 
 import net.miginfocom.swing.MigLayout;
-
+import santaclara.Servicio.ServicioEmpaqueProducto;
 import santaclara.controlador.ContEmpaqueProductos;
+import santaclara.modelo.EmpaqueProducto;
 import santaclara.modelo.Producto;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class EmpaqueProductosUI extends VistaGenericaUI {
@@ -54,13 +60,29 @@ public class EmpaqueProductosUI extends VistaGenericaUI {
 	
 	private ContEmpaqueProductos contEmpaqueProductos;
 	
-	public EmpaqueProductosUI(ContEmpaqueProductos contEmpaqueProductos) {
+	public EmpaqueProductosUI(ContEmpaqueProductos contEmpaqueProductos) throws Exception {
 		
 		this.contEmpaqueProductos = contEmpaqueProductos;
 		
 		dibujarPanelOpciones();
-		dibujarBuscar();
-		getBtnABuscar().addActionListener(contEmpaqueProductos.buscar());
+		List<EmpaqueProducto> catalogo = new ServicioEmpaqueProducto().getEmpaqueProductos();
+		List<jCampoBuscar> campos = new ArrayList<jCampoBuscar>();
+		campos.add(jCampoBuscar.crearCampoBusquedad("id","getId"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("producto","getProductoStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Presentacion","getPresentacionStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Capacidad","getCapacidadStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Sabor","getSaborStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Unidades por Empaque","getUnidadesStr"));
+		dibujarBuscar(campos,catalogo,new JDibujarTabla() {
+			
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			public void dibujarTabla(List resultados) {
+				// TODO Auto-generated method stub
+				EmpaqueProductosUI.this.contEmpaqueProductos.activarBinding(resultados);
+			}
+		});
+
 		dibujarPanelTabla();
 		dibujarBotonAtras();
 		getBtnAtras().addActionListener(contEmpaqueProductos.Atras());

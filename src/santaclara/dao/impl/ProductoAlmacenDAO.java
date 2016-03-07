@@ -13,20 +13,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IProductoAlmacenDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.ProductoAlmacen;
 
 public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenDAO {
+
+	
+	public ProductoAlmacenDAO(){
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public List<ProductoAlmacen> getProductoAlmacenes() throws Exception {
 		// TODO Auto-generated method stub
 		List<ProductoAlmacen> productoAlmaceness = new ArrayList<ProductoAlmacen>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT idempaqueproducto, idalmacen, stock, stockmin, existencia FROM productoAlmacenes "); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())productoAlmaceness.add(
 					new ProductoAlmacen( 
@@ -50,7 +61,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 			if(productoAlmacen1.getAlmacen().getId().equals(productoAlmacen.getAlmacen().getId())&&
 					productoAlmacen1.getEmpaqueProducto().getId().equals(productoAlmacen.getEmpaqueProducto().getId()))
 			{
-				new PostgreSql().ejecutar(
+				getConexion().ejecutar(
 						"UPDATE productoAlmacenes SET"
 						+" stock     		 = " +productoAlmacen.getStock() 					+", "
 						+" stockmin			 = " +productoAlmacen.getStockMin() 				+", "
@@ -65,7 +76,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 				break;
 			}
 		}
-		if(enc == false )new PostgreSql().ejecutar( 
+		if(enc == false ) getConexion().ejecutar( 
 				"INSERT INTO productoAlmacenes(idempaqueproducto, idalmacen, stock, stockmin, existencia) "
 				+ "VALUES ("
 				+" " +productoAlmacen.getEmpaqueProducto().getId()	+", "
@@ -80,7 +91,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	@Override
 	public void eliminar(ProductoAlmacen productoAlmacen) throws Exception {
 		// TODO Auto-generated method stub
-		if(productoAlmacen!=null) new PostgreSql().ejecutar(
+		if(productoAlmacen!=null) getConexion().ejecutar(
 								"DELETE FROM productoAlmacenes "
 								+" WHERE "
 								+" idempaqueproducto = " +productoAlmacen.getEmpaqueProducto().getId()	+" "
@@ -93,7 +104,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 	public ProductoAlmacen getProductoAlmacen(Integer idProducto,Integer idAlmacen) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT idempaqueproducto, idalmacen, stock, stockmin, existencia FROM productoAlmacenes "
 						+" WHERE "
 						+" idempaqueproducto = " +idProducto +" "
@@ -101,7 +112,7 @@ public class ProductoAlmacenDAO extends GenericoDAO implements IProductoAlmacenD
 						+" idalmacen         = " +idAlmacen	 +" "
 						+" ;");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
 		rSet.next();
 		return new ProductoAlmacen( 

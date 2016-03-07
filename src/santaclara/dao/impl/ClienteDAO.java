@@ -13,20 +13,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IClienteDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Cliente;
 
 public class ClienteDAO extends GenericoDAO implements IClienteDAO{
+
+	public ClienteDAO() {
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public List<Cliente> getClientes() throws Exception {
 		// TODO Auto-generated method stub
 		List<Cliente> clientes = new ArrayList<Cliente>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id, rif, razonsocial, direccion, telefono, idruta FROM clientes Order by id;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())clientes.add(
 					new Cliente(
@@ -40,7 +50,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 	public void guardar(Cliente cliente) throws Exception {
 		// TODO Auto-generated method stub
 		if (cliente.getId()==null){
-			new PostgreSql().ejecutar( 
+			getConexion().ejecutar( 
 					"INSERT INTO clientes(rif, razonsocial, direccion, telefono, idruta) "
 					+ "VALUES ("
 					+"' " +cliente.getRif()				+"', "
@@ -51,7 +61,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 					+ ");");	
 		}
 		else{
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"UPDATE clientes SET   "
 					+" rif         ='" +cliente.getRif() +"', "
 					+" razonsocial ='" +cliente.getRazonsocial() 	+"', "
@@ -65,7 +75,7 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 	@Override
 	public void eliminar(Cliente cliente) throws Exception {
 		// TODO Auto-generated method stub
-		if(cliente!=null) new PostgreSql().ejecutar(
+		if(cliente!=null) getConexion().ejecutar(
 								"DELETE FROM clientes "
 								+"WHERE id = "+cliente.getId() +" ;");
 	}
@@ -73,30 +83,22 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 	@Override
 	public Cliente getCliente(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-		
-		ResultSet rSet = new PostgreSql().getSelect(
-				" SELECT id, rif, razonsocial, direccion, telefono, idruta   "
-				+" FROM clientes     "
-				+" WHERE id ="+id+" ;");
-
-		if(rSet == null) return null;
-
-		rSet.next();
-		return new Cliente(
-				rSet.getInt("id"),rSet.getString("rif") , 
-				rSet.getString("razonsocial"), rSet.getString("direccion"), 
-				rSet.getString("telefono"),new RutaDAO().getRuta(rSet.getInt("idruta")));
-		
+		List<Cliente> clientes = getClientes();
+		for(Cliente cliente : clientes)
+		{
+			if(cliente.getId().equals(id))return cliente;
+		}
+		return null;
 	}
 
 	public Cliente getCliente(String rif) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"   SELECT id, rif, razonsocial, direccion, telefono, idruta FROM clientes    "
 				+"  WHERE rif ='"+rif+"' ;");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0 ) return null;
 
 		while(rSet.next())
 		{

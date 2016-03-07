@@ -51,6 +51,7 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 		vista = new EmpaqueProductosUI(this);		
 		dibujar(vista,this);
 		activarBinding(empaqueProductos);
+		cargarEmpaqueProducto(new EmpaqueProducto());
 		cargarCmbProducto();
 	}
 
@@ -87,29 +88,7 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
-	
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
-				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				if(fila>=0)
-				{
-					cargarEmpaqueProducto(empaqueProductos.get(fila));
-				}
-				else 
-				{
-					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					cargarEmpaqueProducto(new EmpaqueProducto());
-				}
-			}
-		};
-	}
-	
+		
 	public ActionListener eliminar() {
 		return new ActionListener() {
 

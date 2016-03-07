@@ -19,13 +19,19 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import net.miginfocom.swing.MigLayout;
+import santaclara.Servicio.ServicioPresentacion;
 import santaclara.controlador.ContPresentaciones;
+import santaclara.modelo.Presentacion;
 import santaclara.vista.herramientas.VistaGenericaUI;
-
 
 import javax.swing.JLabel;
 
+import componente.JDibujarTabla;
+import componente.jCampoBuscar;
+
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class PresentacionesUI extends VistaGenericaUI {
@@ -40,12 +46,24 @@ public class PresentacionesUI extends VistaGenericaUI {
 	private JTextField txtNombre;
 	private ContPresentaciones contPresentaciones;
 	
-	public PresentacionesUI(ContPresentaciones contPresentaciones) {
+	public PresentacionesUI(ContPresentaciones contPresentaciones) throws Exception {
 		this.contPresentaciones = contPresentaciones;
 		
 		dibujarPanelOpciones();
-		dibujarBuscar();
-		getBtnABuscar().addActionListener(contPresentaciones.buscar());
+		List<Presentacion> catalogo = new ServicioPresentacion().getPresentaciones();
+		List<jCampoBuscar> campos = new ArrayList<jCampoBuscar>();
+		campos.add(jCampoBuscar.crearCampoBusquedad("id","getId"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("material","getMaterial"));
+		dibujarBuscar(campos,catalogo,new JDibujarTabla() {
+			
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			public void dibujarTabla(List resultados) {
+				// TODO Auto-generated method stub
+				PresentacionesUI.this.contPresentaciones.activarBinding(resultados);
+			}
+		});
+
 		dibujarPanelTabla();
 		dibujarBotonAtras();
 		getBtnAtras().addActionListener(contPresentaciones.atras());

@@ -14,11 +14,21 @@ import java.util.List;
 import java.util.Scanner;
 
 import santaclara.dao.IVendedorDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Vendedor;
 import santaclara.modelo.Ruta;
 
 public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
+
+	public VendedorDAO(){
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@SuppressWarnings("resource")
 	@Override
@@ -26,14 +36,14 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 		// TODO Auto-generated method stub
 		List<Vendedor> vendedores = new ArrayList<Vendedor>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				" SELECT u .* , v.id, v.idrutas "
 				+ " FROM vendedores v , usuarios u "
 				+ " WHERE v.id = u.id"
-				+ " Order by id;"); 
+				+ " Order by v.id;"); 
 		
-		if(rSet==null) return null;
-		
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
+		rSet.next();
 		while(rSet.next())
 		{
 			Scanner sc = new Scanner(rSet.getString("idrutas")).useDelimiter("-");
@@ -56,7 +66,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 					new Vendedor(rSet.getInt("id"),
 							rSet.getString("username"),
 							rSet.getString("cedula"),
-							rSet.getString("nombres"),
+							rSet.getString("nombre"),
 							rSet.getString("contrasena"), rutas));
 		} 
 		return vendedores;
@@ -83,7 +93,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 		{
 			String lineaRutas =	getRutasStr(vendedor.getRutas());
 			
-			new PostgreSql().ejecutar( 
+			getConexion().ejecutar( 
 					"BEGIN;"
 					+ "    "
 					+ "INSERT INTO usuarios(username,cedula,nombre,contrasena) "
@@ -107,7 +117,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 			String lineaRutas =	getRutasStr(vendedor.getRutas());
 			
 			new UsuarioDAO().guardar(vendedor);
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					" UPDATE  usuarios  SET "
 					+" username   ='" +vendedor.getUsername()	+ "', " 
 					+" cedula     ='" +vendedor.getCedula()		+ "', "
@@ -125,7 +135,7 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 	@Override
 	public void eliminar(Vendedor vendedor) throws Exception {
 		// TODO Auto-generated method stub
-		if(vendedor!=null) new PostgreSql().ejecutar(
+		if(vendedor!=null) getConexion().ejecutar(
 				" DELETE FROM vendedores "
 				+" WHERE id = " + vendedor.getId() +" "
 				+" ;");		
@@ -136,38 +146,46 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 	@Override
 	public Vendedor getVendedor(Integer id) throws Exception { 
 		// TODO Auto-generated method stub
-		ResultSet rSet = new PostgreSql().getSelect(
+	try {
+		
+		ResultSet rSet = getConexion().getSelect(
 				" SELECT u .* , v.id, v.idrutas "
 				+ " FROM vendedores v , usuarios u "
 				+ " WHERE v.id = u.id AND "
 				+ "v.id = " +id
-				+ " Order by id;"); 
+				+ " ;"); 
+		
 		
 		if(rSet==null) return null;
+		if(rSet.getFetchSize()==0)return null;
 		
+		System.out.println(rSet.getFetchSize());
+		rSet.next();
+		System.out.println(rSet.getString("idrutas"));
 		Scanner sc = new Scanner(rSet.getString("idrutas")).useDelimiter("-");
 		 List<Ruta> rutas = new ArrayList<Ruta>();
 		 if (sc.hasNext())
 		 {
-			
 			 while(sc.hasNext())
 			 {
 				 Ruta ruta = new Ruta();
 				 ruta.setId(sc.nextInt());
-				//guardar demas datos de la rutas
 				 RutaDAO rutaDAO = new RutaDAO();
 				 ruta = rutaDAO.getRuta(ruta.getId());
 				 rutas.add(ruta);
 			 }
 		 }
-			rSet.next();
-			
+	
 			return new Vendedor(rSet.getInt("id"),
 						rSet.getString("username"),
 						rSet.getString("cedula"),
 						rSet.getString("nombres"),
-						rSet.getString("contrasena"), rutas); 
-
+						rSet.getString("contrasena"), rutas);
+	} catch (Exception e) {
+		// TODO: handle exception
+		e.printStackTrace();
+	}
+		 return null;
 	}
 	
 	public Boolean getVendedor(Vendedor vendedor) throws Exception {

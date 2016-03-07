@@ -13,36 +13,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IJefeVentaDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.JefeVenta;
 import santaclara.modelo.Usuario;
 
 public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 	 
 	private UsuarioDAO usuarioDAO = new UsuarioDAO();
-	private ResultSet rSet;
 	private List<JefeVenta> jefeVentas = new ArrayList<JefeVenta>();
 	private JefeVenta jefeVenta;
+	private ResultSet rSet;
 
+	
 	@Override
 	public List<JefeVenta> getJefeVentas() throws Exception {
 		// TODO Auto-generated method stub
+	try {
+		rSet = getConexion().getSelect(
+				"SELECT u.*,j.idzona FROM jefeventas j,usuarios u,zonas z "
+				+ " WHERE j.id = u.id "
+				+ " AND j.idzona = z.id "
+				+ " AND j.id != 1"
+				+ ";"); 
 		
-		ResultSet rSet = new PostgreSql().getSelect("SELECT j.id,u.username,u.cedula,u.nombre,u.contrasena,j.idzona,z.descripcion "
-				+ "FROM jefeventas j,usuario u,zona z "
-				+ "WHERE j.id = u.id AND j.idzona = z.id "); 
-		
-		if(rSet!=null)
+		if(rSet!=null || rSet.getFetchSize()!=0)
 		{
 			while(rSet.next())
 			{
-				jefeVenta = new JefeVenta(rSet.getInt(1), rSet.getString(2), 
-						rSet.getString(3), rSet.getString(4), rSet.getString(5), new ZonaDAO().getZona(rSet.getInt(2)));
+			//	jefeVenta = new JefeVenta(id, username, cedula, nombres, contrasena, zona);
+				
+				jefeVenta = new JefeVenta(
+						rSet.getInt("id"), 
+						rSet.getString("username"), 
+						rSet.getString("cedula"), 
+						rSet.getString("nombre"), 
+						rSet.getString("contrasena"),
+						new ZonaDAO().getZona(rSet.getInt("idzona")));
 				 			 
 				jefeVentas.add(jefeVenta);
 			}
 		}
 		return jefeVentas;
+		
+	} catch (Exception e) {
+		// TODO: handle exception
+		e.printStackTrace();
+	}	
+	return null;
+	
 	}
 	
 	@Override
@@ -55,7 +72,7 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 					jefeVenta.getUsername(), jefeVenta.getCedula(),
 					jefeVenta.getNombre(), jefeVenta.getContrasena()));
 			
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"BEGIN;"
 					+ "INSERT INTO usuarios(username,cedula,nombre,contrasena) "
 					+"VALUES ("
@@ -74,7 +91,7 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 		} 
 		else{
 			usuarioDAO.guardar(jefeVenta);
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"UPDATE  usuarios  SET "
 					+"username   ='" +jefeVenta.getUsername()	+ "'," 
 					+"cedula     ='" +jefeVenta.getCedula()		+ "',"
@@ -90,7 +107,7 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 	@Override
 	public void eliminar(JefeVenta jefeVenta) throws Exception {
 		// TODO Auto-generated method stub
-		if(jefeVenta!=null) new PostgreSql().ejecutar(
+		if(jefeVenta!=null) getConexion().ejecutar(
 				" DELETE FROM jefeventas "
 				+ "WHERE id = " + jefeVenta.getId() +" "
 				+";");		
@@ -100,11 +117,14 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 	@Override
 	public JefeVenta getJefeVenta(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-		rSet = new PostgreSql().getSelect("SELECT j.id,u.username,u.cedula,u.nombre,u.contrasena,j.idzona,z.descripcion "
-				+ "FROM jefeventas j,usuario u,zona z "
-				+ "WHERE j.id = u.id AND j.idzona = z.id  AND where id = ".concat(id.toString()).concat(";")); 
+		rSet = getConexion().getSelect(
+				"SELECT j.id,u.username,u.cedula,u.nombre,u.contrasena,j.idzona,z.descripcion "
+				+ " FROM jefeventas j,usuarios u,zonas z "
+				+ " WHERE j.id = "+id
+				+ " AND    j.id = u.id AND j.idzona = z.id " 
+				+ " ;"); 
 		
-		if(rSet!=null) return null;
+		if(rSet!=null || rSet.getFetchSize()==0) return null;
 		
 		rSet.next();
 		
@@ -114,11 +134,11 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 	
 	public JefeVenta getJefeVenta(String username) throws Exception {
 		// TODO Auto-generated method stub
-		rSet = new PostgreSql().getSelect("SELECT j.id,u.username,u.cedula,u.nombre,u.contrasena,j.idzona,z.descripcion "
+		rSet = getConexion().getSelect("SELECT j.id,u.username,u.cedula,u.nombre,u.contrasena,j.idzona,z.descripcion "
 				+ "FROM jefeventas j,usuario u,zona z "
 				+ "WHERE j.id = u.id AND j.idzona = z.id  AND where username = '".concat(username).concat("';")); 
 		
-		if(rSet!=null) return null;
+		if(rSet!=null || rSet.getFetchSize()!=0) return null;
 		
 		rSet.next();
 		
@@ -128,11 +148,11 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 	
 	public JefeVenta getJefeVentaCedula(String cedula) throws Exception {
 		// TODO Auto-generated method stub
-		rSet = new PostgreSql().getSelect("SELECT j.id,u.username,u.cedula,u.nombre,u.contrasena,j.idzona,z.descripcion "
+		rSet = getConexion().getSelect("SELECT j.id,u.username,u.cedula,u.nombre,u.contrasena,j.idzona,z.descripcion "
 				+ "FROM jefeventas j,usuario u,zona z "
 				+ "WHERE j.id = u.id AND j.idzona = z.id  AND where cedula = '".concat(cedula).concat("';")); 
 		
-		if(rSet!=null) return null;
+		if(rSet!=null || rSet.getFetchSize()!=0) return null;
 		
 		rSet.next();
 		
@@ -143,6 +163,12 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 	public JefeVentaDAO() {
 		super();
 		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}	
 }
 	/**** Manejo con txt

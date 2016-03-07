@@ -19,12 +19,19 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import net.miginfocom.swing.MigLayout;
+import santaclara.Servicio.ServicioSabor;
 import santaclara.controlador.ContSabores;
+import santaclara.modelo.Sabor;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
 import javax.swing.JLabel;
 
+import componente.JDibujarTabla;
+import componente.jCampoBuscar;
+
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class SaboresUI  extends VistaGenericaUI  {
@@ -42,12 +49,24 @@ public class SaboresUI  extends VistaGenericaUI  {
 	private JTextField txtId;
 	private ContSabores contSabores;
 	
-	public SaboresUI(ContSabores contSabores) {
+	public SaboresUI(ContSabores contSabores) throws Exception {
 		super();
 		this.contSabores = contSabores;
 		dibujarPanelOpciones();
-		dibujarBuscar();
-		getBtnABuscar().addActionListener(contSabores.buscar());
+		List<Sabor> catalogo = new ServicioSabor().getSabores();
+		List<jCampoBuscar> campos = new ArrayList<jCampoBuscar>();
+		campos.add(jCampoBuscar.crearCampoBusquedad("Id","getId"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Sabor","getSabor"));
+		dibujarBuscar(campos,catalogo,new JDibujarTabla() {
+			
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			public void dibujarTabla(List resultados) {
+				// TODO Auto-generated method stub
+				SaboresUI.this.contSabores.activarBinding(resultados);
+			}
+		});
+
 		dibujarPanelTabla();
 		dibujarBotonAtras();
 		getBtnAtras().addActionListener(contSabores.atras());

@@ -13,15 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IAlmacenDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Almacen;
 
 public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 
 	private Almacen almacen;
+	private ResultSet rSet;
 	
-	public AlmacenDAO( ) {
+	public AlmacenDAO( ){
 		super();  
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -29,9 +35,9 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 		// TODO Auto-generated method stub
 		List<Almacen> almacenes = new ArrayList<Almacen>();
 	
-		ResultSet rSet = new PostgreSql().getSelect("Select id,ubicacion From almacenes"); 
+		rSet = getConexion().getSelect("Select id,ubicacion From almacenes"); 
 		
-		if(rSet!=null)
+		if(rSet!=null || rSet.getFetchSize()!=0)
 		{
 			while(rSet.next())
 			{
@@ -46,13 +52,13 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 	public void guardar(Almacen almacen) throws Exception {
 		// TODO Auto-generated method stub
 		if (almacen.getId()==null){
-			new PostgreSql().ejecutar( 
+			getConexion().ejecutar( 
 					"INSERT INTO almacenes(ubicacion)"
 					+ " VALUES ("
 					+ "'" +almacen.getUbicacion()+ "');");	
 		}
 		else{
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"UPDATE almacenes SET"
 					+" ubicacion   = " + "'" +almacen.getUbicacion() +"'"
 					+" WHERE id    = " +almacen.getId()              +";");
@@ -63,7 +69,7 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 	@Override
 	public void eliminar(Almacen almacen) throws Exception {
 		// TODO Auto-generated method stub
-		if(almacen!=null) new PostgreSql().ejecutar(
+		if(almacen!=null) getConexion().ejecutar(
 								"DELETE FROM almacenes "
 								+"WHERE id = " +almacen.getId()+";");
 	}
@@ -71,11 +77,11 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 	@Override
 	public Almacen getAlmacen(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-		ResultSet rSet = new PostgreSql().getSelect(
+		rSet = getConexion().getSelect(
 								"SELECT id,ubicacion FROM almacenes "
 								+ "WHERE id = "+id +" ;"); 
 		
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 		
 		rSet.next();
 		return new Almacen(rSet.getInt(1),rSet.getString(2));

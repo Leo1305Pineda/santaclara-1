@@ -76,4 +76,20 @@ public class EmpaqueProducto {
 	public String getProductoPresentacionStr(){
 		return producto.getPresentacion().getMaterial();
 	}
+	
+	public String getProductoStr(){
+		return producto.getNombre();
+	}
+
+	public String getPresentacionStr(){
+		return producto.getPresentacionStr();
+	}
+	
+	public String getCapacidadStr(){
+		return producto.getCapacidadStr();
+	}
+	
+	public String getSaborStr(){
+		return producto.getSaborStr();
+	}
 }

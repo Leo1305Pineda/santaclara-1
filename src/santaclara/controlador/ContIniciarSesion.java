@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import santaclara.Servicio.ServicioIniciarSesion;
-import santaclara.dbPostgresql.controlador.ContPostgreSql;
+import santaclara.dbPostgresql.controlador.ContAjusteBaseDatoSql;
 import santaclara.modelo.Usuario;
 import santaclara.thread.animacion.Animado;
 import santaclara.vista.IniciarSesionUI;
@@ -66,17 +66,15 @@ public class ContIniciarSesion extends ContGeneral implements IContGeneral     {
 							
 							 getContPrincipal().activarAnimacionSantaclara(vista);
 						}
-					}
+					} 
 										
 					} catch (Exception e1) {
 					// TODO Auto-generated catch block
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(new JPanel(),
-								"Problema para establecer la conexion con la base de dato\n"
-										+ e1.getMessage()+"\n Para Solucionar Abrir Menu Base de dato\n"
-												+ "Abrir Ajuste de conexion");
+								"Problema para establecer la conexion con la base de dato");
 						try {
-							new ContPostgreSql(getContPrincipal());
+							new ContAjusteBaseDatoSql(getContPrincipal());
 						} catch (Exception e2) {
 							// TODO Auto-generated catch block
 							e2.printStackTrace();

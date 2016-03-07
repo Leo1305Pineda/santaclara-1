@@ -14,17 +14,19 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import componente.JBuscar;
+import componente.JDibujarTabla;
+import componente.jCampoBuscar;
 
 @SuppressWarnings("serial")
 public class VistaGenericaUI extends JPanel {
@@ -38,19 +40,18 @@ public class VistaGenericaUI extends JPanel {
 	private JScrollPane scrollPanel;
 	private JTable table;
 	private JButton btnAtras;
-	private JButton btnSalir;
-	private JButton btnABuscar;
-	private JTextField txtABuscar;
+	private JButton btnSalir; 
+	private JBuscar jBuscar;
+	
 
 	public VistaGenericaUI() {
 		super();
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
 		setBackground(Color.DARK_GRAY);
-		//setSize(getWidthPantalla(),getHeightPantalla());
+ 
 		setLayout(new BorderLayout());
-		//dibujarPanelOpciones();
-		//dibujarPanelTabla();
+ 
 	}
 	
 	protected void dibujarPanelTabla() {
@@ -106,20 +107,22 @@ public class VistaGenericaUI extends JPanel {
 		btnSalir.setFont(new Font("Dialog", Font.BOLD, 10));
 		pnBotones.add(btnSalir);
 	}
-	
-	protected void dibujarBuscar() {
-		txtABuscar = new JTextField();
-		txtABuscar.setForeground(Color.WHITE);
-		txtABuscar.setBackground(new Color(64, 64, 64));
-		getPanelBuscar().add(txtABuscar);
-		txtABuscar.setColumns(10);
-		
-		btnABuscar = new JButton("");
-		btnABuscar.setVerticalAlignment(SwingConstants.TOP);
-		btnABuscar.setBackground(Color.DARK_GRAY);
-		btnABuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
-		getPanelBuscar().add(btnABuscar);
+ 
+
+	public JBuscar getjBuscar() {
+		return jBuscar;
 	}
+
+	public void setjBuscar(JBuscar jBuscar) {
+		this.jBuscar = jBuscar;
+	}
+
+	@SuppressWarnings("rawtypes")
+	protected void dibujarBuscar(List<jCampoBuscar> campos,List catalogo,JDibujarTabla dibujar) {
+		jBuscar = new JBuscar(campos, catalogo, dibujar);
+		getPanelBuscar().add(jBuscar);
+	}
+	
 	
 	public static Integer getWidthPantalla()
 	{
@@ -210,22 +213,6 @@ public class VistaGenericaUI extends JPanel {
 
 	public void setBtnSalir(JButton btnSalir) {
 		this.btnSalir = btnSalir;
-	}
-
-	public JButton getBtnABuscar() {
-		return btnABuscar;
-	}
-
-	public void setBtnABuscar(JButton btnABuscar) {
-		this.btnABuscar = btnABuscar;
-	}
-
-	public JTextField getTxtABuscar() {
-		return txtABuscar;
-	}
-	
-	public void setTxtABuscar(JTextField txtABuscar) {
-		this.txtABuscar = txtABuscar;
 	}
 	
 }

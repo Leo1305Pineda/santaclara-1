@@ -13,22 +13,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IRutaDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Ruta;
 import santaclara.modelo.Zona;
 
 public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 	
+	public RutaDAO() {
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public List<Ruta> getRutas() throws Exception {
 		// TODO Auto-generated method stub
 		List<Ruta> rutas = new ArrayList<Ruta>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT r.id,r.nombre,r.idzona,z.descripcion "
 				+"FROM rutas r, zonas z WHERE r.idzona=z.id  Order by r.id "); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next()) rutas.add(
 					new Ruta(rSet.getInt(1), rSet.getString(2),
@@ -61,14 +71,14 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 	public void guardar(Ruta ruta) throws Exception {
 		// TODO Auto-generated method stub
 		if (ruta.getId()==null){
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"INSERT INTO rutas(nombre,idzona) "
 					+ "VALUES ("
 					+ "'" +ruta.getNombre()       + "', "
 					+ " " +ruta.getZona().getId() + ") ;");	
 		}
 		else{
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"UPDATE rutas SET  "
 					+"nombre   = '"  +ruta.getNombre()      + "',"
 					+"idzona   =  "  +ruta.getZona().getId()+ "  "
@@ -79,7 +89,7 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 	@Override
 	public void eliminar(Ruta ruta) throws Exception {
 		// TODO Auto-generated method stub
-		if(ruta!=null) new PostgreSql().ejecutar(
+		if(ruta!=null) getConexion().ejecutar(
 				"DELETE FROM rutas "
 				+"WHERE id = "+ruta.getId() +";");
 	}
@@ -87,12 +97,12 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 	@Override
 	public Ruta getRuta(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT r.id,r.nombre,z.id,z.descripcion FROM rutas r, zonas z "
 				+ "WHERE r.id     = " + id 
 				+ "AND   r.idzona = z.id ;"); 
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
 		rSet.next();
 		return new Ruta(rSet.getInt(1), rSet.getString(2),new Zona(rSet.getInt(3),rSet.getString(4)));

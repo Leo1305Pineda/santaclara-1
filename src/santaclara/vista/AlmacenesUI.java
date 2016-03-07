@@ -11,6 +11,8 @@ package santaclara.vista;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -20,8 +22,11 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
+import componente.JDibujarTabla;
+import componente.jCampoBuscar;
 import net.miginfocom.swing.MigLayout;
 import santaclara.controlador.ContAlmacenes;
+import santaclara.modelo.Almacen;
 import santaclara.vista.herramientas.VistaGenericaUI;
  
 @SuppressWarnings("serial")
@@ -37,13 +42,25 @@ public class AlmacenesUI extends VistaGenericaUI {
 
 	private ContAlmacenes contAlmacenes;
 	
-	public AlmacenesUI(ContAlmacenes contAlmacenes) {
+	public AlmacenesUI(ContAlmacenes contAlmacenes,List<Almacen> almacenes) {
 		super();
 		this.contAlmacenes = contAlmacenes;
 		
 		dibujarPanelOpciones();
-		dibujarBuscar();
-		getBtnABuscar().addActionListener(contAlmacenes.buscar());
+  
+		List<jCampoBuscar> campos = new ArrayList<jCampoBuscar>();
+		campos.add(jCampoBuscar.crearCampoBusquedad("id","getId"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("ubicacion","getUbicacion"));
+		dibujarBuscar(campos,almacenes,new JDibujarTabla() {
+			
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			public void dibujarTabla(List resultados) {
+				// TODO Auto-generated method stub
+				AlmacenesUI.this.contAlmacenes.activarBinding(resultados);
+			}
+		});
+	
 		dibujarBotonAtras();
 		getBtnAtras().addActionListener(contAlmacenes.atras());
 		dibujarPanelTabla();
@@ -162,6 +179,8 @@ public class AlmacenesUI extends VistaGenericaUI {
 	public void setContAlmacenes(ContAlmacenes contAlmacenes) {
 		this.contAlmacenes = contAlmacenes;
 	}
+
+ 
 
 	
 }

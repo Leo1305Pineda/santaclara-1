@@ -90,28 +90,6 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 		};
 	}
 
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
-				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				if(fila>=0)
-				{
-					cargarZona(Zonas.get(fila));
-				}
-				else 
-				{
-					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					cargarZona(new Zona());
-				}
-			}
-		};
-	}
-
 	public void setVista(ZonasUI vista) {
 		this.vista = vista;
 	}
@@ -191,7 +169,7 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 		BeanProperty materialPresentacion = BeanProperty.create("descripcion");
 
 		binZonas.addColumnBinding(idPresentacion).setColumnClass(Integer.class).setColumnName("id");;
-	    binZonas.addColumnBinding(materialPresentacion).setColumnClass(String.class).setColumnName("Material");
+	    binZonas.addColumnBinding(materialPresentacion).setColumnClass(String.class).setColumnName("Nombre");
 	    binZonas.bind();
 
 	    vista.getTable().addKeyListener(mostrarZona_keypress());
