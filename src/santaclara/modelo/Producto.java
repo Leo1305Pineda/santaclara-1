@@ -132,4 +132,16 @@ public class Producto {
 				getSabor().getSabor();
 	}
 	
+	public String getSaborStr() {
+		 return sabor.getSabor();	
+	}
+	
+	public String getPresentacionStr() {
+		 return presentacion.getMaterial();	
+	}
+	
+	public String getCapacidadStr() {
+		 return capacidad.getVolumen().toString();	
+	}
+	
 }

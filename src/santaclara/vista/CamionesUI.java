@@ -20,13 +20,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import net.miginfocom.swing.MigLayout;
+import santaclara.Servicio.ServicioCamion;
 import santaclara.controlador.ContCamiones;
+import santaclara.modelo.Camion;
 import santaclara.vista.herramientas.VistaGenericaUI;
- 
-
-
-
-
 import javax.swing.JLabel;
 
 import java.awt.Font;
@@ -34,6 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JSpinner;
+
+import componente.JDibujarTabla;
+import componente.jCampoBuscar;
 
 @SuppressWarnings("serial")
 public class CamionesUI extends VistaGenericaUI {
@@ -60,12 +60,30 @@ public class CamionesUI extends VistaGenericaUI {
 	private ContCamiones contCamiones;
 	private List 	camiones = new ArrayList();
 	
-	public CamionesUI(ContCamiones contCamiones) {
+	public CamionesUI(ContCamiones contCamiones) throws Exception {
 		super();
 		this.contCamiones = contCamiones;
 		dibujarPanelOpciones();
-		dibujarBuscar();
-		getBtnABuscar().addActionListener(contCamiones.buscar());
+		
+		List<Camion> catalogo = new ServicioCamion().getCamiones();
+		List<jCampoBuscar> campos = new ArrayList<jCampoBuscar>();
+		campos.add(jCampoBuscar.crearCampoBusquedad("id","getId"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("placa","getPlaca"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Color","getColor"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Capacidad","getCapacidad"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Modelo","getModelo"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Marca","getMarca"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Año","getAno"));
+		dibujarBuscar(campos,catalogo,new JDibujarTabla() {
+			
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			public void dibujarTabla(List resultados) {
+				// TODO Auto-generated method stub
+				CamionesUI.this.contCamiones.activarBinding(resultados);
+			}
+		});
+
 		dibujarBotonAtras();
 		getBtnAtras().addActionListener(contCamiones.atras());
 		dibujarPanelTabla();

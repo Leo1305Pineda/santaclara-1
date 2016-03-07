@@ -9,24 +9,33 @@
 package santaclara.dao.impl;
 
 import java.sql.ResultSet;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IPresentacionDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Presentacion;
 
 public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 	
+	public PresentacionDAO() {
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public List<Presentacion> getPresentaciones() throws Exception {
 		// TODO Auto-generated method stub
 		List<Presentacion> presentaciones = new ArrayList<Presentacion>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id,material FROM presentaciones Order by id;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())presentaciones.add(
 					new Presentacion(rSet.getInt("id"),rSet.getString("material"))); 
@@ -37,14 +46,14 @@ public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 	public void guardar(Presentacion presentacion) throws Exception {
 		// TODO Auto-generated method stub
 		if (presentacion.getId()==null){
-			new PostgreSql().ejecutar( 
+			getConexion().ejecutar( 
 					" INSERT INTO presentaciones(material) "
 					+ " VALUES ("
 					+"'" +presentacion.getMaterial()+"'"
 							+ ");");	
 		}
 		else{
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"UPDATE presentaciones SET"
 					+" material ='" +presentacion.getMaterial() +"' "
 					+" WHERE    id = " +presentacion.getId()+";");
@@ -54,7 +63,7 @@ public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 	@Override
 	public void eliminar(Presentacion presentacion) throws Exception {
 		// TODO Auto-generated method stub
-		if(presentacion!=null) new PostgreSql().ejecutar(
+		if(presentacion!=null) getConexion().ejecutar(
 								"DELETE FROM presentaciones "
 								+"WHERE id = "+presentacion.getId() +" ;");
 	}
@@ -63,19 +72,16 @@ public class PresentacionDAO extends GenericoDAO implements IPresentacionDAO{
 	public Presentacion getPresentacion(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id,material FROM presentaciones "
 				+ "WHERE id ="+id+" ;");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
 		rSet.next();
 		return new Presentacion(rSet.getInt("id"),rSet.getString("material"));
 		
 	}
-	
-
-	
 	
 	/*private String ruta = "archivos/presentaciones.txt";
 

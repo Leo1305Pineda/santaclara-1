@@ -94,28 +94,6 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 			}
 		};
 	}
-
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
-				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				if(fila>=0)
-				{
-					cargarCapacidad((Capacidad)capacidades.get(fila));
-				}
-				else 
-				{
-					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					cargarCapacidad(new Capacidad());
-				}
-			}
-		};
-	}
 	
 	public void setVista(CapacidadesUI vista) {
 		this.vista = vista;
@@ -188,6 +166,9 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Capacidad> capacidades) {
 		// TODO Auto-generated method stub
+		
+		this.capacidades = capacidades;
+		
 		vista.remove(vista.getPnCapacidad());
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());

@@ -95,29 +95,6 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 		};
 	}
 
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
-				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				if(fila>=0)
-				{
-					cargarPresentacion(presentaciones.get(fila));
-				}
-				else 
-				{
-					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					presentacion = new Presentacion();
-					cargarPresentacion(presentacion);
-				}
-			}
-		};
-	}
-
 	public ServicioPresentacion getServicioPresentaciones() {
 		return servicioPresentacion;
 	}
@@ -198,6 +175,9 @@ public class ContPresentaciones extends ContGeneral implements IContGeneral{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Presentacion> presentaciones) {
 		// TODO Auto-generated method stub
+		
+		this.presentaciones = presentaciones;
+		
 		vista.remove(vista.getPnPresentacion());
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());

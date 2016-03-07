@@ -13,21 +13,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IDomicilioComercioDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
-import santaclara.modelo.Cliente;
 import santaclara.modelo.DomicilioComercio;
 
 public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioComercioDAO{
+
+	public DomicilioComercioDAO(){
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public List<DomicilioComercio> getDomicilioComercios() throws Exception {
 		// TODO Auto-generated method stub
 		List<DomicilioComercio> domicilioComercios = new ArrayList<DomicilioComercio>();
 		try {	
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT idcliente, tipo, diavisita FROM domiciliocomercio Order by idcliente;"); 
 		
-		if(rSet==null) return null;	
+		if(rSet==null || rSet.getFetchSize()!=0) return null;	
 			while(rSet.next())domicilioComercios.add(
 					new DomicilioComercio(new ClienteDAO().getCliente(rSet.getInt("idcliente")),rSet.getString("tipo"),rSet.getInt("diavisita"))); 
 		
@@ -45,8 +54,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 		// TODO Auto-generated method stub
 		if (domociliocomercio.getId()==null){
 			try {
-
-				new PostgreSql().ejecutar(
+				getConexion().ejecutar(
 						"  BEGIN;"
 						+ ""
 						+" INSERT INTO clientes(rif, razonsocial,direccion, telefono,idruta)"
@@ -73,7 +81,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 				
 		}
 		else{
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					" BEGIN;"
 					+ "     "
 					+ "UPDATE clientes SET   "
@@ -97,7 +105,7 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 	@Override
 	public void eliminar(DomicilioComercio domiciliocomercio) throws Exception {
 		// TODO Auto-generated method stub
-		if(domiciliocomercio!=null) new PostgreSql().ejecutar(
+		if(domiciliocomercio!=null) getConexion().ejecutar(
 								"  DELETE FROM domiciliocomercio "
 								+" WHERE idcliente = "+domiciliocomercio.getId() +" ;");
 	}
@@ -106,16 +114,12 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 	public DomicilioComercio getDomicilioComercio(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
-				"  SELECT idcliente, tipo, diavisita FROM domiciliocomercio  WHERE idcliente ="+id+" ;");
-
-		if(rSet == null) return null;
-
-		rSet.next();
-		Cliente cliente = new ClienteDAO().getCliente(rSet.getInt("idcliente"));
-		
-		return new DomicilioComercio(cliente,rSet.getString("tipo"),rSet.getInt("diavisita"));
-		
+	List<DomicilioComercio> domicilioComercios = getDomicilioComercios();
+	for(DomicilioComercio domicilioComercio : domicilioComercios)
+	{
+		if(domicilioComercio.getId().equals(id))return domicilioComercio;
+	}
+	return null;
 	}
 
 	/**	

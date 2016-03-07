@@ -1,0 +1,4 @@
+user:admin
+password:admin
+url:jdbc:postgresql://localhost/santaclar
+className:org.postgresql.Driver

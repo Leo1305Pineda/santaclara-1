@@ -13,20 +13,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.ISaborDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Sabor;
 
 public class SaborDAO extends GenericoDAO implements ISaborDAO{
 	
+	public SaborDAO(){
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public List<Sabor> getSabores() throws Exception {
 		// TODO Auto-generated method stub
 		List<Sabor> sabores = new ArrayList<Sabor>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id,sabor FROM sabores Order by id;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())sabores.add(
 					new Sabor (rSet.getInt("id"),rSet.getString("sabor"))); 
@@ -38,13 +48,13 @@ public class SaborDAO extends GenericoDAO implements ISaborDAO{
 		// TODO Auto-generated method stub
 		
 			if (sabor.getId()==null){
-				new PostgreSql().ejecutar( 
+				getConexion().ejecutar( 
 						"INSERT INTO sabores(sabor) "
 						+ "VALUES ("
 						+"'" +sabor.getSabor()+"');");	
 			}
 			else{
-				new PostgreSql().ejecutar(
+				getConexion().ejecutar(
 						"UPDATE sabores SET     "
 						+" sabor ='" +sabor.getSabor() +"' "
 						+" WHERE    id = " +sabor.getId()+";");
@@ -54,7 +64,7 @@ public class SaborDAO extends GenericoDAO implements ISaborDAO{
 	@Override
 	public void eliminar(Sabor sabor) throws Exception {
 		// TODO Auto-generated method stub
-		if(sabor!=null) new PostgreSql().ejecutar(
+		if(sabor!=null) getConexion().ejecutar(
 								"DELETE FROM sabores "
 								+"WHERE id = "+sabor.getId() +" ;");
 	}
@@ -63,11 +73,11 @@ public class SaborDAO extends GenericoDAO implements ISaborDAO{
 	public Sabor getSabor(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id,sabor FROM sabores "
 				+ "WHERE id ="+id+" ;");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
 		rSet.next();
 		return new Sabor(rSet.getInt("id"),rSet.getString("sabor"));

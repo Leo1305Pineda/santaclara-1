@@ -22,20 +22,26 @@ import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 
+import santaclara.Servicio.ServicioProducto;
 import santaclara.controlador.ContProductos;
 import santaclara.modelo.Capacidad;
 import santaclara.modelo.Presentacion;
+import santaclara.modelo.Producto;
 import santaclara.modelo.Sabor;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
 
+import componente.JDibujarTabla;
+import componente.jCampoBuscar;
 import net.miginfocom.swing.MigLayout;
 
 @SuppressWarnings("serial")
@@ -64,14 +70,30 @@ public class ProductosUI extends VistaGenericaUI {
     
     private ContProductos contProductos;
 	
-	public ProductosUI(ContProductos contProductos) {
+	public ProductosUI(ContProductos contProductos) throws Exception {
 		super();
 		
 		this.contProductos = contProductos;
 		
 		dibujarPanelOpciones();
-		dibujarBuscar();
-		getBtnABuscar().addActionListener(contProductos.buscar());
+		List<Producto> auxiliar = new ServicioProducto().getProductos();
+		List<jCampoBuscar> campos = new ArrayList<jCampoBuscar>();
+		campos.add(jCampoBuscar.crearCampoBusquedad("id", "getId"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("nombre", "getNombre"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("precio", "getPrecio"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("sabor", "getSaborStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("presentacion", "getPresentacionStr"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("capacidad", "getCapacidadStr"));
+		
+		dibujarBuscar(campos,auxiliar,new JDibujarTabla() {
+			
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			public void dibujarTabla(List arg0) {
+				// TODO Auto-generated method stub
+				ProductosUI.this.contProductos.activarBinding(arg0);
+			}
+		});
 		dibujarPanelTabla();
 		dibujarBotonAtras();
 		getBtnAtras().addActionListener(contProductos.Atras());

@@ -8,8 +8,29 @@
 
 package santaclara.dao.impl;
 
+import java.io.File;
+import java.util.Scanner;
+
 import santaclara.dao.IGenericoDAO;
+import santaclara.factorymethod.Conexion;
+import santaclara.factorymethod.FabricaConexionDataBase;
 
 public abstract class GenericoDAO implements IGenericoDAO {
 				
+	private FabricaConexionDataBase fabricaConexionDataBase; 
+	private Conexion conexion;
+	
+	public void activarConexionBaseDato() throws Exception {
+		Scanner scaner = new Scanner(new File("archivosConexionBaseDato/ultimaConexion.txt"));
+		if(scaner.hasNext())
+		{
+			fabricaConexionDataBase = new FabricaConexionDataBase(scaner.skip("tipo:").nextLine().trim());
+			conexion = fabricaConexionDataBase.fabricarConexion();
+		}
+		scaner.close();
+	}
+	
+	public Conexion getConexion(){
+		return conexion;
+	}
 }

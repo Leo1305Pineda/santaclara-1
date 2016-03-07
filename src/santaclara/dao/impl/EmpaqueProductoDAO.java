@@ -13,20 +13,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IEmpaqueProductoDAO;
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.EmpaqueProducto;
 
 public  class EmpaqueProductoDAO extends GenericoDAO implements IEmpaqueProductoDAO{
 	
+	public EmpaqueProductoDAO(){
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public List<EmpaqueProducto> getEmpaques() throws Exception {
 		// TODO Auto-generated method stub
 		List<EmpaqueProducto> empaqueProductos = new ArrayList<EmpaqueProducto>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id,idproducto,cantidad FROM empaqueproductos Order by id;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())empaqueProductos.add(
 					new EmpaqueProducto(
@@ -40,7 +50,7 @@ public  class EmpaqueProductoDAO extends GenericoDAO implements IEmpaqueProducto
 	public void guardar(EmpaqueProducto empaqueProducto) throws Exception {
 		// TODO Auto-generated method stub
 		if (empaqueProducto.getId()==null){
-			new PostgreSql().ejecutar( 
+			getConexion().ejecutar( 
 					" INSERT INTO empaqueproductos(idproducto,cantidad) "
 					+" VALUES ("
 					+" " +empaqueProducto.getProducto().getId()		+", "
@@ -48,7 +58,7 @@ public  class EmpaqueProductoDAO extends GenericoDAO implements IEmpaqueProducto
 					+");");	
 		}
 		else{
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"UPDATE empaqueproductos SET"
 					+" idproducto = " +empaqueProducto.getProducto().getId() +", "
 					+" cantidad   = " +empaqueProducto.getCantidad() 		 +" "
@@ -60,7 +70,7 @@ public  class EmpaqueProductoDAO extends GenericoDAO implements IEmpaqueProducto
 	@Override
 	public void eliminar(EmpaqueProducto empaqueProducto) throws Exception {
 		// TODO Auto-generated method stub
-		if(empaqueProducto!=null) new PostgreSql().ejecutar(
+		if(empaqueProducto!=null) getConexion().ejecutar(
 								"DELETE FROM empaqueproductos "
 								+"WHERE id = "+empaqueProducto.getId() +" ;");
 	}
@@ -69,12 +79,12 @@ public  class EmpaqueProductoDAO extends GenericoDAO implements IEmpaqueProducto
 	public EmpaqueProducto getEmpaqueProducto(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				" SELECT id,idproducto,cantidad FROM empaqueproductos "
 				+" WHERE id ="+id+" "
 				+";");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
 		rSet.next();
 		return new EmpaqueProducto(
@@ -89,7 +99,7 @@ public  class EmpaqueProductoDAO extends GenericoDAO implements IEmpaqueProducto
 			throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				" SELECT ("
 				+" CASE WHEN idproducto = "+empaqueProducto.getProducto().getId()
 				+" AND cantidad = "+empaqueProducto.getCantidad() +" THEN 'ENCONTRADO' "

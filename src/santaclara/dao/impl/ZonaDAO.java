@@ -11,21 +11,32 @@ package santaclara.dao.impl;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
 import santaclara.dao.IZonaDAO; 
-import santaclara.dbPostgresql.modelo.PostgreSql;
 import santaclara.modelo.Zona;
 
 public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
+
+	public ZonaDAO(){
+		super();
+		// TODO Auto-generated constructor stub
+		try {
+			activarConexionBaseDato();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public List<Zona> getZonas() throws Exception {
 		// TODO Auto-generated method stub
 		List<Zona> zonas = new ArrayList<Zona>();
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id,descripcion FROM zonas Order by id;"); 
 		
-		if(rSet==null) return null;
+		if(rSet==null|| rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())zonas.add(
 					new Zona(rSet.getInt("id"),rSet.getString("descripcion"))); 
@@ -36,14 +47,14 @@ public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
 	public void guardar(Zona zona) throws Exception {
 		// TODO Auto-generated method stub
 		if (zona.getId()==null){
-			new PostgreSql().ejecutar( 
+			getConexion().ejecutar( 
 					"INSERT INTO zonas(descripcion) "
 					+ "VALUES ("
 					+"'" +zona.getDescripcion()+"'"
 							+ ");");	
 		}
 		else{
-			new PostgreSql().ejecutar(
+			getConexion().ejecutar(
 					"UPDATE zonas SET"
 					+" descripcion ='" +zona.getDescripcion() +"' "
 					+" WHERE    id = " +zona.getId()+";");
@@ -53,7 +64,7 @@ public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
 	@Override
 	public void eliminar(Zona zona) throws Exception {
 		// TODO Auto-generated method stub
-		if(zona!=null) new PostgreSql().ejecutar(
+		if(zona!=null) getConexion().ejecutar(
 								"DELETE FROM zonas "
 								+"WHERE id = "+zona.getId() +" ;");
 	}
@@ -62,11 +73,11 @@ public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
 	public Zona getZona(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ResultSet rSet = new PostgreSql().getSelect(
+		ResultSet rSet = getConexion().getSelect(
 				"SELECT id,descripcion FROM zonas "
 				+ "WHERE id ="+id+" ;");
 
-		if(rSet == null) return null;
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
 		rSet.next();
 		return new Zona(rSet.getInt("id"),rSet.getString("descripcion"));

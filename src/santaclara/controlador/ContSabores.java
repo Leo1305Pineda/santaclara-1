@@ -94,27 +94,6 @@ public class ContSabores extends ContGeneral implements IContGeneral{
 		};
 	}
 
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
-				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				if(fila>=0)
-				{
-					cargarSabor(sabores.get(fila));
-				}
-				else 
-				{
-					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					cargarSabor(new Sabor());
-				}		}
-		};
-	}
-
 	public ServicioSabor getServicioSabores() {
 		return servicioSabor;
 	}
@@ -195,6 +174,8 @@ public class ContSabores extends ContGeneral implements IContGeneral{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Sabor> sabores) {
 		// TODO Auto-generated method stub
+		this.sabores = sabores;
+		
 		vista.remove(vista.getPnSabor());
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
