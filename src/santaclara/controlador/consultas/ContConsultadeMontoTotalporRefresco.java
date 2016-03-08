@@ -14,6 +14,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +45,7 @@ public class ContConsultadeMontoTotalporRefresco extends ContGeneral implements 
 	private static ConsultadeMontoTotalporRefrescoUI vista;
 	private static List<DetalleFactura> detalleFacturas ;
 	Double valueAcum = new Double(0.0);
+	String inicio = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 	
 	private List<Almacen> almacenes = new ArrayList<Almacen>();
 	private List<Sabor> sabores = new ArrayList<Sabor>();
@@ -68,6 +70,7 @@ public class ContConsultadeMontoTotalporRefresco extends ContGeneral implements 
 		vista.getDateHasta().setMaxSelectableDate(new Date());
 		vista.getDateHasta().setDate(new Date());
 		vista.getDateDesde().setDate(new Date());
+		vista.getDateDesde().setMaxSelectableDate(new Date());
 		
 		detalleFacturas = new ServicioDetalleFactura().getDetalleFacturas();
 	}
@@ -115,6 +118,7 @@ public class ContConsultadeMontoTotalporRefresco extends ContGeneral implements 
 		//Filtra fecha Respecto Al dateDesde Y dateHasta
 		for(DetalleFactura detalleFactura: detalleFacturas)
 		{
+			System.out.println(detalleFactura.getFactura().getFecha());
 			if (detalleFactura.getFactura().getFecha().getTime() >= vista.getDateDesde().getDate().getTime() &&
 					detalleFactura.getFactura().getFecha().getTime() <= vista.getDateHasta().getDate().getTime())
 			{
@@ -472,6 +476,11 @@ public class ContConsultadeMontoTotalporRefresco extends ContGeneral implements 
 		    
 		    jcomboSabor.bind();
 	    }
+		@Override
+		public String asociar() {
+			// TODO Auto-generated method stub
+			return inicio;
+		}
 
 }
 

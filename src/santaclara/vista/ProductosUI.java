@@ -40,8 +40,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
 
-import componente.JDibujarTabla;
-import componente.jCampoBuscar;
+import beans.JDibujarTabla;
+import beans.jCampoBuscar;
 import net.miginfocom.swing.MigLayout;
 
 @SuppressWarnings("serial")
@@ -84,7 +84,6 @@ public class ProductosUI extends VistaGenericaUI {
 		campos.add(jCampoBuscar.crearCampoBusquedad("sabor", "getSaborStr"));
 		campos.add(jCampoBuscar.crearCampoBusquedad("presentacion", "getPresentacionStr"));
 		campos.add(jCampoBuscar.crearCampoBusquedad("capacidad", "getCapacidadStr"));
-		
 		dibujarBuscar(campos,auxiliar,new JDibujarTabla() {
 			
 			@SuppressWarnings({ "rawtypes", "unchecked" })

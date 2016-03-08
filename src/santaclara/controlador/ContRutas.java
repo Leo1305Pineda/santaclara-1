@@ -15,6 +15,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -40,6 +42,7 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 	private ServicioRuta servicioRuta = new ServicioRuta();
 	private List<Ruta> rutas = servicioRuta.getRutas();
 	private List<Zona> zonas = new ServicioZona().getZonas();
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
 	
 	private Ruta ruta = new Ruta();
 	
@@ -58,27 +61,6 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 		return null;
 	}
 	
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
-				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				if(fila>=0)
-				{
-					cargarRuta((Ruta)rutas.get(fila));
-				}
-				else 
-				{
-					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					cargarRuta(new Ruta());
-				}
-			}
-		};
-	}
 	
 	public ActionListener eliminar() {
 		return new ActionListener() {
@@ -114,24 +96,13 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-				
-					String msg="";
-					if (vista.getTxtId().getText().equals("")) ruta.setId(null); 
-						else ruta.setId(new Integer(vista.getTxtId().getText().toString()));
-					
-					if (vista.getTxtNombre().getText().equals("")) msg=" Nombre, ";
-					else ruta.setNombre(vista.getTxtNombre().getText());
-					
+					if (vista.getTxtNombre().getText().equals("")) throw new Exception("Nombre Vacio");
+					ruta.setNombre(vista.getTxtNombre().getText());
 					ruta.setZona((Zona)vista.getCmbZona().getSelectedItem());
-					
-					if (msg!="") JOptionPane.showMessageDialog(vista,"Campos Vacios: "+msg);
-					else
-					{
-						servicioRuta.guardar(ruta);
-						activarBinding( servicioRuta.getRutas());
-						cargarRuta(new Ruta());
-						JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
-					}
+					servicioRuta.guardar(ruta);
+					activarBinding( servicioRuta.getRutas());
+					cargarRuta(new Ruta());
+					JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showConfirmDialog(null,e1.getMessage());
@@ -312,4 +283,20 @@ public class ContRutas extends ContGeneral implements IContGeneral {
 	public void setVista(RutasUI vista) {
 		this.vista = vista;
 	}
+
+	@Override
+	public Object asociar() {
+		// TODO Auto-generated method stub
+		return (Object) rutas;
+	}
+
+	public List<Ruta> getRutas() {
+		return rutas;
+	}
+
+	public void setRutas(List<Ruta> rutas) {
+		this.rutas = rutas;
+	}
+	
+	
 }

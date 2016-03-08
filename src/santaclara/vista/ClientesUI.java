@@ -25,7 +25,6 @@ import javax.swing.JList;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
-import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -51,14 +50,12 @@ public class ClientesUI extends VistaGenericaUI {
 	private JLabel lblRuta;
 	
 	private JTextField txtRazonSocial;
-	private JTextField txtABuscar;
 	private JTextField txtTelefono;
 	private JTextArea txtDireccion;
 	private JTextField txtRif;
 	private JTextField txtId;
 	
 	private JButton btnNuevo;
-	private JButton btnABuscar;
 	private JButton btnEliminar;
 	private JButton btnGuardar; 
 	private JButton btnAbrirRuta;
@@ -107,20 +104,7 @@ public class ClientesUI extends VistaGenericaUI {
 		
 		dibujarBotonSalir();
 		getBtnSalir().addActionListener(contClientes.salir());
-		
-		txtABuscar = new JTextField();
-		txtABuscar.setForeground(Color.WHITE);
-		txtABuscar.setBackground(new Color(64, 64, 64));
-		txtABuscar.setColumns(10);
-		getPanelBuscar().add(txtABuscar);
-
-		btnABuscar = new JButton("");
-		btnABuscar.addActionListener(contClientes.buscar());
-		btnABuscar.setVerticalAlignment(SwingConstants.TOP);
-		btnABuscar.setBackground(Color.DARK_GRAY);
-		btnABuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
-		getPanelBuscar().add(btnABuscar, "cell 0 0");
-		
+	
 		lblTipoCliente = new JLabel("Tipo Cliente:");
 		lblTipoCliente.setForeground(Color.WHITE);
 		lblTipoCliente.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
@@ -311,14 +295,6 @@ public class ClientesUI extends VistaGenericaUI {
 		this.txtRazonSocial = txtRazonSocial;
 	}
 
-	public JTextField getTxtABuscar() {
-		return txtABuscar;
-	}
-
-	public void setTxtABuscar(JTextField txtABuscar) {
-		this.txtABuscar = txtABuscar;
-	}
-
 	public JTextField getTxtTelefono() {
 		return txtTelefono;
 	}
@@ -342,15 +318,7 @@ public class ClientesUI extends VistaGenericaUI {
 	public void setBtnNuevo(JButton btnNuevo) {
 		this.btnNuevo = btnNuevo;
 	}
-
-	public JButton getBtnABuscar() {
-		return btnABuscar;
-	}
-
-	public void setBtnABuscar(JButton btnABuscar) {
-		this.btnABuscar = btnABuscar;
-	}
-
+	
 	public JButton getBtnEliminar() {
 		return btnEliminar;
 	}

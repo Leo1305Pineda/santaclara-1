@@ -61,5 +61,4 @@ public class ServicioAlmacen {
 	public void eliminar(Almacen presentacion) throws Exception{
 		almacenDAO.eliminar(presentacion);
 	}
-	
 }

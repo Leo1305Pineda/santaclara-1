@@ -46,6 +46,10 @@ public class ServicioZona {
 		return zonaDAO.getZona(id);
 	}
 	
+	public Zona getZona(String nombre)throws Exception{
+		return zonaDAO.getZona(nombre);
+	}
+	
 	public void eliminar(Zona zona) throws Exception{
 		zonaDAO.eliminar(zona);
 	}

@@ -14,6 +14,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -37,6 +39,7 @@ public class ContSabores extends ContGeneral implements IContGeneral{
 	private SaboresUI vista;
 	private Sabor sabor = new Sabor();
 	private List<Sabor> sabores = new ServicioSabor().getSabores(); 
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
 	
 	public ContSabores(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -241,4 +244,11 @@ public class ContSabores extends ContGeneral implements IContGeneral{
 			vista.getTxtSabor().setText(sabor.getSabor());			
 		}
 	}
+	
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 }

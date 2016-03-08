@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import org.jdesktop.beansbinding.AutoBinding;
@@ -42,14 +41,17 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	private ClientesUI 		vista;
 	private Cliente 		cliente = new Cliente();
 	private List<Ruta> 		rutas  = new ServicioRuta().getRutas();
+
 	private ServicioSalp    servicioSalp = new ServicioSalp();
 	private ServicioDomicilioComercio servicioDomicilioComercio = new ServicioDomicilioComercio();
 	
 	@SuppressWarnings("rawtypes")
 	private List  clientes = new ArrayList<Cliente>();
+	private ContMediador mediador;
 	
 	public ContClientes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
+		this.mediador = new ContMediador();
 		setContPrincipal(contPrincipal);
 		vista = new ClientesUI(this);
 		dibujar(vista,this);
@@ -69,8 +71,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				cliente = new Cliente();
-				cargarCliente(cliente);
+				cargarCliente(new Cliente());
 				vista.getTable().clearSelection();
 			}
 		};
@@ -112,7 +113,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 						salp.setTelefono(vista.getTxtTelefono().getText());
 						salp.setRuta((Ruta)vista.getCmbRutas().getSelectedItem());
 						servicioSalp.guardar(salp);
-						activarBindingSalp(servicioSalp.getSalps());							
+						activarBindingSalp(new ServicioSalp().getSalps());							
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
 					}
 					else
@@ -144,12 +145,10 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 								vista.getCheckJueve().isSelected(), vista.getCheckVierne().isSelected(),
 								vista.getCheckSabado().isSelected()));
 						servicioDomicilioComercio.guardar(domicilioComercio);
-						activarBindingDomicilioComercios(new ServicioDomicilioComercio().getDomicilioComercios());								
+						activarBindingDomicilioComercios(servicioDomicilioComercio.getDomicilioComercios());								
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa");							
 					}
 					vista.getBtnEliminar().setVisible(true);
-					vista.getTxtABuscar().setVisible(true);
-					vista.getBtnABuscar().setVisible(true);
 					vista.remove(vista.getPnCliente());
 					vista.repaint();
 					
@@ -223,32 +222,17 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 			}
 		};
 	}
-	public ActionListener buscar() {
-		// TODO Auto-generated method stub
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				vista.setTable(buscar(vista.getTable(),vista.getTxtABuscar().getText().toString().trim()));
-				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				if(fila>=0)
-				{
-					cargarCliente((Cliente)clientes.get(fila));
-				}
-				else 
-				{
-					JOptionPane.showMessageDialog(new JPanel(),"No Encontrado");
-					cargarCliente(new Cliente());
-				}
-			}
-		};
-	}
 	
 	public void setVista(ClientesUI vista) {
 		this.vista = vista;
 	}
+	
+	public void retornarCliente(Cliente cliente)
+	{
+		mediador.regresarCliente(ContClientes.this,cliente);
+	}
 
+	
 	public ActionListener atras() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -258,11 +242,10 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 					if (vista.getTable().getSelectedRow()>=0)
 					{
 						Cliente cliente = (Cliente) clientes.get(vista.getTable().getSelectedRow());
-						//cliente = new ServicioCliente().buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-						ActivarAtras(cliente);
+						retornarCliente(cliente);
 					}
 					else 
-						ActivarAtras(null);
+						retornarCliente(null);
 			}
 		};
 	}
@@ -334,8 +317,6 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 				// TODO Auto-generated method stub
 				try {		
 						vista.getBtnEliminar().setVisible(true);
-						vista.getTxtABuscar().setVisible(true);
-						vista.getBtnABuscar().setVisible(true);
 						if(vista.getCmbTipoCliente().getSelectedItem().equals("Salp"))
 						{
 							activarBindingSalp(new ServicioSalp().getSalps());
@@ -430,6 +411,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	
 	public void cargarCliente(Cliente cliente) {
 		// TODO Auto-generated method stub
+		this.cliente = cliente;
 		vista.remove(vista.getPnCliente());
 		vista.dibujarPanelCliente();
 		activarJComboBoxBindingRuta();
@@ -472,6 +454,7 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	public void activarBindingSalp(List<Salp>  salps) {
 		// TODO Auto-generated method stub
 		this.clientes = salps;
+		vista.getCmbTipoCliente().setSelectedItem("Salp");
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
 		vista.getScrollPanel().setViewportView(vista.getTable());
@@ -502,6 +485,8 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	public void activarBindingDomicilioComercios(List<DomicilioComercio>  domicilioComercios) {
 		// TODO Auto-generated method stub
 		this.clientes = domicilioComercios;
+		//if(domicilioComercios.get(0).getTipo().equals("D")) vista.getCmbTipoCliente().setSelectedItem("Domicilio");
+		//else vista.getCmbTipoCliente().setSelectedItem("Comercial");
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
 		vista.getScrollPanel().setViewportView(vista.getTable());
@@ -517,7 +502,6 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 				aux.add(domicilioComercio);
 		}
 		domicilioComercios = aux;
-		this.clientes = domicilioComercios;
 	
 		JTableBinding binClientes = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,domicilioComercios,vista.getTable());
 		
@@ -549,5 +533,10 @@ public class ContClientes extends ContGeneral implements IContGeneral{
 	    jcomboRutas.bind();
 	}
 
+	@Override
+	public Object asociar() {
+		// TODO Auto-generated method stub
+		return clientes;
+	}
 	
 }

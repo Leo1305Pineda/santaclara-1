@@ -11,6 +11,8 @@ package santaclara.controlador;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,7 +29,7 @@ public class ContIniciarSesion extends ContGeneral implements IContGeneral     {
 	private IniciarSesionUI 		vista;
     private ServicioIniciarSesion   servicio= new ServicioIniciarSesion();
     private Animado animado;
-	
+    String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
 	public ActionListener iniciarsesion( )
 	{	
 		return new ActionListener() {
@@ -57,7 +59,6 @@ public class ContIniciarSesion extends ContGeneral implements IContGeneral     {
 						}
 						else
 						{
-							getContPrincipal().setUsuario(usuario);
 							getContPrincipal().dibujarMenu();
 							
 							animado.detener();//finaliza la amimacion de usuario
@@ -65,6 +66,7 @@ public class ContIniciarSesion extends ContGeneral implements IContGeneral     {
 							/******animacion principal  **/
 							
 							 getContPrincipal().activarAnimacionSantaclara(vista);
+							 getContPrincipal().getContGeneral().setUsuario(usuario);
 						}
 					} 
 										
@@ -112,4 +114,10 @@ public class ContIniciarSesion extends ContGeneral implements IContGeneral     {
 		return vista;
 	}
 
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
 	}
+
+}

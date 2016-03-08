@@ -21,4 +21,6 @@ public interface IZonaDAO extends IGenericoDAO {
 	public void eliminar(Zona zona) throws   Exception;
 	
 	public Zona getZona(Integer id) throws Exception;
+
+	public Zona getZona(String nombre)throws Exception;
 }

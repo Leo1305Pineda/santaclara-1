@@ -14,6 +14,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -35,9 +37,12 @@ import santaclara.vista.ZonasUI;
 public class ContZonas extends ContGeneral implements IContGeneral{
 	
 	private ServicioZona servicioZona = new ServicioZona();
-	private List<Zona> Zonas = servicioZona.getZonas();
+	private List<Zona> zonas = servicioZona.getZonas();
 	private ZonasUI vista ;
 	private Zona zona = new Zona();
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
+	
+	private Long tiempoActivo = new Long(0);
 	
 	public ContZonas(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -45,7 +50,8 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 		servicioZona = new ServicioZona();
 		vista = new ZonasUI(this);
 		dibujar(vista,this);
-		activarBinding(Zonas);
+		activarBinding(zonas);
+		
 	}
 
 	@Override
@@ -74,10 +80,18 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub 
 				try {
-					zona = new Zona(null,vista.getTxtNombre().getText());
-					if (zona.getDescripcion().equals(""))throw new Exception("Campos Vacios: Nombre Material");	
 					
-					servicioZona.guardar(zona); 	
+					if (vista.getTxtNombre().getText().equals(""))throw new Exception("Campos Vacios: Nombre Material");	
+					if((new ServicioZona().getZona(vista.getTxtNombre().getText())!=null))throw new Exception("La zona ya existe") ;
+					if(zona != null && zona.getId() !=null )
+					{
+						zona.setDescripcion(vista.getTxtNombre().getText());
+						servicioZona.guardar(zona);
+					}
+					else zona = new Zona(null, vista.getTxtNombre().getText());
+					
+					servicioZona.guardar(zona);
+					
 					activarBinding(servicioZona.getZonas());
 					cargarZona(new Zona());
 					JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
@@ -125,7 +139,7 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-						zona = Zonas.get(vista.getTable().getSelectedRow());
+						zona = zonas.get(vista.getTable().getSelectedRow());
 						ServicioRuta ServicioRuta = new ServicioRuta();
 						
 						List<Ruta> rutas = ServicioRuta.getRutas();
@@ -158,7 +172,7 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Zona> Zonas) {
 		// TODO Auto-generated method stub
-		this.Zonas = Zonas;
+		this.zonas = Zonas;
 	
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
@@ -184,28 +198,33 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			public void mouseClicked(MouseEvent evento) {
 				if (evento.getClickCount()==1)
 				{
-					cargarZona(Zonas.get(vista.getTable().getSelectedRow()));
+					cargarZona(zonas.get(vista.getTable().getSelectedRow()));
 				}
+			}
+			public void mouseMoved(MouseEvent evento){
+				
+				tiempoActivo += new Date().getTime()-tiempoActivo; 
 			}
 		};
 	}
-
+	
 	public KeyAdapter mostrarZona_keypress() {
 		// TODO Auto-generated method stub
 		return new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
+				
 				Integer fila = new Integer(vista.getTable().getSelectedRow());
-				Integer contFila = Zonas.size();
+				Integer contFila = zonas.size();
 				 
 				if(e.getKeyCode()==38 )
 				{
-					if(fila<=0) cargarZona(Zonas.get(0));
-					else cargarZona(Zonas.get(fila-1));
+					if(fila<=0) cargarZona(zonas.get(0));
+					else cargarZona(zonas.get(fila-1));
 				}
 				else if(e.getKeyCode()==40 )
 				{
-					if(fila+1>=contFila) cargarZona(Zonas.get(contFila-1));
-					else cargarZona(Zonas.get(fila+1));
+					if(fila+1>=contFila) cargarZona(zonas.get(contFila-1));
+					else cargarZona(zonas.get(fila+1));
 				}
 
 			}
@@ -222,5 +241,11 @@ public class ContZonas extends ContGeneral implements IContGeneral{
 			vista.getTxtNombre().setText(zona.getDescripcion());	
 		}
 		vista.getPnZona().setVisible(true);
+	}
+
+	@Override
+	public Object asociar() {
+		// TODO Auto-generated method stub
+		return (Object) zonas; 
 	}
 }

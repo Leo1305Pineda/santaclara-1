@@ -16,9 +16,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import santaclara.controlador.consultas.ContConsultadeMontoTotalporRefresco;
@@ -31,7 +34,10 @@ import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
 import santaclara.controlador.reportes.ContReportMontFacturadoVendedor;
 import santaclara.controlador.reportes.ContReporte;
 import santaclara.dbPostgresql.controlador.ContAjusteBaseDatoSql;
-import santaclara.modelo.Usuario;
+import santaclara.modelo.DomicilioComercio;
+import santaclara.modelo.Ruta;
+import santaclara.modelo.Salp;
+import santaclara.modelo.Zona;
 import santaclara.thread.animacion.Animado;
 import santaclara.vista.PrincipalUI;
 import santaclara.vista.herramientas.VistaGenericaUI;
@@ -39,35 +45,90 @@ import santaclara.vista.herramientas.VistaGenericaUI;
 public  class ContPrincipal {
 	
 	private PrincipalUI  vista;
-	private IContGeneral controlador;
-	private Usuario		 usuario;
-	private Stack<String> cache = new Stack<String>();
 	private Stack<Object> cacheObjet = new Stack<Object>();
-	private Boolean editorActivo = new Boolean(false); 
-	
-	private ContAlmacenes 	contAnimaciones ;
-	
+	private ContGeneral contGeneral  = new ContGeneral();
 	private Animado animado ;
 	
 	public static void main(String[] args) {
 	   ContPrincipal controlador = new  ContPrincipal();
 	   controlador.ejecutar();   
-	   
 	}
 
 	public void ejecutar() {
 		// TODO Auto-generated method stub
 		vista = new PrincipalUI(this);
 		try {
-			setControlador(new ContIniciarSesion(this));
+			 new ContIniciarSesion(this);
 		}
 		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
 
+	@SuppressWarnings("unchecked")
+	public void mostrarComposite(){
+		try {
+		if (!cacheObjet.empty())
+		{
+			Object obtetContCache = cacheObjet.pop();
+			Object obtetContCachePresente = obtetContCache;// el objetControlador presente
+			
+			List<Object> list = (List<Object>)contGeneral.asociar();
+			String clase =list.get(0).getClass().getName().toString();
+			if (clase == null) throw new Exception("No se Puede Asociar Las Tablas");  
+			switch (clase) {
+			case "santaclara.modelo.Zona": 
+				ContZonas contZonas = new ContZonas(this);
+				List<Zona> zonas = new ArrayList<Zona>();
+				for(Object objectruta: list)zonas.add((Zona)objectruta);
+				contZonas.activarBinding(zonas);
+			break;
+			case "santaclara.modelo.Ruta": 
+				ContRutas contRutas;
+				contRutas = new ContRutas(this);
+				List<Ruta> rutas = new ArrayList<Ruta>();
+				for(Object objectruta: list)rutas.add((Ruta)objectruta);
+				contRutas.activarBinding(rutas);
+			break;
+			case "santaclara.modelo.DomicilioComercio": 
+				ContClientes contClientes = new ContClientes(this);
+				List<DomicilioComercio> domicilioComercios = new ArrayList<DomicilioComercio>();
+				for(Object objectruta: list)domicilioComercios.add((DomicilioComercio)objectruta);
+				contClientes.activarBindingDomicilioComercios(domicilioComercios);
+			break;
+			case"santaclara.modelo.Salp":
+				ContClientes contClientes1 = new ContClientes(this);
+				List<Salp> salps = new ArrayList<Salp>();
+				for(Object objectruta: list)salps.add((Salp)objectruta);
+				contClientes1.activarBindingSalp(salps);
+			break;
+			default:contGeneral.getControladores().clear();
+				
+			}
+			cacheObjet.push(obtetContCachePresente);
+		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(new JPanel(),"No existe asociacion");
+			contGeneral.getControladores().clear();
+		}
+	
+	}
+	
+	public void agregarComposicion(){
+		if (!cacheObjet.empty())
+		{
+			Object obtetContCache = cacheObjet.pop();
+			Object obtetContCachePresente = obtetContCache;// el objetControlador presente
+			
+			contGeneral.addControlador((IContGeneral)obtetContCachePresente);
+			
+			cacheObjet.push(obtetContCachePresente);
+			JOptionPane.showMessageDialog(vista, "Tabla Agregada");
+		}
+	}
+	
 	@SuppressWarnings("deprecation")
 	void agregarPanel(JPanel panel)
 	{	
@@ -76,32 +137,14 @@ public  class ContPrincipal {
 		vista.getFrame().repaint();
 	}
 	
-	void quitarPanel(){
-	//	vista.getFrame().getContentPane().removeAll();
-	//	vista.getFrame().add(new JPanel());	
+	void quitarPanel(){	
 		cerrarSecion();
 	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-	
 	
 	public void dibujarMenu()
 	{
 		vista.getFrame().getContentPane().removeAll();
-		vista.dibujarMenu(usuario);
-	}
-	public IContGeneral getControlador() {
-		return controlador;
-	}
-
-	public void setControlador(IContGeneral controlador) {
-		this.controlador = controlador;
+		vista.dibujarMenu();
 	}
 
 	/************ Salir Session *************/
@@ -119,8 +162,7 @@ public  class ContPrincipal {
 	
 	public void cerrarSecion(){
 		vista.getMenuBar().setVisible(false);
-		usuario = null;
-		controlador = new ContIniciarSesion(ContPrincipal.this);
+		new ContIniciarSesion(ContPrincipal.this);
 	}
 
 	public ActionListener activarMenu() {
@@ -240,6 +282,12 @@ public  class ContPrincipal {
 				else if(e.getSource().equals(vista.getMntPgAdmin3())){
 					ejecutarComando("pgadmin3");
 				}
+				else if(e.getSource().equals(vista.getMntCapturarLista())){
+					agregarComposicion();
+				}
+				else if(e.getSource().equals(vista.getMntEjecutarCapturaLista())){
+					mostrarComposite();
+				}
 			}
 		};
 	}
@@ -248,7 +296,7 @@ public void ActivarPostgreSqlAjustes(){
 		
 		try {
 			
-			controlador = new ContAjusteBaseDatoSql(ContPrincipal.this);
+			new ContAjusteBaseDatoSql(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -261,7 +309,7 @@ public void ActivarPostgreSqlAjustes(){
 		
 		try {
 			
-			controlador = new ContReporte(ContPrincipal.this);
+			new ContReporte(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -273,7 +321,7 @@ public void ActivarPostgreSqlAjustes(){
 	
 		try {
 		
-			controlador = new ContConsultadeMontoTotalporRefresco(ContPrincipal.this);
+			new ContConsultadeMontoTotalporRefresco(ContPrincipal.this);
 			}
 			catch (Exception e1) {
 				// 	TODO Auto-generated catch block
@@ -285,7 +333,7 @@ public void ActivarPostgreSqlAjustes(){
 		
 		try {
 			
-			controlador = new ContDetalleFacturaMesAlmacen(ContPrincipal.this);
+			new ContDetalleFacturaMesAlmacen(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -296,7 +344,7 @@ public void ActivarListCantRefrescoSaborVendidoAlmacen(){
 	
 	try {
 		
-		controlador = new ContListCantRefrescoSaborVendidoAlmacen(ContPrincipal.this);
+		new ContListCantRefrescoSaborVendidoAlmacen(ContPrincipal.this);
 	}
 	catch (Exception e1) {
 		// TODO Auto-generated catch block
@@ -307,7 +355,7 @@ public void ActivarListCantRefrescoPresentCapacFacturadoZona(){
 	
 	try {
 		
-		controlador = new ContListCantRefrecoPresentCapacFacturadoZona(ContPrincipal.this);
+		new ContListCantRefrecoPresentCapacFacturadoZona(ContPrincipal.this);
 	}
 	catch (Exception e1) {
 		// TODO Auto-generated catch block
@@ -318,7 +366,7 @@ public void ActivarListClienteZonaTipo(){
 	
 	try {
 		
-		controlador = new ContListClienteTipoZona(ContPrincipal.this);
+		new ContListClienteTipoZona(ContPrincipal.this);
 	}
 	catch (Exception e1) {
 		// TODO Auto-generated catch block
@@ -329,7 +377,7 @@ public void ActivarMontoFacturadoMesZonaTipoPago(){
 	
 	try {
 		
-		controlador = new ContMontoFacturadoMesZonaTipoPago(ContPrincipal.this);
+		new ContMontoFacturadoMesZonaTipoPago(ContPrincipal.this);
 	}
 	catch (Exception e1) {
 		// TODO Auto-generated catch block
@@ -341,7 +389,7 @@ public void ActivarReportFacturadoAlmacen(){
 	
 	try {
 
-		controlador = new ContReportMontFacturadoAlmacen(ContPrincipal.this);
+		 new ContReportMontFacturadoAlmacen(ContPrincipal.this);
 	}
 	catch (Exception e1) {
 		// TODO Auto-generated catch block
@@ -354,7 +402,7 @@ public void ActivarReportFacturadoVendedor(){
 		
 		try {
 
-			controlador = new ContReportMontFacturadoVendedor(ContPrincipal.this);
+			 new ContReportMontFacturadoVendedor(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -365,7 +413,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarRutas(){
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContRutas(ContPrincipal.this);
+			new ContRutas(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -375,7 +423,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarVisitas(){
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContVisitas(ContPrincipal.this);
+			 new ContVisitas(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -398,7 +446,7 @@ public void ActivarReportFacturadoVendedor(){
 		 		contClientes.actualizarContCliente(objetContCachePresente,objetClassVista);
 			}
 		
-			controlador = contClientes;
+			//controlador = contClientes;
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -409,7 +457,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarVendedores() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContUsuarios(ContPrincipal.this);
+			new ContUsuarios(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -424,7 +472,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarProductos() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContProductos(ContPrincipal.this);
+			new ContProductos(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -436,7 +484,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarPresentaciones() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContPresentaciones(ContPrincipal.this);
+			 new ContPresentaciones(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -448,7 +496,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarCapacidades() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContCapacidades(ContPrincipal.this);
+			 new ContCapacidades(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -459,7 +507,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarSabores() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContSabores(ContPrincipal.this);
+			 new ContSabores(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -469,7 +517,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarEmpaqueProductos() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContEmpaqueProductos(ContPrincipal.this);
+			new ContEmpaqueProductos(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -479,7 +527,8 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarAlmacenes() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContAlmacenes(ContPrincipal.this);
+			new ContAlmacenes(ContPrincipal.this);
+			 
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -489,7 +538,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarProductoAlmacenes() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContProductoAlmacenes(ContPrincipal.this);
+			 new ContProductoAlmacenes(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -499,7 +548,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarCamiones() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContCamiones(ContPrincipal.this);
+			 new ContCamiones(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -510,7 +559,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarUsuarios() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContUsuarios(ContPrincipal.this);
+			 new ContUsuarios(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -520,7 +569,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarZonas() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContZonas(ContPrincipal.this);
+			new ContZonas(ContPrincipal.this); 
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -531,7 +580,7 @@ public void ActivarReportFacturadoVendedor(){
 	public void ActivarCalendarios() {
 		// TODO Auto-generated method stub
 		try {
-			controlador = new ContCalendarios(ContPrincipal.this);
+			 new ContCalendarios(ContPrincipal.this);
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -553,7 +602,7 @@ public void ActivarReportFacturadoVendedor(){
 		 	{		
 		 		contPedidos.actualizarContPedido(objetContCachePresente,objetClassVista);
 			}
-			controlador = contPedidos;
+			//controlador = contPedidos;
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -650,7 +699,6 @@ public void ActivarReportFacturadoVendedor(){
 		vista.getFrame().repaint();
 	}
 
-	
 	public void activarAnimacionSantaclara(JPanel vista){
 		
 		JLabel lblImagen = new JLabel();
@@ -660,23 +708,6 @@ public void ActivarReportFacturadoVendedor(){
 		dibujarImagen(vista,lblImagen,BorderLayout.SOUTH);
 		
 	}	
-	
-	
-	public Stack<String> getCache() {
-		return cache;
-	}
-
-	public void setCache(Stack<String> cache) {
-		this.cache = cache;
-	}
-
-	public Boolean getEditorActivo() {
-		return editorActivo;
-	}
-
-	public void setEditorActivo(Boolean editorActivo) {
-		this.editorActivo = editorActivo;
-	}
 
 	public Stack<Object> getCacheObjet() {
 		return cacheObjet;
@@ -686,15 +717,16 @@ public void ActivarReportFacturadoVendedor(){
 		this.cacheObjet = cacheObjet;
 	}
 
-	public ContAlmacenes getContAnimaciones() {
-		return contAnimaciones;
-	}
-
-	public void setContAnimaciones(ContAlmacenes contAnimaciones) {
-		this.contAnimaciones = contAnimaciones;
-	}
-
 	public PrincipalUI getVista() {
 		return vista;
+	}
+
+	public ContGeneral getContGeneral() {
+		return contGeneral;
+	}
+
+	public void setContGeneral(ContGeneral contGeneral) {
+		this.contGeneral = contGeneral;
 	} 
+	
 }

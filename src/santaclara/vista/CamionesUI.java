@@ -32,8 +32,8 @@ import java.util.List;
 
 import javax.swing.JSpinner;
 
-import componente.JDibujarTabla;
-import componente.jCampoBuscar;
+import beans.JDibujarTabla;
+import beans.jCampoBuscar;
 
 @SuppressWarnings("serial")
 public class CamionesUI extends VistaGenericaUI {

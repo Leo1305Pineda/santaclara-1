@@ -13,7 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IConcesionarioDAO;
+import santaclara.modelo.Camion;
 import santaclara.modelo.Concesionario;
+import santaclara.modelo.Ruta;
+import santaclara.modelo.Usuario;
+import santaclara.modelo.Zona;
 
 public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 	
@@ -34,14 +38,35 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 		List<Concesionario> concesionarios = new ArrayList<Concesionario>();
 		
 		ResultSet rSet = getConexion().getSelect(
-				"SELECT id, idcamion, idruta FROM concesionarios Order by id;"); 
+				"SELECT u.username, u.cedula, u.nombre, u.contrasena, c.id, c.idcamion, c.idruta , ca.placa, ca.color, ca.capacidad, ca.modelo, ca.marca, ca.ano , r.nombre as nombreruta,r.idzona ,z.descripcion "
+				+ "FROM concesionarios c, camiones ca, rutas r, zonas z , usuarios u "
+				+ "WHERE c.id = u.id AND c.idcamion = ca.id AND c.idruta = r.id AND r.idzona = z.id "
+				+ "Order by c.id;"); 
 		
 		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
 			while(rSet.next())concesionarios.add(
-					new Concesionario(new UsuarioDAO().getUsuario(rSet.getInt("id")),
-							new CamionDAO().getCamion(rSet.getInt("idcamion")), 
-							new RutaDAO().getRuta(rSet.getInt("idruta")))); 
+					new Concesionario(
+							new Usuario(
+									rSet.getInt("id"),
+									rSet.getString("username"), 
+									rSet.getString("cedula"),
+									rSet.getString("nombre"), 
+									rSet.getString("contrasena")), 
+									new Camion(
+											rSet.getInt("idcamion"),
+											rSet.getString("placa"),
+											rSet.getString("color"),
+											rSet.getDouble("capacidad"), 
+											rSet.getString("modelo"),
+											rSet.getString("marca"), 
+											rSet.getString("ano")),
+											new Ruta(
+													rSet.getInt("idruta"),
+													rSet.getString("nombreruta"), 
+													new Zona(
+															rSet.getInt("idzona"),
+															rSet.getString("descripcion"))))); 
 		return concesionarios;
 	}
 	
@@ -97,19 +122,11 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 	@Override
 	public Concesionario getConcesionario(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-		
-		ResultSet rSet = getConexion().getSelect(
-				"SELECT id, idcamion, idruta FROM concesionarios "
-				+" WHERE id ="+id+" ;");
-
-		if(rSet==null) return null;
-		if(rSet.getFetchSize()==0)return null;
-
-		rSet.next();
-		return new Concesionario(new UsuarioDAO().getUsuario(rSet.getInt("id")),
-				new CamionDAO().getCamion(rSet.getInt("idcamion")), 
-				new RutaDAO().getRuta(rSet.getInt("idruta")));
-		
+			for(Concesionario concesionario: getConcecionarios())
+			{
+				if(concesionario.getId().equals(id))return concesionario;
+			}
+			return null;
 	}
 
 /*

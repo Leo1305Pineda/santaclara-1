@@ -8,7 +8,6 @@
 
 package santaclara.controlador;
 
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
@@ -29,9 +28,11 @@ import javax.swing.ListCellRenderer;
 import santaclara.Servicio.ServicioCamion;
 import santaclara.Servicio.ServicioConcesionario;
 import santaclara.Servicio.ServicioDomicilioComercio;
+import santaclara.Servicio.ServicioJefeVenta;
 import santaclara.Servicio.ServicioRuta;
 import santaclara.Servicio.ServicioSalp;
 import santaclara.Servicio.ServicioUsuario;
+import santaclara.Servicio.ServicioVendedor;
 import santaclara.Servicio.ServicioZona;
 import santaclara.modelo.Concesionario;
 import santaclara.modelo.DomicilioComercio;
@@ -40,34 +41,25 @@ import santaclara.modelo.Salp;
 import santaclara.modelo.Usuario;
 import santaclara.vista.UsuariosUI;
 
-
 public class ContUsuarios extends ContGeneral implements IContGeneral{
 	
 	private ServicioUsuario servicioUsuario = new ServicioUsuario();
 	private ServicioRuta servicioRuta = new ServicioRuta();
 	private ServicioZona servicioZona = new ServicioZona();
-	private ServicioCamion servicioCamion;
+	private ServicioCamion servicioCamion = new ServicioCamion();
 	private UsuariosUI vista ;
 
-	@SuppressWarnings("rawtypes")
-	private List usuarios = new ArrayList();
+	private List<Usuario> usuarios = new ArrayList<Usuario>();
 	
-	@SuppressWarnings({ "unchecked" })
+	private ContMediador mediador = new ContMediador();
+
 	public ContUsuarios(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
-		
-		servicioUsuario = new ServicioUsuario();
-		servicioRuta = new ServicioRuta();
-		servicioZona = new ServicioZona();
-		servicioCamion = new ServicioCamion();
-	
-		vista = new UsuariosUI(this, servicioUsuario.getUsuarios(),
+		vista = new UsuariosUI(this, usuarios,
 						servicioRuta.getRutas(),servicioZona.getZonas(),
 						servicioCamion.getCamiones());
-		usuarios.clear();
-		usuarios = servicioUsuario.getUsuarios();
-		vista.activarBinding(usuarios);
+		vista.activarBinding(servicioUsuario.getUsuarios());
 		dibujar(vista,this);
 		vista.quitarNuevo();
 	}
@@ -243,8 +235,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 					e.printStackTrace();
 				}
 			}
-
-			@SuppressWarnings("unchecked")
+			
 			private void GuardarUsuario() throws Exception {
 				// TODO Auto-generated method stub
 					Usuario usuario = new Usuario(); 
@@ -259,9 +250,7 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 								
 						servicioUsuario.guardar(usuario);
 						
-						vista.getBinUsuarios().unbind();
-						vista.getBinUsuarios().bind();
-						vista.activarBinding(usuarios);
+						vista.activarBinding(servicioUsuario.getUsuarios());
 						JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
 						vista.quitarNuevo();
 					}
@@ -301,6 +290,11 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 		this.vista = vista;
 	}
 
+	public void retornarUsuario(Usuario usuario)
+	{
+		mediador.regresarUsuario(ContUsuarios.this,usuario);
+	}
+	
 	public ActionListener atras() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -311,12 +305,12 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 					if (vista.getTable().getSelectedRow()>=0)
 					{
 						Usuario usuario  = new Usuario();
-						usuario = vista.getUsuarios().get(vista.getTable().getSelectedColumn());
-						ActivarAtras(usuario);
+						usuario = (Usuario) vista.getUsuarios().get(vista.getTable().getSelectedRow());
+						retornarUsuario(usuario);//ActivarAtras(usuario);
 					}
  					else 
  					{
- 						ActivarAtras(null);
+ 						retornarUsuario(null);//ActivarAtras(null);
  					}
 			}
 		};
@@ -370,52 +364,36 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 		};
 	}
 	
-	void MostrarTabla() throws Exception{
-		vista.getBinUsuarios().unbind();
-		vista.getBinUsuarios().bind();				
-		vista.activarBinding(servicioUsuario.getUsuarios());
-		vista.quitarNuevo();
-	}
-	
 	public ActionListener ActivarTipoUsuario() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
 			
-			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					// TODO Auto-generated method stub
 					if(vista.getCmbTipoUsuario().getSelectedItem().equals("Todos"))
 					{	
-						usuarios.clear();
-						usuarios = servicioUsuario.getUsuarios();
-						vista.activarBinding(usuarios);
+						vista.activarBinding(servicioUsuario.getUsuarios());
 						vista.getBtnNuevo().setEnabled(false);
 					}
 					else if(vista.getCmbTipoUsuario().getSelectedItem().equals("JefeVenta"))
 					{	
-						usuarios.clear();
-						usuarios= servicioUsuario.getJefeVentas();
-						vista.activarBindingJefeVentas(usuarios);
+						vista.activarBindingJefeVentas(new ServicioJefeVenta().getJefeVentas());
 						vista.getBtnNuevo().setEnabled(true);
 						vista.getPnRuta().setVisible(false);
 						vista.getPnZona().setBounds(0, 90, 852, 63);	
 					}
 					else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Vendedor"))
 					{
-						usuarios.clear();
-						usuarios = servicioUsuario.getVendedores();
-						vista.activarBindingVendedores(usuarios);
+						vista.activarBindingVendedores(new ServicioVendedor().getVendedores());
 						vista.getBtnNuevo().setEnabled(true);
 						vista.getPnRuta().setVisible(true);
 						vista.getPnZona().setBounds(0, 227, 852, 63);		
 					}
 					else if(vista.getCmbTipoUsuario().getSelectedItem().equals("Concesionario"))
 					{
-						usuarios.clear();
-						usuarios = servicioUsuario.getConcesionarios();
-						vista.activarBindingConcesionarios(usuarios);
+						vista.activarBindingConcesionarios(new ServicioConcesionario().getConcecionarios());
 						vista.getBtnNuevo().setEnabled(true);
 						vista.getPnRuta().setVisible(true);
 						vista.getPnZona().setBounds(0, 227, 852, 63);
@@ -551,5 +529,10 @@ public class ContUsuarios extends ContGeneral implements IContGeneral{
 		this.servicioCamion = servicioCamion;
 	}
 	
-	
+	@Override
+	public Object asociar() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

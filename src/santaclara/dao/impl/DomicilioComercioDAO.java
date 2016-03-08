@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IDomicilioComercioDAO;
+import santaclara.modelo.Cliente;
 import santaclara.modelo.DomicilioComercio;
+import santaclara.modelo.Ruta;
+import santaclara.modelo.Zona;
 
 public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioComercioDAO{
 
@@ -32,20 +35,29 @@ public class DomicilioComercioDAO extends GenericoDAO implements  IDomicilioCome
 	public List<DomicilioComercio> getDomicilioComercios() throws Exception {
 		// TODO Auto-generated method stub
 		List<DomicilioComercio> domicilioComercios = new ArrayList<DomicilioComercio>();
-		try {	
 		ResultSet rSet = getConexion().getSelect(
-				"SELECT idcliente, tipo, diavisita FROM domiciliocomercio Order by idcliente;"); 
+				"SELECT d.idcliente, d.tipo, d.diavisita, c.rif, c.razonsocial, c.telefono,c.direccion, c.idruta , r.nombre ,r.idzona ,z.descripcion "
+				+ "FROM domiciliocomercio d,clientes c,rutas r, zonas z  "
+				+ "WHERE d.idcliente = c.id  And c.idruta = r.id And r.idzona = z.id "
+				+ "ORDER BY d.idcliente;"); 
 		
-		if(rSet==null || rSet.getFetchSize()!=0) return null;	
+		if(rSet==null || rSet.getFetchSize()!=0) return null;
 			while(rSet.next())domicilioComercios.add(
-					new DomicilioComercio(new ClienteDAO().getCliente(rSet.getInt("idcliente")),rSet.getString("tipo"),rSet.getInt("diavisita"))); 
-		
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-	
-		
+					new DomicilioComercio(
+							new Cliente(
+									rSet.getInt("idcliente"),
+									rSet.getString("rif"), 
+									rSet.getString("razonsocial"), 
+									rSet.getString("direccion"), 
+									rSet.getString("telefono"), 
+									new Ruta(
+											rSet.getInt("idruta"),
+											rSet.getString("nombre"),
+											new Zona(
+													rSet.getInt("idzona"),
+													rSet.getString("descripcion")))),
+										rSet.getString("tipo"),
+										rSet.getInt("diavisita")));  	
 		return domicilioComercios;
 	}
 	

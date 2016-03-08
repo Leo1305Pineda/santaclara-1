@@ -14,6 +14,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +46,7 @@ public class ContListCantRefrescoSaborVendidoAlmacen extends ContGeneral impleme
 	private static ListCantRefrescoSaborVendidoAlmacenUI vista;
 	private static List<DetalleFactura> detalleFacturas ;
 	Integer acumCantidad = new Integer(0);
+	String inicio = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 	
 	private List<Almacen> almacenes = new ArrayList<Almacen>();
 	private List<Sabor> sabores = new ArrayList<Sabor>();
@@ -475,6 +477,11 @@ public class ContListCantRefrescoSaborVendidoAlmacen extends ContGeneral impleme
 		    
 		    jcomboSabor.bind();
 	    }
+		@Override
+		public String asociar() {
+			// TODO Auto-generated method stub
+			return inicio;
+		}
 
 }
 

@@ -1,4 +1,4 @@
 user:admin
 password:admin
-url:jdbc:MySql://localhost/santaclara
+url:jdbc:postgresql://localhost/santaclara
 className:org.postgresql.Driver

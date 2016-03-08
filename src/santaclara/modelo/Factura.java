@@ -114,6 +114,14 @@ public class Factura {
 		
 	}
 	
+	public String getCondicionStr() {
+		if (estado == null) return "Pedido";
+		else if (estado.equals(true))return "Facturado";
+		else return "Pendiente";
+		
+	}
+
+	
 	public String getTipoPago() {
 		if (estado == null) return "Pedido";
 		if (getEstado().equals(true))return "Contado";

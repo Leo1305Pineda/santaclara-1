@@ -17,22 +17,45 @@ import java.util.Stack;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 
 import santaclara.modelo.Almacen;
 import santaclara.modelo.Capacidad;
 import santaclara.modelo.Presentacion;
 import santaclara.modelo.Producto;
 import santaclara.modelo.Sabor;
+import santaclara.modelo.Usuario;
 import santaclara.modelo.Zona;
 
-public abstract class ContGeneral implements IContGeneral {
+public class ContGeneral extends StackControlador {
 	
 	private ContPrincipal 	 contPrincipal;
-		
+	private Usuario usuario = new Usuario(); 
+	
+	public ContGeneral() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/*
+	 * Metodo para añadir un Controlador al ControladorGeneral
+	 * @param IContGeneral Object que implementa esta interfaz 
+	 * */
+	public void addControlador(IContGeneral controlador){
+		super.addControlador(controlador);
+	}
+	
+	/*
+	 * Metodo para remover un Controlador del ControladorGeneral 
+	 * @param IContGeneral Object que implementa esta interfaz 
+	 * */
+	public void removeControlador(IContGeneral controlador){
+		super.removeControlador(controlador);
+	}
+	
 	public void dibujar(JPanel vista,Object cacheobject)
 	{	
 		contPrincipal.agregarPanel(vista);
+		//addControlador
 		if(!this.contPrincipal.getCacheObjet().empty())
 		{
 			Object object = this.contPrincipal.getCacheObjet().pop();
@@ -47,7 +70,8 @@ public abstract class ContGeneral implements IContGeneral {
 			}
 		}
 		else 
-			this.contPrincipal.getCacheObjet().push(cacheobject);			
+			this.contPrincipal.getCacheObjet().push(cacheobject);
+		//fin
 	}
 	
 	public void quitarVista(){//btnSalir
@@ -104,39 +128,12 @@ public abstract class ContGeneral implements IContGeneral {
 		this.contPrincipal = contPrincipal;
 	}	
 	
-	public Stack<String> getCache() {
-		return this.contPrincipal.getCache();
-	}
-
-	public void setCache(Stack<String> cache) {
-		this.contPrincipal.setCache(cache);
-		
-	}
-	
 	public Stack<Object> getCacheObjet() {
 		return this.contPrincipal.getCacheObjet();
 	}
 
 	public void setCacheObjet(Stack<Object> cacheObject) {
 		this.contPrincipal.setCacheObjet(cacheObject);
-		
-	}
-
-	public JTable buscar(JTable tabla1,String valueBuscar){
-		tabla1.clearSelection();
-		for(int i = 0;i<tabla1.getRowCount();i++)
-		{
-			
-			for(int j = 0; j<=tabla1.getColumnCount()-1; j++) 
-			{
-				if (tabla1.getValueAt(i, j).toString().trim().equals(valueBuscar))
-				{
-					tabla1.setRowSelectionInterval(i,i);
-					return tabla1;			
-				}
-			}
-		}
-		return tabla1;			
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -184,4 +181,12 @@ public abstract class ContGeneral implements IContGeneral {
 		contPrincipal.getVista().getFrame().remove(lblImagen);
 		contPrincipal.getVista().getFrame().repaint();
 	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}	
 }

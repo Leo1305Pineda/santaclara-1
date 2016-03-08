@@ -17,11 +17,14 @@ import santaclara.modelo.Zona;
 
 public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
 
+	private List<Zona> zonas ;
+	
 	public ZonaDAO(){
 		super();
 		// TODO Auto-generated constructor stub
 		try {
 			activarConexionBaseDato();
+			zonas = getZonas();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,6 +86,16 @@ public class ZonaDAO extends GenericoDAO implements IZonaDAO  {
 		return new Zona(rSet.getInt("id"),rSet.getString("descripcion"));
 		
 	}
+	
+	@Override
+	public Zona getZona(String nombre) throws Exception{
+		for(Zona zona : zonas)
+		{
+			if(zona.getDescripcion().equals(nombre)) return zona;
+		}
+		return null;
+	}
+
 
 	/**	
 	private String ruta = "archivos/zonas.txt";

@@ -58,6 +58,7 @@ import santaclara.vista.VisitasUI;
 public class ContVisitas extends ContGeneral implements IContGeneral {
 
 	private VisitasUI vista;	
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
 	
 	public ContVisitas(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -652,5 +653,12 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 	@SuppressWarnings("rawtypes")
 	public JComboBox getComboUsuario(){
 		return vista.getComboUsuario();
-	} 
+	}
+	
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 }

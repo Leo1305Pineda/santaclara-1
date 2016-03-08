@@ -52,6 +52,7 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 	Integer mesActual = new Integer(new Date().getMonth());
 	Integer yearActual = new Integer(new SimpleDateFormat("yyyy").format(new Date()));
 	Integer v = new Integer(0);
+	String inicio = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 	public ContCalendarios(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
@@ -500,6 +501,11 @@ public class ContCalendarios extends ContGeneral implements IContGeneral {
 		panelConsultar.add(button2,1);
 		
 		return panelConsultar;
+	}
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
 	}
 
 }

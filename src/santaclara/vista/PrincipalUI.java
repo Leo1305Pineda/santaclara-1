@@ -20,9 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
 import santaclara.controlador.ContPrincipal;
-import santaclara.modelo.Usuario;
 import santaclara.vista.herramientas.VistaGenericaUI; 
-
 
 @SuppressWarnings("serial")
 public class PrincipalUI extends JPanel {
@@ -37,6 +35,7 @@ public class PrincipalUI extends JPanel {
 	private 	JMenu mnFacturacion;
 	private 	JMenu mnReportes;
 	private 	JMenu mnConsulta;
+	private 	JMenu mnAsociacionTabla;
 	private 	JMenu mnBaseDato;
 	private 	JMenu mnSalir;
 	private 	JMenuItem mntCerrar;
@@ -71,6 +70,10 @@ public class PrincipalUI extends JPanel {
 	
 	private 	JMenuItem mntPostgreSqlAjustes;
 	private 	JMenuItem mntPgAdmin3;
+	
+	private 	JMenuItem mntCapturarLista;
+	
+	private 	JMenuItem mntEjecutarCapturaLista;
 
 	/**** codigo para la defensa  */
 	 
@@ -141,6 +144,9 @@ public class PrincipalUI extends JPanel {
 		
 		mnConsulta = new JMenu("Consulta");
 		menuBar.add(mnConsulta);
+		
+		mnAsociacionTabla = new JMenu("Asociar Tabla");
+		menuBar.add(mnAsociacionTabla);
 		
 		mnBaseDato = new JMenu("Base de Dato");
 		menuBar.add(mnBaseDato);
@@ -329,9 +335,20 @@ public class PrincipalUI extends JPanel {
 		mntPgAdmin3.setToolTipText("pgAdmin III");
 		mnBaseDato.add(mntPgAdmin3);
 		mntPgAdmin3.addActionListener(controlador.activarMenu());
+		
+		mntCapturarLista = new JMenuItem("Capturar Tabla");
+		mntCapturarLista.setToolTipText("Permite la asociacion de tablas");
+		mnAsociacionTabla.add(mntCapturarLista);
+		mntCapturarLista.addActionListener(controlador.activarMenu());
+		
+		mntEjecutarCapturaLista = new JMenuItem("Ejecutar Composicion Tabla");
+		mntEjecutarCapturaLista.setToolTipText("Procesar informacion");
+		mnAsociacionTabla.add(mntEjecutarCapturaLista);
+		mntEjecutarCapturaLista.addActionListener(controlador.activarMenu());
+		
 	}
 	
-	public void dibujarMenu(Usuario usuario )
+	public void dibujarMenu()
 	{ 
 		menuBar.setVisible(true);
 	}
@@ -711,7 +728,29 @@ public class PrincipalUI extends JPanel {
 	public void setLblAnimacion(JLabel lblAnimacion) {
 		this.lblAnimacion = lblAnimacion;
 	}
-	
-	
+
+	public JMenu getMnAsociacionTabla() {
+		return mnAsociacionTabla;
+	}
+
+	public void setMnAsociacionTabla(JMenu mnAsociacionTabla) {
+		this.mnAsociacionTabla = mnAsociacionTabla;
+	}
+
+	public JMenuItem getMntCapturarLista() {
+		return mntCapturarLista;
+	}
+
+	public void setMntCapturarLista(JMenuItem mntCapturarLista) {
+		this.mntCapturarLista = mntCapturarLista;
+	}
+
+	public JMenuItem getMntEjecutarCapturaLista() {
+		return mntEjecutarCapturaLista;
+	}
+
+	public void setMntEjecutarCapturaLista(JMenuItem mntEjecutarCapturaLista) {
+		this.mntEjecutarCapturaLista = mntEjecutarCapturaLista;
+	}	
 	
 }

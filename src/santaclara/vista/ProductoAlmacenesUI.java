@@ -25,8 +25,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
 
-import componente.JDibujarTabla;
-import componente.jCampoBuscar;
+import beans.JDibujarTabla;
+import beans.jCampoBuscar;
 
 import java.awt.Color;
 import java.awt.GridLayout;

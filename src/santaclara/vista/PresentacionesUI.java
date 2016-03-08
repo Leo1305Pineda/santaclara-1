@@ -26,8 +26,8 @@ import santaclara.vista.herramientas.VistaGenericaUI;
 
 import javax.swing.JLabel;
 
-import componente.JDibujarTabla;
-import componente.jCampoBuscar;
+import beans.JDibujarTabla;
+import beans.jCampoBuscar;
 
 import java.awt.Font;
 import java.util.ArrayList;

@@ -22,8 +22,8 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
-import componente.JDibujarTabla;
-import componente.jCampoBuscar;
+import beans.JDibujarTabla;
+import beans.jCampoBuscar;
 import net.miginfocom.swing.MigLayout;
 import santaclara.controlador.ContAlmacenes;
 import santaclara.modelo.Almacen;

@@ -24,9 +24,9 @@ import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import componente.JBuscar;
-import componente.JDibujarTabla;
-import componente.jCampoBuscar;
+import beans.JBuscar;
+import beans.JDibujarTabla;
+import beans.jCampoBuscar;
 
 @SuppressWarnings("serial")
 public class VistaGenericaUI extends JPanel {

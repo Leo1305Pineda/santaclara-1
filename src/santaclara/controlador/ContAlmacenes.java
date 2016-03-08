@@ -12,7 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -35,6 +37,10 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 	private Almacen almacen = new Almacen();
 	private List<Almacen> almacenes =new ArrayList<Almacen>();
 	
+	private ContMediador mediador = new ContMediador();
+	
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
+	
 	public ContAlmacenes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
@@ -43,6 +49,7 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 		vista = new AlmacenesUI(this,almacenesAux);
 		dibujar(vista,this);
 		activarBinding(almacenesAux);
+		
 	}
 
 	@Override
@@ -111,6 +118,11 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 		this.vista = vista;
 	}
 
+	public void retornarAlmacen(Almacen almacen)
+	{
+		mediador.regresarAlmacen(ContAlmacenes.this,almacen);
+	}
+	
 	public ActionListener atras() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -122,9 +134,10 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 					if (vista.getTable().getSelectedRow()>=0)
 					{
 						almacen = almacenes.get(vista.getTable().getSelectedRow());
-						ActivarAtras(almacen);
+						retornarAlmacen(almacen);
+					//	ActivarAtras(almacen);
 					}
-					else ActivarAtras(null);
+					else  retornarAlmacen(null);//ActivarAtras(null);
 				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -245,5 +258,13 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 		vista.repaint();
 
 	}
+
+	@Override
+	public Object asociar() {
+		// TODO Auto-generated method stub
+		return (Object) almacenes;
+	}
+	
+
 
 }

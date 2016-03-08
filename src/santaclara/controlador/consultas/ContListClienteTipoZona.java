@@ -14,7 +14,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -43,6 +45,7 @@ public class ContListClienteTipoZona extends ContGeneral implements IContGeneral
 	private static ListClienteZonaTipoUI vista;
 	private static List<Cliente> clientes ;
 	Double valueAcum = new Double(0.0);
+	String inicio = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 	
 	private List<Zona> zonas = new ArrayList<Zona>();
 	
@@ -397,5 +400,11 @@ public class ContListClienteTipoZona extends ContGeneral implements IContGeneral
     	JComboBoxBinding jcomboZona = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,zonas,vista.getCmbZona());
 	    jcomboZona.bind();
     }	
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 }
 

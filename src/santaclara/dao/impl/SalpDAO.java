@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.ISalpDAO;
+import santaclara.modelo.Cliente;
+import santaclara.modelo.Ruta;
 import santaclara.modelo.Salp;
+import santaclara.modelo.Zona;
 
 public class SalpDAO extends GenericoDAO implements  ISalpDAO{
-
 	
 	public SalpDAO(){
 		super();
@@ -35,11 +37,26 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 		List<Salp> salps = new ArrayList<Salp>(); 
 		
 		ResultSet rSet = getConexion().getSelect(
-				"SELECT idcliente FROM salp Order by idcliente;"); 
+				"SELECT s.idcliente, c.rif, c.razonsocial, c.telefono,c.direccion, c.idruta , r.nombre ,r.idzona ,z.descripcion "
+				+ "FROM salp s,clientes c,rutas r, zonas z  "
+				+ "WHERE s.idcliente = c.id  And c.idruta = r.id And r.idzona = z.id "
+				+ "ORDER BY s.idcliente;"); 
 		
 		if(rSet==null || rSet.getFetchSize()!=0) return null;
 			while(rSet.next())salps.add(
-					new Salp(new ClienteDAO().getCliente(rSet.getInt("idcliente")))); 
+					new Salp(
+							new Cliente(
+									rSet.getInt("idcliente"),
+									rSet.getString("rif"), 
+									rSet.getString("razonsocial"), 
+									rSet.getString("direccion"), 
+									rSet.getString("telefono"), 
+									new Ruta(
+											rSet.getInt("idruta"),
+											rSet.getString("nombre"),
+											new Zona(
+													rSet.getInt("idzona"),
+													rSet.getString("descripcion"))))));  
 		return salps;
 	}
 	
@@ -95,8 +112,10 @@ public class SalpDAO extends GenericoDAO implements  ISalpDAO{
 	@Override
 	public Salp getSalp(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-		return new Salp(new ClienteDAO().getCliente(id)) ;
-		
+		for(Salp salp: getSalps()){
+			if(salp.getId().equals(id))return salp;
+		}
+		return null;
 	}
 	
 	

@@ -14,6 +14,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -39,10 +41,10 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 	private EmpaqueProductosUI vista;
 	private ServicioEmpaqueProducto servicioEmpaqueProducto = new ServicioEmpaqueProducto();;
 	private ContPrincipal contPrincipal;
-	
 	private List<EmpaqueProducto> empaqueProductos = new ServicioEmpaqueProducto().getEmpaqueProductos();
 	private EmpaqueProducto empaqueProducto;
 	private List<Producto> 		productos = new ServicioProducto().getProductos();
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
 	
 	public ContEmpaqueProductos(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -283,6 +285,11 @@ public class ContEmpaqueProductos extends ContGeneral implements IContGeneral {
 		}
 		
 	}
-	
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 }
 

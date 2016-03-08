@@ -14,6 +14,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,11 +50,13 @@ public class ContListCantRefrecoPresentCapacFacturadoZona extends ContGeneral im
 	private static ListCantRefrescoPresentCapacFacturadoZonaUI vista;
 	private static List<DetalleFactura> detalleFacturas ;
 	Integer acumCantidad = new Integer(0);
+	String inicio = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 	
 	private List<Zona> zonas = new ArrayList<Zona>();
 	private List<Almacen> almacenes = new ArrayList<Almacen>();
 	private List<Presentacion> presentaciones = new ArrayList<Presentacion>();
 	private List<Capacidad> capacidades = new ArrayList<Capacidad>();
+	 
 	
 	public ContListCantRefrecoPresentCapacFacturadoZona() {
 		// TODO Auto-generated constructor stub
@@ -562,5 +565,11 @@ public class ContListCantRefrecoPresentCapacFacturadoZona extends ContGeneral im
 	    	JComboBoxBinding jcomboZona = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,zonas,vista.getCmbZona());
 		    jcomboZona.bind();
 	    }
+		@Override
+		public String asociar() {
+			// TODO Auto-generated method stub
+			return inicio;
+		}
+
 }
 

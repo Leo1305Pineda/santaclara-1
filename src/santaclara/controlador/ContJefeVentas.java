@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,7 +32,7 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 	private JefeVentaUI vista ;
 	private ServicioJefeVenta servicioJefeVenta;
 	private ServicioZona 	servicioZona;
-	 
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
  
 	public ContJefeVentas(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -277,4 +279,10 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 }

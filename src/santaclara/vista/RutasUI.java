@@ -12,6 +12,8 @@ import java.awt.Component;
 import java.awt.SystemColor;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -21,12 +23,15 @@ import javax.swing.ListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import beans.JDibujarTabla;
+import beans.jCampoBuscar;
 import net.miginfocom.swing.MigLayout;
+import santaclara.Servicio.ServicioRuta;
 import santaclara.controlador.ContRutas;
+import santaclara.modelo.Ruta;
 import santaclara.modelo.Zona;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
@@ -37,21 +42,32 @@ public class RutasUI extends VistaGenericaUI {
     private JPanel 	 panelRuta;
   
     private JTextField 	txtNombre;
-    private JTextField  txtId;
-	private JTextField txtABuscar;
 	
 	private JButton btnGuardar;
 	private JButton btnCancelar;
 	private JButton btnNuevo;
 	private JButton btnEliminar;
-	private JButton btnBuscar;
 	private JButton Zona;
 	
+	private ContRutas contRutas;
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public RutasUI(ContRutas contRutas) {
+	public RutasUI(ContRutas contRutas) throws Exception {
 		super();
-		
+		this.contRutas = contRutas;
 		dibujarPanelOpciones();
+		List<Ruta> catalogo = new ServicioRuta().getRutas();
+		List<jCampoBuscar> campos = new ArrayList<jCampoBuscar>();
+		campos.add(jCampoBuscar.crearCampoBusquedad("Id","getId"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("Nombre","getNombre"));
+		dibujarBuscar(campos,catalogo,new JDibujarTabla() {
+			
+			@Override
+			public void dibujarTabla(List resultados) {
+				// TODO Auto-generated method stub
+				RutasUI.this.contRutas.activarBinding(resultados);
+			}
+		});
 		dibujarPanelTabla();
 		dibujarBotonAtras();
 		getBtnAtras().addActionListener(contRutas.Atras());
@@ -108,8 +124,6 @@ public class RutasUI extends VistaGenericaUI {
 		cmbZona.setSize(150, 16);
 		panelRuta.add(cmbZona,"cell 3 0");
 		
-		txtId = new JTextField();
-		
 		btnCancelar = new JButton("Guardar");
 		panelRuta.add(btnCancelar,"cell 4 1");
 		
@@ -126,19 +140,7 @@ public class RutasUI extends VistaGenericaUI {
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		panelRuta.add(btnGuardar,"cell 5 0");
-				
-		txtABuscar = new JTextField();
-		txtABuscar.setForeground(Color.WHITE);
-		txtABuscar.setBackground(Color.DARK_GRAY);
-		txtABuscar.setColumns(10);
-		getPanelBuscar().add(txtABuscar, "flowx,cell 0 0,growx");
 		
-		btnBuscar = new JButton("");
-		btnBuscar.addActionListener(contRutas.buscar());
-		btnBuscar.setVerticalAlignment(SwingConstants.TOP);
-		btnBuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
-		btnBuscar.setBackground(Color.DARK_GRAY);
-		getPanelBuscar().add(btnBuscar, "cell 0 0");		
 	}
 
 	public JButton getBtnGuardar() {
@@ -157,14 +159,6 @@ public class RutasUI extends VistaGenericaUI {
 		this.txtNombre = txtNombre;
 	}
 
-	public JTextField getTxtId() {
-		return txtId;
-	}
-
-	public void setTxtId(JTextField txtId) {
-		this.txtId = txtId;
-	}
-
 	public JButton getBtnNuevo() {
 		return btnNuevo;
 	}
@@ -179,14 +173,6 @@ public class RutasUI extends VistaGenericaUI {
 
 	public void setBtnEliminar(JButton btnEliminar) {
 		this.btnEliminar = btnEliminar;
-	}
-
-	public JTextField getTxtABuscar() {
-		return txtABuscar;
-	}
-
-	public void setTxtABuscar(String txtABuscar) {
-		this.txtABuscar.setText(txtABuscar);
 	}
 
 	public JComboBox<Zona> getCmbZona() {
@@ -213,23 +199,11 @@ public class RutasUI extends VistaGenericaUI {
 		Zona = zona;
 	}
 
-	public void setTxtABuscar(JTextField txtABuscar) {
-		this.txtABuscar = txtABuscar;
-	}
-
 	public JButton getBtnCancelar() {
 		return btnCancelar;
 	}
 
 	public void setBtnCancelar(JButton btnCancelar) {
 		this.btnCancelar = btnCancelar;
-	}
-
-	public JButton getBtnBuscar() {
-		return btnBuscar;
-	}
-
-	public void setBtnBuscar(JButton btnBuscar) {
-		this.btnBuscar = btnBuscar;
 	}
 }

@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -29,22 +27,16 @@ import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
-import santaclara.Servicio.ServicioConcesionario;
 import santaclara.Servicio.ServicioDetalleFactura;
 import santaclara.Servicio.ServicioDomicilioComercio;
 import santaclara.Servicio.ServicioFactura;
-import santaclara.Servicio.ServicioProductoAlmacen;
 import santaclara.Servicio.ServicioSalp;
-import santaclara.Servicio.ServicioVendedor;
 import santaclara.modelo.Almacen;
 import santaclara.modelo.Cliente;
-import santaclara.modelo.Concesionario;
 import santaclara.modelo.DetalleFactura;
-import santaclara.modelo.DomicilioComercio;
 import santaclara.modelo.ProductoAlmacen;
 import santaclara.modelo.Factura;
 import santaclara.modelo.Usuario;
-import santaclara.modelo.Vendedor;
 import santaclara.vista.PedidosUI;
 
 public class ContPedidos extends ContGeneral implements IContGeneral{
@@ -55,16 +47,21 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 	private List<DetalleFactura> detalleFacturas  = new ArrayList<DetalleFactura>();
 	@SuppressWarnings("rawtypes")
 	private JTableBinding binDetalleFactura;
-
-	public ContPedidos(Cliente cliente,
-			Usuario vendedor, Almacen almacen) {
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
+	private ContMediador  mediador;
+	
+	
+	public ContPedidos(Cliente cliente,	Usuario vendedor, Almacen almacen) {
 		this.factura.setCliente(cliente);
 		this.factura.setVendedor(vendedor);
 		this.factura.setAlmacen(almacen);
+		this.mediador = new ContMediador();
+
 	}
 
 	public ContPedidos(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
+		this.mediador = new ContMediador();
 		setContPrincipal(contPrincipal);
 		vista = new PedidosUI(this);
 		dibujar(vista,this);
@@ -257,62 +254,12 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 	
 	public ActionListener actionCliente(){
 		return new ActionListener() {
-			
-			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				try {
-					ContClientes contClientes = new  ContClientes(getContPrincipal());
-					contClientes.getVista().getBtnAtras().setText("Seleccione");
-					if(factura.getVendedor()!=null)
-					{
-						if((new ServicioVendedor().getVendedor(factura.getVendedor().getId()))!=null)
-						{
-							Vendedor vendedor1 = new ServicioVendedor().getVendedor(factura.getVendedor().getId());
-							contClientes.getVista().getCmbTipoCliente().setModel(
-									new DefaultComboBoxModel(
-											new String[] {"Salp"}));
-							contClientes.getVista().getCmbTipoCliente().setEnabled(true);
-							contClientes.setRutas(vendedor1.getRutas());
-							contClientes.activarBindingSalp(
-									new ServicioSalp().getSalps(vendedor1.getRutas()));
-						}
-						else if((new ServicioConcesionario().getConcesionario(factura.getVendedor().getId()))!=null)
-						{
-							Concesionario vendedor1 = new ServicioConcesionario().getConcesionario(factura.getVendedor().getId());
-							contClientes.getVista().getCmbTipoCliente().setModel(
-									new DefaultComboBoxModel(
-											new String[] {"Domicilio","Comercial"}));
-							contClientes.getVista().getCmbTipoCliente().setEnabled(true);
-							contClientes.getRutas().add(vendedor1.getRuta());
-							List<DomicilioComercio> domicilioComercios =new ServicioDomicilioComercio().getDomicilioComercios(vendedor1.getRuta());
-							if (domicilioComercios.isEmpty())
-							{
-								contClientes.getCliente().setRuta(vendedor1.getRuta());
-								contClientes.cargarCliente(contClientes.getCliente());
-								contClientes.activarBindingDomicilioComercios(domicilioComercios);
-								throw new Exception("ruta null");
-							}
-							else
-							{
-								contClientes.activarBindingDomicilioComercios(domicilioComercios);
-							}
-									
-						}
-					}
-				} catch (Exception exe) {
-					// TODO Auto-generated catch block
-					switch (exe.getMessage()) {
-					case "ruta null":JOptionPane.showMessageDialog(vista, "No existen Cliente en la ruta del Vendedor \n "
-							+ "Cree un nuevo Cliente", "..:: Aviso ::.." ,2, new ImageIcon("img/gestion/group.png"));
-						break;
+				
+				mediador.cargarCliente(ContPedidos.this);
 
-					default:
-						break;
-					}
-					
-				}
 			}
 		};
 	}
@@ -320,47 +267,12 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 	public ActionListener actionVendedor(){
 		return new ActionListener() {
 			
-			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				try {
-					ContUsuarios contUsuarios = new ContUsuarios(getContPrincipal());
-					contUsuarios.getVistaUsuario().getBtnAtras().setText("Seleccione");
-					if(factura.getCliente() !=null)
-					{
-						if ((new ServicioSalp().getSalp(factura.getCliente().getId()))!=null)
-						{
-							contUsuarios.getVistaUsuario().getCmbTipoUsuario().setModel(
-									new DefaultComboBoxModel(
-											new String[] {"Vendedor"}));
-							contUsuarios.getVistaUsuario().getCmbTipoUsuario().setEnabled(true);;
-							contUsuarios.getVistaUsuario().activarBindingVendedores(
-									new ServicioVendedor().getVendedores(factura.getCliente().getRuta().getId()));
-						}
-						else if (new ServicioDomicilioComercio().getdDomicilioComercio(factura.getCliente().getId())!=null)
-						{
-							contUsuarios.getVistaUsuario().getCmbTipoUsuario().setModel(
-									new DefaultComboBoxModel(
-											new String[] {"Concesionario"}));
-							contUsuarios.getVistaUsuario().getCmbTipoUsuario().setEnabled(true);
-							contUsuarios.getVistaUsuario().activarBindingConcesionarios(
-									new ServicioConcesionario().getConcecionarios(factura.getCliente().getRuta().getId()));
-						}					
-					}
-					else
-					{
-						contUsuarios.getVistaUsuario().getCmbTipoUsuario().setModel(
-								new DefaultComboBoxModel(
-										new String[] {"Vendedor", "Concesionario"}));
-						contUsuarios.getVistaUsuario().activarBindingVendedores(
-								new ServicioVendedor().getVendedores());
-					}
-					
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} 
+				
+				mediador.cargarVendedor(ContPedidos.this);
+				
 			}
 		};
 	}
@@ -371,14 +283,7 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				try {
-					
-					ContAlmacenes contAlmacenes = new ContAlmacenes(getContPrincipal());
-					contAlmacenes.getVistaAlmacen().getBtnAtras().setText("Seleccione");
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				mediador.cargarAlmacen(ContPedidos.this);
 			}
 		};
 	}
@@ -652,37 +557,8 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				try {
-					
-					if(factura.getAlmacen() == null ) 
-					{
-						throw new Exception("Almacen");
-					}
-					else 
-					{
-						ContProductoAlmacenes contProductoAlmacenes = new ContProductoAlmacenes(getContPrincipal());
- 
-						contProductoAlmacenes.getVista().getBtnAtras().setText("Seleccione");
- 
-						contProductoAlmacenes.activarBinding(
-								new ServicioProductoAlmacen().getProductoAlmacenes(factura.getAlmacen().getId()));
-					}
-					
-				} catch (Exception exe) {
-					// TODO Auto-generated catch block
-					Integer opt = new Integer(	JOptionPane.showConfirmDialog(vista,"Cargar la Informacion del "+exe.getMessage()));
-					if (opt==0)
-					{
-						switch (exe.getMessage()) {
-						case "Almacen":vista.getBtnAlmacen().doClick();
-							break;
-						default:
-							break;
-						}
-
-					}
-					
-				}
+				
+				mediador.cargarProducto(ContPedidos.this);
 			}
 		};
 	}
@@ -1019,4 +895,10 @@ public class ContPedidos extends ContGeneral implements IContGeneral{
 			}
 		};
 	} 
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 }

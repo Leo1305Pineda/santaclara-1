@@ -13,16 +13,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IDetalleFacturaDAO;
+import santaclara.modelo.Almacen;
+import santaclara.modelo.Capacidad;
+import santaclara.modelo.Cliente;
 import santaclara.modelo.DetalleFactura;
+import santaclara.modelo.EmpaqueProducto;
+import santaclara.modelo.Factura;
+import santaclara.modelo.Presentacion;
+import santaclara.modelo.Producto;
+import santaclara.modelo.Ruta;
+import santaclara.modelo.Sabor;
+import santaclara.modelo.Usuario;
+import santaclara.modelo.Zona;
 
 public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO{
-	
 	
 	public DetalleFacturaDAO() {
 		super();
 		// TODO Auto-generated constructor stub
 		try {
 			activarConexionBaseDato();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,21 +46,75 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 		List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();
 		
 		ResultSet rSet = getConexion().getSelect(
-				" SELECT  idfactura, idempaqueproducto,"
-				+ " cantidad, precio, descuento, iva, total "
-				+ " FROM detalleFacturas Order by idfactura;"); 
+				" SELECT  "
+				+ " d.idfactura, d.idempaqueproducto, d.cantidad as cantidadvendida, d.precio as precioempaque, d.descuento as descuentoempaque, d.iva as ivaempaque, d.total,f.estado, f.fecha, f.idcliente, f.idvendedor, f.idalmacen, f.subtotalexento, f.subtotalgravado, f.descuento, f.ivasobrebs, f.iva as ivafactura, f.totalapagar, "
+				+ " e.idproducto, e.cantidad as cantidadproducto,p.nombre as nombreProducto, p.precio as precioproducto, p.descuento as descuentoproducto, p.estadoiva, p.idcapacidad, p.idpresentacion, p.idsabor, "
+				+ " pr.material, "
+				+ " ca.volumen, "
+				+ " sa.sabor, "
+				+ " z.descripcion as descripcionzona, "
+				+ " r.nombre as nombreruta, r.idzona, "
+				+ " c.id, c.rif, c.razonsocial, c.direccion, c.telefono, c.idruta, "
+				+ " u.username, u.cedula, u.nombre as nombreusuario, u.contrasena, "
+				+ " a.ubicacion "
+				+ " FROM detallefacturas d, empaqueproductos e, facturas f,clientes c,usuarios u,almacenes a,productos p, presentaciones pr, capacidades ca, sabores sa, rutas r,zonas z "
+				+ " WHERE d.idfactura = f.id "
+				+ " AND d.idempaqueproducto = e.id  "
+				+ " AND e.idproducto = p.id  "
+				+ " AND p.idpresentacion = pr.id  "
+				+ " AND p.idcapacidad = ca.id  "
+				+ " AND p.idsabor = sa.id  "
+				+ " AND f.idcliente = c.id "
+				+ " AND c.idruta = r.id "
+				+ " AND r.idzona = z.id "
+				+ " AND f.idvendedor = u.id "
+				+ " AND f.idalmacen = a.id "
+				+ ";"); 
+		if(rSet == null || rSet.getFetchSize()!=0) return null;
 		
-		if(rSet==null || rSet.getFetchSize()!=0) return null;
-		
-			while(rSet.next())detalleFacturas.add(
-					new DetalleFactura(
-							new FacturaDAO().getFactura(rSet.getInt("idfactura")),
-							new EmpaqueProductoDAO().getEmpaqueProducto(rSet.getInt("idempaqueproducto")),
-							rSet.getInt("cantidad"), 
-							rSet.getDouble("precio"), 
-							rSet.getDouble("descuento"),
-							rSet.getDouble("iva"),
-							rSet.getDouble("total"))); 
+		while(rSet.next())
+		{
+			Boolean estado = null;
+			 switch (rSet.getString("estado")) {
+			 case "Facturado":estado = true;	
+			 break;
+			 case "Pendiente":estado = false;
+			 break;
+			 case "Pedido":estado = null;
+			 break;
+			 default:
+			 break;
+			 }
+			 Boolean estadoiva = false;
+				if(rSet.getString("estadoiva").equals("gravado")) estadoiva = true;
+			
+			Sabor sabor = new Sabor(rSet.getInt("idsabor"), rSet.getString("sabor")); 
+			
+			Capacidad capacidad = new Capacidad(rSet.getInt("idcapacidad"), rSet.getDouble("volumen"));
+			
+			Presentacion presentacion = new Presentacion(rSet.getInt("idpresentacion"), rSet.getString("material"));
+			
+			Producto producto = new Producto(rSet.getInt("idproducto"), rSet.getString("nombreproducto"), rSet.getDouble("precioproducto"), rSet.getDouble("descuentoproducto"), estadoiva, capacidad, presentacion, sabor);
+			
+			EmpaqueProducto empaqueProducto = new EmpaqueProducto(rSet.getInt("idempaqueProducto"), producto, rSet.getInt("cantidadproducto"));
+			
+			Almacen almacen = new Almacen(rSet.getInt("idalmacen"), rSet.getString("ubicacion"));
+			
+			Usuario vendedor = new Usuario(rSet.getInt("idvendedor"), rSet.getString("username"), rSet.getString("cedula"), rSet.getString("nombreusuario"), rSet.getString("contrasena"));
+			
+			Zona zona = new Zona(rSet.getInt("idzona"), rSet.getString("descripcionzona"));
+			
+			Ruta ruta = new Ruta(rSet.getInt("idruta"), rSet.getString("nombreruta"), zona);
+			
+			Cliente cliente = new Cliente(rSet.getInt("idcliente"), rSet.getString("rif"), rSet.getString("razonsocial"), rSet.getString("direccion"), rSet.getString("telefono"), ruta);
+			
+			Factura factura = new Factura(rSet.getInt("idfactura"),rSet.getDate("fecha"), cliente, vendedor, almacen, estado, rSet.getDouble("subTotalExento"), rSet.getDouble("subTotalGravado"),rSet.getDouble("descuentoempaque"), rSet.getDouble("ivaSobreBs"), rSet.getDouble("ivafactura"), rSet.getDouble("totalAPagar"));
+			
+			DetalleFactura detalleFactura = new DetalleFactura(factura, empaqueProducto, rSet.getInt("cantidadvendida"), rSet.getDouble("precioempaque"), rSet.getDouble("descuentoempaque"),rSet.getDouble("ivaempaque"), rSet.getDouble("total"));
+			
+			detalleFacturas.add(detalleFactura);			
+			
+		}
 		return detalleFacturas;
 	}
 	
@@ -80,7 +145,6 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 							+ "       "
 							+ "COMMIT;"
 							);	
-						
 				}	
 			}
 		}
@@ -99,26 +163,12 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 	@Override
 	public DetalleFactura getDetalleFactura(Integer idFactura,Integer idProducto) throws Exception {
 		// TODO Auto-generated method stub
-		
-		ResultSet rSet = getConexion().getSelect(
-				" SELECT  idfactura, idempaqueproducto,"
-				+ " cantidad, precio, descuento, iva, total "
-				+ " FROM detalleFacturas "
-				+ " WHERE idfactura = " +idFactura + ""
-				+ " AND "
-				+ " idempaqueproducto = " +idProducto
-				+ ";"); 
-		
-		if(rSet==null || rSet.getFetchSize()!=0) return null;
-		rSet.next();
-		return	new DetalleFactura(
-							new FacturaDAO().getFactura(rSet.getInt("idfactura")),
-							new EmpaqueProductoDAO().getEmpaqueProducto(rSet.getInt("idempaqueproducto")),
-							rSet.getInt("cantidad"), 
-							rSet.getDouble("precio"), 
-							rSet.getDouble("descuento"),
-							rSet.getDouble("iva"),
-							rSet.getDouble("total")); 		
+		for(DetalleFactura detalleFactura : getDetalles())
+		{
+			if(detalleFactura.getFactura().getId().equals(idFactura)&& 
+					detalleFactura.getEmpaqueProducto().getId().equals(idProducto))return detalleFactura;
+		}
+		 return null;
 	}
 	
 	public List<DetalleFactura> getDetalleFacturados() throws Exception{
@@ -138,25 +188,13 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 
 	private List<DetalleFactura> confGetDetalle(String condicion) throws Exception{
 		// TODO Auto-generated method stub
-	List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();
-		
-		ResultSet rSet = getConexion().getSelect(
-				"SELECT d.* FROM detalleFacturas d , facturas f "
-				+ " WHERE d.idfactura = f.id AND f.estado = ' " + condicion +"' "
-				+ ";"); 
-		
-		if(rSet==null || rSet.getFetchSize()!=0) return null;
-		
-			while(rSet.next())detalleFacturas.add(
-					new DetalleFactura(
-							new FacturaDAO().getFactura(rSet.getInt("idfactura")),
-							new EmpaqueProductoDAO().getEmpaqueProducto(rSet.getInt("idempaqueproducto")),
-							rSet.getInt("cantidad"), 
-							rSet.getDouble("precio"), 
-							rSet.getDouble("descuento"),
-							rSet.getDouble("iva"),
-							rSet.getDouble("total"))); 
-		return detalleFacturas;
+		List<DetalleFactura> detalleFacturas = new ArrayList<DetalleFactura>();
+		for(DetalleFactura detalleFactura : getDetalles())
+		{
+			if(detalleFactura.getFactura().getCondicionStr().equals(condicion))
+				detalleFacturas.add(detalleFactura);
+		}
+		 return detalleFacturas;
 	}
 	
 	/*

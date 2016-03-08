@@ -10,6 +10,7 @@ package santaclara.controlador.reportes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,7 @@ public class ContReportMontFacturadoVendedor extends ContGeneral implements ICon
 
 	private static MontoFacturadoVendedorUI vista;
 	private List<Factura> pedidoFacturados;
+	String inicio;
 	
 	public ContReportMontFacturadoVendedor() {
 		// TODO Auto-generated constructor stub
@@ -41,6 +43,7 @@ public class ContReportMontFacturadoVendedor extends ContGeneral implements ICon
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ContReportMontFacturadoVendedor(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
+		inicio = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 		setContPrincipal(contPrincipal);
 		vista = new MontoFacturadoVendedorUI(this);
 		dibujar(vista,this);
@@ -166,6 +169,11 @@ public class ContReportMontFacturadoVendedor extends ContGeneral implements ICon
 				}
 			}
 		};
+	}
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
 	}
 
 }

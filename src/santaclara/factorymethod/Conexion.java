@@ -11,16 +11,19 @@ public class Conexion {
 	private ResultSet resultSet;
 	
 	public ResultSet getSelect(String sql) throws Exception {
-		if(statement==null) return null;
+		if(statement==null || statement.isClosed()) {
+		//	statement.close();
+			return null;
+		}
 		resultSet = statement.executeQuery(sql);
-		connection.close();
+	//	connection.close();
 		return resultSet;
 	}
 	
 	public void ejecutar(String sql) throws Exception {
 		statement.executeUpdate(sql);
-		statement.close();
-		connection.close();
+		//statement.close();
+		//connection.close();
 	}
 
 	public Connection getConnection() {

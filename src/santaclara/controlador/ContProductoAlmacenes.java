@@ -15,6 +15,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -42,9 +44,10 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 	private List<ProductoAlmacen> productoAlmacenes = new ServicioProductoAlmacen().getProductoAlmacen();
 	private List<Almacen> 		almacenes = new ServicioAlmacen().getAlmacenes();
 	private List<EmpaqueProducto> empaqueProductos = new ServicioEmpaqueProducto().getEmpaqueProductos();
-	
 	private ProductoAlmacen productoAlmacen = new ProductoAlmacen();
-
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
+	
+	private ContMediador mediador = new ContMediador();
 	
 	public ContProductoAlmacenes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -183,6 +186,11 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
         }
     }
 
+	public void retornarProducto(ProductoAlmacen productoAlmacen)
+	{
+		mediador.regresarProducto(ContProductoAlmacenes.this,productoAlmacen);
+	}
+	
 	public ActionListener Atras() {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
@@ -197,9 +205,10 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 						productoAlmacen = servicioProductoAlmacen.getProductoAlmacen(
 								new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),2).toString()),
 								new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString()));
-						ActivarAtras(productoAlmacen);
+						//ActivarAtras(productoAlmacen);
+						retornarProducto(productoAlmacen);
 					}
-					else ActivarAtras(null);
+					else retornarProducto(null);//ActivarAtras(null);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -349,6 +358,12 @@ public class ContProductoAlmacenes extends ContGeneral implements IContGeneral {
 		}
 		
 	}
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 	
 }
 

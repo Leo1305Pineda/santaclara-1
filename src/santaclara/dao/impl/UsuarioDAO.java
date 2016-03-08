@@ -18,7 +18,7 @@ import santaclara.dao.IUsuarioDAO;
 import santaclara.modelo.Usuario;
 
 public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
-
+	
 	public UsuarioDAO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -30,12 +30,11 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
-
+	
 	@Override
 	public List<Usuario> getUsuarios() throws Exception {
 		// TODO Auto-generated method stub
 		List<Usuario> usuarios = new ArrayList<Usuario>();
-		
 		ResultSet rSet = getConexion().getSelect(
 				"Select id,username,cedula,nombre,contrasena From usuarios where id !=1"); 
 	
@@ -44,8 +43,8 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 		while(rSet.next())usuarios.add(
 				new Usuario(rSet.getInt(1), rSet.getString(2), 
 						rSet.getString(3), rSet.getString(4), rSet.getString(5))); 
-		
 		return usuarios;
+	
 	}
 	
 	@Override
@@ -93,8 +92,7 @@ public class UsuarioDAO extends GenericoDAO implements IUsuarioDAO{
 
 	public Usuario getUsuario(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-		List<Usuario> usuarios = getUsuarios();
-		for(Usuario usuario: usuarios)
+		for(Usuario usuario: getUsuarios())
 		{
 			if(usuario.getId().equals(id))return usuario;
 		}

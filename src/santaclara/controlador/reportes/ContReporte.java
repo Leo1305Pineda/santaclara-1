@@ -10,7 +10,9 @@ package santaclara.controlador.reportes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -31,6 +33,7 @@ import santaclara.vista.reporte.ReporteUI;
 public class ContReporte extends ContGeneral implements IContGeneral {
 
 	private ReporteUI vista;
+	String inicio;
 	
 	//declaracion de tantas lista sean nesesaria
 	@SuppressWarnings({ "rawtypes" })
@@ -45,20 +48,13 @@ public class ContReporte extends ContGeneral implements IContGeneral {
 	public ContReporte(ContPrincipal contPrincipal) throws Exception{
 		super();
 		// TODO Auto-generated constructor stub
-		//se prepara para dibujar la vista en el panel principal
+		inicio = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 		setContPrincipal(contPrincipal);
 		vista = new ReporteUI(this);
 		dibujar(vista,this);
-		//hasta aca se visualiza la vista sin nada mas
-		
-		//se inicializa las listas se hacen el llamados a los servicios ejemplo
-				list = new ServicioDetalleFactura().getDetalleFacturas();
+		list = new ServicioDetalleFactura().getDetalleFacturas();
 				
-		//luego se carga si lo piden los combo y demas dato en la vistas
-				//CargarCombo
-				//fecha = new Date() //o algo haci
-		//fin		
-	}
+		}
 	
 	
 	//metodo para filtrado y demas
@@ -109,6 +105,11 @@ public class ContReporte extends ContGeneral implements IContGeneral {
 		    binFacturas.bind();
 		}
 
-	
+		@Override
+		public String asociar() {
+			// TODO Auto-generated method stub
+			return inicio;
+		}
+
 
 }

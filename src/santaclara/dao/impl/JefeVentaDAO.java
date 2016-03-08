@@ -23,43 +23,47 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 	private JefeVenta jefeVenta;
 	private ResultSet rSet;
 
+
+	List<JefeVenta>  cargarJefeVenta() throws Exception{
+		try {
+			rSet = getConexion().getSelect(
+					"SELECT u.*,j.idzona FROM jefeventas j,usuarios u,zonas z "
+					+ " WHERE j.id = u.id "
+					+ " AND j.idzona = z.id "
+					+ " AND j.id != 1"
+					+ ";"); 
+			
+			if(rSet!=null || rSet.getFetchSize()!=0)
+			{
+				while(rSet.next())
+				{
+				//	jefeVenta = new JefeVenta(id, username, cedula, nombres, contrasena, zona);
+					
+					jefeVenta = new JefeVenta(
+							rSet.getInt("id"), 
+							rSet.getString("username"), 
+							rSet.getString("cedula"), 
+							rSet.getString("nombre"), 
+							rSet.getString("contrasena"),
+							new ZonaDAO().getZona(rSet.getInt("idzona")));
+					 			 
+					jefeVentas.add(jefeVenta);
+				}
+			}
+			return jefeVentas;
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}	
+		return null;
+
+	}
 	
 	@Override
 	public List<JefeVenta> getJefeVentas() throws Exception {
 		// TODO Auto-generated method stub
-	try {
-		rSet = getConexion().getSelect(
-				"SELECT u.*,j.idzona FROM jefeventas j,usuarios u,zonas z "
-				+ " WHERE j.id = u.id "
-				+ " AND j.idzona = z.id "
-				+ " AND j.id != 1"
-				+ ";"); 
-		
-		if(rSet!=null || rSet.getFetchSize()!=0)
-		{
-			while(rSet.next())
-			{
-			//	jefeVenta = new JefeVenta(id, username, cedula, nombres, contrasena, zona);
-				
-				jefeVenta = new JefeVenta(
-						rSet.getInt("id"), 
-						rSet.getString("username"), 
-						rSet.getString("cedula"), 
-						rSet.getString("nombre"), 
-						rSet.getString("contrasena"),
-						new ZonaDAO().getZona(rSet.getInt("idzona")));
-				 			 
-				jefeVentas.add(jefeVenta);
-			}
-		}
 		return jefeVentas;
-		
-	} catch (Exception e) {
-		// TODO: handle exception
-		e.printStackTrace();
-	}	
-	return null;
-	
 	}
 	
 	@Override
@@ -165,6 +169,7 @@ public class JefeVentaDAO extends GenericoDAO implements IJefeVentaDAO{
 		// TODO Auto-generated constructor stub
 		try {
 			activarConexionBaseDato();
+			jefeVentas = cargarJefeVenta();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

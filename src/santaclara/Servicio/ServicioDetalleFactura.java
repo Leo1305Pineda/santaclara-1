@@ -16,25 +16,27 @@ import santaclara.modelo.DetalleFactura;
 import santaclara.modelo.Factura;
 
 public class ServicioDetalleFactura {
- 
+
+	private DetalleFacturaDAO detalleFacturaDAO = new DetalleFacturaDAO();
+	
 	//retorna todo el detalle factura facturado y en pedido
 	public List<DetalleFactura> getDetalles() throws Exception{
-		return new DetalleFacturaDAO().getDetalles();
+		return detalleFacturaDAO.getDetalles();
 	}
 	//returna solo el detalle facturado
 	public List<DetalleFactura> getDetalleFacturas() throws Exception{
 		
-		return new DetalleFacturaDAO().getDetalleFacturados();
+		return detalleFacturaDAO.getDetalleFacturados();
 	}
 	
 	public List<DetalleFactura> getDetallePendientes() throws Exception{
 		
-		return new DetalleFacturaDAO().getDetallePendientes();
+		return detalleFacturaDAO.getDetallePendientes();
 	}
 	
 	public List<DetalleFactura> getDetallePedidos() throws Exception{
 		
-		return new DetalleFacturaDAO().getDetallePedidos();
+		return detalleFacturaDAO.getDetallePedidos();
 	}
 	
  
@@ -51,11 +53,11 @@ public class ServicioDetalleFactura {
 	 
 	
 	public void guardar(List<DetalleFactura> detalle) throws Exception{
-		new DetalleFacturaDAO().guardar(detalle);
+		detalleFacturaDAO.guardar(detalle);
 		}
 
 	public void eliminar(DetalleFactura detallePedido) throws Exception{
-		new DetalleFacturaDAO().eliminar(detallePedido);
+		detalleFacturaDAO.eliminar(detallePedido);
 	}
 	/*
 	 * public Integer idValue(String groupBy,DetalleFactura detalleFactura){

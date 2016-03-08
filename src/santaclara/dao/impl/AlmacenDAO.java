@@ -35,13 +35,13 @@ public class AlmacenDAO extends GenericoDAO implements IAlmacenDAO {
 		// TODO Auto-generated method stub
 		List<Almacen> almacenes = new ArrayList<Almacen>();
 	
-		rSet = getConexion().getSelect("Select id,ubicacion From almacenes"); 
+		rSet = getConexion().getSelect("Select id,ubicacion From almacenes ORDER BY id"); 
 		
 		if(rSet!=null || rSet.getFetchSize()!=0)
 		{
 			while(rSet.next())
 			{
-				almacen = new Almacen(rSet.getInt(1),rSet.getString(2));
+				almacen = new Almacen(rSet.getInt("id"),rSet.getString("ubicacion"));
 				almacenes.add(almacen); 
 			}
 		}

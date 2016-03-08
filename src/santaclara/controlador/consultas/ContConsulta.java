@@ -10,7 +10,9 @@ package santaclara.controlador.consultas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -31,7 +33,7 @@ import santaclara.vista.consultas.ConsultaUI;
 public class ContConsulta extends ContGeneral implements IContGeneral{
 
 	private ConsultaUI vista;
-	
+	String inicio = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 	//declaracion de tantas lista sean nesesaria
 	@SuppressWarnings({ "rawtypes" })
 	private List list = new ArrayList<>();
@@ -102,6 +104,11 @@ public class ContConsulta extends ContGeneral implements IContGeneral{
 		    
 
 		    binFacturas.bind();
+		}
+		@Override
+		public String asociar() {
+			// TODO Auto-generated method stub
+			return inicio;
 		}
 
 }

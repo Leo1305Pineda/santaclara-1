@@ -14,6 +14,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +46,7 @@ public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IC
 	private static MontoFacturadoMesZonaTipoPagoUI vista;
 	private static List<Factura> facturas ;
 	Double valueAcum = new Double(0.0);
+	String inicio = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 	
 	private List<Zona> zonas = new ArrayList<Zona>();
 	
@@ -488,5 +490,11 @@ public class ContMontoFacturadoMesZonaTipoPago extends ContGeneral implements IC
     	JComboBoxBinding jcomboZona = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,zonas,vista.getCmbZona());
 	    jcomboZona.bind();
     }
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 }
 

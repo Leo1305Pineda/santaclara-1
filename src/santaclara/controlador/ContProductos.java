@@ -14,6 +14,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -49,6 +51,7 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 	private List<Capacidad> capacidades = new ServicioCapacidad().getCapacidades();
 	private List<Presentacion> presentaciones = new ServicioPresentacion().getPresentaciones();
 	private List<EmpaqueProducto> empaqueProductos = new ServicioEmpaqueProducto().getEmpaqueProductos();
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
 	@SuppressWarnings("rawtypes")
 	private JTableBinding   binProductos;
 	
@@ -398,5 +401,11 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 			
 		}
 	}
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 }
 

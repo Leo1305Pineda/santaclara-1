@@ -13,4 +13,8 @@ import javax.swing.JPanel;
 public interface IContGeneral {
 
 	public JPanel getVista();
+	
+	public void ActivarAtras(Object object);
+	
+	public Object asociar();
 }

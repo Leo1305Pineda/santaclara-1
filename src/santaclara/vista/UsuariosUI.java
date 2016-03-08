@@ -130,7 +130,8 @@ public class UsuariosUI extends JPanel {
 	@SuppressWarnings("rawtypes")
 	private JTableBinding  binRutas;
 	
-	private List<Usuario> usuarios = new ArrayList<Usuario>();
+	@SuppressWarnings("rawtypes")
+	private List usuarios = new ArrayList<>();
 	private List<Ruta> rutasVendedores = new ArrayList<Ruta>();
 	private List<Ruta> rutas = new ArrayList<Ruta>();
 	private List<Zona> zonas = new ArrayList<Zona>();
@@ -538,6 +539,7 @@ public class UsuariosUI extends JPanel {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBindingVendedores(List<Vendedor> vendedores) {
+		this.usuarios = vendedores;
 		pnTabla.setVisible(true);
 		table = new JTable();
 		
@@ -562,6 +564,7 @@ public class UsuariosUI extends JPanel {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBindingJefeVentas(List<JefeVenta> jefeVentas) {
+		this.usuarios = jefeVentas;
 		pnTabla.setVisible(true);
 		table = new JTable();
 		scrollPanel.setViewportView(table);
@@ -587,6 +590,7 @@ public class UsuariosUI extends JPanel {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void activarBindingConcesionarios(List<Concesionario> concesionarios) {
+		this.usuarios = concesionarios;
 		pnTabla.setVisible(true);
 		table = new JTable();
 		pnTabla.setBounds(12, 85, 852, 408);
@@ -616,6 +620,7 @@ public class UsuariosUI extends JPanel {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void activarBinding(List<Usuario> usuarios) {
 		// TODO Auto-generated method stub
+		this.usuarios = usuarios;
 		pnTabla.setVisible(true);
 		pnTabla.setBounds(12, 85, 852, 408);
 		scrollPanel.setBounds(0, 0, 852, 408);
@@ -863,7 +868,8 @@ public class UsuariosUI extends JPanel {
 		this.txtABuscar = txtABuscar;
 	}
 
-	public List<Usuario> getUsuarios() {
+	@SuppressWarnings("rawtypes")
+	public List getUsuarios() {
 		return usuarios;
 	}
 

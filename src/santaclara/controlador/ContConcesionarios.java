@@ -11,6 +11,8 @@ package santaclara.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -26,6 +28,7 @@ public class ContConcesionarios extends ContGeneral implements IContGeneral {
 	
 	private UsuariosUI vista ;
 	private ServicioConcesionario servicioConcesionario = new ServicioConcesionario();
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
 	
 	@Override
 	public JPanel getVista() {
@@ -156,5 +159,10 @@ public class ContConcesionarios extends ContGeneral implements IContGeneral {
 		vista.activarBindingConcesionarios(servicioConcesionario.getConcecionarios());
 		vista.quitarNuevo();
 	}
-	
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 }

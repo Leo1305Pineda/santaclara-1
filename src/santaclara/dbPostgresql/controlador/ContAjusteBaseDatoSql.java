@@ -7,6 +7,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 import javax.swing.JPanel;
@@ -19,9 +21,11 @@ import santaclara.dbPostgresql.vista.AjusteBaseDatoUI;
 public class ContAjusteBaseDatoSql extends ContGeneral implements IContGeneral {
 
 	private AjusteBaseDatoUI vista;
+	String inicio;
 	
 	public ContAjusteBaseDatoSql(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
+		inicio = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 		setContPrincipal(contPrincipal);
 		vista = new AjusteBaseDatoUI(this);
 		dibujar(vista, this);
@@ -218,5 +222,11 @@ public class ContAjusteBaseDatoSql extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 
 	}

@@ -14,6 +14,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -37,6 +39,7 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 	private ServicioCapacidad servicioCapacidad = new ServicioCapacidad();
 	private CapacidadesUI vista;
 	private Capacidad capacidad = new Capacidad();
+	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
 	
 	public ContCapacidades(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -243,4 +246,10 @@ public class ContCapacidades extends ContGeneral implements IContGeneral{
 			
 		}
 	}
+	@Override
+	public String asociar() {
+		// TODO Auto-generated method stub
+		return inicio;
+	}
+
 }
