@@ -17,9 +17,13 @@ public class TestVendedorDAO {
 	public void vendedoresTest() throws Exception {
 		VendedorDAO vendedorDAO = new VendedorDAO();
 		assertNotNull(vendedorDAO);
-		assertEquals(3,vendedorDAO.getVendedores().size());
-	}
+		assertNotNull(vendedorDAO.getVendedor(34));
+		assertNull(vendedorDAO.getVendedor(2134324));
+		assertEquals(6,vendedorDAO.getVendedores().size());
 
+	
+	}
+/*
 	@Test
 	public void addRemoveVendedorTest() throws Exception {
 		VendedorDAO vendedorDAO = new VendedorDAO();
@@ -47,8 +51,8 @@ public class TestVendedorDAO {
 		vendedorDAO.eliminar(vendedor1);
 		assertEquals(vendedores.size(),vendedorDAO.getVendedores().size());
 	
-				
-		
 	}
+	
+	*/
 	
 }

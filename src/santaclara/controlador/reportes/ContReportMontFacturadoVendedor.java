@@ -80,7 +80,7 @@ public class ContReportMontFacturadoVendedor extends ContGeneral implements ICon
 	public void actualizarTabla() throws NumberFormatException, Exception {
 		// TODO Auto-generated method stub
 		pedidoFacturados = new ServicioFactura().getPedidoFacturados();
-		
+	 
 		List<Factura> facturasAux = new ArrayList<Factura>();// se cargaran las facturas filtradas 
 		List<Factura> facturas = new ArrayList<Factura>();// se cargaran las facturas a ser mostradas
 		
@@ -96,11 +96,12 @@ public class ContReportMontFacturadoVendedor extends ContGeneral implements ICon
 			{	
 				if(vista.getCmbVendedor().getSelectedItem().equals("Vendedor"))
 				{
+					System.out.println(factura.getVendedor().getId());
 					if (new ServicioVendedor().getVendedor(factura.getVendedor().getId())!=null)
 					{
+						System.out.println("gogogog");
 						facturasAux.add(factura); //carga la factura filtrada por vendedor
 					}
-				
 				}
 				else
 				{

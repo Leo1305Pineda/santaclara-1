@@ -149,38 +149,43 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 	try {
 		
 		ResultSet rSet = getConexion().getSelect(
-				" SELECT u .* , v.id, v.idrutas "
+				" SELECT u .* , v.idrutas "
 				+ " FROM vendedores v , usuarios u "
 				+ " WHERE v.id = u.id AND "
 				+ "v.id = " +id
 				+ " ;"); 
 		
-		
-		if(rSet==null) return null;
-		if(rSet.getFetchSize()==0)return null;
-		
-		System.out.println(rSet.getFetchSize());
-		rSet.next();
-		System.out.println(rSet.getString("idrutas"));
-		Scanner sc = new Scanner(rSet.getString("idrutas")).useDelimiter("-");
-		 List<Ruta> rutas = new ArrayList<Ruta>();
-		 if (sc.hasNext())
-		 {
-			 while(sc.hasNext())
-			 {
-				 Ruta ruta = new Ruta();
-				 ruta.setId(sc.nextInt());
-				 RutaDAO rutaDAO = new RutaDAO();
-				 ruta = rutaDAO.getRuta(ruta.getId());
-				 rutas.add(ruta);
-			 }
-		 }
-	
-			return new Vendedor(rSet.getInt("id"),
+		System.out.println(" SELECT u .* , v.idrutas "
+				+ " FROM vendedores v , usuarios u "
+				+ " WHERE v.id = u.id AND "
+				+ "v.id = " +id
+				+ " ;");
+		if(rSet==null) 
+		{
+			return null;
+		}
+
+		if(rSet.next())
+		{
+			Scanner sc = new Scanner(rSet.getString("idrutas")).useDelimiter("-");
+			List<Ruta> rutas = new ArrayList<Ruta>();
+			if (sc.hasNext())
+			{
+				while(sc.hasNext())
+				{
+					Ruta ruta = new Ruta();
+					ruta.setId(sc.nextInt());
+					RutaDAO rutaDAO = new RutaDAO();
+					ruta = rutaDAO.getRuta(ruta.getId());
+					rutas.add(ruta);
+				}
+			}
+		 	return new Vendedor(rSet.getInt("id"),
 						rSet.getString("username"),
 						rSet.getString("cedula"),
-						rSet.getString("nombres"),
-						rSet.getString("contrasena"), rutas);
+						rSet.getString("nombre"),
+						rSet.getString("contrasena"), null);
+		}
 	} catch (Exception e) {
 		// TODO: handle exception
 		e.printStackTrace();

@@ -14,6 +14,8 @@ import java.util.List;
 
 import santaclara.dao.IClienteDAO;
 import santaclara.modelo.Cliente;
+import santaclara.modelo.Ruta;
+import santaclara.modelo.Zona;
 
 public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 
@@ -34,15 +36,24 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		List<Cliente> clientes = new ArrayList<Cliente>();
 		
 		ResultSet rSet = getConexion().getSelect(
-				"SELECT id, rif, razonsocial, direccion, telefono, idruta FROM clientes Order by id;"); 
+				"SELECT c.id, c.rif, c.razonsocial, c.direccion, c.telefono, c.idruta ,r.nombre as nombreruta , r.idzona , z.descripcion"
+				+ " FROM clientes c, rutas r ,zonas z"
+				+ " WHERE c.idruta = r.id AND r.idzona = z.id "
+				+ " Order by c.id;"); 
 		
 		if(rSet==null || rSet.getFetchSize()!=0) return null;
-		
+	
 			while(rSet.next())clientes.add(
 					new Cliente(
 							rSet.getInt("id"),rSet.getString("rif") , 
 							rSet.getString("razonsocial"), rSet.getString("direccion"), 
-							rSet.getString("telefono"),new RutaDAO().getRuta(rSet.getInt("idruta")))); 
+							rSet.getString("telefono"),
+							new Ruta(
+									rSet.getInt("idruta"),
+									rSet.getString("nombreruta"), 
+									new Zona(
+											rSet.getInt("idzona"),
+											rSet.getString("descripcion"))))); 
 		return clientes;
 	}
 	
@@ -83,10 +94,26 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 	@Override
 	public Cliente getCliente(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-		List<Cliente> clientes = getClientes();
-		for(Cliente cliente : clientes)
+		ResultSet rSet = getConexion().getSelect(
+				"SELECT c.id, c.rif, c.razonsocial, c.direccion, c.telefono, c.idruta ,r.nombre as nombreruta , r.idzona , z.descripcion"
+				+ " FROM clientes c, rutas r ,zonas z"
+				+ " WHERE c.idruta = r.id AND r.idzona = z.id  AND c.id ="+id+""
+				+ " ;");
+
+		if(rSet == null || rSet.getFetchSize()!=0 ) return null;
+
+		while(rSet.next())
 		{
-			if(cliente.getId().equals(id))return cliente;
+			new Cliente(
+					rSet.getInt("id"),rSet.getString("rif") , 
+					rSet.getString("razonsocial"), rSet.getString("direccion"), 
+					rSet.getString("telefono"),
+					new Ruta(
+							rSet.getInt("idruta"),
+							rSet.getString("nombreruta"), 
+							new Zona(
+									rSet.getInt("idzona"),
+									rSet.getString("descripcion"))));
 		}
 		return null;
 	}
@@ -95,17 +122,25 @@ public class ClienteDAO extends GenericoDAO implements IClienteDAO{
 		// TODO Auto-generated method stub
 		
 		ResultSet rSet = getConexion().getSelect(
-				"   SELECT id, rif, razonsocial, direccion, telefono, idruta FROM clientes    "
-				+"  WHERE rif ='"+rif+"' ;");
+				"SELECT c.id, c.rif, c.razonsocial, c.direccion, c.telefono, c.idruta ,r.nombre as nombreruta , r.idzona , z.descripcion"
+				+ " FROM clientes c, rutas r ,zonas z"
+				+ " WHERE c.idruta = r.id AND r.idzona = z.id  AND c.rif ='"+rif+"'"
+				+ " ;");
 
 		if(rSet == null || rSet.getFetchSize()!=0 ) return null;
 
 		while(rSet.next())
 		{
-			return new Cliente(
-				rSet.getInt("id"),rSet.getString("rif") , 
-				rSet.getString("razonsocial"), rSet.getString("direccion"), 
-				rSet.getString("telefono"),new RutaDAO().getRuta(rSet.getInt("idruta"))); 	
+			new Cliente(
+					rSet.getInt("id"),rSet.getString("rif") , 
+					rSet.getString("razonsocial"), rSet.getString("direccion"), 
+					rSet.getString("telefono"),
+					new Ruta(
+							rSet.getInt("idruta"),
+							rSet.getString("nombreruta"), 
+							new Zona(
+									rSet.getInt("idzona"),
+									rSet.getString("descripcion"))));
 		}
 			
 			

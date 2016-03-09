@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IProductoDAO;
+import santaclara.modelo.Capacidad;
+import santaclara.modelo.Presentacion;
 import santaclara.modelo.Producto;
+import santaclara.modelo.Sabor;
 
 public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 	
@@ -34,9 +37,11 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 		List<Producto> productos = new ArrayList<Producto>();
 		
 		ResultSet rSet = getConexion().getSelect(
-				"SELECT id, nombre, precio, descuento, estadoiva, "
-				+ "idcapacidad, idpresentacion,idsabor FROM "
-				+ "productos Order by id;"); 
+				"SELECT p.id, p.nombre, p.precio, p.descuento, p.estadoiva, "
+				+ " p.idcapacidad, p.idpresentacion, p.idsabor, c.volumen, pr.material, s.sabor"
+				+ " FROM productos p, capacidades c, presentaciones pr, sabores s "
+				+ " WHERE p.idcapacidad = c.id AND p.idpresentacion = pr.id AND p.idsabor = s.id "
+				+ " ORDER BY p.id;"); 
 		
 		if(rSet==null || rSet.getFetchSize()!=0) return null;
 		
@@ -50,9 +55,15 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 						rSet.getDouble("precio"),
 						rSet.getDouble("descuento"),
 						estadoiva,
-						new CapacidadDAO().getCapacidad(rSet.getInt("idcapacidad")),
-						new PresentacionDAO().getPresentacion(rSet.getInt("idpresentacion")),
-						new SaborDAO().getSabor(rSet.getInt("idsabor")));
+						new Capacidad(
+								rSet.getInt("idcapacidad"), 
+								rSet.getDouble("volumen")),
+						new Presentacion( 
+								rSet.getInt("idpresentacion"), 
+								rSet.getString("material")),
+						new Sabor(
+								rSet.getInt("idsabor"), 
+								rSet.getString("sabor")));
 			productos.add(producto);
 			}
 		return productos;
@@ -103,9 +114,12 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 		// TODO Auto-generated method stub
 		
 		ResultSet rSet = getConexion().getSelect(
-				"SELECT id, nombre, precio, descuento, estadoiva, "
-				+ "idcapacidad, idpresentacion,idsabor FROM productos "
-				+ "WHERE id ="+id+" ;");
+				"SELECT p.id, p.nombre, p.precio, p.descuento, p.estadoiva, "
+						+ " p.idcapacidad, p.idpresentacion, p.idsabor, c.volumen, pr.material, s.sabor"
+						+ " FROM productos p, capacidades c, presentaciones pr, sabores s "
+						+ " WHERE p.idcapacidad = c.id AND p.idpresentacion = pr.id AND p.idsabor = s.id "
+						+ "AND p.id ="+id+""
+						+ ";");
 
 		if(rSet == null || rSet.getFetchSize()!=0) return null;
 
@@ -117,10 +131,16 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 				rSet.getString("nombre"),
 				rSet.getDouble("precio"),
 				rSet.getDouble("descuento"),
-				estadoiva.booleanValue(),
-				new CapacidadDAO().getCapacidad(rSet.getInt("idcapacidad")),
-				new PresentacionDAO().getPresentacion(rSet.getInt("idpresentacion")),
-				new SaborDAO().getSabor(rSet.getInt("idsabor")));
+				estadoiva,
+				new Capacidad(
+						rSet.getInt("idcapacidad"), 
+						rSet.getDouble("volumen")),
+				new Presentacion( 
+						rSet.getInt("idpresentacion"), 
+						rSet.getString("material")),
+				new Sabor(
+						rSet.getInt("idsabor"), 
+						rSet.getString("sabor")));
 		
 	}
 

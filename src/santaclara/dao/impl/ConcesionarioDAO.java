@@ -88,11 +88,14 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 							+"INSERT INTO vendedores(id, idrutas) "
 							+"VALUES ("
 							+ " (select max(id) from usuarios) "		+", "
-							+ " " + concesionario.getCamion().getId() 	+", "
 							+ " " + concesionario.getRuta().getId() 	+"  "
 							+ ");"
 							+ "       "
 							+ "COMMIT;");	
+			ResultSet rSet =getConexion().getSelect("select max(id) from usuarios");
+			if(rSet.next()){
+				concesionario.setId(rSet.getInt("max"));
+			}
 		}
 		else{
 			getConexion().ejecutar(

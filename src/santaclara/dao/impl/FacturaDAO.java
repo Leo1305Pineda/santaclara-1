@@ -13,7 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import santaclara.dao.IFacturaDAO;
+import santaclara.modelo.Almacen;
+import santaclara.modelo.Cliente;
 import santaclara.modelo.Factura;
+import santaclara.modelo.Usuario;
+import santaclara.modelo.Vendedor;
 
 public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 
@@ -190,51 +194,70 @@ public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 	// Permite retornar Datos selectivos
 	public List<Factura> confGetFactura(Boolean condicion) throws Exception {
 		List<Factura> Facturas = new ArrayList<Factura>();
-		
+
 		String valorCondicion = new String();
-		if(condicion==true) valorCondicion = "Facturado";	
+		if(condicion==null) valorCondicion = "Pedido";	
 		else if(condicion==false) valorCondicion = "Pendiente";
-		else valorCondicion = "Pedido";
+		else valorCondicion = "Facturado";
 		
 		ResultSet rSet = getConexion().getSelect(
-				"SELECT id, estado, fecha, idcliente, idvendedor,"
-				+ " idalmacen, subtotalexento, subtotalgravado, descuento,"
-				+ " ivasobrebs, iva, totalapagar FROM facturas "
-				+" WHERE estado = '"+valorCondicion+"' "
-				+ ";");
-
-		if(rSet == null || rSet.getFetchSize()!=0) return null;
-
-		rSet.next();
-		Boolean estado = null;
-		 switch (rSet.getString("estado")) {
-		 case "Facturado":estado = true;	
-		 break;
-		 case "Pendiente":estado = false;
-		 break;
-		 case "Pedido":estado = null;
-		 break;
-		 default:
-		 break;
-		 }
+				" SELECT  f.id as idFactura, " +
+				" f.*, c.*, a.*,u.* " +
+				" FROM facturas f " +
+				" inner join clientes c on c.id = f.idcliente " +
+				" inner join usuarios u on u.id =  f.idvendedor  " +
+				" inner join almacenes a on a.id = f.idalmacen " +
+				" WHERE f.estado = '"+valorCondicion+"' ;");
 		
-		while (rSet.next())Facturas.add(
+		if(rSet == null)
+			return null;
+		
+		while (rSet.next())
+		{
+			Boolean estado = null;
+			switch (rSet.getString("estado"))
+			{
+				case "Facturado":
+					estado = true;	
+					break;
+				case "Pendiente":
+					estado = false;
+					break;
+				case "Pedido":
+					estado = null;
+					break;
+				default:
+					break;
+			}
+			Facturas.add(
 				new Factura(
-				rSet.getInt("id"),
+				rSet.getInt("idFactura"),
 				rSet.getDate("fecha"),
-				new ClienteDAO().getCliente(rSet.getInt("idcliente")),
-				new VendedorDAO().getVendedor(rSet.getInt("idvendedor")),
-				new AlmacenDAO().getAlmacen(rSet.getInt("idalmacen")),
-				estado, 
-				rSet.getDouble("subtotalexento"),
-				rSet.getDouble("subtotalgravado"),
-				rSet.getDouble("descuento"),
-				rSet.getDouble("ivasobrebs"),
-				rSet.getDouble("iva"),
-				rSet.getDouble("totalapagar")));
- 
+				new Cliente(
+						rSet.getInt("idcliente"),
+						rSet.getString("rif"),
+						rSet.getString("razonsocial"),
+						rSet.getString("direccion"),
+						rSet.getString("telefono"),
+						null),
+						new Usuario(
+								rSet.getInt("idvendedor"),
+								rSet.getString("username"),
+								rSet.getString("cedula"),
+								rSet.getString("nombre"),
+								rSet.getString("contrasena")),
+								new Almacen(
+										rSet.getInt("idalmacen"),
+										rSet.getString("ubicacion")),
+										estado, 
+										rSet.getDouble("subtotalexento"),
+										rSet.getDouble("subtotalgravado"),
+										rSet.getDouble("descuento"),
+										rSet.getDouble("ivasobrebs"),
+										rSet.getDouble("iva"),
+										rSet.getDouble("totalapagar")));
+		}
 		return Facturas;
-
 	}
 
 	public Integer ultimaFactura() throws Exception{

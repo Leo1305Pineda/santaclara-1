@@ -39,6 +39,11 @@ public class Ruta {
 	public Zona getZona() {
 		return zona;
 	}
+	
+	public String getZonaStr() {
+		return this.zona.getDescripcion();
+	}
+	
 	public void setZona(Zona zona) {
 		this.zona = zona;
 	}

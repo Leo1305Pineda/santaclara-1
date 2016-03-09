@@ -43,7 +43,6 @@ public class VistaGenericaUI extends JPanel {
 	private JButton btnSalir; 
 	private JBuscar jBuscar;
 	
-
 	public VistaGenericaUI() {
 		super();
 		setFont(new Font("Dialog", Font.BOLD, 13));
@@ -52,6 +51,12 @@ public class VistaGenericaUI extends JPanel {
  
 		setLayout(new BorderLayout());
  
+	}
+	
+	@SuppressWarnings("rawtypes")
+	protected void dibujarBuscar(List<jCampoBuscar> campos,List catalogo,JDibujarTabla dibujar) {
+		jBuscar = new JBuscar(campos, catalogo, dibujar);
+		getPanelBuscar().add(jBuscar);
 	}
 	
 	protected void dibujarPanelTabla() {
@@ -115,14 +120,7 @@ public class VistaGenericaUI extends JPanel {
 
 	public void setjBuscar(JBuscar jBuscar) {
 		this.jBuscar = jBuscar;
-	}
-
-	@SuppressWarnings("rawtypes")
-	protected void dibujarBuscar(List<jCampoBuscar> campos,List catalogo,JDibujarTabla dibujar) {
-		jBuscar = new JBuscar(campos, catalogo, dibujar);
-		getPanelBuscar().add(jBuscar);
-	}
-	
+	}	
 	
 	public static Integer getWidthPantalla()
 	{

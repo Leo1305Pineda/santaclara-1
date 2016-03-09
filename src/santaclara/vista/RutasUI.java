@@ -56,10 +56,14 @@ public class RutasUI extends VistaGenericaUI {
 		super();
 		this.contRutas = contRutas;
 		dibujarPanelOpciones();
+		
+		
 		List<Ruta> catalogo = new ServicioRuta().getRutas();
 		List<jCampoBuscar> campos = new ArrayList<jCampoBuscar>();
+
 		campos.add(jCampoBuscar.crearCampoBusquedad("Id","getId"));
 		campos.add(jCampoBuscar.crearCampoBusquedad("Nombre","getNombre"));
+		campos.add(jCampoBuscar.crearCampoBusquedad("zona","getZonaStr"));
 		dibujarBuscar(campos,catalogo,new JDibujarTabla() {
 			
 			@Override
@@ -68,6 +72,8 @@ public class RutasUI extends VistaGenericaUI {
 				RutasUI.this.contRutas.activarBinding(resultados);
 			}
 		});
+		
+		
 		dibujarPanelTabla();
 		dibujarBotonAtras();
 		getBtnAtras().addActionListener(contRutas.Atras());
