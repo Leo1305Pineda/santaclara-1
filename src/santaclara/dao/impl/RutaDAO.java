@@ -47,6 +47,27 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 	}
 	
 	@Override
+	public List<Ruta> getRutas(Zona zona ) throws Exception {
+		// TODO Auto-generated method stub
+		List<Ruta> rutas = new ArrayList<Ruta>();
+		
+		ResultSet rSet = getConexion().getSelect(
+				"SELECT r.id,r.nombre,r.idzona,z.descripcion "
+				+"FROM rutas r, zonas z WHERE r.idzona=z.id "
+				+" and z.id = '"+zona.getId()+"' "
+				+ " Order by r.id "); 
+		if(rSet==null)
+			return null;
+		else
+			while(rSet.next()) 
+				rutas.add(new Ruta(rSet.getInt(1), rSet.getString(2),
+							new Zona(rSet.getInt(3),rSet.getString(4)))); 
+		return rutas;
+	}
+	
+	
+	
+	@Override
 	public void guardar(Ruta ruta) throws Exception {
 		// TODO Auto-generated method stub
 		if (ruta.getId()==null){
@@ -96,17 +117,21 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 		List<Ruta> rutas = new ArrayList<Ruta>();
 		File file = new File(ruta);
  		Scanner scanner = new Scanner(file);
-		while(scanner.hasNext())
+		ZonaDAO zonaDAO = new ZonaDAO();
+ 		List<Zona> zonas = zonaDAO.getZonas();
+ 		while(scanner.hasNext())
 		{
 			Ruta ruta = new Ruta();
 			ruta.setId(new Integer(scanner.skip("id:").nextLine().toString().trim()));
-			
 			//guardo demas los datos de la Zona 
-			ZonaDAO zonaDAO = new ZonaDAO();
-			ruta.setZona(
-				zonaDAO.getZona(
-					new Integer(scanner.skip("zona:").nextLine().trim())));
-			
+			Integer idZona = new Integer(scanner.skip("zona:").nextLine().trim());
+			for(Zona zona : zonas)
+			{
+				if (zona.getId().equals(idZona))
+				{
+					ruta.setZona(zona);
+				}
+			}
 			ruta.setNombre(scanner.skip("nombre:").nextLine());
 			rutas.add(ruta); 
 		}
@@ -215,6 +240,19 @@ public class RutaDAO extends GenericoDAO implements IRutaDAO  {
 		}
 		return false;
     }
+
+	public List<Ruta> getRutas(Zona zona) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		List<Ruta> resultado =   new ArrayList();
+		List<Ruta> rutas= getRutas();
+		for(Ruta ruta: rutas)
+		{	
+			if (ruta.getZona().getId().equals(zona.getId())) {
+				resultado.add(ruta);
+			}
+		}
+		return resultado;
+	}
 	
 /*Estructura
 id:0

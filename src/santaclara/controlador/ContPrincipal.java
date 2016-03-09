@@ -8,29 +8,31 @@
 
 package santaclara.controlador;
  
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Stack; 
+
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import santaclara.controlador.consultas.ContConsultadeMontoTotalporRefresco;
 import santaclara.controlador.consultas.ContDetalleFacturaMesAlmacen;
 import santaclara.controlador.consultas.ContListCantRefrecoPresentCapacFacturadoZona;
 import santaclara.controlador.consultas.ContListCantRefrescoSaborVendidoAlmacen;
-import santaclara.controlador.consultas.ContListClienteTipoZona;
+import santaclara.controlador.consultas.ContListClienteTipoZona; 
 import santaclara.controlador.consultas.ContMontoFacturadoMesZonaTipoPago;
-import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen;
+import santaclara.controlador.reportes.ContReportMontFacturadoAlmacen; 
 import santaclara.controlador.reportes.ContReportMontFacturadoVendedor;
 import santaclara.controlador.reportes.ContReporte;
 import santaclara.dbPostgresql.controlador.ContAjusteBaseDatoSql;
@@ -43,7 +45,7 @@ import santaclara.vista.PrincipalUI;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
 public  class ContPrincipal {
-	
+
 	private PrincipalUI  vista;
 	private Stack<Object> cacheObjet = new Stack<Object>();
 	private ContGeneral contGeneral  = new ContGeneral();
@@ -727,6 +729,5 @@ public void ActivarReportFacturadoVendedor(){
 
 	public void setContGeneral(ContGeneral contGeneral) {
 		this.contGeneral = contGeneral;
-	} 
-	
+	} 	
 }

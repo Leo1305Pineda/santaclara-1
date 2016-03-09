@@ -1,17 +1,12 @@
 package santaclara.modelo;
 
-
 import static org.junit.Assert.*;
-
-import java.util.List;
 
 import org.junit.Test;
 
 import santaclara.dao.IConcesionarioDAO;
-import santaclara.dao.impl.CamionDAO;
 import santaclara.dao.impl.ConcesionarioDAO;
-import santaclara.dao.impl.RutaDAO;
-import santaclara.modelo.Concesionario;
+
 public class TestConcesionarioDAO {
 
 	@Test

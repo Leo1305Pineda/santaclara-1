@@ -40,9 +40,9 @@ public class PrincipalUI extends JPanel {
 	private 	JMenu mnSalir;
 	private 	JMenuItem mntCerrar;
 	
-	private     JMenuItem mntAlmacen;
-	private     JMenuItem mntCamiones;
-	private     JMenuItem mntCapacidades;
+	private    JMenuItem mntAlmacen;
+	private    JMenuItem mntCamiones;
+	private    JMenuItem mntCapacidades;
 	private 	JMenuItem mntClientes;
 	private 	JMenuItem mntConcesionarios;
 	private 	JMenuItem mntConcesionarioRutas;
@@ -58,11 +58,11 @@ public class PrincipalUI extends JPanel {
 	private 	JMenuItem mntVisitas;
 	private 	JMenuItem mntZonas;
 	private 	JMenuItem mntCalendarios;
-	private     JMenuItem mntPedidos;
-	private     JMenuItem mntReportMontFacturaAlmacen;
+	private    JMenuItem mntPedidos;
+	private    JMenuItem mntReportMontFacturaAlmacen;
 
-	private     JMenuItem mntReportMontFacturaVendedor;
-	private     JMenuItem mntConsultaDetalleFacturaMesAlmacen;
+	private    JMenuItem mntReportMontFacturaVendedor;
+	private    JMenuItem mntConsultaDetalleFacturaMesAlmacen;
 	private 	JMenuItem mntListCantRefrescoSaborVendidoAlmacen;
 	private 	JMenuItem mntListCantRefrescoPresentCapacFacturadoZona;
 	private		JMenuItem mntListClienteZonaTipo;
@@ -151,6 +151,7 @@ public class PrincipalUI extends JPanel {
 		mnBaseDato = new JMenu("Base de Dato");
 		menuBar.add(mnBaseDato);
 
+ 
 		/***************************** Botones para catalogo **********************************/
 		
 		mntAlmacen = new JMenuItem("Almacenes");
@@ -159,7 +160,7 @@ public class PrincipalUI extends JPanel {
 		mnCatalogo.add(mntAlmacen);
 		mnCatalogo.add(new JSeparator());
 
-		
+ 
 		mnCatalogo.add(new JSeparator());
 
 		mntCalendarios = new JMenuItem("Calendario");
@@ -171,18 +172,15 @@ public class PrincipalUI extends JPanel {
 		mnCatalogo.add(mntConcesionarios);
 		mntConcesionarios.addActionListener(controlador.activarMenu());
 		*/
+ 
 
+	
 		/*
 		mntConcesionarioRutas = new JMenuItem("ConcesionarioRutas");
 		mnCatalogo.add(mntConcesionarioRutas);
 		mntConcesionarioRutas.addActionListener(controlador.activarMenu());
 		*/
-		
-		/*
-		mntJefeVenta = new JMenuItem("Jefe Ventas");
-		mnCatalogo.add(mntJefeVenta);
-		mntJefeVenta.addActionListener(controlador.activarMenu());
-		*/ 
+ 
 		
 		mntVisitas = new JMenuItem("Visitas");
 		
@@ -279,25 +277,42 @@ public class PrincipalUI extends JPanel {
 		mnCatalogo.add(mntUsuarios);
 		mntUsuarios.addActionListener(controlador.activarMenu());
 
+		
+		mntConcesionarios = new JMenuItem("Concesionarios");
+		mnCatalogo.add(mntConcesionarios);
+		mntConcesionarios.addActionListener(controlador.activarMenu());
+
+		
 		mntCamiones = new JMenuItem("Camiones");
 		mntCamiones.setIcon(new ImageIcon("img/gestion/camion.png"));
 		mnCatalogo.add(mntCamiones);
 		mntCamiones.addActionListener(controlador.activarMenu());
 
-		/*
+ 
 		mntVendedores = new JMenuItem("Vendedores");
 		mnCatalogo.add(mntVendedores);
 		mntVendedores.addActionListener(controlador.activarMenu());
+
+		
+		mntJefeVenta = new JMenuItem("Jefe Ventas");
+		mnCatalogo.add(mntJefeVenta);
+		mntJefeVenta.addActionListener(controlador.activarMenu());
+
+		mntCalendarios = new JMenuItem("Calendario");
+		mnCatalogo.add(mntCalendarios);
+		mntCalendarios.addActionListener(controlador.activarMenu());
+		/*
 		
 		mntVisitas = new JMenuItem("Visitas");
 		mnCatalogo.add(mntVisitas);
 		mntVisitas.addActionListener(controlador.activarMenu());
-		*/
+		*/ 
 		
 		mntPedidos = new JMenuItem("Pedidos");
 		mntPedidos.setIcon(new ImageIcon("img/gestion/pedido.png"));
 		mntPedidos.addActionListener(controlador.activarMenu());
 		mnFacturacion.add(mntPedidos);
+		
 		/*
 		mntConcesionarios = new JMenuItem("Consesionarios");
 		mnCatalogo.add(mntConcesionarios);

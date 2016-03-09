@@ -13,84 +13,35 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable; 
 
 import santaclara.Servicio.ServicioJefeVenta;
+import santaclara.Servicio.ServicioUsuario;
 import santaclara.Servicio.ServicioZona;
 import santaclara.modelo.JefeVenta;
 import santaclara.modelo.Zona;
 import santaclara.vista.JefeVentaUI;
  
-
 public class ContJefeVentas extends ContGeneral implements IContGeneral {
 	
-	private JefeVentaUI vista ;
-	private ServicioJefeVenta servicioJefeVenta;
-	private ServicioZona 	servicioZona;
-	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
+	private JefeVentaUI 		vista ;
+	private ServicioJefeVenta  servicioJefeVenta;
+	private ServicioZona 		servicioZona;
+	private ServicioUsuario 	servicioUsuario; 
  
 	public ContJefeVentas(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		servicioJefeVenta = new ServicioJefeVenta();
 		servicioZona = new ServicioZona();
-		
+		servicioUsuario = new ServicioUsuario();
 		vista = new JefeVentaUI(this,servicioJefeVenta.getJefeVentas(),servicioZona.getZonas());
 		dibujar(vista,this); 
 	}
 	
- 
-/*
-	public void Modificar() {
-		// TODO Auto-generated method stub
-		try {	
-				JefeVenta jefeVenta  = new JefeVenta();
-				jefeVenta = servicioJefeVenta.buscar(new Integer(vista.getTable().getValueAt(vista.getTable().getSelectedRow(),0).toString().trim()));
-				if (jefeVenta != null)
-				{
-					//vista.activarNuevo();
-					vista.getTxtId().setText(jefeVenta.getId().toString());
-					vista.getTxtNombre().setText(jefeVenta.getNombre());
-					vista.getTxtCedula().setText(jefeVenta.getCedula());
-					vista.getTxtContrasena().setText(jefeVenta.getContrasena());
-					vista.getTxtUserName().setText(jefeVenta.getUsername());
-					vista.getTxtReContrasena().setText(jefeVenta.getContrasena());//Temporal
-					setSelectedValue(vista.getCmbZona(),jefeVenta.getZona().getId());
-
-				}
-				else JOptionPane.showMessageDialog(vista,"Seleccione la fila");
-				
-			} catch (NumberFormatException | IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	}
-*/	
-	/*
-	@SuppressWarnings("rawtypes")
-	public void setSelectedValue(JComboBox comboBox,Integer id)
-	{	
-		for (int i = 0; i < comboBox.getItemCount(); i++)
-		{
-			comboBox.setSelectedIndex(i);
-			Boolean enc=false;
-			switch (comboBox.getSelectedItem().getClass().getName().toString()) {
-			case "santaclara.modelo.Zona":
-				enc = (((Zona)comboBox.getSelectedItem()).getId().equals(id)); 
-				break;
-			default:
-				break;
-			}
-			if (enc) break;
-		}
-	}
- */
-
 	@Override
 	public JPanel getVista() {
 		// TODO Auto-generated method stub
@@ -167,11 +118,11 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 			else  //es nuevo ?
 				if(vista.getTxtId().getText() == "")
 				{
-					if(servicioJefeVenta.buscar(nombreUsuario) != null)
+					if(servicioUsuario.buscar(nombreUsuario) != null)
 					{
 						 throw new Exception(" nombre de usuario actualmente utilizado ");
 					}
-					else if(servicioJefeVenta.buscarCedula(cedula) != null)
+					else if(servicioUsuario.buscarCedula(cedula) != null)
 					{
 						 throw new Exception(" cedula de usuario actualmente utilizado ");
 					}		
@@ -279,10 +230,4 @@ public class ContJefeVentas extends ContGeneral implements IContGeneral {
 			}
 		};
 	}
-	@Override
-	public String asociar() {
-		// TODO Auto-generated method stub
-		return inicio;
-	}
-
 }

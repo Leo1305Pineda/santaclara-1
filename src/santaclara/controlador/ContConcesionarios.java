@@ -10,22 +10,293 @@ package santaclara.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.swing.JComboBox;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 
 import santaclara.Servicio.ServicioConcesionario;
+import santaclara.Servicio.ServicioRuta;
 import santaclara.modelo.Camion;
 import santaclara.modelo.Concesionario;
 import santaclara.modelo.Ruta;
-import santaclara.vista.UsuariosUI;
+import santaclara.vista.ConcesionarioUI;
 
 public class ContConcesionarios extends ContGeneral implements IContGeneral {
 	
+	private ConcesionarioUI vista ;
+	private ServicioConcesionario servicioConcesionario;
+	private ServicioRuta 	servicioRuta;
+	private Concesionario concesionario = new Concesionario();
+
+	public ContConcesionarios(ContPrincipal contPrincipal) throws Exception {
+		// TODO Auto-generated constructor stub
+		setContPrincipal(contPrincipal);
+		servicioConcesionario = new ServicioConcesionario();
+		servicioRuta = new ServicioRuta();
+		
+		vista = new ConcesionarioUI(this,servicioConcesionario.getConcecionarios(),servicioRuta.getRutas());
+		dibujar(vista,this); 
+	}
+ 
+	public ActionListener buscar() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JTable tabla1 = new JTable();
+				tabla1 = vista.getTable();
+				Boolean enc = false;
+				for(int i = 0;i<tabla1.getRowCount();i++)
+				{
+					if (tabla1.getValueAt(i, 0).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
+						tabla1.getValueAt(i, 1).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
+						tabla1.getValueAt(i, 2).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
+						tabla1.getValueAt(i, 3).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim())||
+						tabla1.getValueAt(i, 4).toString().trim().equals(vista.getTxtABuscar().getText().toString().trim()))
+					{
+						tabla1.setRowSelectionInterval(i,i);
+						enc = true;
+						break;
+					}
+				}
+				if (!enc) 
+					JOptionPane.showMessageDialog(vista,"No Encontrado");
+				vista.setTable(tabla1);
+				vista.getTxtABuscar().setText("");
+				
+			}
+		};
+	}
+	
+
+	public void validar() throws Exception {
+		// TODO Auto-generated method stub.
+		if(vista.getTxtCedula().getText().length() < 1 )
+		{
+				 throw new Exception("Campo Cedula Vacio ");
+		}
+		else if(vista.getTxtNombre().getText().length() < 3 )
+		{
+			 throw new Exception("Campo Nombre No es lo suficiente mente largo  ");
+		}
+		else if(vista.getTxtUserName().getText().length() < 4 )
+		{
+			 throw new Exception("Campo Nombre Usuario No es lo suficiente mente largo ");
+		}
+		else if(vista.getTxtContrasena().getText().length() < 4 )
+		{
+			 throw new Exception("Campo Contrasena Usuario No es lo suficiente mente largo ");
+		}
+		else if(vista.getTxtReContrasena().getText().length() < 4 )
+		{
+			 throw new Exception("Campo Repetir Contrasena Usuario No es lo suficiente mente largo ");
+		}
+		else if(! vista.getTxtReContrasena().getText().equals(vista.getTxtContrasena().getText()) )
+		{
+			 throw new Exception("Contrasena no coinciden ");
+		}
+		else if(vista.getCmbRuta().getSelectedIndex() < 0 )
+		{
+			 throw new Exception("seleccione una Ruta ");
+		}
+		else if (vista.getCamion() == null)
+		{
+			 throw new Exception("seleccione una Camion ");
+		}
+		else
+		{
+			String cedula = vista.getTxtCedula().getText();
+			String nombreUsuario = vista.getTxtUserName().getText();
+			//validar cedula, nombre de usuario y contrasena
+			if (!vista.getTxtContrasena().getText().equals(vista.getTxtReContrasena().getText()))
+			{
+				 throw new Exception("La contraseña no coincide ");
+			}
+			else  //es nuevo ?
+				if(vista.getTxtId().getText() == "")
+				{
+					if(servicioConcesionario.buscar(nombreUsuario) != null)
+					{
+						 throw new Exception(" nombre de usuario actualmente utilizado ");
+					}
+					else if(servicioConcesionario.buscarCedula(cedula) != null)
+					{
+						 throw new Exception(" cedula de usuario actualmente utilizado ");
+					}		
+				}
+		}
+
+	}
+
+	public ActionListener guardar() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub 
+				try
+				{
+					validar();
+					Concesionario usuario = new Concesionario(); 
+					if (vista.getTxtId().getText().equals("")) 
+					{
+						usuario.setId(null);
+					}
+					else 
+					{
+						usuario.setId(new Integer(vista.getTxtId().getText().toString().trim()));			
+					}
+					usuario.setCedula(vista.getTxtCedula().getText().toString());
+					usuario.setNombre(vista.getTxtNombre().getText().toString());
+					usuario.setUsername(vista.getTxtUserName().getText().toString());
+					usuario.setContrasena(vista.getTxtContrasena().getText().toString());
+					usuario.setRuta((Ruta) vista.getCmbRuta().getSelectedItem());	
+					usuario.setCamion(vista.getCamion());
+					servicioConcesionario.guardar(usuario);
+					vista.activarBinding(servicioConcesionario.getConcecionarios());
+					JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(vista,e.getMessage(),"error",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		};
+	}
+	
+	public ActionListener nuevo(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				vista.LimpiarTxt(); 
+				vista.getTxtCedula().setEnabled(true);
+				vista.getTxtUserName().setEnabled(true);
+			   concesionario = new Concesionario();
+			}
+		};
+	}
+	
+
+	public ActionListener eliminar() {
+		// TODO Auto-generated method 
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				if (vista.getTable().getSelectedRow()>=0 && vista.getTable().getSelectedColumn() < vista.getConcesionarios().size())
+				{
+					try {				
+						Concesionario concesionario = (Concesionario) vista.getConcesionarios().get(vista.getTable().getSelectedColumn());
+						servicioConcesionario.eliminar(concesionario);
+						JOptionPane.showMessageDialog(vista,"Operacion Exitosa");
+						vista.activarBinding(servicioConcesionario.getConcecionarios());
+					} catch (Exception e) 
+					{
+						e.printStackTrace(); 
+						JOptionPane.showMessageDialog(vista,e.getMessage());
+					}
+					}
+					else 
+						JOptionPane.showMessageDialog(vista,"Seleccione la fila");
+				}
+		};
+	}
+	
+	public ActionListener salir(){
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				quitarVista();
+			}
+		};
+	}
+
+	public MouseListener mostrar() {
+		// TODO Auto-generated method stub
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent evento) {
+				if (evento.getClickCount()==1)
+				{
+					concesionario = (Concesionario) vista.getConcesionarios().get(vista.getTable().getSelectedRow());
+					ContConcesionarios.this.concesionario = concesionario;
+					vista.getTxtCedula().setEnabled(false);
+					vista.getTxtUserName().setEnabled(false);
+					vista.repaint();
+					vista.cargar(concesionario);
+				}
+			}
+		};
+	}
+
+
+	public ActionListener verCamiones() {
+		// TODO Auto-generated method stub
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+
+					if (vista.getTxtId().getText().equals("")) 
+					{
+						concesionario.setId(null);
+					}
+					else 
+					{
+						concesionario.setId(new Integer(vista.getTxtId().getText().toString().trim()));			
+					}
+					concesionario.setCedula(vista.getTxtCedula().getText().toString());
+					concesionario.setNombre(vista.getTxtNombre().getText().toString());
+					concesionario.setUsername(vista.getTxtUserName().getText().toString());
+					concesionario.setContrasena(vista.getTxtContrasena().getText().toString());
+					concesionario.setRuta((Ruta) vista.getCmbRuta().getSelectedItem());	
+					concesionario.setCamion(vista.getCamion());;
+					new ContCamiones(getContPrincipal());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					JOptionPane.showConfirmDialog(null,e1.getMessage());
+				}
+			}
+		};
+	}
+
+
+	public Concesionario getConcesionario() {
+		return concesionario;
+	}
+
+
+	public void setConcesionario(Concesionario concesionario) {
+		this.concesionario = concesionario;
+	}
+
+
+	public void setCamion(Camion camion) {
+		// TODO Auto-generated method stub
+		concesionario.setCamion(camion);
+		System.out.println(camion.getPlaca());
+		vista.cargar(concesionario);	
+	}
+
+
+	@Override
+	public JPanel getVista() {
+		// TODO Auto-generated method stub
+		return vista;
+	}
+	
+	
+	
+	/*
 	private UsuariosUI vista ;
 	private ServicioConcesionario servicioConcesionario = new ServicioConcesionario();
 	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
@@ -159,10 +430,6 @@ public class ContConcesionarios extends ContGeneral implements IContGeneral {
 		vista.activarBindingConcesionarios(servicioConcesionario.getConcecionarios());
 		vista.quitarNuevo();
 	}
-	@Override
-	public String asociar() {
-		// TODO Auto-generated method stub
-		return inicio;
-	}
 
+	*/
 }

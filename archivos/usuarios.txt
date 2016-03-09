@@ -47,7 +47,7 @@ id:9
 username:Felipe
 cedula:V-5376222
 nombre:Felipe
-contrasena:123
+contrasena:1234
 id:10
 username:DARIO
 cedula:124352754
@@ -72,4 +72,9 @@ id:14
 username:lei
 cedula:4027537
 nombre:Leiberth gomez
+contrasena:1234
+id:15
+username:asdasd
+cedula:asdasd
+nombre:adasdasdasd
 contrasena:1234

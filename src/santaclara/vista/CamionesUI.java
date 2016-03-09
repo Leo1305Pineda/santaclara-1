@@ -24,6 +24,7 @@ import santaclara.Servicio.ServicioCamion;
 import santaclara.controlador.ContCamiones;
 import santaclara.modelo.Camion;
 import santaclara.vista.herramientas.VistaGenericaUI;
+
 import javax.swing.JLabel;
 
 import java.awt.Font;
@@ -58,6 +59,7 @@ public class CamionesUI extends VistaGenericaUI {
 	private JTextField txtYear;
 
 	private ContCamiones contCamiones;
+	@SuppressWarnings("rawtypes")
 	
 	public CamionesUI(ContCamiones contCamiones) throws Exception {
 		super();
@@ -75,7 +77,7 @@ public class CamionesUI extends VistaGenericaUI {
 		campos.add(jCampoBuscar.crearCampoBusquedad("Año","getAno"));
 		dibujarBuscar(campos,catalogo,new JDibujarTabla() {
 			
-			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@SuppressWarnings("unchecked")
 			@Override
 			public void dibujarTabla(List resultados) {
 				// TODO Auto-generated method stub
@@ -321,6 +323,5 @@ public class CamionesUI extends VistaGenericaUI {
 
 	public void setContCamiones(ContCamiones contCamiones) {
 		this.contCamiones = contCamiones;
-	}
- 	
+	} 	
 }

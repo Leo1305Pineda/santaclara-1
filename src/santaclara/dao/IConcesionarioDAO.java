@@ -20,5 +20,8 @@ public interface IConcesionarioDAO extends IGenericoDAO{
 	public void eliminar(Concesionario concesionario) throws   Exception;
 	
 	public Concesionario getConcesionario(Integer id) throws Exception;
-
+ 
+	public Concesionario getConcesionario(String nombre) throws Exception;
+	
 }
+

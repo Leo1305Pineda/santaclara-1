@@ -11,7 +11,6 @@ import santaclara.modelo.Ruta;
 import santaclara.modelo.Salp;
 import santaclara.modelo.Zona;
 
-
 public class StackControlador implements IContGeneral{
 
 	private List<IContGeneral> controladores; 

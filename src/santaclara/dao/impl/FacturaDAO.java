@@ -17,7 +17,6 @@ import santaclara.modelo.Almacen;
 import santaclara.modelo.Cliente;
 import santaclara.modelo.Factura;
 import santaclara.modelo.Usuario;
-import santaclara.modelo.Vendedor;
 
 public class FacturaDAO extends GenericoDAO implements IFacturaDAO {
 

@@ -37,11 +37,14 @@ public class ServicioVendedor {
 	
 	public void guardar(Vendedor vendedor) throws Exception {
 		// TODO Auto-generated method stub
-		if (vendedor.getRutas().size()<=0) throw new Exception("El Vendedor no tiene asociada una ruta");
-		if (vendedor.getRutas().size()>3) throw new Exception("El limite de ruta permitida es de 3");  
-		if (vendedor.equals(vendedorDAO.getVendedor(vendedor.getId()))) throw new Exception("El vendedor Exixtente");
-		if (this.vendedorDAO.getVendedor(vendedor)) throw new Exception("Nombre de Usuario Existente");
-		
+		if (vendedor.getRutas().size() <= 0)
+				throw new Exception("El Vendedor no tiene asociada una ruta");
+		if (vendedor.getRutas().size() > 3) 
+				throw new Exception("El limite de ruta permitida es de 3");  
+		if (vendedor.equals(vendedorDAO.getVendedor(vendedor.getId()))) 
+				throw new Exception("El vendedor Exixtente");
+		if (this.vendedorDAO.getVendedor(vendedor))
+			throw new Exception("Nombre de Usuario Existente");
 		vendedorDAO.guardar(vendedor);
 	}
 	
@@ -75,5 +78,7 @@ public class ServicioVendedor {
 		}
 		return vendedors;
 	}
+	 
+	
 
 }

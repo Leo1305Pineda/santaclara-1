@@ -1,11 +1,3 @@
-/*Seccion 6
- * Gipsis Marin 19.828.553
- *Leonardo Pineda 19.727.835
- *Rhonal Chirinos 19.827.297
- *Joan Puerta 19.323.522
- *Vilfer Alvarez 18.735.720
- */
-
 package santaclara.vista;
 
 import java.awt.BorderLayout;
@@ -36,28 +28,31 @@ import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
 import net.miginfocom.swing.MigLayout;
-import santaclara.controlador.ContJefeVentas;
-import santaclara.modelo.JefeVenta;
+import santaclara.controlador.ContConcesionarios;
+import santaclara.modelo.Camion;
+import santaclara.modelo.Concesionario;
+import santaclara.modelo.Ruta;
 import santaclara.modelo.Zona;
 import santaclara.vista.herramientas.VistaGenericaUI;
 
 @SuppressWarnings("serial")
-public class JefeVentaUI  extends VistaGenericaUI  {
+public class ConcesionarioUI  extends VistaGenericaUI  {
 	
 	private JPanel pnUsuario;
-	
 	private JLabel lblUserName;
 	private JLabel lblCedula;
 	private JLabel lblContrasena;
 	private JLabel lblNombre;
 	private JLabel lblReContrasena;
 	private JLabel lblZona;
-
+	private JLabel lblCamion;
+	
 	private JTextField txtUserName;
 	private JTextField txtId;
 	private JTextField txtABuscar;
 	private JTextField txtCedula;
 	private JTextField txtNombre;
+	private JLabel 	   lblCamionInformacion;
 	
 	private JPasswordField txtContrasena;
 	private JPasswordField txtReContrasena;
@@ -68,19 +63,20 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 	private JButton btnEliminar;
 	private JButton btnGuardar;
 	private JButton btnCancelar;
-	private ContJefeVentas contJefeVentas;
-	private JComboBox<Zona> cmbZona;
-		
-	@SuppressWarnings("rawtypes")
-	private List jefeVentas = new ArrayList<JefeVenta>();
-	private List<Zona> zonas = new ArrayList<Zona>();
+	private JButton bntAgregarCamion;
+	private ContConcesionarios controlador;
+	private JComboBox<Zona> cmbRuta;
 
+	private Camion camion;
+	private List<Ruta> rutas = new ArrayList<Ruta>();
+	private List<Concesionario> concesionarios = new ArrayList<Concesionario>();
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public JefeVentaUI(ContJefeVentas contJefeVentas,List  jefeVentas,List<Zona> zonas ) {
+	public ConcesionarioUI(ContConcesionarios controlador,List  concecionarios,List<Ruta> rutas ) {
 		super();
-		this.contJefeVentas = contJefeVentas;
-		this.jefeVentas = jefeVentas;
-		this.zonas = zonas;
+		this.controlador = controlador;
+		this.concesionarios =concecionarios;
+		this.rutas = rutas;
 		dibujarPanelOpciones();
 		dibujarPanelTabla();
 	 
@@ -92,7 +88,7 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		
 		
 		btnABuscar = new JButton("");
-		btnABuscar.addActionListener(contJefeVentas.buscar());
+		btnABuscar.addActionListener(controlador.buscar());
 		btnABuscar.setVerticalAlignment(SwingConstants.TOP);
 		btnABuscar.setBackground(Color.DARK_GRAY);
 		btnABuscar.setIcon(new ImageIcon("img/gestion/buscar.png"));
@@ -129,7 +125,6 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		
 		txtCedula = new JTextField();
 		txtCedula.setColumns(10);
-		txtCedula.setEnabled(false);
 		pnUsuario.add(txtCedula,"cell 3 0");
 		
 		
@@ -166,37 +161,54 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		lblZona.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
 		pnUsuario.add(lblZona,"cell 2 2");
 
-		cmbZona = new JComboBox();
+		cmbRuta = new JComboBox();
 		//cmbZona.setBounds(56, 22, 248, 24);
-		cmbZona.setRenderer(new ListCellRenderer() {
+		cmbRuta.setRenderer(new ListCellRenderer() {
 			
 			public Component getListCellRendererComponent(JList list,
 					Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
 				// TODO Auto-generated method stub
-				Zona zona = (Zona)value;
-				return new JLabel(zona.getDescripcion());	
+				Ruta ruta = (Ruta)value;
+				return new JLabel(ruta.getNombre()+" -- "+ ruta.getZona().getDescripcion());	
 			}
 		});
-		
-		
-		pnUsuario.add(cmbZona,"cell 3 2");
+		pnUsuario.add(cmbRuta,"cell 3 2");
 		activarJComboBoxBindingZona();
 		
+   	    lblCamion = new JLabel("Camion:");
+		lblCamion.setForeground(Color.WHITE);
+		lblCamion.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+		pnUsuario.add(lblCamion,"cell 0 3");
+		
+		lblCamionInformacion = new JLabel("");
+		lblCamionInformacion.setForeground(Color.WHITE);
+		lblCamionInformacion.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+		pnUsuario.add(lblCamionInformacion,"cell 1 3");
+		
+		bntAgregarCamion = new JButton();
+		bntAgregarCamion.addActionListener(controlador.verCamiones());
+		bntAgregarCamion.setSize(200,200);
+		bntAgregarCamion.setForeground(Color.WHITE);
+		bntAgregarCamion.setBackground(Color.DARK_GRAY);
+		bntAgregarCamion.setIcon(new ImageIcon("img/gestion/add.png"));
+		pnUsuario.add(bntAgregarCamion,"cell 2 3");
+
+		
 		btnGuardar = new JButton("Guardar");
-		btnGuardar.addActionListener(contJefeVentas.guardar());
+		btnGuardar.addActionListener(controlador.guardar());
 		btnGuardar.setSize(200,200);
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setBackground(Color.DARK_GRAY);
-		pnUsuario.add(btnGuardar,"cell 2 3");
+		pnUsuario.add(btnGuardar,"cell 2 4");
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setBackground(Color.DARK_GRAY);
-		pnUsuario.add(btnCancelar,"cell 2 3");
+		pnUsuario.add(btnCancelar,"cell 2 4");
   
 		btnNuevo = new JButton("Nuevo");
-		btnNuevo.addActionListener(contJefeVentas.nuevo());
+		btnNuevo.addActionListener(controlador.nuevo());
 		btnNuevo.setForeground(Color.WHITE);
 		btnNuevo.setBackground(Color.DARK_GRAY);
 		btnNuevo.setIcon(new ImageIcon("img/gestion/add.png"));
@@ -206,48 +218,49 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		btnEliminar.setForeground(Color.WHITE);
 		btnEliminar.setBackground(Color.DARK_GRAY);
 		btnEliminar.setIcon(new ImageIcon("img/gestion/cancel.png"));
-		btnEliminar.addActionListener(contJefeVentas.eliminar());
+		btnEliminar.addActionListener(controlador.eliminar());
 		getPnBotones().add(btnEliminar);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.addActionListener(contJefeVentas.salir());
+		btnSalir.addActionListener(controlador.salir());
 		btnSalir.setForeground(Color.WHITE);
 		btnSalir.setBackground(Color.DARK_GRAY);
 		btnSalir.setIcon(new ImageIcon("img/gestion/SalirCurva.png"));
 		getPnBotones().add(btnSalir);
-		activarBinding(jefeVentas);
-		//initDataBindings();
+		activarBinding(concecionarios);
 		
 	}
- 
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void activarBinding(List jefeventas) {
+	public void activarBinding(List concecionarios) {
 		// TODO Auto-generated method stub
-		this.jefeVentas = jefeventas;
+		this.concesionarios =concecionarios;
 		getPnTabla().setVisible(true);
 		setTable(new JTable());
 		getScrollPanel().setViewportView(getTable());
 
-		JTableBinding binUsuarios = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,jefeVentas,getTable());
+		JTableBinding binUsuarios = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE,concecionarios,getTable());
 		BeanProperty idUsuario  = BeanProperty.create("id");
 		BeanProperty UserNameUsuario = BeanProperty.create("username");
 		BeanProperty CedulaUsuario = BeanProperty.create("cedula");
 		BeanProperty NombreUsuario = BeanProperty.create("nombre");
-		BeanProperty zonaJefeVenta = BeanProperty.create("zona.descripcion");
+		BeanProperty ruta = BeanProperty.create("ruta.nombre");
+		BeanProperty zona = BeanProperty.create("ruta.zona.descripcion");
 		binUsuarios.addColumnBinding(idUsuario).setColumnClass(Integer.class).setColumnName("idJefeVenta ");
 		binUsuarios.addColumnBinding(UserNameUsuario).setColumnClass(String.class).setColumnName("UserName");
 		binUsuarios.addColumnBinding(CedulaUsuario).setColumnClass(String.class).setColumnName("Cedula");
 		binUsuarios.addColumnBinding(NombreUsuario).setColumnClass(String.class).setColumnName("Nombre");
-		binUsuarios.addColumnBinding(zonaJefeVenta).setColumnClass(String.class).setColumnName("Zona");
+		binUsuarios.addColumnBinding(ruta).setColumnClass(String.class).setColumnName("Ruta");
+		binUsuarios.addColumnBinding(zona).setColumnClass(String.class).setColumnName("Zona");
 	    binUsuarios.bind();
-	    
-		getTable().addMouseListener(contJefeVentas.mostrar());
+	    	    
+		getTable().addMouseListener(controlador.mostrar());
 
 	}
 	
-    @SuppressWarnings("rawtypes")
+	@SuppressWarnings("rawtypes")
 	public void activarJComboBoxBindingZona(){
-		JComboBoxBinding jcomboZonas = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,zonas,cmbZona);
+		JComboBoxBinding jcomboZonas = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,rutas,cmbRuta);
 	    jcomboZonas.bind();
 	}
 	
@@ -260,26 +273,40 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		getTxtUserName().setText("");
 	}
 	
-
-	public void cargarJefeVenta(JefeVenta jefeVenta) {
+	public void cargar(Concesionario concecionario) {
 		// TODO Auto-generated method stub
-		txtUserName.setText(jefeVenta.getUsername());
-		txtUserName.setEnabled(false);
-		txtId.setText(jefeVenta.getId().toString());
-		txtCedula.setText(jefeVenta.getCedula());
-		txtCedula.setEnabled(false);
-		txtNombre.setText(jefeVenta.getNombre());
-		txtContrasena.setText(jefeVenta.getContrasena());
-		txtReContrasena.setText(jefeVenta.getContrasena());
-		for(int i =0 ; i < zonas.size(); i++)
+
+		txtUserName.setText(concecionario.getUsername());
+		if(concecionario.getId() != null)
 		{
-			Zona zona = zonas.get(i);
-			if (zona.getId().equals(jefeVenta.getZona().getId()))
+			txtId.setText(concecionario.getId().toString());
+		}
+		txtCedula.setText(concecionario.getCedula());
+		txtNombre.setText(concecionario.getNombre());
+		txtContrasena.setText(concecionario.getContrasena());
+		txtReContrasena.setText(concecionario.getContrasena());
+		if(concecionario.getRuta() != null )
+		{
+			for(int i =0 ; i < rutas.size(); i++)
 			{
-				cmbZona.setSelectedIndex(i);
-				break;
-			}
-		} 
+				Ruta ruta = rutas.get(i);
+				if (ruta.getId().equals(concecionario.getRuta().getId()))
+				{
+					cmbRuta.setSelectedIndex(i);
+					break;
+				}
+			} 
+		}
+		camion = concecionario.getCamion();
+		if(concecionario.getCamion() != null)
+		{
+			String datos = concecionario.getCamion().getPlaca()+" "+concecionario.getCamion().getModelo()+" "+concecionario.getCamion().getMarca();
+			lblCamionInformacion.setText(datos);
+		}
+		else
+		{
+			lblCamionInformacion.setText("No Definido ");
+		}
 	}   
 	
 	public JButton getBtnNuevo() {
@@ -313,8 +340,6 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 		this.btnEliminar = btnEliminar;
 	}
  
-
-
 	public JTextField getTxtABuscar() {
 		return txtABuscar;
 	}
@@ -322,7 +347,6 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 	public void setTxtABuscar(JTextField txtABuscar) {
 		this.txtABuscar = txtABuscar;
 	}
- 
 
 	public JPanel getPnUsuario() {
 		return pnUsuario;
@@ -429,15 +453,6 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 	}
  
 
-	@SuppressWarnings("rawtypes")
-	public JComboBox getCmbZona() {
-		return cmbZona;
-	}
-
-	public void setCmbZona(JComboBox<Zona> cmbZona) {
-		this.cmbZona = cmbZona;
-	}
-
 	public JLabel getLblZona() {
 		return lblZona;
 	}
@@ -445,16 +460,7 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 	public void setLblZona(JLabel lblZona) {
 		this.lblZona = lblZona;
 	}
-  
- 
-	public List<Zona> getZonas() {
-		return zonas;
-	}
-
-	public void setZonas(List<Zona> zonas) {
-		this.zonas = zonas;
-	}
- 
+   
 
 	public void setTxtContrasena(JPasswordField txtContrasena) {
 		this.txtContrasena = txtContrasena;
@@ -463,25 +469,70 @@ public class JefeVentaUI  extends VistaGenericaUI  {
 	public void setTxtReContrasena(JPasswordField txtReContrasena) {
 		this.txtReContrasena = txtReContrasena;
 	}
-
-	public ContJefeVentas getContJefeVentas() {
-		return contJefeVentas;
+  
+	public JComboBox<Zona> getCmbRuta() {
+		return cmbRuta;
 	}
 
-	public void setContJefeVentas(ContJefeVentas contJefeVentas) {
-		this.contJefeVentas = contJefeVentas;
-	}
-	
-	@SuppressWarnings("rawtypes")
-	public List getJefeVentas() {
-		return jefeVentas;
+	public void setCmbRuta(JComboBox<Zona> cmbRuta) {
+		this.cmbRuta = cmbRuta;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public void setJefeVentas(List jefeVentas) {
-		this.jefeVentas = jefeVentas;
+	public List<Ruta> getRutas() {
+		return rutas;
 	}
 
+	public void setRutas(List<Ruta> rutas) {
+		this.rutas = rutas;
+	}
 
+	public Camion getCamion() {
+		return camion;
+	}
+
+	public void setCamion(Camion camion) {
+		this.camion = camion;
+	}
+
+	public JLabel getLblCamion() {
+		return lblCamion;
+	}
+
+	public void setLblCamion(JLabel lblCamion) {
+		this.lblCamion = lblCamion;
+	}
+
+	public JLabel getLblCamionInformacion() {
+		return lblCamionInformacion;
+	}
+
+	public void setLblCamionInformacion(JLabel lblCamionInformacion) {
+		this.lblCamionInformacion = lblCamionInformacion;
+	}
+
+	public JButton getBntAgregarCamion() {
+		return bntAgregarCamion;
+	}
+
+	public void setBntAgregarCamion(JButton bntAgregarCamion) {
+		this.bntAgregarCamion = bntAgregarCamion;
+	}
+
+	public ContConcesionarios getControlador() {
+		return controlador;
+	}
+
+	public void setControlador(ContConcesionarios controlador) {
+		this.controlador = controlador;
+	}
+
+	public List<Concesionario> getConcesionarios() {
+		return concesionarios;
+	}
+
+	public void setConcesionarios(List<Concesionario> concesionarios) {
+		this.concesionarios = concesionarios;
+	}
  
+	
 }

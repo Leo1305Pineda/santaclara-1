@@ -8,7 +8,12 @@
 
 package santaclara.dao;
 
+import santaclara.factorymethod.Conexion;
+
 public interface IGenericoDAO {
 
+	public void activarConexionBaseDato() throws Exception ;
+	
+	public Conexion getConexion();
 	
 }

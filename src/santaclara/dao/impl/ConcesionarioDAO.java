@@ -132,6 +132,36 @@ public class ConcesionarioDAO extends GenericoDAO implements IConcesionarioDAO{
 			return null;
 	}
 
+	public Concesionario getConcecionariosCedula(String cedula) throws Exception {
+		// TODO Auto-generated method stub
+		ResultSet rSet = getConexion().getSelect(
+				"SELECT id, idcamion, idruta FROM concesionarios "
+				+ "WHERE cedula ='"+cedula+"' ;");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		return new Concesionario(new UsuarioDAO().getUsuario(rSet.getInt("id")),
+				new CamionDAO().getCamion(rSet.getInt("idcamion")), 
+				new RutaDAO().getRuta(rSet.getInt("idruta")));
+	}
+
+	@Override
+	public Concesionario getConcesionario(String nombre) throws Exception {
+		// TODO Auto-generated method stub
+		ResultSet rSet = getConexion().getSelect(
+				"SELECT id, idcamion, idruta FROM concesionarios "
+				+ "WHERE nombre ='"+nombre+"' ;");
+
+		if(rSet == null) return null;
+
+		rSet.next();
+		return new Concesionario(new UsuarioDAO().getUsuario(rSet.getInt("id")),
+				new CamionDAO().getCamion(rSet.getInt("idcamion")), 
+				new RutaDAO().getRuta(rSet.getInt("idruta")));
+
+	}
+
 /*
  	private String ruta = "archivos/concesionarios.txt";
 	

@@ -14,8 +14,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -39,18 +38,19 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 	private CamionesUI vista;
 	private Camion camion = new Camion();
 	private List<Camion> camiones = new ServicioCamion().getCamiones();
-	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
-	
-	public ContCamiones(ContPrincipal contPrincipal) throws Exception {
+
+	public ContCamiones(ContPrincipal contPrincipal ) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
 		servicioCamion = new ServicioCamion();
+		camiones = servicioCamion.getCamiones();
 		vista = new CamionesUI(this);
 		dibujar(vista,this);
 		vista.getPnCamion().setVisible(false);
 		activarBinding(camiones);
 	}
 
+  
 	@Override
 	public JPanel getVista() {
 		// TODO Auto-generated method stub
@@ -128,7 +128,15 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ActivarAtras(null);
+				if (vista.getTable().getSelectedColumn() > 0 )
+				{	
+					Camion camion = (Camion) camiones.get(vista.getTable().getSelectedRow());
+					ActivarAtras(camion);
+				}
+				else
+				{
+					ActivarAtras(null);
+				}
 			}
 		};
 	}
@@ -140,6 +148,7 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				quitarVista();
+ 
 			}
 		};
 	}
@@ -188,8 +197,8 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Camion> camiones) {
 		// TODO Auto-generated method stub
+		vista.remove(vista.getPnCamion());
 		this.camiones = camiones;
-	
 		vista.getPnTabla().setVisible(true);
 		vista.setTable(new JTable());
 		vista.getScrollPanel().setViewportView(vista.getTable());	
@@ -278,10 +287,4 @@ public class ContCamiones extends ContGeneral implements IContGeneral{
 			
 		}
 	}
-	@Override
-	public String asociar() {
-		// TODO Auto-generated method stub
-		return inicio;
-	}
-
 }

@@ -1,16 +1,9 @@
 package santaclara.modelo;
 
-
 import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
-
-import santaclara.dao.impl.RutaDAO;
 import santaclara.dao.impl.VendedorDAO;
-import santaclara.modelo.Vendedor;
+
 public class TestVendedorDAO {
 
 	@Test

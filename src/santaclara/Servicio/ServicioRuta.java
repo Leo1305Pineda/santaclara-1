@@ -45,4 +45,9 @@ public class ServicioRuta {
 	public void modificar (Ruta ruta) throws Exception{
 		rutaDAO.guardar(ruta);
 	}
+
+	public List<Ruta> getRutas(Zona zona) throws Exception {
+		// TODO Auto-generated method stub
+		return rutaDAO.getRutas(zona);
+	}
 }

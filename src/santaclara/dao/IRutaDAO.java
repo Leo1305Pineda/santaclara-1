@@ -9,11 +9,15 @@
 package santaclara.dao;
 
 import java.util.List;
+
 import santaclara.modelo.Ruta;
+import santaclara.modelo.Zona;
 
 public interface IRutaDAO extends IGenericoDAO {
 
 	public List<Ruta>  getRutas() throws Exception;
+	
+	public List<Ruta>  getRutas(Zona zona ) throws Exception; 
 	
 	public void	guardar(Ruta ruta) throws Exception;
 	
