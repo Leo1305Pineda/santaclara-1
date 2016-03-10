@@ -193,7 +193,7 @@ public  class ContPrincipal {
 				}
 				else if(e.getSource().equals(vista.getMntConcesionario()))
 				{
-					ActivarUsuarios();
+					ActivarUsuarios("concesionarios");
 				}
 				else if(e.getSource().equals(vista.getMntEmpaqueProductos()))
 				{
@@ -201,7 +201,7 @@ public  class ContPrincipal {
 				}
 				else if(e.getSource().equals(vista.getMntJefeVenta()))
 				{
-					ActivarUsuarios();
+					ActivarUsuarios("jefeVentas");
 				}
 				else if(e.getSource().equals(vista.getMntPresentaciones()))
 				{
@@ -229,11 +229,11 @@ public  class ContPrincipal {
 				}
 				else if(e.getSource().equals(vista.getMntUsuarios()))
 				{
-					ActivarUsuarios();
+					ActivarUsuarios("todos");
 				}
 				else if(e.getSource().equals(vista.getMntVendedores()))
 				{
-					ActivarUsuarios();
+					ActivarUsuarios("vendedores");
 				}
 				else if(e.getSource().equals(vista.getMntVisitas()))
 				{
@@ -289,6 +289,9 @@ public  class ContPrincipal {
 				}
 				else if(e.getSource().equals(vista.getMntEjecutarCapturaLista())){
 					mostrarComposite();
+				}
+				else if(e.getSource().equals(vista.getMntVisitas())){
+					ActivarVisitas();
 				}
 			}
 		};
@@ -558,10 +561,28 @@ public void ActivarReportFacturadoVendedor(){
 		}
 	}
 	
-	public void ActivarUsuarios() {
+	public void ActivarUsuarios(String tipo) {
 		// TODO Auto-generated method stub
 		try {
-			 new ContUsuarios(ContPrincipal.this);
+			ContUsuarios contUsuarios =  new ContUsuarios(ContPrincipal.this);
+			switch (tipo) {
+			case "todos":
+				contUsuarios.getVistaUsuario().getCmbTipoUsuario().setSelectedItem("Todos");
+				break;
+			case "vendedores":
+				contUsuarios.getVistaUsuario().getCmbTipoUsuario().setSelectedItem("Vendedor");
+				break;
+			case "concesionarios":
+				contUsuarios.getVistaUsuario().getCmbTipoUsuario().setSelectedItem("JefeVenta");
+				break;
+			case "jefeVentas":
+				contUsuarios.getVistaUsuario().getCmbTipoUsuario().setSelectedItem("Concesionario");
+				break;
+
+			default:
+				break;
+			}
+			 
 		}
 		catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -646,7 +667,7 @@ public void ActivarReportFacturadoVendedor(){
 			break;
 			case "santaclara.controlador.ContCamiones":	ActivarCamiones();
 			break;
-			case "santaclara.controlador.ContUsuarios":	ActivarUsuarios();
+			case "santaclara.controlador.ContUsuarios":	ActivarUsuarios("todos");
 			break;
 			case "santaclara.controlador.ContZonas":	ActivarZonas();
 			break;

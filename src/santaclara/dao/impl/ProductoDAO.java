@@ -47,8 +47,10 @@ public  class ProductoDAO extends GenericoDAO implements IProductoDAO{
 		
 			while(rSet.next())
 			{
-				Boolean estadoiva = false;
+				Boolean estadoiva;
 				if(rSet.getString("estadoiva").equals("gravado")) estadoiva = true;
+				else  estadoiva = false;
+				
 				Producto producto = new Producto(
 						rSet.getInt("id"),
 						rSet.getString("nombre"),

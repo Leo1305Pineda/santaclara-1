@@ -31,8 +31,6 @@ public class ServicioVisita {
 	private ClienteDAO  clienteDAO = new ClienteDAO();
 	private VisitaDAO visitaDAO = new VisitaDAO();
 	
-	private List<Visita> visitas;
-	
 	public List<Visita>  getVisitas() throws Exception
 	{	
 		return visitaDAO.getVisitas();
@@ -45,10 +43,9 @@ public class ServicioVisita {
 	
 	public void guardar(Visita visita) throws Exception {
 		// TODO Auto-generated method stub
-		
-			visitas = visitaDAO.getVisitas();
-
-			for(Visita visita1 :visitas)
+		if(visita==null) throw new Exception("visita vacia");
+		System.out.println(visita.getCliente().getId());
+			for(Visita visita1 :visitaDAO.getVisitas())
 			{
 				if(visita1.getMotivo().equals(visita.getMotivo()) &&
 					visita1.getUsuario().getId().equals(visita.getUsuario().getId())&&
@@ -59,7 +56,7 @@ public class ServicioVisita {
 					visita1.getValorVendedor().equals(visita.getValorVendedor()) &&
 					!visita1.getId().equals(visita.getId()))
 				{ 
-					throw new Exception("Producto Existente");
+					throw new Exception("visita Existente");
 				}
 			}
 			visitaDAO.guardar(visita); 

@@ -218,6 +218,7 @@ public class ProductosUI extends VistaGenericaUI {
 		pnlProducto.add(lblPrecio,"cell 0 4");
 		
 		txtPrecio = new JSpinner(new SpinnerNumberModel(1.0,0.0,Double.MAX_VALUE,1.0));
+		txtPrecio.setSize(100, 20);
 		((JSpinner.NumberEditor)txtPrecio.getEditor()).getFormat().setMinimumFractionDigits(2);
 		pnlProducto.add(txtPrecio,"cell 1 4");
 

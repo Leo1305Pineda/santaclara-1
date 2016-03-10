@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -58,17 +57,17 @@ import santaclara.vista.VisitasUI;
 public class ContVisitas extends ContGeneral implements IContGeneral {
 
 	private VisitasUI vista;	
-	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
+	private List<Visita> visitas = new ArrayList<Visita>();
 	
 	public ContVisitas(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
 		setContPrincipal(contPrincipal);
-		vista = new VisitasUI(this);
+		vista = new VisitasUI(this,null);
 		vista.getScrollPanel().setBounds(12, 85, 1154, 600);
 		CargarComboUsuario();
-		activarBinding(new ServicioVisita().ConsultaJefeVenta((JefeVenta)vista.getComboUsuario().getSelectedItem()));
+		visitas = new ServicioVisita().ConsultaJefeVenta((JefeVenta)vista.getComboUsuario().getSelectedItem());
+		activarBinding(visitas);
 		dibujar(vista,this);
-		vista.quitarNuevo();
 	}
 
 	@Override
@@ -78,7 +77,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 	}
 
   // evento Guardar Prodcuto 
-	public ActionListener guardar() {
+	public ActionListener guardar(final Visita visita) {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
 			
@@ -90,31 +89,8 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 				try {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 						
-						Visita visita = new ServicioVisita().getVisita(vista.getDateFecha().getDate(),
-								new Integer(vista.getLbljefeVentaid().getText()),
-								(new ServicioCliente().getCliente(vista.getLblrif().getText())).getId());
-								
-						if(visita==null)
-						{
-							visita = new Visita();
-							visita.setId(null);
-							visita.setCliente(new ServicioCliente().getCliente(vista.getLblrif().getText()));
-							if(vista.getComboTipoUser().getSelectedItem().equals("JefeVenta"))
-							{
-								visita.setUsuario(new ServicioJefeVenta().getJefeVenta(new Integer(vista.getLbljefeVentaid().getText())));
-							}
-							else
-								visita.setUsuario(new ServicioConcesionario().getConcesionario(new Integer(vista.getLbljefeVentaid().getText())));
-							
-							if(new ServicioVisita().isVisita(vista.getDateFecha().getDate(),
-	                				((Cliente)new ServicioCliente().getCliente(vista.getLblrif().getText())).getId(),
-	                				new Integer(vista.getLbljefeVentaid().getText())))
-									{
-										throw new Exception("La Fecha ya se Encuentra Asociada al Cliente ");
-									}
-							visita.setFecha(vista.getDateFecha().getDate());
-						}
-						validar();
+						if(vista.getTxtDescripcion().getText()=="") throw new Exception("Ingrese la Descripcion");
+						if(vista.getTxtMotivo().getText()=="")throw new Exception("Ingrese el Motivo");
 						visita.setMotivo(vista.getTxtMotivo().getText());
 						visita.setDescripcion(vista.getTxtDescripcion().getText());
 						visita.setEstado(vista.getChckbxEstado().isSelected());
@@ -131,26 +107,15 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 							activarBinding(new ServicioVisita().ConsultaConcesionario((Concesionario)vista.getComboUsuario().getSelectedItem()));
 						
 					JOptionPane.showMessageDialog(vista,"Operacion Exitosa ");
+							
+						
 				} catch (Exception exe) {
 					// TODO Auto-generated catch block
-					JOptionPane.showConfirmDialog(vista,exe.getMessage());
+					JOptionPane.showInternalMessageDialog(vista, exe.getMessage());
 					exe.printStackTrace();
 				}
 			}
 		};
-	}
-	
-	protected void validar() throws Exception {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-				if(vista.getTxtDescripcion().getText()=="")
-				{
-					throw new Exception("Ingrese la Descripcion");
-				}
-				if(vista.getTxtMotivo().getText()=="")
-				{
-					throw new Exception("Ingrese el Motivo");
-				}
 	}
 	
 	public ActionListener salir() {
@@ -371,7 +336,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void activarBinding(List<Visita> visitas) {
 		// TODO Auto-generated method stub
-		
+		this.visitas = visitas;
 		vista.getScrollPanel().setViewportView(vista.getTabla());
 		JTableBinding binVistas = vista.getBinVisitas();
 		
@@ -379,6 +344,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
     		visitas,vista.getTabla());
 	  
 		BeanProperty fechaVisita  = BeanProperty.create("fechaStr");
+		BeanProperty idVisita  = BeanProperty.create("id");
 		BeanProperty nombreRuta  = BeanProperty.create("cliente.ruta.nombre");
 		BeanProperty rifCliente = BeanProperty.create("cliente.rif");
 		BeanProperty nombreCliente = BeanProperty.create("cliente.razonsocial");
@@ -390,6 +356,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 	    BeanProperty estado = BeanProperty.create("estadoStr");
 	    
 	    binVistas.addColumnBinding(fechaVisita).setColumnClass(String.class).setColumnName("Fecha").setEditable(true);
+	    binVistas.addColumnBinding(idVisita).setColumnClass(Integer.class).setColumnName("Id Visita");
 	    binVistas.addColumnBinding(estado).setColumnClass(String.class).setColumnName("Estado");
 	    binVistas.addColumnBinding(nombreRuta).setColumnClass(String.class).setColumnName("Ruta");
 	
@@ -437,7 +404,9 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 			break;
 			case "Rif":
 				try {
-						CargarInfoCliente(vista.getTabla().getValueAt(fila, columna).toString());
+						Visita visita = visitas.get(vista.getTabla().getSelectedRow());
+						vista.setVisita(visita);
+						CargarInfoCliente(visita.getCliente());
 						CargarInfoUsuario();
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
@@ -492,24 +461,18 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 		}
 	
 	void mostrarEditarUsuario(){
-		JFrame frame = vista.getFrame();
-		
-		vista.getPanelVisitaJefeVenta().setVisible(true);
-		frame.add(vista.getPanelVisitaJefeVenta());
-		frame.setTitle("Editar Jefe de Venta");
-		frame.setBounds(100, 200, 500, 400);
-		frame.setLayout(new GridLayout(1,0,0,0));
-		frame.setVisible(true);	
+		vista.getScrollPanel().setVisible(false);
+		vista.getPanelVisitaJefeVenta().setBounds(100, 200, 500, 400);
+		vista.getPnVisitas().add(vista.getPanelVisitaJefeVenta());
+		vista.repaint();
 	}
 	
-	void CargarInfoCliente(String rif) throws Exception{
-		Cliente cliente = new ServicioCliente().getCliente(rif);
+	void CargarInfoCliente(Cliente cliente){
 		vista.getLblrif().setText(cliente.getRif());
 		vista.getLblRazonSocial().setText(cliente.getRazonsocial());
 		vista.getLblTelefono().setText(cliente.getTelefono());
 		vista.getLblDireccion().setText(cliente.getDireccion());
 		vista.getLblRuta().setText("Ruta: "+cliente.getRuta().getNombre());
-		
 	} 
 	
 	void CargarInfoUsuario() throws Exception{
@@ -541,12 +504,14 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				vista.getFrame().removeAll();
+				vista.getPnVisitas().remove(vista.getPanelVisitaJefeVenta());
+				vista.getScrollPanel().setVisible(true);
+				
 			}
 		};
 	}
 	
-	public ActionListener ActivarGuardar() {
+	public ActionListener ActivarGuardar(final Visita visita) {
 		// TODO Auto-generated method stub
 		return new ActionListener() {
 			
@@ -554,7 +519,7 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					guardar();
+					guardar(visita);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -610,34 +575,39 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 	                		vista.getLblrif().getText()!="")
 	                {
 	                	try {
-	                		if(new ServicioVisita().isVisita(vista.getDateFecha().getDate(),
-	                				((Cliente)new ServicioCliente().getCliente(vista.getLblrif().getText())).getId(),
-	                				new Integer(vista.getLbljefeVentaid().getText())))
-								{
-	                				vista.getLblMensaje().setForeground(Color.cyan);
-									vista.getLblMensaje().setText( "Editar Visita");
-									Visita visita = new ServicioVisita().getVisita(
-											vista.getDateFecha().getDate(),
-											new Integer(vista.getLbljefeVentaid().getText()),
-											((Cliente)new ServicioCliente().getCliente(vista.getLblrif().getText())).getId());
-									vista.getTxtMotivo().setText(visita.getMotivo());
-		                			vista.getTxtDescripcion().setText(visita.getDescripcion());
-		                			vista.getTxtValProducto().setValue(visita.getValorProducto());
-		                			vista.getTxtValVendedor().setValue(visita.getValorVendedor());
-		                			vista.getChckbxEstado().setSelected(visita.getEstado());
-								}
-	                		else 
-	                		{
-	                			vista.getLblMensaje().setForeground(Color.lightGray);
-	                			vista.getLblMensaje().setText( "Nueva Visita");
-	                			vista.getTxtMotivo().setText("");
-	                			vista.getTxtDescripcion().setText("");
-	                			vista.getTxtValProducto().setValue(0);
-	                			vista.getTxtValVendedor().setValue(0);
-	                			vista.getChckbxEstado().setSelected(false);
-	                			
-	                		}
-							} catch (Exception e1) {
+	                		Cliente cliente = new ServicioCliente().getCliente(vista.getLblrif().getText());
+	                			if(cliente != null)
+	                			{
+	                				if(new ServicioVisita().isVisita(vista.getDateFecha().getDate(),
+	    	                				cliente.getId(),
+	    	                				new Integer(vista.getLbljefeVentaid().getText())))
+	    								{
+	    	                				vista.getLblMensaje().setForeground(Color.cyan);
+	    									vista.getLblMensaje().setText( "Editar Visita");
+	    									Visita visita = new ServicioVisita().getVisita(
+	    											vista.getDateFecha().getDate(),
+	    											new Integer(vista.getLbljefeVentaid().getText()),
+	    											((Cliente)new ServicioCliente().getCliente(vista.getLblrif().getText())).getId());
+	    									vista.getTxtMotivo().setText(visita.getMotivo());
+	    		                			vista.getTxtDescripcion().setText(visita.getDescripcion());
+	    		                			vista.getTxtValProducto().setValue(visita.getValorProducto());
+	    		                			vista.getTxtValVendedor().setValue(visita.getValorVendedor());
+	    		                			vista.getChckbxEstado().setSelected(visita.getEstado());
+	    								}
+	    	                		else 
+	    	                		{
+	    	                			vista.getLblMensaje().setForeground(Color.lightGray);
+	    	                			vista.getLblMensaje().setText( "Nueva Visita");
+	    	                			vista.getTxtMotivo().setText("");
+	    	                			vista.getTxtDescripcion().setText("");
+	    	                			vista.getTxtValProducto().setValue(0);
+	    	                			vista.getTxtValVendedor().setValue(0);
+	    	                			vista.getChckbxEstado().setSelected(false);
+	    	                			
+	    	                		}
+	    	
+	                			}
+	                		} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
@@ -655,10 +625,4 @@ public class ContVisitas extends ContGeneral implements IContGeneral {
 		return vista.getComboUsuario();
 	}
 	
-	@Override
-	public String asociar() {
-		// TODO Auto-generated method stub
-		return inicio;
-	}
-
 }

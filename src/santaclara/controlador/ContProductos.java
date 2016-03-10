@@ -14,8 +14,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -51,7 +49,6 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 	private List<Capacidad> capacidades = new ServicioCapacidad().getCapacidades();
 	private List<Presentacion> presentaciones = new ServicioPresentacion().getPresentaciones();
 	private List<EmpaqueProducto> empaqueProductos = new ServicioEmpaqueProducto().getEmpaqueProductos();
-	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
 	@SuppressWarnings("rawtypes")
 	private JTableBinding   binProductos;
 	
@@ -385,26 +382,15 @@ public class ContProductos extends ContGeneral implements IContGeneral {
 		
 		if (vista.getTable().getSelectedRow() >= 0 )
 		{
-			vista.getTxtId().setText("");
-			vista.getTxtNombre().setText("");
-			if(producto.getId() != null)
-			{
-				vista.getTxtId().setText(producto.getId().toString());
-			}
 			vista.getTxtId().setText(producto.getId().toString());
 			vista.getTxtNombre().setText(producto.getNombre());
 			vista.getTxtPrecio().setValue(producto.getPrecio());
 			setSelectedValue(vista.getCmbPresentacion(),producto.getPresentacion().getId());
 			setSelectedValue(vista.getCmbCapacidad(),producto.getCapacidad().getId());
 			setSelectedValue(vista.getCmbSabor(),producto.getSabor().getId());
-			vista.getCheckIva().setState(producto.getIva());
-			
+			if(producto.getIva())vista.getCheckIva().setState(false);
+			else vista.getCheckIva().setState(true);
 		}
-	}
-	@Override
-	public String asociar() {
-		// TODO Auto-generated method stub
-		return inicio;
 	}
 
 }

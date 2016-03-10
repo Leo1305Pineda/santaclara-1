@@ -12,9 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -38,8 +36,6 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 	private List<Almacen> almacenes =new ArrayList<Almacen>();
 	
 	private ContMediador mediador = new ContMediador();
-	
-	String inicio = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date());
 	
 	public ContAlmacenes(ContPrincipal contPrincipal) throws Exception {
 		// TODO Auto-generated constructor stub
@@ -92,6 +88,7 @@ public class ContAlmacenes extends ContGeneral implements IContGeneral{
 						JOptionPane.showMessageDialog(vista,servicioAlmacen.guardar(almacen));
 						almacenes = servicioAlmacen.getAlmacenes();
 						activarBinding(almacenes);
+						
 									
 					} catch (Exception e1) {
 					// TODO Auto-generated catch block

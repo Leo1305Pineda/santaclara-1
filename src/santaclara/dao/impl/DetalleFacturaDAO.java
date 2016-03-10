@@ -125,13 +125,13 @@ public class DetalleFacturaDAO extends GenericoDAO implements IDetalleFacturaDAO
 				for(DetalleFactura detalleFactura: detalleFacturas)
 				{	
 					getConexion().ejecutar( 
-							"BEGIN;"
-							+ "DELETE FROM detallefacturas "
-							+ "WHERE          "
+							" BEGIN;"
+							+ " DELETE FROM detallefacturas "
+							+ " WHERE          "
 							+ " idfactura   = "+detalleFactura.getFactura().getId()				+ "   "
 							+ "AND               "
 							+ "idempaqueproducto = "+detalleFactura.getEmpaqueProducto().getId()+ "  "
-							+ ""
+							+ ";   "
 							+ "INSERT INTO detallefacturas(idfactura, idempaqueproducto, cantidad, precio, descuento, iva, total) "
 							+" VALUES ("
 							+" " +detalleFactura.getFactura().getId()	  		+ " , "

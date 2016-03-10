@@ -15,7 +15,11 @@ import java.util.Date;
 import java.util.List;
 
 import santaclara.dao.IVisitaDAO;
+import santaclara.modelo.Cliente;
+import santaclara.modelo.Ruta;
+import santaclara.modelo.Usuario;
 import santaclara.modelo.Visita;
+import santaclara.modelo.Zona;
 
 public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 
@@ -38,13 +42,16 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 		List<Visita> visitas = new ArrayList<Visita>();
 		
 		ResultSet rSet = getConexion().getSelect(
-				"SELECT id, fecha, motivo, descripcion, valorvendedor, valorproducto,"
-				+ " estado, idusuario, idcliente "
-				+ "FROM visitas  ORDER BY id;"); 
+				" SELECT v.id as idfactura, v.* , u.* , c.*, r.nombre as nombreruta, r.idzona "
+				+ " FROM visitas v inner join usuarios u on v.idusuario = u.id "
+				+ " inner join clientes c on v.idcliente = c.id "
+				+ " inner join rutas r on c.idruta = r.id "
+				+ " inner join zonas z on r.idzona = z.id "
+				+ " ORDER BY v.id"
+				+ " ;"); 
 		
-		if(rSet==null || rSet.getFetchSize()!=0) return null;
+		if(rSet==null) return null;
 	
-		
 			while(rSet.next())
 			{
 				Boolean estado;
@@ -52,15 +59,31 @@ public class VisitaDAO extends GenericoDAO implements IVisitaDAO{
 				else estado = false;
 				
 				visitas.add(new Visita(
-					rSet.getInt("id"), 
+					rSet.getInt("idfactura"), 
 					rSet.getDate("fecha"),
 						rSet.getString("motivo"),
 						rSet.getString("descripcion"),
 						rSet.getInt("valorvendedor"), 
 						rSet.getInt("valorproducto"),
 						estado,
-						new UsuarioDAO().getUsuario(rSet.getInt("idusuario")) , 
-						new ClienteDAO().getCliente(rSet.getInt("idcliente"))));
+						new Usuario(
+								rSet.getInt("idusuario"),
+								rSet.getString("username"),
+								rSet.getString("cedula"), 
+								rSet.getString("nombre"), 
+								rSet.getString("contrasena")) , 
+						new Cliente(
+								rSet.getInt("idcliente"), 
+								rSet.getString("rif"),
+								rSet.getString("razonsocial"),
+								rSet.getString("direccion"), 
+								rSet.getString("telefono"), 
+								new Ruta(
+										rSet.getInt("idruta"),
+										rSet.getString("nombreruta"),
+										new Zona(
+												rSet.getInt("idzona"),
+												rSet.getString("descripcion"))))));
 			}
 			
 		return visitas;

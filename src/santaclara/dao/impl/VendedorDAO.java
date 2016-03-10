@@ -154,12 +154,6 @@ public class VendedorDAO extends GenericoDAO implements IVendedorDAO{
 				+ " WHERE v.id = u.id AND "
 				+ "v.id = " +id
 				+ " ;"); 
-		
-		System.out.println(" SELECT u .* , v.idrutas "
-				+ " FROM vendedores v , usuarios u "
-				+ " WHERE v.id = u.id AND "
-				+ "v.id = " +id
-				+ " ;");
 		if(rSet==null) 
 		{
 			return null;

@@ -32,6 +32,7 @@ import org.jdesktop.swingbinding.JTableBinding;
 
 import santaclara.controlador.ContVisitas;
 import santaclara.modelo.Usuario;
+import santaclara.modelo.Visita;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
@@ -97,10 +98,12 @@ public class VisitasUI extends JPanel {
 	private JLabel lblZona;
 	private JLabel lblRuta;
 	
+	private Visita visita = new Visita();
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public VisitasUI(ContVisitas contVisitas) throws Exception {
+	public VisitasUI(ContVisitas contVisitas,Visita visita) throws Exception {
 		
+		this.visita = visita;
 		setFont(new Font("Dialog", Font.BOLD, 13));
 		setForeground(Color.WHITE);
 		setBackground(Color.DARK_GRAY);
@@ -174,7 +177,7 @@ public class VisitasUI extends JPanel {
 		btnGuardar.setIcon(new ImageIcon("img/gestion/bien.png"));
 		btnGuardar.setBackground(Color.DARK_GRAY);
 		btnGuardar.setForeground(Color.WHITE);
-		btnGuardar.addActionListener(contVisitas.ActivarGuardar());
+		btnGuardar.addActionListener(contVisitas.ActivarGuardar(visita));
 		
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setBounds(330, 295, 130, 16);
@@ -336,7 +339,7 @@ public class VisitasUI extends JPanel {
 		
 		comboUsuario.setBackground(SystemColor.controlHighlight);
 		pnUsuario.add(comboUsuario);
-		btnGuardar.addActionListener(contVisitas.guardar());
+		btnGuardar.addActionListener(contVisitas.guardar(visita));
 	}
 
 	public JPanel getPnVisitas() {
@@ -673,6 +676,14 @@ public class VisitasUI extends JPanel {
 
 	public void setBtnEliminar(JButton btnEliminar) {
 		this.btnEliminar = btnEliminar;
+	}
+
+	public Visita getVisita() {
+		return visita;
+	}
+
+	public void setVisita(Visita visita) {
+		this.visita = visita;
 	}
 	
 }

@@ -158,32 +158,9 @@ public class PrincipalUI extends JPanel {
 		mntAlmacen.addActionListener(controlador.activarMenu());
 		mntAlmacen.setIcon(new ImageIcon("img/gestion/empresa.png"));
 		mnCatalogo.add(mntAlmacen);
+		
 		mnCatalogo.add(new JSeparator());
 
- 
-		mnCatalogo.add(new JSeparator());
-
-		mntCalendarios = new JMenuItem("Calendario");
-		mntCalendarios.setIcon(new ImageIcon("img/gestion/calendario.png"));
-		mnCatalogo.add(mntCalendarios);
-		mntCalendarios.addActionListener(controlador.activarMenu());
-		
-	/*	mntConcesionarios = new JMenuItem("Concesionarios");
-		mnCatalogo.add(mntConcesionarios);
-		mntConcesionarios.addActionListener(controlador.activarMenu());
-		*/
- 
-
-	
-		/*
-		mntConcesionarioRutas = new JMenuItem("ConcesionarioRutas");
-		mnCatalogo.add(mntConcesionarioRutas);
-		mntConcesionarioRutas.addActionListener(controlador.activarMenu());
-		*/
- 
-		
-		mntVisitas = new JMenuItem("Visitas");
-		
 		/***************************** Botones para Reporte **********************************/
 		
 		mntReportMontFacturaAlmacen = new JMenuItem("Monto Total Facturado por Almacenes");
@@ -248,11 +225,6 @@ public class PrincipalUI extends JPanel {
 		mnCatalogo.add(mntCapacidades);
 		mntCapacidades.addActionListener(controlador.activarMenu());
 
-		/*
-		mntProductoAlmacenes = new JMenuItem("Producto por Almacenes");
-		mnCatalogo.add(mntProductoAlmacenes);
-		mntProductoAlmacenes.addActionListener(controlador.activarMenu());
-		*/
 		mnCatalogo.add(new JSeparator());
 
 		mntRutas = new JMenuItem("Ruta");
@@ -277,30 +249,40 @@ public class PrincipalUI extends JPanel {
 		mnCatalogo.add(mntUsuarios);
 		mntUsuarios.addActionListener(controlador.activarMenu());
 
-		
+		mntJefeVenta = new JMenuItem("Jefe Ventas");
+		mntJefeVenta.setIcon(new ImageIcon("img/gestion/jefeVenta.png"));
+		mnCatalogo.add(mntJefeVenta);
+		mntJefeVenta.addActionListener(controlador.activarMenu());
+	
 		mntConcesionarios = new JMenuItem("Concesionarios");
+		mntConcesionarios.setIcon(new ImageIcon("img/gestion/concesionario.png"));
 		mnCatalogo.add(mntConcesionarios);
 		mntConcesionarios.addActionListener(controlador.activarMenu());
 
+		mntVendedores = new JMenuItem("Vendedores");
+		mntVendedores.setIcon(new ImageIcon("img/gestion/vendedor.png"));
+		mnCatalogo.add(mntVendedores);
+		mntVendedores.addActionListener(controlador.activarMenu());	
 		
+		mnCatalogo.add(new JSeparator());
+		
+		mntCalendarios = new JMenuItem("Calendario");
+		mntCalendarios.setIcon(new ImageIcon("img/gestion/calendario.png"));
+		mnCatalogo.add(mntCalendarios);
+		mntCalendarios.addActionListener(controlador.activarMenu());
+		
+		mntVisitas = new JMenuItem("Visitas");
+		mntVisitas.setIcon(new ImageIcon("img/gestion/visita.png"));
+		mnCatalogo.add(mntVisitas);
+		mntVisitas.addActionListener(controlador.activarMenu());
+		
+		mnCatalogo.add(new JSeparator());
 		mntCamiones = new JMenuItem("Camiones");
 		mntCamiones.setIcon(new ImageIcon("img/gestion/camion.png"));
 		mnCatalogo.add(mntCamiones);
 		mntCamiones.addActionListener(controlador.activarMenu());
 
- 
-		mntVendedores = new JMenuItem("Vendedores");
-		mnCatalogo.add(mntVendedores);
-		mntVendedores.addActionListener(controlador.activarMenu());
-
 		
-		mntJefeVenta = new JMenuItem("Jefe Ventas");
-		mnCatalogo.add(mntJefeVenta);
-		mntJefeVenta.addActionListener(controlador.activarMenu());
-
-		mntCalendarios = new JMenuItem("Calendario");
-		mnCatalogo.add(mntCalendarios);
-		mntCalendarios.addActionListener(controlador.activarMenu());
 		/*
 		
 		mntVisitas = new JMenuItem("Visitas");
@@ -353,11 +335,13 @@ public class PrincipalUI extends JPanel {
 		
 		mntCapturarLista = new JMenuItem("Capturar Tabla");
 		mntCapturarLista.setToolTipText("Permite la asociacion de tablas");
+		mntCapturarLista.setIcon(new ImageIcon("img/gestion/asociar.png"));
 		mnAsociacionTabla.add(mntCapturarLista);
 		mntCapturarLista.addActionListener(controlador.activarMenu());
 		
 		mntEjecutarCapturaLista = new JMenuItem("Ejecutar Composicion Tabla");
 		mntEjecutarCapturaLista.setToolTipText("Procesar informacion");
+		mntEjecutarCapturaLista.setIcon(new ImageIcon("img/gestion/ejecutar.png"));
 		mnAsociacionTabla.add(mntEjecutarCapturaLista);
 		mntEjecutarCapturaLista.addActionListener(controlador.activarMenu());
 		
